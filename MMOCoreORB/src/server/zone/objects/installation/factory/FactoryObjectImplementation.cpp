@@ -408,14 +408,18 @@ bool FactoryObjectImplementation::startFactory() {
 
 	ManagedReference<ManufactureSchematic* > schematic = getContainerObject(0).castTo<ManufactureSchematic*>();
 
-	timer = ((int)schematic->getComplexity()) * 2;
+/*	timer = ((int)schematic->getComplexity()) * 2;
+*/
+      timer = ((int)schematic->getComplexity()) * 0.5;
 
 	if(!populateSchematicBlueprint(schematic))
 		return false;
 
 	// Add sampletask
 	Reference<CreateFactoryObjectTask* > createFactoryObjectTask = new CreateFactoryObjectTask(_this.get());
-	addPendingTask("createFactoryObject", createFactoryObjectTask, timer * 1000);
+/*	addPendingTask("createFactoryObject", createFactoryObjectTask, timer * 1000);
+*/
+        addPendingTask("createFactoryObject", createFactoryObjectTask, timer * 100);
 
 	operating = true;
 

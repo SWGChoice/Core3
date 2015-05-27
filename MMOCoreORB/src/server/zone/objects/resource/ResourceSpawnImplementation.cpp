@@ -195,10 +195,14 @@ int ResourceSpawnImplementation::getConcentration(bool jtl) {
 		return SpawnDensityMap::HIGHDENSITY;
 
 	else if (isType("ore") || isType("water") || isType("energy_renewable_unlimited_solar") || isType("energy_renewable_unlimited_wind"))
-		return SpawnDensityMap::LOWDENSITY;
+/*		return SpawnDensityMap::LOWDENSITY;
+*/
+             return SpawnDensityMap::HIGHDENSITY;
 
 	else
-		return SpawnDensityMap::MEDIUMDENSITY;
+/*		return SpawnDensityMap::MEDIUMDENSITY;
+*/
+		return SpawnDensityMap::HIGHDENSITY;
 }
 
 Vector<String> ResourceSpawnImplementation::getSpawnZones(int minpool, int maxpool,

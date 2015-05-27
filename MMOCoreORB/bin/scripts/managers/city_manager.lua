@@ -74,13 +74,17 @@ EnableCityWarn = false
 
 --The number of citizens required to achieve each city rank. (Outpost, Village, Township, City, Metropolis)
 --CitizensPerRank = {1, 2, 3, 5, 8}
-CitizensPerRank = {10, 20, 35, 55, 85}
+--Publish 14.1 CitizensPerRank = {10, 20, 35, 55, 85}
+--Using the NGE values
+CitizensPerRank = {5, 10, 15, 30, 40}
 
 --The radius in meters of the city at each city rank. (Outpost, Village, Township, City, Metropolis)
-RadiusPerRank = {150, 200, 300, 400, 450}
+--RadiusPerRank = {150, 200, 300, 400, 450}
+RadiusPerRank = {450, 450, 450, 450, 450}
 
 -- Maximum for each rank.  rank 1 = decorationsperrank * 1, rank 5 = decorationsperrank * 5	82
-DecorationsPerRank = 10
+--DecorationsPerRank = 10
+DecorationsPerRank = 25
 
 -- Amount to discount city maintenance  float.  1 = 100%, .75 =75%, .5=50% etc
 maintenanceDiscount = 1.0
@@ -184,7 +188,7 @@ CityTaxes = {
 CitySpecializations = {
 	{--Sample Rich
 		name = "@city/city:city_spec_sample_rich",
-		cost = 70000,
+		cost = 7000,
 		skillMods = {
 			{"private_spec_samplesize", 20},
 			{"private_spec_samplerate", 10}
@@ -192,28 +196,28 @@ CitySpecializations = {
 	},
 	{--Manufacturing Center
 		name = "@city/city:city_spec_industry",
-		cost = 50000,
+		cost = 5000,
 		skillMods = {
 			{"private_spec_assembly", 10}
 		}
 	},
 	{--Medical Center
 		name = "@city/city:city_spec_doctor",
-		cost = 80000,
+		cost = 8000,
 		skillMods = {
 			{"private_medical_rating", 10}
 		}
 	},
 	{--Clone Lab
 		name = "@city/city:city_spec_clone",
-		cost = 80000,
+		cost = 8000,
 		skillMods = {
 			{"private_spec_cloning", 20}
 		}
 	},
 	{--Research Center
 		name = "@city/city:city_spec_research",
-		cost = 125000,
+		cost = 1250,
 		skillMods = {
 			{"private_spec_experimentation", 15}
 		}
@@ -227,7 +231,7 @@ CitySpecializations = {
 	},
 	{--Entertainment District
 		name = "@city/city:city_spec_entertainer",
-		cost = 80000,
+		cost = 8000,
 		skillMods = {
 			{"private_spec_entertainer", 10}
 		}

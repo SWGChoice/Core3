@@ -861,11 +861,11 @@ void CityManagerImplementation::deductCityMaintenance(CityRegion* city) {
 	}
 
 	for(int i = city->getMissionTerminalCount() - 1; i >= 0; i--){
-		totalPaid += collectNonStructureMaintenance(city->getCityMissionTerminal(i), city, 1500);
+		totalPaid += collectNonStructureMaintenance(city->getCityMissionTerminal(i), city, 150);
 	}
 
 	for(int i = city->getSkillTrainerCount() -1; i >=0; i--){
-		totalPaid += collectNonStructureMaintenance(city->getCitySkillTrainer(i), city, 1500);
+		totalPaid += collectNonStructureMaintenance(city->getCitySkillTrainer(i), city, 150);
 	}
 
 	sendMaintenanceEmail(city, totalPaid);
@@ -1900,7 +1900,8 @@ void CityManagerImplementation::sendMaintenanceReport(CityRegion* city,
 
 	for (int i = 0; i < city->getSkillTrainerCount(); i++) {
 		ManagedReference<SceneObject*> trainer = city->getCitySkillTrainer(i);
-		int trainerCost = maintenanceDiscount * 1500;
+		//int trainerCost = maintenanceDiscount * 1500;
+		int trainerCost = maintenanceDiscount * 150;
 		if (trainer != NULL) {
 			totalcost += trainerCost;
 			maintList->addMenuItem(trainer->getDisplayedName() + " : " + String::valueOf(trainerCost), i);
@@ -1925,7 +1926,7 @@ void CityManagerImplementation::sendMaintenanceReport(CityRegion* city,
 			}
 
 		} else if ( sceno != NULL) {
-			int decCost = maintenanceDiscount * 1500;
+			int decCost = maintenanceDiscount * 150;
 			totalcost += decCost;
 			maintList->addMenuItem(sceno->getDisplayedName() + " : " + String::valueOf(decCost));
 		}
@@ -1933,7 +1934,8 @@ void CityManagerImplementation::sendMaintenanceReport(CityRegion* city,
 
 	for (int i = 0; i < city->getMissionTerminalCount(); i++) {
 		ManagedReference<SceneObject*> term = city->getCityMissionTerminal(i);
-		int terminalCost = maintenanceDiscount * 1500;
+		//int terminalCost = maintenanceDiscount * 1500;
+		int terminalCost = maintenanceDiscount * 150;
 		if (term != NULL) {
 			totalcost += terminalCost;
 			maintList->addMenuItem(term->getDisplayedName() + " : " + String::valueOf(terminalCost));

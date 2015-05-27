@@ -39,8 +39,9 @@ int ForceShrineMenuComponent::handleObjectMenuSelect(SceneObject* sceneObject, C
 	if (ghost == NULL)
 		return 0;
 
-	if (ghost->getAdminLevel() < 15)
-		return 0;
+/*	if (ghost->getAdminLevel() < 15)
+ *	return 0;
+ */
 
 	if (creature->hasSkill("force_title_jedi_novice") && !creature->hasSkill("force_title_jedi_rank_02")){
 		ManagedReference<SuiMessageBox*> box = new SuiMessageBox(creature, SuiWindowType::NONE);

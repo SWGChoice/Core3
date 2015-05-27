@@ -122,7 +122,8 @@
 
 #include <iostream>
 
-int PlayerManagerImplementation::MAX_CHAR_ONLINE_COUNT = 2;
+//int PlayerManagerImplementation::MAX_CHAR_ONLINE_COUNT = 2;
+int PlayerManagerImplementation::MAX_CHAR_ONLINE_COUNT = 10;
 
 PlayerManagerImplementation::PlayerManagerImplementation(ZoneServer* zoneServer, ZoneProcessServer* impl) :
 										Logger("PlayerManager") {
@@ -957,7 +958,8 @@ void PlayerManagerImplementation::sendPlayerToCloner(CreatureObject* player, uin
 
 	// Jedi experience loss.
 	if (ghost->getJediState() > 1)
-		awardExperience(player, "jedi_general", -200000, true);
+	  //		awardExperience(player, "jedi_general", -200000, true);
+		awardExperience(player, "jedi_general", 0, true);
 }
 
 void PlayerManagerImplementation::ejectPlayerFromBuilding(CreatureObject* player) {

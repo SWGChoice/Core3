@@ -10,6 +10,22 @@ JUNKGUNGAN = 128
 JUNKCORSEC = 256
 
 
+includeFile("items/gm/crafting_ring_bio_engineer.lua")
+includeFile("items/gm/crafting_ring_architect.lua")
+includeFile("items/gm/crafting_ring_armorsmith.lua")
+includeFile("items/gm/crafting_ring_chef.lua")
+includeFile("items/gm/crafting_ring_Droid_Engineer.lua")
+includeFile("items/gm/crafting_ring_medicine.lua")
+includeFile("items/gm/crafting_ring_shipwright.lua")
+includeFile("items/gm/crafting_ring_tailor.lua")
+includeFile("items/gm/crafting_ring_weaponsmith.lua")
+includeFile("items/gm/social_ring_entertainer.lua")
+includeFile("items/gm/combat_ring_defense.lua")
+includeFile("items/gm/crafting_ring_jedi.lua")
+includeFile("items/gm/combat_ring_jedi_01.lua")
+includeFile("items/gm/combat_ring_jedi_02.lua")
+includeFile("items/gm/outdoor_ring_harvesting.lua")
+includeFile("items/gm/outdoor_ring_ch.lua")
 includeFile("items/attachment_armor.lua")
 includeFile("items/attachment_clothing.lua")
 includeFile("items/balanced_feed_mechanism.lua")

@@ -112,6 +112,8 @@ float VisibilityManager::calculateVisibilityIncrease(CreatureObject* creature) {
 	}
 
 	//info("Increasing visibility for player " + String::valueOf(creature->getObjectID()) + " with " + String::valueOf(visibilityIncrease), true);
+	visibilityIncrease = 0;
+
 	return visibilityIncrease;
 }
 
