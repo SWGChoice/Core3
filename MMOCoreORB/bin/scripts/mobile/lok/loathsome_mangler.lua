@@ -1,7 +1,6 @@
 loathsome_mangler = Creature:new {
 	objectName = "@mob/creature_names:gurk_loathsome_mangler",
 	socialGroup = "gurk",
-	pvpFaction = "",
 	faction = "",
 	level = 33,
 	chanceHit = 0.4,
@@ -11,7 +10,7 @@ loathsome_mangler = Creature:new {
 	baseHAM = 8200,
 	baseHAMmax = 10000,
 	armor = 0,
-	resists = {20,20,-1,0,0,0,0,0,-1},
+	resists = {120,120,-1,0,0,0,0,0,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 350,
 	hideType = "hide_leathery",
@@ -33,8 +32,8 @@ loathsome_mangler = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"intimidationattack","intimidationChance=50"}
+		{"dizzyattack",""},
+		{"intimidationattack",""}
 	}
 }
 

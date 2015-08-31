@@ -1,7 +1,6 @@
 deranged_ravisher = Creature:new {
 	objectName = "@mob/creature_names:squill_deranged_ravisher",
 	socialGroup = "squill",
-	pvpFaction = "",
 	faction = "",
 	level = 35,
 	chanceHit = 0.39,
@@ -11,7 +10,7 @@ deranged_ravisher = Creature:new {
 	baseHAM = 8100,
 	baseHAMmax = 9900,
 	armor = 0,
-	resists = {40,40,15,-1,15,15,15,15,-1},
+	resists = {140,140,15,-1,15,15,15,15,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 65,
 	hideType = "",
@@ -33,7 +32,7 @@ deranged_ravisher = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"knockdownattack","knockdownChance=50"},
+		{"knockdownattack",""},
 		{"mediumdisease",""}
 	}
 }

@@ -1,7 +1,7 @@
 aakuan_defender = Creature:new {
 	objectName = "@mob/creature_names:aakuan_defender",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "aakuans",
-	pvpFaction = "aakuans",
 	faction = "aakuans",
 	level = 23,
 	chanceHit = 0.33,
@@ -30,20 +30,20 @@ aakuan_defender = Creature:new {
 		"object/mobile/dressed_aakuan_defender_human_male_01.iff",
 		"object/mobile/dressed_aakuan_defender_human_female_01.iff"},
 	lootGroups = {
-	    {
-		    groups = {
+		{
+			groups = {
 				{group = "junk", chance = 6600000},
 				{group = "aakuan_common", chance = 2300000},
 				{group = "armor_attachments", chance = 200000},
 				{group = "rifles", chance = 300000},
 				{group = "carbines", chance = 300000},
-				{group = "pistols", chance = 300000}				
-			},
-		    lootChance = 2200000
+				{group = "pistols", chance = 300000}
+			}
 		}
 	},
 	weapons = {"melee_weapons"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/fancy",
 	attacks = brawlermaster
 }
 

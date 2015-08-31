@@ -1,7 +1,6 @@
 razor_cat = Creature:new {
 	objectName = "@mob/creature_names:sand_panther",
 	socialGroup = "panther",
-	pvpFaction = "",
 	faction = "",
 	level = 22,
 	chanceHit = 0.34,
@@ -11,7 +10,7 @@ razor_cat = Creature:new {
 	baseHAM = 6300,
 	baseHAMmax = 7700,
 	armor = 0,
-	resists = {10,10,10,60,10,-1,-1,-1,-1},
+	resists = {10,10,10,160,10,-1,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 65,
 	hideType = "hide_bristley",
@@ -32,8 +31,8 @@ razor_cat = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
-		{"stunattack","stunChance=50"}
+		{"intimidationattack",""},
+		{"stunattack",""}
 	}
 }
 

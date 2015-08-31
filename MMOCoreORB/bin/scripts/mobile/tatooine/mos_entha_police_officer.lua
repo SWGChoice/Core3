@@ -1,7 +1,7 @@
 mos_entha_police_officer = Creature:new {
 	objectName = "@mob/creature_names:mos_entha_police_officer",
+	randomNameType = NAME_STORMTROOPER_TAG,
 	socialGroup = "imperial",
-	pvpFaction = "imperial",
 	faction = "imperial",
 	level = 13,
 	chanceHit = 0.3,
@@ -27,9 +27,21 @@ mos_entha_police_officer = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_swamp_trooper_m.iff"},
-	lootGroups = {},
+	lootGroups = {
+		{
+			groups = {
+				{group = "junk", chance = 5000000},
+				{group = "rifles", chance = 1000000},
+				{group = "pistols", chance = 1000000},
+				{group = "melee_weapons", chance = 1000000},
+				{group = "carbines", chance = 1000000},
+				{group = "wearables_common", chance = 1000000}
+			}
+		}
+	},
 	weapons = {"imperial_weapons_light"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/townperson",
 	attacks = merge(brawlermid,marksmanmid)
 }
 

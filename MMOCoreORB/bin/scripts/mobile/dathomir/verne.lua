@@ -1,7 +1,6 @@
 verne = Creature:new {
 	objectName = "@mob/creature_names:verne",
 	socialGroup = "verne",
-	pvpFaction = "",
 	faction = "",
 	level = 17,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ verne = Creature:new {
 	baseHAM = 3500,
 	baseHAMmax = 4300,
 	armor = 0,
-	resists = {0,0,0,-1,-1,25,25,-1,-1},
+	resists = {5,5,5,-1,-1,125,125,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 125,
 	hideType = "hide_leathery ",
@@ -32,7 +31,8 @@ verne = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"",""},
+		{"intimidationattack",""}
 	}
 }
 

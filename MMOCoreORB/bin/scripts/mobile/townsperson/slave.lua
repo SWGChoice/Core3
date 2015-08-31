@@ -1,8 +1,7 @@
 slave = Creature:new {
 	objectName = "@mob/creature_names:slave",
-	generateRandomName = true,
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "townsperson",
-	pvpFaction = "townsperson",
 	faction = "townsperson",
 	level = 4,
 	chanceHit = 0.240000,
@@ -38,8 +37,18 @@ slave = Creature:new {
 				 "object/mobile/trandoshan_female.iff",
 				 "object/mobile/bothan_male.iff",
 				 "object/mobile/bothan_female.iff",},
-	lootGroups = {},
+	lootGroups = {
+      	{
+			groups = {
+				{group = "junk", chance = 4000000},
+				{group = "wearables_common", chance = 3000000},
+				{group = "loot_kit_parts", chance = 2000000},
+				{group = "tailor_components", chance = 1000000},
+			}
+		}
+	},
 	weapons = {},
+	reactionStf = "@npc_reaction/townperson",
 	attacks = brawlernovice
 }
 

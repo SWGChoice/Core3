@@ -1,7 +1,7 @@
 imperial_corporal = Creature:new {
 	objectName = "@mob/creature_names:imperial_corporal",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "imperial",
-	pvpFaction = "imperial",
 	faction = "imperial",
 	level = 16,
 	chanceHit = 0.31,
@@ -39,12 +39,13 @@ imperial_corporal = Creature:new {
 				{group = "clothing_attachments", chance = 25000},
 				{group = "armor_attachments", chance = 25000},
 				{group = "wearables_common", chance = 1000000}
-			},
-			lootChance = 2800000
+			}
 		}
 	},
 	weapons = {"imperial_weapons_medium"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/military",
+	personalityStf = "@hireling/hireling_military",
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 

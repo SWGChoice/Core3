@@ -56,8 +56,8 @@ KnockdownFireCommand = {
 		{}, 
 		{ "dizzy_defense", "resistance_states" }, 
 		{ "jedi_state_defense" }, 
-		30, 
-		100, 
+		85, 
+		0, 
 		10 
 	  ),
 	  StateEffect( 
@@ -65,8 +65,8 @@ KnockdownFireCommand = {
 		{ "knockdownRecovery", "lastKnockdown" }, 
 		{ "knockdown_defense" }, 
 		{}, 
-		30, 
-		100, 
+		85, 
+		0, 
 		0 
 	  )
 	},
@@ -74,6 +74,8 @@ KnockdownFireCommand = {
 	animationCRC = hashCode("fire_1_special_single_medium"),
 
 	combatSpam = "knockdownfire",
+	
+	weaponType = CARBINEWEAPON,
 
 	range = -1
 }

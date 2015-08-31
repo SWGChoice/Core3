@@ -1,7 +1,6 @@
 vynock = Creature:new {
 	objectName = "@mob/creature_names:vynock",
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 9,
 	chanceHit = 0.27,
@@ -11,7 +10,7 @@ vynock = Creature:new {
 	baseHAM = 657,
 	baseHAMmax = 825,
 	armor = 0,
-	resists = {0,0,0,0,0,0,0,0,0},
+	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 50,
 	hideType = "hide_leathery",
@@ -32,7 +31,7 @@ vynock = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

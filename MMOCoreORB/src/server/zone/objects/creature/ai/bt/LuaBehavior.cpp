@@ -11,11 +11,14 @@
 #include "server/zone/objects/scene/SceneObject.h"
 #include "engine/engine.h"
 
+#include "server/zone/ZoneServer.h"
+#include "server/chat/ChatManager.h"
+
 #ifndef AI_DEBUG
 #define AI_DEBUG
 #endif
 
-LuaBehavior::LuaBehavior(String name) : Object() {
+LuaBehavior::LuaBehavior(const String& name) : Object() {
 	this->className = name;
 }
 
@@ -43,8 +46,12 @@ bool LuaBehavior::checkConditions(AiAgent* agent) {
 	LuaFunction runMethod(lua->getLuaState(), className, "checkConditions", 1);
 	runMethod << agent;
 
-	runMethod.callFunction();
 	//agent->info(className + " check...", true);
+//	ZoneServer* zoneServer = agent->getZoneServer();
+//	ChatManager* chatManager = zoneServer->getChatManager();
+//	chatManager->broadcastMessage(agent, className + " check...", 0, 0, 0);
+
+	runMethod.callFunction();
 
 	bool result = lua_toboolean(lua->getLuaState(), -1);
 	lua_pop(lua->getLuaState(), 1);
@@ -68,8 +75,12 @@ void LuaBehavior::start(AiAgent* agent) {
 	LuaFunction runMethod(lua->getLuaState(), className, "start", 1);
 	runMethod << agent;
 
-	runMethod.callFunction();
 	//agent->info(className + " start...", true);
+//	ZoneServer* zoneServer = agent->getZoneServer();
+//	ChatManager* chatManager = zoneServer->getChatManager();
+//	chatManager->broadcastMessage(agent, className + " start...", 0, 0, 0);
+
+	runMethod.callFunction();
 
 	int result = lua_tointeger(lua->getLuaState(), -1);
 	lua_pop(lua->getLuaState(), 1);
@@ -91,8 +102,12 @@ float LuaBehavior::end(AiAgent* agent) {
 	LuaFunction runMethod(lua->getLuaState(), className, "terminate", 1);
 	runMethod << agent;
 
-	runMethod.callFunction();
 	//agent->info(className + " end...", true);
+//	ZoneServer* zoneServer = agent->getZoneServer();
+//	ChatManager* chatManager = zoneServer->getChatManager();
+//	chatManager->broadcastMessage(agent, className + " end...", 0, 0, 0);
+
+	runMethod.callFunction();
 
 	float result = lua_tonumber(lua->getLuaState(), -1);
 	lua_pop(lua->getLuaState(), 1);
@@ -117,8 +132,12 @@ int LuaBehavior::doAction(AiAgent* agent) {
 	LuaFunction runMethod(lua->getLuaState(), className, "doAction", 1);
 	runMethod << agent;
 
-	runMethod.callFunction();
 	//agent->info(className + " do...", true);
+//	ZoneServer* zoneServer = agent->getZoneServer();
+//	ChatManager* chatManager = zoneServer->getChatManager();
+//	chatManager->broadcastMessage(agent, className + " do...", 0, 0, 0);
+
+	runMethod.callFunction();
 
 	int result = lua_tointeger(lua->getLuaState(), -1);
 	lua_pop(lua->getLuaState(), 1);
@@ -143,6 +162,12 @@ int LuaBehavior::interrupt(AiAgent* agent, SceneObject* source, int64 msg) {
 	messageFunc << agent;
 	messageFunc << source; //arg1
 	messageFunc << msg; //arg2
+
+	//agent->info(className + " interrupt... " + String::valueOf(msg), true);
+//	ZoneServer* zoneServer = agent->getZoneServer();
+//	ChatManager* chatManager = zoneServer->getChatManager();
+//	chatManager->broadcastMessage(agent, className + " interrupt... " + String::valueOf(msg), 0, 0, 0);
+
 
 	messageFunc.callFunction();
 

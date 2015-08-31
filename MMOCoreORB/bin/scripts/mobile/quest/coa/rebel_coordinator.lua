@@ -1,7 +1,7 @@
 rebel_coordinator = Creature:new {
 	objectName = "@mob/creature_names:coa2_rebel_coordinator",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "rebel",
-	pvpFaction = "rebel",
 	faction = "rebel",
 	level = 25,
 	chanceHit = 0.36,

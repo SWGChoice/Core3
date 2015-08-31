@@ -1,7 +1,7 @@
 hidden_daggers_activist = Creature:new {
 	objectName = "@mob/creature_names:hidden_daggers_activist",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "hidden_daggers",
-	pvpFaction = "hidden_daggers",
 	faction = "hidden_daggers",
 	level = 9,
 	chanceHit = 0.270000,
@@ -26,24 +26,24 @@ hidden_daggers_activist = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {
-	"object/mobile/dressed_crook_zabrak_female_01.iff",
+		"object/mobile/dressed_crook_zabrak_female_01.iff",
 		"object/mobile/dressed_crook_zabrak_male_01.iff",
 		"object/mobile/dressed_desperado_bith_female_01.iff",
 		"object/mobile/dressed_desperado_bith_male_01.iff",
 		"object/mobile/dressed_ravager_human_female_01.iff",
 		"object/mobile/dressed_ravager_human_male_01.iff"},
 	lootGroups = {
-      	{
+		{
 			groups = {
 				{group = "junk", chance = 4300000},
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "tailor_components", chance = 1000000},
 				{group = "hidden_dagger_common", chance = 2700000}
-			},
-			lootChance = 3000000
-		}	
+			}
+		}
 	},
 	weapons = {"rebel_weapons_light"},
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlernovice,marksmannovice)
 }
 

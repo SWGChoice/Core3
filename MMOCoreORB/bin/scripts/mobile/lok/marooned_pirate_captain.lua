@@ -1,7 +1,7 @@
 marooned_pirate_captain = Creature:new {
 	objectName = "@mob/creature_names:marooned_pirate_captain",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "pirate",
-	pvpFaction = "pirate",
 	faction = "pirate",
 	level = 24,
 	chanceHit = 0.35,
@@ -31,7 +31,7 @@ marooned_pirate_captain = Creature:new {
 		"object/mobile/dressed_marooned_pirate_captain_nikto_m.iff",
 		"object/mobile/dressed_marooned_pirate_captain_tran_m.iff",
 		"object/mobile/dressed_marooned_pirate_captain_wee_m.iff"
-		},
+	},
 	lootGroups = {
 		{
 			groups = {
@@ -40,12 +40,12 @@ marooned_pirate_captain = Creature:new {
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "tailor_components", chance = 1000000},
 				{group = "rifles", chance = 2000000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_heavy"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 

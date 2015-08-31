@@ -1,8 +1,8 @@
 naboo_pirate_crewman = Creature:new {
 	objectName = "",
-	customName = "Pirate Crewman",
+	randomNameType = NAME_GENERIC_TAG,
+	customName = "a Pirate Crewman",
 	socialGroup = "naboo_pirate",
-	pvpFaction = "naboo_pirate",
 	faction = "naboo_pirate",
 	level = 10,
 	chanceHit = 0.28,
@@ -43,12 +43,12 @@ naboo_pirate_crewman = Creature:new {
 				{group = "wearables_common", chance = 2000000},
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000}
-			},
-			lootChance = 3200000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_heavy"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(marksmannovice,brawlernovice)
 }
 

@@ -26,7 +26,7 @@ void CityVotingMenuComponent::fillObjectMenuResponse(SceneObject* sceneObject, O
 	if (!city->isCandidate(player->getObjectID()))
 		menuResponse->addRadialMenuItemToRadialID(224, 227, 3, "@city/city:mayoral_register"); //Register to Run
 	else
-		menuResponse->addRadialMenuItemToRadialID(224, 227, 3, "@city/city:mayoral_unregister"); //Unregister from Race
+		menuResponse->addRadialMenuItemToRadialID(224, 228, 3, "@city/city:mayoral_unregister"); //Unregister from Race
 }
 
 int CityVotingMenuComponent::handleObjectMenuSelect(SceneObject* sceneObject, CreatureObject* player, byte selectID) {
@@ -35,7 +35,9 @@ int CityVotingMenuComponent::handleObjectMenuSelect(SceneObject* sceneObject, Cr
 	if (city == NULL || !city->isCitizen(player->getObjectID()))
 		return 0;
 
-	Locker _lock(city);
+	sceneObject->unlock();
+
+	Locker _lock(city, player);
 
 	CityManager* cityManager = sceneObject->getZoneServer()->getCityManager();
 
@@ -47,10 +49,17 @@ int CityVotingMenuComponent::handleObjectMenuSelect(SceneObject* sceneObject, Cr
 	case 226: //Vote
 		cityManager->promptMayoralVote(city, player, sceneObject);
 		break;
-	case 227: //Register/Unregister
+	case 227: //Register
 		cityManager->registerForMayoralRace(city, player);
 		break;
+	case 228: //Unregister
+		cityManager->unregisterFromMayoralRace(city, player, false);
+		break;
 	}
+
+	_lock.release();
+
+	sceneObject->wlock(player);
 
 	return 0;
 }

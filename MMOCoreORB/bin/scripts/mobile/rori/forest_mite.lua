@@ -1,7 +1,6 @@
 forest_mite = Creature:new {
 	objectName = "@mob/creature_names:forest_mite",
 	socialGroup = "mite",
-	pvpFaction = "",
 	faction = "",
 	level = 14,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ forest_mite = Creature:new {
 	baseHAM = 2000,
 	baseHAMmax = 2400,
 	armor = 0,
-	resists = {0,25,0,0,0,0,0,-1,-1},
+	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 5,
 	hideType = "hide_scaley",
@@ -32,7 +31,8 @@ forest_mite = Creature:new {
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"",""},
+		{"stunattack",""}
 	}
 }
 

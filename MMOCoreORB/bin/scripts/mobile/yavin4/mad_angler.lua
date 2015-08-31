@@ -1,7 +1,6 @@
 mad_angler = Creature:new {
 	objectName = "@mob/creature_names:mad_angler",
 	socialGroup = "angler",
-	pvpFaction = "",
 	faction = "",
 	level = 95,
 	chanceHit = 0.85,
@@ -11,7 +10,7 @@ mad_angler = Creature:new {
 	baseHAM = 13000,
 	baseHAMmax = 16000,
 	armor = 0,
-	resists = {50,50,20,-1,20,-1,-1,20,-1},
+	resists = {150,150,20,-1,20,-1,-1,20,-1},
 	meatType = "meat_insect",
 	meatAmount = 3,
 	hideType = "hide_scaley",
@@ -32,8 +31,8 @@ mad_angler = Creature:new {
 	weapons = {"creature_spit_small_toxicgreen"},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"strongpoison",""}
+		{"strongpoison",""},
+		{"blindattack",""}
 	}
 }
 

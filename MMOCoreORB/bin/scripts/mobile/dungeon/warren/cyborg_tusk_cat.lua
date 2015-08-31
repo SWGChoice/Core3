@@ -1,7 +1,6 @@
 cyborg_tusk_cat = Creature:new {
 	objectName = "@mob/creature_names:warren_cyborg_tuskcat",
 	socialGroup = "warren_cyborg",
-	pvpFaction = "",
 	faction = "",
 	level = 30,
 	chanceHit = 0.39,
@@ -11,7 +10,7 @@ cyborg_tusk_cat = Creature:new {
 	baseHAM = 8400,
 	baseHAMmax = 10200,
 	armor = 0,
-	resists = {35,0,0,35,35,-1,-1,-1,-1},
+	resists = {35,0,0,135,135,-1,-1,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 80,
 	hideType = "hide_leathery",
@@ -31,8 +30,8 @@ cyborg_tusk_cat = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"intimidationattack",""}
 	}
 }
 

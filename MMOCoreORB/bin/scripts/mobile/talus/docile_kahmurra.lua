@@ -1,7 +1,6 @@
 docile_kahmurra = Creature:new {
 	objectName = "@mob/creature_names:docile_kahmurra",
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 10,
 	chanceHit = 0.28,
@@ -11,7 +10,7 @@ docile_kahmurra = Creature:new {
 	baseHAM = 1000,
 	baseHAMmax = 1200,
 	armor = 0,
-	resists = {0,0,10,0,0,0,0,-1,-1},
+	resists = {0,0,110,0,0,0,0,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 45,
 	hideType = "hide_bristley",

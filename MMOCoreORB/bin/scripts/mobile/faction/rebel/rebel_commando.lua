@@ -1,7 +1,7 @@
 rebel_commando = Creature:new {
 	objectName = "@mob/creature_names:rebel_commando",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "rebel",
-	pvpFaction = "rebel",
 	faction = "rebel",
 	level = 25,
 	chanceHit = 0.36,
@@ -45,12 +45,13 @@ rebel_commando = Creature:new {
 				{group = "clothing_attachments", chance = 250000},
 				{group = "armor_attachments", chance = 250000},
 				{group = "wearables_common", chance = 1000000}
-			},
-			lootChance = 2800000
+			}
 		}
 	},
 	weapons = {"rebel_weapons_heavy"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/military",
+	personalityStf = "@hireling/hireling_military",
 	attacks = merge(commandomaster,marksmanmaster,brawlermaster)
 }
 

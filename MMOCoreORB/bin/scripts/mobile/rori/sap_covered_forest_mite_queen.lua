@@ -1,7 +1,6 @@
 sap_covered_forest_mite_queen = Creature:new {
 	objectName = "@mob/creature_names:sap_covered_forest_mite_queen",
 	socialGroup = "mite",
-	pvpFaction = "",
 	faction = "",
 	level = 20,
 	chanceHit = 0.33,
@@ -11,7 +10,7 @@ sap_covered_forest_mite_queen = Creature:new {
 	baseHAM = 4500,
 	baseHAMmax = 5500,
 	armor = 0,
-	resists = {20,0,-1,-1,0,40,0,-1,-1},
+	resists = {120,5,-1,-1,5,140,5,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 15,
 	hideType = "",
@@ -32,7 +31,7 @@ sap_covered_forest_mite_queen = Creature:new {
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""}
 	}
 }
 

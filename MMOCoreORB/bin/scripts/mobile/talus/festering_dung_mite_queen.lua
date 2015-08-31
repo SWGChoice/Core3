@@ -1,7 +1,6 @@
 festering_dung_mite_queen = Creature:new {
 	objectName = "@mob/creature_names:festering_dung_queen",
 	socialGroup = "mite",
-	pvpFaction = "",
 	faction = "",
 	level = 18,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ festering_dung_mite_queen = Creature:new {
 	baseHAM = 4500,
 	baseHAMmax = 5500,
 	armor = 0,
-	resists = {15,5,0,-1,-1,-1,0,-1,-1},
+	resists = {115,105,0,-1,-1,-1,0,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 13,
 	hideType = "",
@@ -32,7 +31,7 @@ festering_dung_mite_queen = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
+		{"dizzyattack",""},
 		{"milddisease",""}
 	}
 }

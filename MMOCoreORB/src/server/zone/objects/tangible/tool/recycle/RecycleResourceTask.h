@@ -117,7 +117,10 @@ public:
 
 		manager->harvestResourceToPlayer(player, recycledVersion, resCon->getQuantity());
 
+		Locker clocker(insertedItem, player);
+
 		insertedItem->destroyObjectFromWorld(false);
+		insertedItem->destroyObjectFromDatabase(true);
 
 	}
 
@@ -130,7 +133,7 @@ public:
 
 		Locker locker(player);
 
-		player->executeObjectControllerAction(String("transferitemmisc").hashCode(), insertedItem->getObjectID(), stringArgs);
+		player->executeObjectControllerAction(STRING_HASHCODE("transferitemmisc"), insertedItem->getObjectID(), stringArgs);
 
 	}
 

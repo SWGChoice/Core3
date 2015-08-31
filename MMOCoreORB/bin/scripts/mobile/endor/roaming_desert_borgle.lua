@@ -1,7 +1,6 @@
 roaming_desert_borgle = Creature:new {
 	objectName = "@mob/creature_names:borgle_desert_roamer",
 	socialGroup = "borgle",
-	pvpFaction = "",
 	faction = "",
 	level = 32,
 	chanceHit = 0.38,
@@ -11,7 +10,7 @@ roaming_desert_borgle = Creature:new {
 	baseHAM = 8300,
 	baseHAMmax = 10100,
 	armor = 0,
-	resists = {30,40,15,55,-1,70,15,-1,-1},
+	resists = {130,140,15,155,-1,170,15,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 5,
 	hideType = "hide_leathery",
@@ -32,7 +31,7 @@ roaming_desert_borgle = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

@@ -43,7 +43,11 @@
 
 object_tangible_component_droid_personality_module_stupid = object_tangible_component_droid_shared_personality_module_stupid:new {
 
-
+	templateType = DROIDPERSONALITYCHIP,
+	dataObjectComponent = "DroidPersonalityModuleDataComponent",
+	reactionName = "@npc_reaction/droid_stupid",
+	attrName = "@craft_droid_ingredients_n:personality_module_stupid",
+	personalityStf = "@hireling/hireling_droid_stupid",
 	numberExperimentalProperties = {1, 1, 2, 1, 2, 1},
 	experimentalProperties = {"XX", "XX", "CD", "OQ", "XX", "CD", "OQ", "XX"},
 	experimentalWeights = {1, 1, 1, 1, 1, 1, 1, 1},
@@ -53,6 +57,7 @@ object_tangible_component_droid_personality_module_stupid = object_tangible_comp
 	experimentalMax = {0, 0, 15, 1000, 15, 5},
 	experimentalPrecision = {0, 0, 0, 0, 0, 0},
 	experimentalCombineType = {0, 0, 1, 4, 1, 1},
+	conversationTemplate = "pet_stupid_convotemplate"	
 }
 
 ObjectTemplates:addTemplate(object_tangible_component_droid_personality_module_stupid, "object/tangible/component/droid/personality_module_stupid.iff")

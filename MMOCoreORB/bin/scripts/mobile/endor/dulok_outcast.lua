@@ -1,7 +1,7 @@
 dulok_outcast = Creature:new {
 	objectName = "@mob/creature_names:dulok_outcast",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 20,
 	chanceHit = 0.33,
@@ -27,9 +27,16 @@ dulok_outcast = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {
-			"object/mobile/dulok_male.iff",
-			"object/mobile/dulok_female.iff"},
-	lootGroups = {},
+		"object/mobile/dulok_male.iff",
+		"object/mobile/dulok_female.iff"},
+	lootGroups = {
+		{
+			groups = {
+				{group = "ewok", chance = 10000000}
+			},
+			lootChance = 1400000
+		}
+	},
 	weapons = {},
 	conversationTemplate = "",
 	attacks = brawlermaster

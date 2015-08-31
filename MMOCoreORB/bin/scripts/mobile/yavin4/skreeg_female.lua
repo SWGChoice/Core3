@@ -1,7 +1,6 @@
 skreeg_female = Creature:new {
 	objectName = "@mob/creature_names:skreeg_female",
 	socialGroup = "skreeg",
-	pvpFaction = "",
 	faction = "",
 	level = 16,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ skreeg_female = Creature:new {
 	baseHAM = 2900,
 	baseHAMmax = 3500,
 	armor = 0,
-	resists = {5,15,0,-1,0,-1,-1,-1,-1},
+	resists = {105,115,0,-1,0,-1,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 5,
 	hideType = "hide_bristley",
@@ -32,7 +31,7 @@ skreeg_female = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

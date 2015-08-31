@@ -1,7 +1,6 @@
 mamien_youth = Creature:new {
 	objectName = "@mob/creature_names:mamien_youth",
 	socialGroup = "mamien",
-	pvpFaction = "",
 	faction = "",
 	level = 9,
 	chanceHit = 0.27,
@@ -11,7 +10,7 @@ mamien_youth = Creature:new {
 	baseHAM = 675,
 	baseHAMmax = 825,
 	armor = 0,
-	resists = {10,10,10,10,10,10,10,-1,-1},
+	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 35,
 	hideType = "hide_wooly",
@@ -32,7 +31,7 @@ mamien_youth = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

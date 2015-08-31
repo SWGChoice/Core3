@@ -1,7 +1,6 @@
 foot_of_solitude = Creature:new {
 	objectName = "@mob/creature_names:foot_of_solitude",
 	socialGroup = "solitude",
-	pvpFaction = "rebel",
 	faction = "rebel",
 	level = 9,
 	chanceHit = 0.270000,
@@ -26,8 +25,20 @@ foot_of_solitude = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/human_male.iff"},
-	lootGroups = {},
+	lootGroups = {
+		{
+			groups = {
+				{group = "junk", chance = 5000000},
+				{group = "rifles", chance = 1000000},
+				{group = "pistols", chance = 1000000},
+				{group = "melee_weapons", chance = 1000000},
+				{group = "carbines", chance = 1000000},
+				{group = "wearables_common", chance = 1000000}
+			}
+		}
+	},
 	weapons = {"rebel_weapons_medium"},
+	reactionStf = "@npc_reaction/townperson",
 	attacks = merge(brawlernovice,marksmannovice)
 }
 

@@ -1,7 +1,7 @@
 hardened_panshee_warrior = Creature:new {
 	objectName = "@mob/creature_names:hardened_panshee_warrior",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "panshee_tribe",
-	pvpFaction = "panshee_tribe",
 	faction = "panshee_tribe",
 	level = 17,
 	chanceHit = 0.31,
@@ -30,11 +30,11 @@ hardened_panshee_warrior = Creature:new {
 		"object/mobile/dressed_ewok_m_06.iff",
 		"object/mobile/dressed_ewok_m_09.iff"},
 	lootGroups = {
-		 {
-	        groups = {
+		{
+			groups = {
 				{group = "ewok", chance = 10000000}
 			},
-			lootChance = 3000000
+			lootChance = 1340000
 		}
 	},
 	weapons = {"ewok_weapons"},

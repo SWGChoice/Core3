@@ -9,7 +9,7 @@
 #include "Behavior.h"
 #include "server/zone/managers/creature/AiMap.h"
 
-CompositeBehavior::CompositeBehavior(AiAgent* _agent, String className) : Behavior(_agent, className) {
+CompositeBehavior::CompositeBehavior(AiAgent* _agent, const String& className) : Behavior(_agent, className) {
 	currentPos = 0;
 }
 
@@ -25,6 +25,8 @@ void CompositeBehavior::start() {
 		Behavior* currentChild = children.get(i);
 
 		if (currentChild == NULL) {
+			Reference<AiAgent*> agent = this->agent.get();
+
 			agent->error("NULL child in CompositeBehavior");
 			continue;
 		}
@@ -36,6 +38,8 @@ void CompositeBehavior::start() {
 }
 
 void CompositeBehavior::doAction(bool directlyExecuted) {
+	Reference<AiAgent*> agent = this->agent.get();
+
 	if (agent->isDead() || agent->isIncapacitated() || (agent->getZone() == NULL)) {
 		agent->setFollowObject(NULL);
 		return;

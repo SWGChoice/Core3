@@ -1,7 +1,6 @@
 piket_longhorn_female = Creature:new {
 	objectName = "@mob/creature_names:piket_longhorn_female",
 	socialGroup = "piket",
-	pvpFaction = "",
 	faction = "",
 	level = 30,
 	chanceHit = 0.39,
@@ -11,7 +10,7 @@ piket_longhorn_female = Creature:new {
 	baseHAM = 8400,
 	baseHAMmax = 10200,
 	armor = 0,
-	resists = {10,10,10,65,65,65,65,10,-1},
+	resists = {10,10,10,165,165,165,165,10,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 450,
 	hideType = "hide_scaley",
@@ -33,8 +32,8 @@ piket_longhorn_female = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"posturedownattack","postureDownChance=50"}
+		{"dizzyattack",""},
+		{"posturedownattack",""}
 	}
 }
 

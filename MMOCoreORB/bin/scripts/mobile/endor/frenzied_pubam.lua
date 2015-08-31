@@ -1,7 +1,7 @@
 frenzied_pubam = Creature:new {
 	objectName = "@mob/creature_names:frenzied_pubam",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "pubam",
-	pvpFaction = "pubam",
 	faction = "pubam",
 	level = 40,
 	chanceHit = 0.44,
@@ -27,15 +27,15 @@ frenzied_pubam = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {
-			"object/mobile/dulok_male.iff",
-			"object/mobile/dulok_female.iff"},
+		"object/mobile/dulok_male.iff",
+		"object/mobile/dulok_female.iff"},
 	lootGroups = {
-		 {
-	        groups = {
+		{
+			groups = {
 				{group = "ewok", chance = 9000000},
 				{group = "wearables_uncommon", chance = 1000000},
 			},
-			lootChance = 2300000
+			lootChance = 1800000
 		}
 	},
 	weapons = {},

@@ -56,6 +56,9 @@ int PlaceStructureSessionImplementation::constructStructure(float x, float y, in
 
 			constructionBarricade->rotate(angle); //All construction barricades need to be rotated 180 degrees for some reason.
 			//constructionBarricade->insertToZone(zone);
+
+			Locker tLocker(constructionBarricade);
+
 			zone->transferObject(constructionBarricade, -1, true);
 
 			constructionDuration = serverTemplate->getLotSize() * 3000; //3 seconds per lot.
@@ -74,12 +77,18 @@ void PlaceStructureSessionImplementation::placeTemporaryNoBuildZone(SharedStruct
 	//float temporaryNoBuildZoneWidth = structureFootprint->getLength() + structureFootprint->getWidth();
 
 	ManagedReference<CircularAreaShape*> areaShape = new CircularAreaShape();
+
+	Locker alocker(areaShape);
+
 	// Guild halls are approximately 55 m long, 64 m radius will surely cover that in all directions.
 	// Even if the placement coordinate aren't in the center of the building.
 	areaShape->setRadius(64);
 	areaShape->setAreaCenter(positionX, positionY);
 
-	temporaryNoBuildZone = (zone->getZoneServer()->createObject(String("object/active_area.iff").hashCode(), 0)).castTo<ActiveArea*>();
+	temporaryNoBuildZone = (zone->getZoneServer()->createObject(STRING_HASHCODE("object/active_area.iff"), 0)).castTo<ActiveArea*>();
+
+	Locker locker(temporaryNoBuildZone);
+
 	temporaryNoBuildZone->initializePosition(positionX, 0, positionY);
 	temporaryNoBuildZone->setAreaShape(areaShape);
 	temporaryNoBuildZone->setNoBuildArea(true);
@@ -89,13 +98,18 @@ void PlaceStructureSessionImplementation::placeTemporaryNoBuildZone(SharedStruct
 
 void PlaceStructureSessionImplementation::removeTemporaryNoBuildZone() {
 	if (temporaryNoBuildZone != NULL) {
+		Locker locker(temporaryNoBuildZone);
+
 		temporaryNoBuildZone->destroyObjectFromWorld(true);
 	}
 }
 
 int PlaceStructureSessionImplementation::completeSession() {
-	if (constructionBarricade != NULL)
+	if (constructionBarricade != NULL) {
+		Locker locker(constructionBarricade);
+
 		constructionBarricade->destroyObjectFromWorld(true);
+	}
 
 	String serverTemplatePath = deedObject->getGeneratedObjectTemplate();
 
@@ -113,6 +127,8 @@ int PlaceStructureSessionImplementation::completeSession() {
 		return cancelSession();
 	}
 
+	Locker clocker(structureObject, creatureObject);
+
 	structureObject->setDeedObjectID(deedObject->getObjectID());
 
 	deedObject->notifyStructurePlaced(creatureObject, structureObject);
@@ -122,13 +138,18 @@ int PlaceStructureSessionImplementation::completeSession() {
 	if (ghost != NULL) {
 
 		//Create Waypoint
-		ManagedReference<WaypointObject*> waypointObject = ( zone->getZoneServer()->createObject(String("object/waypoint/world_waypoint_blue.iff").hashCode(), 1)).castTo<WaypointObject*>();
+		ManagedReference<WaypointObject*> waypointObject = ( zone->getZoneServer()->createObject(STRING_HASHCODE("object/waypoint/world_waypoint_blue.iff"), 1)).castTo<WaypointObject*>();
+
+		Locker locker(waypointObject);
+
 		waypointObject->setCustomObjectName(structureObject->getDisplayedName(), false);
 		waypointObject->setActive(true);
 		waypointObject->setPosition(positionX, 0, positionY);
 		waypointObject->setPlanetCRC(zone->getZoneCRC());
 
 		ghost->addWaypoint(waypointObject, false, true);
+
+		locker.release();
 
 		//Create an email.
 		ManagedReference<ChatManager*> chatManager = zone->getZoneServer()->getChatManager();
@@ -143,9 +164,11 @@ int PlaceStructureSessionImplementation::completeSession() {
 			chatManager->sendMail("@player_structure:construction_complete_sender", subject, emailBody, creatureObject->getFirstName(), waypointObject);
 		}
 
-		if (structureObject->isBuildingObject() && !structureObject->isGCWBase()) {
+		if (structureObject->isBuildingObject()) {
 			BuildingObject* building = cast<BuildingObject*>(structureObject.get());
-			building->setCustomObjectName(creatureObject->getFirstName() + "'s House", true); //Set the house sign.
+			if (building->getSignObject() != NULL) {
+				building->setCustomObjectName(creatureObject->getFirstName() + "'s House", true); //Set the house sign.
+			}
 		}
 	}
 

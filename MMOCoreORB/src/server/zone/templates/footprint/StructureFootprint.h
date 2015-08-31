@@ -44,6 +44,8 @@ public:
 
 		rowChunkSize = sfp.rowChunkSize;
 		colChunkSize = sfp.colChunkSize;
+
+		rows = sfp.rows;
 	}
 
 	StructureFootprint& operator= (const StructureFootprint& sfp) {
@@ -58,6 +60,8 @@ public:
 
 		rowChunkSize = sfp.rowChunkSize;
 		colChunkSize = sfp.colChunkSize;
+
+		rows = sfp.rows;
 
 		return *this;
 	}
@@ -89,7 +93,7 @@ public:
 		iffStream->closeForm('FOOT');
 	}
 
-	String toString() const {
+	String toString() {
 		StringBuffer str;
 		str << "{rowSize=" << rowSize << ";colSize=" << colSize << ";centerX=" << centerX << ";centerY=" << centerY << ";rowChunkSize=" << rowChunkSize << ";colChunkSize=" << colChunkSize << "}";
 

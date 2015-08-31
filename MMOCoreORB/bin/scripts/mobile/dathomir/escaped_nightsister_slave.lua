@@ -1,7 +1,7 @@
 escaped_nightsister_slave = Creature:new {
 	objectName = "@mob/creature_names:escaped_nightsister_slave",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "slave",
-	pvpFaction = "",
 	faction = "",
 	level = 28,
 	chanceHit = 0.36,
@@ -35,8 +35,7 @@ escaped_nightsister_slave = Creature:new {
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 1500000},
 				{group = "wearables_common", chance = 1500000}
-			},
-			lootChance = 1500000
+			}
 		}
 	},
 	weapons = {"primitive_weapons"},

@@ -1,7 +1,6 @@
 gurnaset = Creature:new {
 	objectName = "@mob/creature_names:gurnaset",
 	socialGroup = "gurnaset",
-	pvpFaction = "",
 	faction = "",
 	level = 15,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ gurnaset = Creature:new {
 	baseHAM = 2400,
 	baseHAMmax = 3000,
 	armor = 0,
-	resists = {10,5,5,5,5,-1,-1,-1,-1},
+	resists = {110,5,5,5,5,-1,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 352,
 	hideType = "hide_leathery",
@@ -32,7 +31,7 @@ gurnaset = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""}
 	}
 }
 

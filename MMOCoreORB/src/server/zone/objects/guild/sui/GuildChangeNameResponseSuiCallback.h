@@ -21,6 +21,8 @@ public:
 		uint64 playerID = player->getObjectID();
 
 		ManagedReference<GuildObject*> guild = guildObject.get();
+		if (guild == NULL)
+			return;
 
 		if (!guild->hasNamePermission(playerID) && !player->getPlayerObject()->isPrivileged()) {
 			player->sendSystemMessage("@guild:generic_fail_no_permission"); // You do not have permission to perform that operation.
@@ -46,10 +48,6 @@ public:
 			return;
 
 		GuildTerminal* guildTerminal = cast<GuildTerminal*>( terminal);
-
-		//Check to make sure the terminal is tied to the guild
-		if (guildTerminal->getGuildObject() != guild)
-			return;
 
 		ManagedReference<GuildManager*> guildManager = server->getGuildManager();
 

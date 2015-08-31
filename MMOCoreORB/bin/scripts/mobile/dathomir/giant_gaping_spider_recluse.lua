@@ -1,7 +1,6 @@
 giant_gaping_spider_recluse = Creature:new {
 	objectName = "@mob/creature_names:gaping_spider_recluse_giant",
 	socialGroup = "spider",
-	pvpFaction = "",
 	faction = "",
 	level = 115,
 	chanceHit = 3.1,
@@ -11,7 +10,7 @@ giant_gaping_spider_recluse = Creature:new {
 	baseHAM = 33500,
 	baseHAMmax = 33500,
 	armor = 0,
-	resists = {60,60,60,25,0,0,0,-1,-1},
+	resists = {160,160,160,125,0,0,0,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 11,
 	hideType = "",

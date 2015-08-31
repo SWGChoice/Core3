@@ -1,7 +1,6 @@
 juvenile_pygmy_torton = Creature:new {
 	objectName = "@mob/creature_names:torton_pygmy_juvenile",
 	socialGroup = "torton",
-	pvpFaction = "",
 	faction = "",
 	level = 12,
 	chanceHit = 0.28,
@@ -11,7 +10,7 @@ juvenile_pygmy_torton = Creature:new {
 	baseHAM = 405,
 	baseHAMmax = 495,
 	armor = 0,
-	resists = {20,20,0,0,0,0,0,35,-1},
+	resists = {120,120,0,0,0,0,0,135,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 400,
 	hideType = "hide_wooly",
@@ -32,8 +31,8 @@ juvenile_pygmy_torton = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"knockdownattack","knockdownChance=50"}
+		{"knockdownattack",""},
+		{"dizzyattack",""}
 	}
 }
 

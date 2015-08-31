@@ -1,7 +1,6 @@
 bark_mite_burrower_drone = Creature:new {
 	objectName = "@mob/creature_names:bark_mite_burrower_drone",
 	socialGroup = "mite",
-	pvpFaction = "",
 	faction = "",
 	level = 29,
 	chanceHit = 0.36,
@@ -11,7 +10,7 @@ bark_mite_burrower_drone = Creature:new {
 	baseHAM = 7200,
 	baseHAMmax = 8800,
 	armor = 0,
-	resists = {35,20,-1,70,-1,60,70,15,-1},
+	resists = {135,120,-1,170,-1,160,170,15,-1},
 	meatType = "meat_insect",
 	meatAmount = 50,
 	hideType = "",

@@ -57,12 +57,12 @@ PolearmSweep2Command = {
 		{ "knockdownRecovery", "lastKnockdown" }, 
 		{ "knockdown_defense" }, 
 		{}, 
-		30, 
 		100, 
+		0, 
 		0 
 	  )
 	},
-	areaRange = 7,
+	areaRange = 16,
 	areaAction = true,
 
 	animationCRC = hashCode("combo_3d_medium"),
@@ -70,6 +70,8 @@ PolearmSweep2Command = {
 	combatSpam = "backbreaker",
 
 	poolsToDamage = RANDOM_ATTRIBUTE,
+	
+	weaponType = POLEARMWEAPON,
 
 	range = -1
 }

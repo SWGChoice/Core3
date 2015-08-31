@@ -1,7 +1,6 @@
 highland_remmer = Creature:new {
 	objectName = "@mob/creature_names:highland_remmer",
 	socialGroup = "remmer",
-	pvpFaction = "",
 	faction = "",
 	level = 26,
 	chanceHit = 0.36,
@@ -11,7 +10,7 @@ highland_remmer = Creature:new {
 	baseHAM = 7200,
 	baseHAMmax = 8800,
 	armor = 0,
-	resists = {30,25,50,-1,-1,-1,-1,-1,-1},
+	resists = {130,125,150,-1,-1,-1,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 46,
 	hideType = "hide_bristley",
@@ -32,8 +31,8 @@ highland_remmer = Creature:new {
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"posturedownattack","postureDownChance=50"}
+		{"dizzyattack",""},
+		{"posturedownattack",""}
 	}
 }
 

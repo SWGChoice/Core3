@@ -1,7 +1,6 @@
 greater_gulginaw = Creature:new {
 	objectName = "@mob/creature_names:greater_gulginaw",
 	socialGroup = "gulginaw",
-	pvpFaction = "",
 	faction = "",
 	level = 21,
 	chanceHit = 0.33,
@@ -11,7 +10,7 @@ greater_gulginaw = Creature:new {
 	baseHAM = 5000,
 	baseHAMmax = 6100,
 	armor = 0,
-	resists = {15,30,-1,10,-1,-1,10,10,-1},
+	resists = {115,130,-1,10,-1,-1,10,10,-1},
 	meatType = "meat_avian",
 	meatAmount = 97,
 	hideType = "",
@@ -33,8 +32,8 @@ greater_gulginaw = Creature:new {
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"stunattack","stunChance=50"}
+		{"dizzyattack",""},
+		{"stunattack",""}
 	}
 }
 

@@ -1,7 +1,6 @@
 langlatch_destroyer = Creature:new {
 	objectName = "@mob/creature_names:langlatch_destroyer",
 	socialGroup = "langlatch",
-	pvpFaction = "",
 	faction = "",
 	level = 20,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ langlatch_destroyer = Creature:new {
 	baseHAM = 2400,
 	baseHAMmax = 3000,
 	armor = 0,
-	resists = {20,0,0,15,15,45,45,-1,-1},
+	resists = {120,0,0,115,115,145,145,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 18,
 	hideType = "hide_wooly",
@@ -33,6 +32,8 @@ langlatch_destroyer = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
+		{"stunattack",""},
+		{"knockdownattack",""}
 	}
 }
 

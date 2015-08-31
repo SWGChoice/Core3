@@ -1,7 +1,7 @@
 special_missions_engineer = Creature:new {
 	objectName = "@mob/creature_names:special_missions_engineer",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "imperial",
-	pvpFaction = "imperial",
 	faction = "imperial",
 	level = 16,
 	chanceHit = 0.31,
@@ -26,8 +26,24 @@ special_missions_engineer = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_imperial_soldier_m.iff"},
-	lootGroups = {},
+	lootGroups = {
+		{
+			groups = {
+				{group = "color_crystals", chance = 100000},
+				{group = "junk", chance = 6650000},
+				{group = "rifles", chance = 550000},
+				{group = "pistols", chance = 550000},
+				{group = "melee_weapons", chance = 550000},
+				{group = "carbines", chance = 550000},
+				{group = "clothing_attachments", chance = 25000},
+				{group = "armor_attachments", chance = 25000},
+				{group = "wearables_common", chance = 1000000}
+			}
+		}
+	},
 	weapons = {"imperial_weapons_medium"},
+	reactionStf = "@npc_reaction/military",
+	personalityStf = "@hireling/hireling_military",
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 

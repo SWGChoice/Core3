@@ -1,7 +1,6 @@
 pouncing_jax = Creature:new {
 	objectName = "@mob/creature_names:pouncing_jax",
 	socialGroup = "jax",
-	pvpFaction = "",
 	faction = "",
 	level = 13,
 	chanceHit = 0.29,
@@ -11,7 +10,7 @@ pouncing_jax = Creature:new {
 	baseHAM = 1500,
 	baseHAMmax = 1900,
 	armor = 0,
-	resists = {0,0,10,0,0,0,0,-1,-1},
+	resists = {0,0,110,0,0,0,0,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 25,
 	hideType = "hide_bristley",
@@ -32,7 +31,7 @@ pouncing_jax = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"}
+		{"dizzyattack",""}
 	}
 }
 

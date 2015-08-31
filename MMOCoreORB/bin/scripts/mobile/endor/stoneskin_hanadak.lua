@@ -1,7 +1,6 @@
 stoneskin_hanadak = Creature:new {
 	objectName = "@mob/creature_names:stoneskin_hanadak",
 	socialGroup = "hanadak",
-	pvpFaction = "",
 	faction = "",
 	level = 139,
 	chanceHit = 4.75,
@@ -11,7 +10,7 @@ stoneskin_hanadak = Creature:new {
 	baseHAM = 88000,
 	baseHAMmax = 107000,
 	armor = 2,
-	resists = {90,100,65,100,100,100,100,80,-1},
+	resists = {190,200,165,200,200,200,175,180,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 40,
 	hideType = "hide_bristley",
@@ -32,8 +31,8 @@ stoneskin_hanadak = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"knockdownattack","knockdownChance=50"}
+		{"knockdownattack",""},
+		{"blindattack",""}
 	}
 }
 

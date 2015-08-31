@@ -1,7 +1,6 @@
 gungan_kaadu = Creature:new {
 	objectName = "@mob/creature_names:gungan_kaadu",
 	socialGroup = "gungan",
-	pvpFaction = "",
 	faction = "gungan",
 	level = 13,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ gungan_kaadu = Creature:new {
 	baseHAM = 1500,
 	baseHAMmax = 1900,
 	armor = 0,
-	resists = {10,10,10,0,25,0,0,-1,-1},
+	resists = {0,0,0,0,115,0,0,-1,-1},
 	meatType = "meat_domesticated",
 	meatAmount = 120,
 	hideType = "hide_leathery",
@@ -31,7 +30,7 @@ gungan_kaadu = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

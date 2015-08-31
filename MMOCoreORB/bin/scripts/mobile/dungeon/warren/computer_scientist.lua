@@ -1,7 +1,7 @@
 computer_scientist = Creature:new {
 	objectName = "@mob/creature_names:warren_insane_comp_sci",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "warren_scientist",
-	pvpFaction = "",
 	faction = "",
 	level = 33,
 	chanceHit = 0.37,
@@ -27,7 +27,16 @@ computer_scientist = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/warren_insane_comp_sci.iff"},
-	lootGroups = {},
+	lootGroups = {
+		{
+			groups = {
+				{group = "junk", chance = 4000000},
+				{group = "wearables_common", chance = 3000000},
+				{group = "loot_kit_parts", chance = 2000000},
+				{group = "tailor_components", chance = 1000000},
+			}
+		}
+	},
 	weapons = {"pirate_weapons_medium"},
 	conversationTemplate = "",
 	attacks = merge(brawlermaster,marksmanmaster)

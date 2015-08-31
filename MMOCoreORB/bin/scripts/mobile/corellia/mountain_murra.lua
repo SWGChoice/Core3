@@ -1,7 +1,6 @@
 mountain_murra = Creature:new {
 	objectName = "@mob/creature_names:mountain_murra",
 	socialGroup = "murra",
-	pvpFaction = "",
 	faction = "",
 	level = 17,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ mountain_murra = Creature:new {
 	baseHAM = 4100,
 	baseHAMmax = 5000,
 	armor = 0,
-	resists = {5,20,25,-1,5,-1,-1,-1,-1},
+	resists = {5,120,125,-1,5,-1,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 75,
 	hideType = "hide_bristley",
@@ -34,7 +33,8 @@ mountain_murra = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"",""},
+		{"stunattack",""}
 	}
 }
 

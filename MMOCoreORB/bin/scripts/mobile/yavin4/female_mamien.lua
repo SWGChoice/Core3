@@ -1,7 +1,6 @@
 female_mamien = Creature:new {
 	objectName = "@mob/creature_names:mamien_female",
 	socialGroup = "mamien",
-	pvpFaction = "",
 	faction = "",
 	level = 18,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ female_mamien = Creature:new {
 	baseHAM = 2900,
 	baseHAMmax = 3500,
 	armor = 0,
-	resists = {20,25,5,5,-1,5,-1,-1,-1},
+	resists = {120,125,5,5,-1,5,-1,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 45,
 	hideType = "hide_wooly",
@@ -33,7 +32,7 @@ female_mamien = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

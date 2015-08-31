@@ -1,7 +1,6 @@
 voracious_rasp = Creature:new {
 	objectName = "@mob/creature_names:voracious_rasp",
 	socialGroup = "rasp",
-	pvpFaction = "",
 	faction = "",
 	level = 40,
 	chanceHit = 0.47,
@@ -10,8 +9,8 @@ voracious_rasp = Creature:new {
 	baseXp = 4006,
 	baseHAM = 5000,
 	baseHAMmax = 6100,
-	armor = 0,
-	resists = {0,0,0,0,0,0,0,0,0},
+	armor = 1,
+	resists = {0,0,-1,-1,0,-1,0,-1,-1},
 	meatType = "meat_avian",
 	meatAmount = 60,
 	hideType = "",
@@ -32,8 +31,8 @@ voracious_rasp = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"strongpoison",""}
+		{"strongpoison",""},
+		{"blindattack",""}
 	}
 }
 

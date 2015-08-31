@@ -1,7 +1,6 @@
 tortur_bull = Creature:new {
 	objectName = "@mob/creature_names:tortur_bull",
 	socialGroup = "tortur",
-	pvpFaction = "",
 	faction = "",
 	level = 25,
 	chanceHit = 0.36,
@@ -11,7 +10,7 @@ tortur_bull = Creature:new {
 	baseHAM = 5000,
 	baseHAMmax = 6100,
 	armor = 0,
-	resists = {15,15,15,-1,-1,-1,-1,100,-1},
+	resists = {15,15,15,-1,-1,-1,-1,200,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 1000,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ tortur_bull = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"knockdownattack","knockdownChance=50"}
+		{"knockdownattack",""},
+		{"blindattack",""}
 	}
 }
 

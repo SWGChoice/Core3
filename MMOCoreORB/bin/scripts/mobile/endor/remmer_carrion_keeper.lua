@@ -1,7 +1,6 @@
 remmer_carrion_keeper = Creature:new {
 	objectName = "@mob/creature_names:remmer_carrion_keeper",
 	socialGroup = "remmer",
-	pvpFaction = "",
 	faction = "",
 	level = 24,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ remmer_carrion_keeper = Creature:new {
 	baseHAM = 5900,
 	baseHAMmax = 7200,
 	armor = 0,
-	resists = {30,0,40,-1,-1,-1,50,-1,-1},
+	resists = {130,10,140,-1,-1,-1,150,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 30,
 	hideType = "hide_bristley",
@@ -31,8 +30,8 @@ remmer_carrion_keeper = Creature:new {
 	weapons = {"creature_spit_small_red"},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""},
+		{"blindattack",""}
 	}
 }
 

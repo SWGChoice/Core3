@@ -1,7 +1,6 @@
 hermit_spider_queen = Creature:new {
 	objectName = "@mob/creature_names:hermit_spider_queen",
 	socialGroup = "spider",
-	pvpFaction = "",
 	faction = "",
 	level = 11,
 	chanceHit = 0.28,
@@ -11,7 +10,7 @@ hermit_spider_queen = Creature:new {
 	baseHAM = 675,
 	baseHAMmax = 825,
 	armor = 0,
-	resists = {20,20,0,0,0,0,0,-1,-1},
+	resists = {120,120,0,0,0,0,0,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 10,
 	hideType = "",
@@ -32,8 +31,8 @@ hermit_spider_queen = Creature:new {
 	weapons = {"creature_spit_small_toxicgreen"},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"mildpoison",""}
+		{"mildpoison",""},
+		{"blindattack",""}
 	}
 }
 

@@ -1,8 +1,7 @@
 gungan_reject = Creature:new {
-	objectName = "",
-	customName = "a Gungan reject",
+	objectName = "@mob/creature_names:mordran_gungan_reject",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "borvo",
-	pvpFaction = "borvo",
 	faction = "borvo",
 	level = 35,
 	chanceHit = 0.41,
@@ -35,8 +34,7 @@ gungan_reject = Creature:new {
 				{group = "gungan_common", chance = 2000000},
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000}
-			},
-			lootChance = 3200000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_heavy"},

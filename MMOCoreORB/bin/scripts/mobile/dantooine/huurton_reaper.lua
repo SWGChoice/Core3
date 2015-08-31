@@ -1,7 +1,6 @@
 huurton_reaper = Creature:new {
 	objectName = "@mob/creature_names:huurton_reaper",
 	socialGroup = "huurton",
-	pvpFaction = "",
 	faction = "",
 	level = 84,
 	chanceHit = 0.9,
@@ -10,8 +9,8 @@ huurton_reaper = Creature:new {
 	baseXp = 8038,
 	baseHAM = 12000,
 	baseHAMmax = 15000,
-	armor = 0,
-	resists = {35,35,0,40,100,-1,-1,-1,-1},
+	armor = 1,
+	resists = {135,135,0,140,200,-1,-1,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 25,
 	hideType = "hide_wooly",
@@ -32,8 +31,8 @@ huurton_reaper = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""},
+		{"dizzyattack",""}
 	}
 }
 

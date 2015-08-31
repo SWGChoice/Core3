@@ -1,7 +1,6 @@
 kusak_hunter = Creature:new {
 	objectName = "@mob/creature_names:kusak_hunter",
 	socialGroup = "kusak",
-	pvpFaction = "",
 	faction = "",
 	level = 73,
 	chanceHit = 0.75,
@@ -10,8 +9,8 @@ kusak_hunter = Creature:new {
 	baseXp = 7023,
 	baseHAM = 12000,
 	baseHAMmax = 15000,
-	armor = 0,
-	resists = {40,10,10,-1,-1,10,10,-1,-1},
+	armor = 1,
+	resists = {140,10,10,-1,-1,10,10,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 20,
 	hideType = "hide_bristley",
@@ -32,7 +31,7 @@ kusak_hunter = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"}
+		{"dizzyattack",""}
 	}
 }
 

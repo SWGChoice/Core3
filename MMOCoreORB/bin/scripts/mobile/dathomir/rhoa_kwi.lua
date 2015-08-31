@@ -1,7 +1,6 @@
 rhoa_kwi = Creature:new {
 	objectName = "@mob/creature_names:rhoa_kwi",
 	socialGroup = "kwi",
-	pvpFaction = "",
 	faction = "",
 	level = 35,
 	chanceHit = 0.41,
@@ -11,7 +10,7 @@ rhoa_kwi = Creature:new {
 	baseHAM = 8400,
 	baseHAMmax = 10200,
 	armor = 0,
-	resists = {25,25,25,80,25,25,-1,-1,-1},
+	resists = {25,25,25,180,25,25,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 120,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ rhoa_kwi = Creature:new {
 	weapons = {"creature_spit_small_red"},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"intimidationattack",""}
 	}
 }
 

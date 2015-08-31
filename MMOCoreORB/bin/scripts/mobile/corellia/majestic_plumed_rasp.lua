@@ -1,7 +1,6 @@
 majestic_plumed_rasp = Creature:new {
 	objectName = "@mob/creature_names:majestic_plumed_rasp",
 	socialGroup = "rasp",
-	pvpFaction = "",
 	faction = "",
 	level = 12,
 	chanceHit = 0.29,
@@ -11,7 +10,7 @@ majestic_plumed_rasp = Creature:new {
 	baseHAM = 405,
 	baseHAMmax = 495,
 	armor = 0,
-	resists = {0,0,0,0,0,10,0,-1,-1},
+	resists = {0,0,0,0,0,110,0,-1,-1},
 	meatType = "meat_avian",
 	meatAmount = 5,
 	hideType = "",
@@ -32,7 +31,7 @@ majestic_plumed_rasp = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

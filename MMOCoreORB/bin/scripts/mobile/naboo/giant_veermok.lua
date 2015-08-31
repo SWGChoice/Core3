@@ -1,7 +1,6 @@
 giant_veermok = Creature:new {
 	objectName = "@mob/creature_names:giant_veermok",
 	socialGroup = "veermok",
-	pvpFaction = "",
 	faction = "",
 	level = 22,
 	chanceHit = 0.33,
@@ -11,7 +10,7 @@ giant_veermok = Creature:new {
 	baseHAM = 5900,
 	baseHAMmax = 7200,
 	armor = 0,
-	resists = {25,20,10,-1,45,10,-1,-1,-1},
+	resists = {125,120,10,-1,145,10,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 250,
 	hideType = "hide_bristley",
@@ -33,8 +32,8 @@ giant_veermok = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"intimidationattack","intimidationChance=50"}
+		{"dizzyattack",""},
+		{"intimidationattack",""}
 	}
 }
 

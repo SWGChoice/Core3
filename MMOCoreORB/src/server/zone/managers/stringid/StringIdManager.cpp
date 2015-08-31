@@ -97,7 +97,7 @@ StringIdManager::StringIdManager() : Logger("StringIdManager") {
 
 	ObjectDatabaseManager::instance()->commitLocalTransaction();
 
-	//info("test string = " + getStringId(String("@city/city:city_expand_body").hashCode()).toString(), true);
+	//info("test string = " + getStringId(STRING_HASHCODE("@city/city:city_expand_body")).toString(), true);
 }
 
 StringIdManager::~StringIdManager() {}
@@ -114,4 +114,8 @@ UnicodeString StringIdManager::getStringId(uint32 crc) {
 		str.parseFromBinaryStream(&data);
 
 	return str;
+}
+
+UnicodeString StringIdManager::getStringId(const StringId& id) {
+	return getStringId(id.getFullPath().hashCode());
 }

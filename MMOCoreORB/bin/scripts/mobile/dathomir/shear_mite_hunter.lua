@@ -1,7 +1,6 @@
 shear_mite_hunter = Creature:new {
 	objectName = "@mob/creature_names:shear_mite_hunter",
 	socialGroup = "shear_mite",
-	pvpFaction = "",
 	faction = "",
 	level = 29,
 	chanceHit = 0.38,
@@ -11,7 +10,7 @@ shear_mite_hunter = Creature:new {
 	baseHAM = 8200,
 	baseHAMmax = 10000,
 	armor = 0,
-	resists = {20,30,-1,20,-1,-1,20,-1,-1},
+	resists = {20,130,-1,20,-1,-1,20,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 15,
 	hideType = "hide_scaley",
@@ -34,7 +33,7 @@ shear_mite_hunter = Creature:new {
 	conversationTemplate = "",
 	attacks = {
 		{"mediumpoison",""},
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""}
 	}
 }
 

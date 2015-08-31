@@ -1,7 +1,7 @@
 foul_pubam_laborer = Creature:new {
 	objectName = "@mob/creature_names:foul_pubam_laborer",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "pubam",
-	pvpFaction = "pubam",
 	faction = "pubam",
 	level = 31,
 	chanceHit = 0.39,
@@ -27,14 +27,14 @@ foul_pubam_laborer = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {
-			"object/mobile/dulok_male.iff",
-			"object/mobile/dulok_female.iff"},
+		"object/mobile/dulok_male.iff",
+		"object/mobile/dulok_female.iff"},
 	lootGroups = {
-		 {
-	        groups = {
+		{
+			groups = {
 				{group = "ewok", chance = 10000000}
 			},
-			lootChance = 2300000
+			lootChance = 1620000
 		}
 	},
 	weapons = {},

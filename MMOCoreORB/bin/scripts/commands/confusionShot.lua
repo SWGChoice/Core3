@@ -56,8 +56,8 @@ ConfusionShotCommand = {
 		{}, 
 		{ "dizzy_defense", "resistance_states" }, 
 		{ "jedi_state_defense" }, 
-		30, 
 		100, 
+		0, 
 		10 
 	  ),
 	  StateEffect( 
@@ -65,8 +65,8 @@ ConfusionShotCommand = {
 		{}, 
 		{ "stun_defense", "resistance_states" }, 
 		{ "jedi_state_defense" }, 
-		40, 
 		100, 
+		0, 
 		10 
 	  )
 	},
@@ -74,6 +74,8 @@ ConfusionShotCommand = {
 	animationCRC = hashCode("fire_5_special_single_medium_face"),
 
 	combatSpam = "confusionshot",
+	
+	weaponType = CARBINEWEAPON,
 
 	range = -1
 }

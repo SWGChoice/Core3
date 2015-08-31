@@ -1,7 +1,7 @@
 borvos_champion = Creature:new {
 	objectName = "@mob/creature_names:borvos_champion",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "borvo",
-	pvpFaction = "borvo",
 	faction = "borvo",
 	level = 21,
 	chanceHit = 0.34,
@@ -37,12 +37,12 @@ borvos_champion = Creature:new {
 				{group = "rifles", chance = 500000},
 				{group = "carbines", chance = 500000},
 				{group = "borvos_common", chance = 2800000}
-			},
-			lootChance = 2600000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_medium"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 

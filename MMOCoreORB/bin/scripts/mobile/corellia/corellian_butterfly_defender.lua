@@ -1,7 +1,6 @@
 corellian_butterfly_defender = Creature:new {
 	objectName = "@mob/creature_names:corellian_butterfly_defender",
 	socialGroup = "butterfly",
-	pvpFaction = "",
 	faction = "",
 	level = 18,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ corellian_butterfly_defender = Creature:new {
 	baseHAM = 2000,
 	baseHAMmax = 2400,
 	armor = 0,
-	resists = {5,15,-1,-1,-1,-1,-1,-1,-1},
+	resists = {5,115,-1,-1,-1,-1,-1,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 16,
 	hideType = "hide_scaley",
@@ -33,7 +32,8 @@ corellian_butterfly_defender = Creature:new {
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"",""},
+		{"intimidationattack",""}
 	}
 }
 

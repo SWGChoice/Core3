@@ -1,7 +1,6 @@
 canoid_pack_leader = Creature:new {
 	objectName = "@mob/creature_names:canoid_pack_leader",
 	socialGroup = "canoid",
-	pvpFaction = "",
 	faction = "",
 	level = 18,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ canoid_pack_leader = Creature:new {
 	baseHAM = 3500,
 	baseHAMmax = 4300,
 	armor = 0,
-	resists = {15,20,5,5,5,5,5,-1,-1},
+	resists = {115,120,5,5,5,5,5,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 65,
 	hideType = "hide_bristley",
@@ -32,7 +31,7 @@ canoid_pack_leader = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

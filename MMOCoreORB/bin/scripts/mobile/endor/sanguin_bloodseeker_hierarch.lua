@@ -1,7 +1,6 @@
 sanguin_bloodseeker_hierarch = Creature:new {
 	objectName = "@mob/creature_names:bloodseeker_mite_sanguine_hierarch",
 	socialGroup = "bloodseeker",
-	pvpFaction = "",
 	faction = "",
 	level = 23,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ sanguin_bloodseeker_hierarch = Creature:new {
 	baseHAM = 5000,
 	baseHAMmax = 6100,
 	armor = 0,
-	resists = {15,15,0,20,0,20,20,0,-1},
+	resists = {115,115,0,120,0,120,120,0,-1},
 	meatType = "meat_insect",
 	meatAmount = 30,
 	hideType = "hide_scaley",

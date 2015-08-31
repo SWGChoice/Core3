@@ -1,7 +1,6 @@
 crimson_blurrg = Creature:new {
 	objectName = "@mob/creature_names:crimson_blurrg",
 	socialGroup = "blurrg",
-	pvpFaction = "",
 	faction = "",
 	level = 35,
 	chanceHit = 0.41,
@@ -10,8 +9,8 @@ crimson_blurrg = Creature:new {
 	baseXp = 3460,
 	baseHAM = 8800,
 	baseHAMmax = 10800,
-	armor = 1,
-	resists = {15,15,15,40,100,-1,-1,-1,-1},
+	armor = 0,
+	resists = {140,130,25,140,160,-1,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 100,
 	hideType = "hide_leathery",
@@ -31,8 +30,8 @@ crimson_blurrg = Creature:new {
 	weapons = {"creature_spit_small_red"},
 	conversationTemplate = "",
 	attacks = {
-		{"knockdownattack","knockdownChance=50"},
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""},
+		{"knockdownattack",""}
 	}
 }
 

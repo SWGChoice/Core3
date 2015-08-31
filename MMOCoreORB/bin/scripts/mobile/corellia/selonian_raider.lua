@@ -1,7 +1,7 @@
 selonian_raider = Creature:new {
 	objectName = "@mob/creature_names:selonian_raider",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "selonian",
-	pvpFaction = "",
 	faction = "",
 	level = 11,
 	chanceHit = 0.29,
@@ -59,12 +59,12 @@ selonian_raider = Creature:new {
 				{group = "melee_weapons", chance = 1000000},
 				{group = "loot_kit_parts", chance = 2500000},
 				{group = "tailor_components", chance = 1500000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"rebel_weapons_heavy"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/fancy",
 	attacks = merge(brawlermid,marksmanmid)
 }
 

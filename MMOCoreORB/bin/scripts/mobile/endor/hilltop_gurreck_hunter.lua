@@ -1,7 +1,6 @@
 hilltop_gurreck_hunter = Creature:new {
 	objectName = "@mob/creature_names:hilltop_gurreck_hunter",
 	socialGroup = "gurreck",
-	pvpFaction = "",
 	faction = "",
 	level = 41,
 	chanceHit = 0.42,
@@ -11,7 +10,7 @@ hilltop_gurreck_hunter = Creature:new {
 	baseHAM = 8600,
 	baseHAMmax = 10600,
 	armor = 0,
-	resists = {50,65,25,25,25,25,25,25,-1},
+	resists = {150,165,25,25,25,25,25,25,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 75,
 	hideType = "hide_wooly",
@@ -33,8 +32,8 @@ hilltop_gurreck_hunter = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"posturedownattack",""}
 	}
 }
 

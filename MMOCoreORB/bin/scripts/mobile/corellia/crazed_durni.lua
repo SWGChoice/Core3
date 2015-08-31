@@ -1,7 +1,6 @@
 crazed_durni = Creature:new {
 	objectName = "@mob/creature_names:crazed_durni",
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 10,
 	chanceHit = 0.28,
@@ -11,7 +10,7 @@ crazed_durni = Creature:new {
 	baseHAM = 675,
 	baseHAMmax = 825,
 	armor = 0,
-	resists = {0,0,10,0,0,0,0,-1,-1},
+	resists = {0,0,110,0,0,0,0,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 5,
 	hideType = "hide_wooly",
@@ -33,7 +32,8 @@ crazed_durni = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"",""},
+		{"posturedownattack",""}
 	}
 }
 

@@ -1,7 +1,6 @@
 wooded_paralope = Creature:new {
 	objectName = "@mob/creature_names:wooded_paralope",
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 7,
 	chanceHit = 0.26,
@@ -11,7 +10,7 @@ wooded_paralope = Creature:new {
 	baseHAM = 270,
 	baseHAMmax = 330,
 	armor = 0,
-	resists = {0,0,0,0,0,0,0,0,0},
+	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 5,
 	hideType = "hide_wooly",

@@ -1,7 +1,6 @@
 female_razor_cat = Creature:new {
 	objectName = "@mob/creature_names:female_sand_panther",
 	socialGroup = "panther",
-	pvpFaction = "",
 	faction = "",
 	level = 22,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ female_razor_cat = Creature:new {
 	baseHAM = 5000,
 	baseHAMmax = 6100,
 	armor = 0,
-	resists = {10,20,10,60,10,-1,-1,-1,-1},
+	resists = {10,10,10,160,10,-1,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 65,
 	hideType = "hide_bristley",
@@ -33,8 +32,8 @@ female_razor_cat = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"dizzyattack","dizzyChance=50"}
+		{"dizzyattack",""},
+		{"blindattack",""}
 	}
 }
 

@@ -1,7 +1,6 @@
 reclusive_roba = Creature:new {
 	objectName = "@mob/creature_names:reclusive_roba",
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 30,
 	chanceHit = 0.39,
@@ -11,7 +10,7 @@ reclusive_roba = Creature:new {
 	baseHAM = 8400,
 	baseHAMmax = 10200,
 	armor = 0,
-	resists = {20,20,20,60,-1,60,-1,-1,-1},
+	resists = {20,20,20,160,-1,160,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 15,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ reclusive_roba = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"blindattack",""}
 	}
 }
 

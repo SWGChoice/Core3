@@ -1,7 +1,6 @@
 brackaset = Creature:new {
 	objectName = "@mob/creature_names:brackaset",
 	socialGroup = "brackaset",
-	pvpFaction = "",
 	faction = "",
 	level = 26,
 	chanceHit = 0.36,
@@ -11,7 +10,7 @@ brackaset = Creature:new {
 	baseHAM = 8100,
 	baseHAMmax = 9900,
 	armor = 0,
-	resists = {30,20,20,30,30,-1,-1,-1,-1},
+	resists = {30,30,120,30,30,-1,-1,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 100,
 	hideType = "hide_leathery",
@@ -34,13 +33,14 @@ brackaset = Creature:new {
 	        groups = {
 				{group = "brackaset_common", chance = 10000000}
 			},
-			lootChance = 2300000
+			lootChance = 1520000
 		}
 	},
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"",""},
+		{"posturedownattack",""}
 	}
 }
 

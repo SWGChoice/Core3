@@ -1,7 +1,6 @@
 forest_murra = Creature:new {
 	objectName = "@mob/creature_names:forest_murra",
 	socialGroup = "murra",
-	pvpFaction = "",
 	faction = "",
 	level = 12,
 	chanceHit = 0.29,
@@ -11,7 +10,7 @@ forest_murra = Creature:new {
 	baseHAM = 1200,
 	baseHAMmax = 1400,
 	armor = 0,
-	resists = {0,0,10,0,10,0,0,-1,-1},
+	resists = {0,0,110,0,10,0,0,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 75,
 	hideType = "hide_bristley",
@@ -34,7 +33,7 @@ forest_murra = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

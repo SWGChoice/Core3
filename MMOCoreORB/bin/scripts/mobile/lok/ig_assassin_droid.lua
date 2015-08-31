@@ -1,17 +1,16 @@
 ig_assassin_droid = Creature:new {
 	objectName = "@mob/creature_names:ig_assassin_droid",
 	socialGroup = "",
-	pvpFaction = "",
 	faction = "",
-	level = 45,
-	chanceHit = 0.47,
-	damageMin = 395,
-	damageMax = 500,
-	baseXp = 4461,
-	baseHAM = 9700,
-	baseHAMmax = 11900,
+	level = 21,
+	chanceHit = 0.33,
+	damageMin = 220,
+	damageMax = 230,
+	baseXp = 1803,
+	baseHAM = 2400,
+	baseHAMmax = 3000,
 	armor = 0,
-	resists = {25,25,5,5,5,5,5,-1,-1},
+	resists = {125,125,5,5,5,-1,5,-1,-1},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "",
@@ -21,8 +20,8 @@ ig_assassin_droid = Creature:new {
 	milk = 0,
 	tamingChance = 0,
 	ferocity = 0,
-	pvpBitmask = AGGRESSIVE + ATTACKABLE + ENEMY,
-	creatureBitmask = KILLER,
+	pvpBitmask = ATTACKABLE,
+	creatureBitmask = KILLER + STALKER,
 	optionsBitmask = 0,
 	diet = NONE,
 
@@ -35,8 +34,7 @@ ig_assassin_droid = Creature:new {
 				{group = "pistols", chance = 1000000},
 				{group = "carbines", chance = 1000000},
 				{group = "tailor_components", chance = 500000}
-			},
-			lootChance = 3500000
+			}
 		}
 	},
 	conversationTemplate = "",

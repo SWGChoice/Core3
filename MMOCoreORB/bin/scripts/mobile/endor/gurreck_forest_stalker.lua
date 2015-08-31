@@ -1,7 +1,6 @@
 gurreck_forest_stalker = Creature:new {
 	objectName = "@mob/creature_names:woodland_gurreck",
 	socialGroup = "gurreck",
-	pvpFaction = "",
 	faction = "",
 	level = 32,
 	chanceHit = 0.39,
@@ -11,7 +10,7 @@ gurreck_forest_stalker = Creature:new {
 	baseHAM = 8100,
 	baseHAMmax = 9900,
 	armor = 0,
-	resists = {25,50,20,20,-1,-1,20,0,-1},
+	resists = {125,150,20,20,-1,-1,20,20,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 75,
 	hideType = "hide_wooly",
@@ -32,7 +31,7 @@ gurreck_forest_stalker = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"}
+		{"dizzyattack",""}
 	}
 }
 

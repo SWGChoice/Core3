@@ -2,7 +2,6 @@ death_watch_herald_rebel = Creature:new {
 	objectName = "",
 	customName = "Lutin Nightstalker",
 	socialGroup = "rebel",
-	pvpFaction = "rebel",
 	faction = "rebel",
 	level = 99,
 	chanceHit = 0.99,
@@ -30,7 +29,7 @@ death_watch_herald_rebel = Creature:new {
 	templates = {"object/mobile/dressed_rebel_general_moncal_male_01.iff"},
 	lootGroups = {},
 	weapons = {},
-	conversationTemplate = "lutin_nightstalker_convotemplate",
+	conversationTemplate = "lutinNightstalkerConvoTemplate",
 	attacks = {
 	}
 }

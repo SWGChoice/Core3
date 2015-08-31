@@ -1,7 +1,6 @@
 dune_kimogila = Creature:new {
 	objectName = "@mob/creature_names:dune_kimogila",
 	socialGroup = "kimogila",
-	pvpFaction = "",
 	faction = "",
 	level = 123,
 	chanceHit = 4,
@@ -11,7 +10,7 @@ dune_kimogila = Creature:new {
 	baseHAM = 53000,
 	baseHAMmax = 65000,
 	armor = 2,
-	resists = {40,65,15,100,-1,15,100,-1,-1},
+	resists = {140,165,15,200,-1,15,200,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 1000,
 	hideType = "hide_leathery",
@@ -32,14 +31,14 @@ dune_kimogila = Creature:new {
 	        groups = {
 				{group = "kimogila_common", chance = 10000000}
 			},
-			lootChance = 6500000
+			lootChance = 3460000
 		}
 	},
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"creatureareacombo",""},
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""},
+		{"creatureareacombo",""}
 	}
 }
 

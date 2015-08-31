@@ -1,7 +1,6 @@
 bageraset_bruiser = Creature:new {
 	objectName = "@mob/creature_names:bageraset_bruiser",
 	socialGroup = "bageraset",
-	pvpFaction = "",
 	faction = "",
 	level = 12,
 	chanceHit = 0.29,
@@ -11,7 +10,7 @@ bageraset_bruiser = Creature:new {
 	baseHAM = 1200,
 	baseHAMmax = 1400,
 	armor = 0,
-	resists = {0,0,0,0,0,0,0,0,-1},
+	resists = {0,0,0,110,0,0,0,0,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 230,
 	hideType = "hide_leathery",
@@ -32,7 +31,7 @@ bageraset_bruiser = Creature:new {
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

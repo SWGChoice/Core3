@@ -1,7 +1,6 @@
 bolle_bol_stomper = Creature:new {
 	objectName = "@mob/creature_names:bolle_bol_stomper",
 	socialGroup = "bol",
-	pvpFaction = "",
 	faction = "",
 	level = 23,
 	chanceHit = 0.34,
@@ -11,7 +10,7 @@ bolle_bol_stomper = Creature:new {
 	baseHAM = 5000,
 	baseHAMmax = 6100,
 	armor = 0,
-	resists = {25,10,-1,-1,50,-1,50,-1,-1},
+	resists = {125,10,-1,-1,150,-1,150,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 450,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ bolle_bol_stomper = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"posturedownattack","postureDownChance=50"}
+		{"dizzyattack",""},
+		{"posturedownattack",""}
 	}
 }
 

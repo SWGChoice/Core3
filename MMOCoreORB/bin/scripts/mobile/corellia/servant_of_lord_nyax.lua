@@ -1,7 +1,7 @@
 servant_of_lord_nyax = Creature:new {
 	objectName = "@mob/creature_names:lord_nyax_servant",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "followers_of_lord_nyax",
-	pvpFaction = "followers_of_lord_nyax",
 	faction = "followers_of_lord_nyax",
 	level = 8,
 	chanceHit = 0.27,
@@ -35,12 +35,12 @@ servant_of_lord_nyax = Creature:new {
 				{group = "nyax", chance = 2000000},
 				{group = "pistols", chance = 4000000},
 				{group = "rifles", chance = 4000000},
-			},
-			lootChance = 3300000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_medium"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/fancy",
 	attacks = merge(marksmannovice,brawlernovice)
 }
 

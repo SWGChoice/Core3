@@ -1,7 +1,6 @@
 tusken_elite_guard = Creature:new {
 	objectName = "@mob/creature_names:tusken_elite_guard",
 	socialGroup = "tusken_raider",
-	pvpFaction = "tusken_raider",
 	faction = "tusken_raider",
 	level = 44,
 	chanceHit = 0.46,
@@ -40,9 +39,8 @@ tusken_elite_guard = Creature:new {
 				{group = "clothing_attachments", chance = 500000},
 				{group = "color_crystals", chance = 500000},
 				{group = "crystals_okay", chance = 500000}
-			},
-			lootChance = 2800000
-		}	
+			}
+		}
 	},
 	weapons = {"tusken_weapons"},
 	conversationTemplate = "",

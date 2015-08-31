@@ -1,7 +1,6 @@
 maverick_gualama = Creature:new {
 	objectName = "@mob/creature_names:maverick_gualama",
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 14,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ maverick_gualama = Creature:new {
 	baseHAM = 2000,
 	baseHAMmax = 2400,
 	armor = 0,
-	resists = {15,30,0,0,15,15,-1,-1,-1},
+	resists = {0,110,0,0,0,0,-1,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 200,
 	hideType = "hide_wooly",
@@ -32,7 +31,8 @@ maverick_gualama = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"",""},
+		{"stunattack",""}
 	}
 }
 

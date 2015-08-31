@@ -13,6 +13,7 @@
 #include "server/zone/ZoneServer.h"
 #include "server/zone/Zone.h"
 #include "server/zone/managers/player/PlayerManager.h"
+#include "server/zone/managers/reaction/ReactionManager.h"
 
 #include "server/zone/objects/player/sessions/EntertainingSession.h"
 #include "server/zone/packets/creature/CreatureObjectDeltaMessage6.h"
@@ -29,7 +30,7 @@ class SelectCharacterCallback : public MessageCallback {
 	uint64 characterID;
 public:
 	SelectCharacterCallback(ZoneClientSession* client, ZoneProcessServer* server) :
-		MessageCallback(client, server) {
+		MessageCallback(client, server), characterID(0) {
 
 	}
 
@@ -115,10 +116,19 @@ public:
 			ManagedReference<SceneObject*> playerParent = zoneServer->getObject(savedParentID, true);
 
 			Zone* zone = zoneServer->getZone(zoneName);
+
+			if (zone == NULL) {
+				ErrorMessage* errMsg = new ErrorMessage("Login Error", "The planet where your character was stored is disabled!", 0x0);
+				client->sendMessage(errMsg);
+
+				return;
+			}
+
 			ManagedReference<SceneObject*> currentParent = player->getParent();
 
 			if ((playerParent != NULL && currentParent == NULL) || (currentParent != NULL && currentParent->isCellObject())) {
 				ghost->setTeleporting(true);
+				ghost->setOnLoadScreen(true);
 				player->setMovementCounter(0);
 				ghost->setClientLastMovementStamp(0);
 
@@ -191,24 +201,30 @@ public:
 			PlayerManager* playerManager = zoneServer->getPlayerManager();
 			playerManager->sendLoginMessage(player);
 
+			ReactionManager* reactionManager = zoneServer->getReactionManager();
+			reactionManager->doReactionFineMailCheck(player);
+
 			//player->info("sending login Message:" + zoneServer->getLoginMessage(), true);
 
 			// Disable music notes if player had been playing music
-			player->setPerformanceCounter(0, false);
-			player->setInstrumentID(0, false);
+			if (!player->isPlayingMusic() && !player->isDancing()) {
+				player->setPerformanceCounter(0, false);
+				player->setInstrumentID(0, false);
 
-			CreatureObjectDeltaMessage6* dcreo6 = new CreatureObjectDeltaMessage6(player);
-			dcreo6->updatePerformanceAnimation(player->getPerformanceAnimation());
-			dcreo6->updatePerformanceCounter(0);
-			dcreo6->updateInstrumentID(0);
-			dcreo6->close();
-			player->broadcastMessage(dcreo6, true);
+				CreatureObjectDeltaMessage6* dcreo6 = new CreatureObjectDeltaMessage6(player);
+				dcreo6->updatePerformanceAnimation(player->getPerformanceAnimation());
+				dcreo6->updatePerformanceCounter(0);
+				dcreo6->updateInstrumentID(0);
+				dcreo6->close();
+				player->broadcastMessage(dcreo6, true);
 
-			player->setListenToID(0);
+				player->setListenToID(0);
 
-			// Stop playing music/dancing animation
-			if (player->getPosture() == CreaturePosture::SKILLANIMATING)
+				// Stop playing music/dancing animation
+				if (player->getPosture() == CreaturePosture::SKILLANIMATING)
 					player->setPosture(CreaturePosture::UPRIGHT);
+
+			}
 
 			SkillModManager::instance()->verifyWearableSkillMods(player);
 

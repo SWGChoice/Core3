@@ -31,22 +31,24 @@ void CityManagementMenuComponent::fillObjectMenuResponse(SceneObject* sceneObjec
 	menuResponse->addRadialMenuItemToRadialID(211, 214, 3, "@city/city:city_structures"); //Structure Report
 	menuResponse->addRadialMenuItemToRadialID(211, 223, 3, "@city/city:city_rank"); //City Advancement
 	menuResponse->addRadialMenuItemToRadialID(211, 224, 3, "@city/city:city_maint"); //Maintenance Report
-	menuResponse->addRadialMenuItemToRadialID(211, 215, 3, "@city/city:treasury_status"); //Treasury Report
-	menuResponse->addRadialMenuItemToRadialID(211, 220, 3, "@city/city:treasury_deposit"); //Treasury Deposit
+
+	menuResponse->addRadialMenuItem(210, 3, "@city/city:treasury_management"); // City Treasury
+	menuResponse->addRadialMenuItemToRadialID(210, 215, 3, "@city/city:treasury_status"); //Treasury Report
+	menuResponse->addRadialMenuItemToRadialID(210, 220, 3, "@city/city:treasury_deposit"); //Treasury Deposit
 
 #ifdef CITY_DEBUG
-	if(player->getPlayerObject()->isPrivileged()){
-		menuResponse->addRadialMenuItem(227,3,"MANUAL");
-		menuResponse->addRadialMenuItemToRadialID(227,228,3,"EXPAND CITY");
-		menuResponse->addRadialMenuItemToRadialID(227,229,3,"CONTRACT CITY");
-		menuResponse->addRadialMenuItemToRadialID(227,230,3,"UPDATE CITY");
-		menuResponse->addRadialMenuItemToRadialID(227,231,3,"COUNT VOTES");
-
+	if(player->getPlayerObject()->isPrivileged()) {
+		menuResponse->addRadialMenuItem(227,3,"@city/city:city_hacks"); // City Hacks (GODMODE ONLY)
+		menuResponse->addRadialMenuItemToRadialID(227,228,3,"@city/city:rank_up"); // 	Force Rank Up
+		menuResponse->addRadialMenuItemToRadialID(227,229,3,"@city/city:rank_down"); // Force Rank Down
+		menuResponse->addRadialMenuItemToRadialID(227,230,3,"@city/city:force_update"); // Force City Update or Election
 	}
 #endif
 
 	if (!city->isMayor(player->getObjectID()))
 		return;
+
+	menuResponse->addRadialMenuItemToRadialID(210, 221, 3, "@city/city:treasury_withdraw"); //Treasury Withdraw
 
 	menuResponse->addRadialMenuItem(216, 3, "@city/city:city_management"); //City Management
 	menuResponse->addRadialMenuItemToRadialID(216, 217, 3, "@city/city:city_name"); //Change City Name
@@ -67,11 +69,7 @@ void CityManagementMenuComponent::fillObjectMenuResponse(SceneObject* sceneObjec
 
 	menuResponse->addRadialMenuItemToRadialID(216, 219, 3, "@city/city:treasury_taxes"); //Adjust Taxes
 
-	menuResponse->addRadialMenuItemToRadialID(216, 221, 3, "@city/city:treasury_withdraw"); //Treasury Withdraw
-
 	menuResponse->addRadialMenuItemToRadialID(216, 225, 3, "@city/city:city_specializations"); //City Specialization
-
-	menuResponse->addRadialMenuItemToRadialID(216, 232, 3, "@city/city:fix_mayor"); // Restore Mayor Citizenship
 }
 
 int CityManagementMenuComponent::handleObjectMenuSelect(SceneObject* sceneObject, CreatureObject* player, byte selectID) {
@@ -80,11 +78,14 @@ int CityManagementMenuComponent::handleObjectMenuSelect(SceneObject* sceneObject
 	if (city == NULL)
 		return 1;
 
+	sceneObject->unlock();
+
 	Locker lock(city, player);
 
 	CityManager* cityManager = player->getZoneServer()->getCityManager();
 
 	switch (selectID) {
+	case 211: // City Information
 	case 212: //Status Report
 		cityManager->sendStatusReport(city, player, sceneObject);
 		break;
@@ -94,6 +95,7 @@ int CityManagementMenuComponent::handleObjectMenuSelect(SceneObject* sceneObject
 	case 214: // Structure Report
 		cityManager->sendStructureReport(city, player, sceneObject);
 		break;
+	case 210: // City Treasury
 	case 215: //Treasury Report
 		cityManager->sendTreasuryReport(city, player, sceneObject);
 		break;
@@ -128,38 +130,36 @@ int CityManagementMenuComponent::handleObjectMenuSelect(SceneObject* sceneObject
 		cityManager->sendMaintenanceReport(city, player, sceneObject);
 		break;
 	case 225: //Set City Specialization
-		cityManager->promptCitySpecialization(city, player, sceneObject);
+		if (city->isMayor(player->getObjectID()))
+			cityManager->promptCitySpecialization(city, player, sceneObject);
 		break;
 	case 226: //Toggle Zoning Enabled
-		cityManager->toggleZoningEnabled(city, player);
-		break;
-	case 232: // Restore Mayor Citizenship
-		cityManager->fixMayor(city, player);
+		cityManager->promptToggleZoningEnabled(city, player);
 		break;
 
 #ifdef CITY_DEBUG
 	case 228:
-		if(player->getPlayerObject()->isPrivileged()){
-			cityManager->expandCity(city);
+		if(player->getPlayerObject()->isPrivileged()) {
+			cityManager->promptForceRank(city, player, true);
 		}
 		break;
 	case 229:
-		if(player->getPlayerObject()->isPrivileged()){
-			cityManager->contractCity(city);
+		if(player->getPlayerObject()->isPrivileged()) {
+			cityManager->promptForceRank(city, player, false);
 		}
 		break;
 	case 230:
-		if(player->getPlayerObject()->isPrivileged()){
-			cityManager->processCityUpdate(city);
-		}
-		break;
-	case 231:
-		if(player->getPlayerObject()->isPrivileged()){
-			cityManager->updateCityVoting(city,true);
+		if(player->getPlayerObject()->isPrivileged()) {
+			cityManager->promptForceUpdate(city, player);
 		}
 		break;
 #endif
 
 	}
+
+	lock.release();
+
+	sceneObject->wlock(player);
+
 	return 0;
 }

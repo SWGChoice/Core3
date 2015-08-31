@@ -1,7 +1,6 @@
 spitting_rawl = Creature:new {
 	objectName = "@mob/creature_names:spitting_rawl",
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 24,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ spitting_rawl = Creature:new {
 	baseHAM = 5900,
 	baseHAMmax = 7200,
 	armor = 0,
-	resists = {10,30,10,-1,-1,-1,100,-1,-1},
+	resists = {10,130,10,-1,-1,-1,200,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 65,
 	hideType = "hide_bristley",
@@ -33,7 +32,7 @@ spitting_rawl = Creature:new {
 	weapons = {"creature_spit_small_red"},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
+		{"blindattack",""},
 		{"strongpoison",""}
 	}
 }

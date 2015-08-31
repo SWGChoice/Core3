@@ -1,7 +1,6 @@
 imperial_veermok = Creature:new {
 	objectName = "@mob/creature_names:imperial_veermok",
 	socialGroup = "imperial",
-	pvpFaction = "imperial",
 	faction = "imperial",
 	level = 27,
 	chanceHit = 0.36,
@@ -11,7 +10,7 @@ imperial_veermok = Creature:new {
 	baseHAM = 7200,
 	baseHAMmax = 8800,
 	armor = 0,
-	resists = {35,25,0,-1,50,30,0,-1,-1},
+	resists = {135,125,0,-1,150,130,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 150,
 	hideType = "hide_bristley",
@@ -31,7 +30,7 @@ imperial_veermok = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

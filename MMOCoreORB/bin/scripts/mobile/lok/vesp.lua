@@ -1,7 +1,6 @@
 vesp = Creature:new {
 	objectName = "@mob/creature_names:vesp",
 	socialGroup = "vesp",
-	pvpFaction = "",
 	faction = "",
 	level = 25,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ vesp = Creature:new {
 	baseHAM = 6800,
 	baseHAMmax = 8300,
 	armor = 0,
-	resists = {20,35,-1,10,-1,10,10,-1,-1},
+	resists = {120,135,-1,10,-1,10,10,-1,-1},
 	meatType = "meat_reptilian",
 	meatAmount = 10,
 	hideType = "hide_leathery",
@@ -31,8 +30,8 @@ vesp = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"stunattack","stunChance=50"}
+		{"blindattack",""},
+		{"stunattack",""}
 	}
 }
 

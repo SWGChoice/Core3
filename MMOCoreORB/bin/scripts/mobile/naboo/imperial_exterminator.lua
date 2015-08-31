@@ -1,7 +1,7 @@
 imperial_exterminator = Creature:new {
 	objectName = "@mob/creature_names:imperial_exterminator",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "imperial",
-	pvpFaction = "imperial",
 	faction = "imperial",
 	level = 28,
 	chanceHit = 0.37,
@@ -28,21 +28,21 @@ imperial_exterminator = Creature:new {
 
 	templates = {"object/mobile/dressed_imperial_exterminator.iff"},
 	lootGroups = {
-	    {
+		{
 			groups = {
 				{group = "junk", chance = 3200000},
-				{group = "wearables_common", chance = 2000000},				
+				{group = "wearables_common", chance = 2000000},
 				{group = "tailor_components", chance = 1500000},
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "pistols", chance = 1000000},
 				{group = "clothing_attachments", chance = 150000},
 				{group = "armor_attachments", chance = 150000}
-			},
-			lootChance = 2500000
-		}				
+			}
+		}
 	},
 	weapons = {"imperial_weapons_heavy"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/military",
 	attacks = merge(brawlermaster,marksmanmaster,riflemanmaster,carbineermaster)
 }
 

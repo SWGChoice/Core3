@@ -1,7 +1,6 @@
 purbole_stalker = Creature:new {
 	objectName = "@mob/creature_names:purbole_stalker",
 	socialGroup = "purbole",
-	pvpFaction = "",
 	faction = "",
 	level = 19,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ purbole_stalker = Creature:new {
 	baseHAM = 4100,
 	baseHAMmax = 5000,
 	armor = 0,
-	resists = {5,20,5,-1,-1,35,-1,-1,-1},
+	resists = {5,120,5,-1,-1,135,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 15,
 	hideType = "hide_bristley",
@@ -33,7 +32,7 @@ purbole_stalker = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
+		{"dizzyattack",""},
 		{"mildpoison",""}
 	}
 }

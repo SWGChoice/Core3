@@ -1,7 +1,6 @@
 woodland_kima = Creature:new {
 	objectName = "@mob/creature_names:woodland_kima",
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 18,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ woodland_kima = Creature:new {
 	baseHAM = 4500,
 	baseHAMmax = 5500,
 	armor = 0,
-	resists = {15,10,5,-1,5,5,-1,-1,-1},
+	resists = {115,110,5,-1,5,5,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 7,
 	hideType = "hide_bristley",
@@ -33,7 +32,7 @@ woodland_kima = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

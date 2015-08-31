@@ -43,7 +43,7 @@ int SurveySessionImplementation::startSession() {
 		return false;
 	}
 
-	surveyer->addActiveSession(SessionFacadeType::SURVEY, _this.get());
+	surveyer->addActiveSession(SessionFacadeType::SURVEY, _this.getReferenceUnsafeStaticCast());
 
 	return true;
 }
@@ -188,7 +188,7 @@ void SurveySessionImplementation::startSample(const String& resname) {
 
 	// Force dismount from creature pets
 	if (surveyer->getParent() != NULL && surveyer->getParent().get()->isPet() ) {
-		surveyer->executeObjectControllerAction(String("dismount").hashCode());
+		surveyer->executeObjectControllerAction(STRING_HASHCODE("dismount"));
 	}
 
 	// Verify dismount was successful
@@ -305,9 +305,11 @@ void SurveySessionImplementation::surveyCnodeMinigame(int value) {
 	if (waypoint == NULL)
 		newwaypoint = ( surveyer->getZoneServer()->createObject(0xc456e788, 1)).castTo<WaypointObject*>();
 	else {
-		ghost->removeWaypoint(waypoint->getObjectID(), true);
+		ghost->removeWaypoint(waypoint->getObjectID(), true, false);
 		newwaypoint = waypoint.get();
 	}
+
+	Locker locker(newwaypoint);
 
 	// Update new waypoint
 	newwaypoint->setCustomObjectName(UnicodeString("Resource Survey"), false);

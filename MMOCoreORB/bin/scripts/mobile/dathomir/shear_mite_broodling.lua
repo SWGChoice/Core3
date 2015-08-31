@@ -1,7 +1,6 @@
 shear_mite_broodling = Creature:new {
 	objectName = "@mob/creature_names:shear_mite_broodling",
 	socialGroup = "shear_mite",
-	pvpFaction = "",
 	faction = "",
 	level = 8,
 	chanceHit = 0.27,
@@ -11,7 +10,7 @@ shear_mite_broodling = Creature:new {
 	baseHAM = 405,
 	baseHAMmax = 495,
 	armor = 0,
-	resists = {0,0,10,0,0,0,0,-1,-1},
+	resists = {0,0,110,0,0,0,0,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 15,
 	hideType = "hide_scaley",
@@ -33,7 +32,7 @@ shear_mite_broodling = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""}
 	}
 }
 

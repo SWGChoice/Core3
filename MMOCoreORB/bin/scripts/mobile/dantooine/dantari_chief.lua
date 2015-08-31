@@ -1,7 +1,7 @@
 dantari_chief = Creature:new {
 	objectName = "@mob/creature_names:dantari_raider_chief",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "dantari_raiders",
-	pvpFaction = "dantari_raiders",
 	faction = "dantari_raiders",
 	level = 42,
 	chanceHit = 0.44,
@@ -35,8 +35,7 @@ dantari_chief = Creature:new {
 				{group = "armor_attachments", chance = 500000},
 				{group = "clothing_attachments", chance = 500000},
 				{group = "wearables_all", chance = 2000000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"primitive_weapons"},

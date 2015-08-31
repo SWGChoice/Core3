@@ -1,7 +1,6 @@
 huf_dun = Creature:new {
 	objectName = "@mob/creature_names:huf_dun",
 	socialGroup = "huf_dun",
-	pvpFaction = "",
 	faction = "",
 	level = 21,
 	chanceHit = 0.33,
@@ -11,7 +10,7 @@ huf_dun = Creature:new {
 	baseHAM = 4100,
 	baseHAMmax = 5000,
 	armor = 0,
-	resists = {25,10,10,10,-1,10,10,-1,-1},
+	resists = {125,10,10,10,-1,10,10,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 1000,
 	hideType = "hide_leathery",
@@ -31,8 +30,8 @@ huf_dun = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"stunattack","stunChance=50"}
+		{"blindattack",""},
+		{"stunattack",""}
 	}
 }
 

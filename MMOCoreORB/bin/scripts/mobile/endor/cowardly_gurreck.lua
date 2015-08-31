@@ -1,7 +1,6 @@
 cowardly_gurreck = Creature:new {
 	objectName = "@mob/creature_names:cowardly_gurreck",
 	socialGroup = "gurreck",
-	pvpFaction = "",
 	faction = "",
 	level = 15,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ cowardly_gurreck = Creature:new {
 	baseHAM = 2900,
 	baseHAMmax = 3500,
 	armor = 0,
-	resists = {10,25,25,-1,-1,25,-1,-1,-1},
+	resists = {110,110,5,-1,-1,5,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 55,
 	hideType = "hide_wooly",

@@ -1,7 +1,6 @@
 exiled_gungan = Creature:new {
 	objectName = "@mob/creature_names:mordran_gungan_exile",
 	socialGroup = "borvo",
-	pvpFaction = "borvo",
 	faction = "borvo",
 	level = 40,
 	chanceHit = 0.44,
@@ -38,8 +37,7 @@ exiled_gungan = Creature:new {
 				{group = "melee_two_handed", chance = 1000000},
 				{group = "clothing_attachments", chance = 300000},
 				{group = "armor_attachments", chance = 300000},
-			},
-			lootChance = 2500000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_heavy"},

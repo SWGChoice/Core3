@@ -1,7 +1,7 @@
 rebel_engineer = Creature:new {
 	objectName = "@mob/creature_names:corvette_rebel_engineer",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "rebel",
-	pvpFaction = "rebel",
 	faction = "rebel",
 	level = 106,
 	chanceHit = 1.75,
@@ -29,7 +29,7 @@ rebel_engineer = Creature:new {
 	templates = {"object/mobile/dressed_rebel_major_human_male_01.iff"},
 	lootGroups = {
 		{
-	        groups = {
+			groups = {
 				{group = "color_crystals", chance = 100000},
 				{group = "junk", chance = 4700000},
 				{group = "rifles", chance = 1000000},
@@ -40,12 +40,12 @@ rebel_engineer = Creature:new {
 				{group = "armor_attachments", chance = 100000},
 				{group = "wearables_common", chance = 500000},
 				{group = "wearables_uncommon", chance = 500000}
-			},
-			lootChance = 3000000
-		}	
+			}
+		}
 	},
 	weapons = {"rebel_weapons_medium"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/military",
 	attacks = merge(riflemanmaster,carbineermaster,marksmanmaster,brawlermaster)
 }
 

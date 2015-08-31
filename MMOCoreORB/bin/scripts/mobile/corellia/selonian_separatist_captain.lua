@@ -1,7 +1,7 @@
 selonian_separatist_captain = Creature:new {
 	objectName = "@mob/creature_names:selonian_separatist_captain",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "selonian",
-	pvpFaction = "",
 	faction = "",
 	level = 13,
 	chanceHit = 0.3,
@@ -59,12 +59,12 @@ selonian_separatist_captain = Creature:new {
 				{group = "rifles", chance = 1000000},
 				{group = "loot_kit_parts", chance = 2500000},
 				{group = "tailor_components", chance = 1500000}
-			},
-			lootChance = 3000000
-		}		
+			}
+		}
 	},
 	weapons = {"pirate_weapons_medium"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/fancy",
 	attacks = merge(brawlermid,marksmanmid)
 }
 

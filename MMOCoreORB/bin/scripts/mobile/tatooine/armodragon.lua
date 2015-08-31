@@ -1,7 +1,6 @@
 armodragon = Creature:new {
 	objectName = "@mob/creature_names:dragonet_armodragon",
 	socialGroup = "lizard",
-	pvpFaction = "",
 	faction = "",
 	level = 34,
 	chanceHit = 0.41,
@@ -11,7 +10,7 @@ armodragon = Creature:new {
 	baseHAM = 8600,
 	baseHAMmax = 10500,
 	armor = 0,
-	resists = {25,40,20,20,20,-1,20,-1,-1},
+	resists = {125,140,20,20,20,-1,20,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 125,
 	hideType = "hide_bristley",
@@ -33,8 +32,8 @@ armodragon = Creature:new {
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"posturedownattack","postureDownChance=50"}
+		{"dizzyattack",""},
+		{"posturedownattack",""}
 	}
 }
 

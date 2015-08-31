@@ -1,7 +1,6 @@
 remmer_dune_scavenger = Creature:new {
 	objectName = "@mob/creature_names:remmer_dune_scavenger",
 	socialGroup = "remmer",
-	pvpFaction = "",
 	faction = "",
 	level = 20,
 	chanceHit = 0.33,
@@ -11,7 +10,7 @@ remmer_dune_scavenger = Creature:new {
 	baseHAM = 4500,
 	baseHAMmax = 5500,
 	armor = 0,
-	resists = {15,5,25,35,-1,5,5,-1,-1},
+	resists = {115,5,125,135,-1,5,5,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 30,
 	hideType = "hide_bristley",
@@ -32,8 +31,8 @@ remmer_dune_scavenger = Creature:new {
 	weapons = {"creature_spit_small_red"},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"},
-		{"stunattack","stunChance=50"}
+		{"posturedownattack",""},
+		{"stunattack",""}
 	}
 }
 

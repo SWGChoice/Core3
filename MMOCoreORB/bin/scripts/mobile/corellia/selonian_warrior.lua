@@ -1,7 +1,7 @@
 selonian_warrior = Creature:new {
 	objectName = "@mob/creature_names:selonian_warrior",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "selonian",
-	pvpFaction = "",
 	faction = "",
 	level = 13,
 	chanceHit = 0.3,
@@ -59,12 +59,12 @@ selonian_warrior = Creature:new {
 				{group = "carbines", chance = 1000000},
 				{group = "loot_kit_parts", chance = 2500000},
 				{group = "tailor_components", chance = 1500000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_medium"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/fancy",
 	attacks = merge(brawlermid,marksmanmid)
 }
 

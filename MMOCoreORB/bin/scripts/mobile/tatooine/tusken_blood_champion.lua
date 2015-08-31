@@ -1,7 +1,6 @@
 tusken_blood_champion = Creature:new {
 	objectName = "@mob/creature_names:tusken_blood_champion",
 	socialGroup = "tusken_raider",
-	pvpFaction = "tusken_raider",
 	faction = "tusken_raider",
 	level = 43,
 	chanceHit = 0.46,
@@ -40,9 +39,8 @@ tusken_blood_champion = Creature:new {
 				{group = "clothing_attachments", chance = 500000},
 				{group = "color_crystals", chance = 500000},
 				{group = "crystals_okay", chance = 500000}
-			},
-			lootChance = 2800000
-		}		
+			}
+		}
 	},
 	weapons = {"tusken_weapons"},
 	conversationTemplate = "",

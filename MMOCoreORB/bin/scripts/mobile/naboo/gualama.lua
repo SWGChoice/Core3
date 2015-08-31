@@ -1,7 +1,6 @@
 gualama = Creature:new {
 	objectName = "@mob/creature_names:gualama",
 	socialGroup = "gualama",
-	pvpFaction = "",
 	faction = "",
 	level = 13,
 	chanceHit = 0.29,
@@ -10,8 +9,8 @@ gualama = Creature:new {
 	baseXp = 514,
 	baseHAM = 1000,
 	baseHAMmax = 1200,
-	armor = 1,
-	resists = {5,5,5,0,0,0,0,-1,-1},
+	armor = 0,
+	resists = {120,115,0,0,0,0,0,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 200,
 	hideType = "hide_wooly",
@@ -33,7 +32,7 @@ gualama = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

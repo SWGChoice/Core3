@@ -1,7 +1,6 @@
 peko_peko_albatross = Creature:new {
 	objectName = "@mob/creature_names:peko_peko_albatross",
 	socialGroup = "peko",
-	pvpFaction = "",
 	faction = "",
 	level = 155,
 	chanceHit = 7.75,
@@ -11,7 +10,7 @@ peko_peko_albatross = Creature:new {
 	baseHAM = 74000,
 	baseHAMmax = 91000,
 	armor = 2,
-	resists = {100,80,30,80,80,90,25,25,-1},
+	resists = {200,180,130,180,180,190,25,25,-1},
 	meatType = "meat_avian",
 	meatAmount = 400,
 	hideType = "hide_wooly",
@@ -33,14 +32,14 @@ peko_peko_albatross = Creature:new {
 	        groups = {
 				{group = "peko_albatross", chance = 10000000}
 			},
-			lootChance = 7500000
+			lootChance = 4100000
 		}
 	},
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
 		{"creatureareacombo",""},
-		{"creatureareaknockdown","knockdownChance=30"}
+		{"creatureareaknockdown",""}
 	}
 }
 

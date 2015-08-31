@@ -1,7 +1,6 @@
 crystal_snake = Creature:new {
 	objectName = "@mob/creature_names:crystal_snake",
 	socialGroup = "snake",
-	pvpFaction = "",
 	faction = "",
 	level = 25,
 	chanceHit = 0.36,
@@ -11,7 +10,7 @@ crystal_snake = Creature:new {
 	baseHAM = 7200,
 	baseHAMmax = 8800,
 	armor = 0,
-	resists = {20,20,60,15,15,-1,-1,-1,-1},
+	resists = {120,120,15,15,-1,-1,160,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 5,
 	hideType = "hide_scaley",
@@ -32,7 +31,7 @@ crystal_snake = Creature:new {
 	conversationTemplate = "",
 	attacks = {
 		{"mediumpoison",""},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

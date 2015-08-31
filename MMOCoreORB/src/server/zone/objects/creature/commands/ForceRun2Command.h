@@ -1,119 +1,58 @@
 /*
-Copyright (C) 2007 <SWGEmu>
-
-This File is part of Core3.
-
-This program is free software; you can redistribute
-it and/or modify it under the terms of the GNU Lesser
-General Public License as published by the Free Software
-Foundation; either version 2 of the License,
-or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU Lesser General Public License for
-more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this program; if not, write to
-the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-
-Linking Engine3 statically or dynamically with other modules
-is making a combined work based on Engine3.
-Thus, the terms and conditions of the GNU Lesser General Public License
-cover the whole combination.
-
-In addition, as a special exception, the copyright holders of Engine3
-give you permission to combine Engine3 program with free software
-programs or libraries that are released under the GNU LGPL and with
-code included in the standard release of Core3 under the GNU LGPL
-license (or modified versions of such code, with unchanged license).
-You may copy and distribute such a system following the terms of the
-GNU LGPL for Engine3 and the licenses of the other code concerned,
-provided that you include the source code of that other code when
-and as the GNU LGPL requires distribution of source code.
-
-Note that people who make modified versions of Engine3 are not obligated
-to grant this special exception for their modified versions;
-it is their choice whether to do so. The GNU Lesser General Public License
-gives permission to release a modified version without this exception;
-this exception also makes it possible to release a modified version
-which carries forward this exception.
- */
+				Copyright <SWGEmu>
+		See file COPYING for copying conditions. */
 
 #ifndef FORCERUN2COMMAND_H_
 #define FORCERUN2COMMAND_H_
 
-#include "server/zone/objects/scene/SceneObject.h"
-#include "server/zone/objects/creature/buffs/Buff.h"
+#include "server/zone/objects/creature/buffs/PrivateSkillMultiplierBuff.h"
+#include "JediQueueCommand.h"
 
-class ForceRun2Command : public QueueCommand {
+class ForceRun2Command : public JediQueueCommand {
 public:
 
 	ForceRun2Command(const String& name, ZoneProcessServer* server)
-	: QueueCommand(name, server) {
+	: JediQueueCommand(name, server) {
+		// BuffCRC's, first one is used.
+		buffCRCs.add(BuffCRC::JEDI_FORCE_RUN_2);
+		buffCRCs.add(BuffCRC::JEDI_FORCE_RUN_1);
+		buffCRCs.add(BuffCRC::JEDI_FORCE_RUN_3);
 
+		skillMods.put("force_run", 2);
+		skillMods.put("slope_move", 66);
 	}
 
-	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) {
+	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) const {
+		int res = doJediSelfBuffCommand(creature);
 
-		if (!checkStateMask(creature))
-			return INVALIDSTATE;
-
-		if (!checkInvalidLocomotions(creature))
-			return INVALIDLOCOMOTION;
-
-		if (isWearingArmor(creature)) {
-			return NOJEDIARMOR;
+		if (res != SUCCESS) {
+			return res;
 		}
 
-		uint32 buffcrc1 = BuffCRC::JEDI_FORCE_RUN_1;
-		uint32 buffcrc2 = BuffCRC::JEDI_FORCE_RUN_2;
-		uint32 buffcrc3 = BuffCRC::JEDI_FORCE_RUN_3;
-
-		if(creature->hasBuff(buffcrc1) || creature->hasBuff(buffcrc2) || creature->hasBuff(buffcrc3)) {
-			creature->sendSystemMessage("@jedi_spam:force_buff_present");
+		// need to apply the damage reduction in a separate buff so that the multiplication and division applies right
+		Buff* buff = creature->getBuff(BuffCRC::JEDI_FORCE_RUN_2);
+		if (buff == NULL)
 			return GENERALERROR;
+
+		ManagedReference<PrivateSkillMultiplierBuff*> multBuff = new PrivateSkillMultiplierBuff(creature, name.hashCode(), duration, BuffType::JEDI);
+
+		Locker locker(multBuff);
+
+		multBuff->setSkillModifier("private_damage_multiplier", 19);
+		multBuff->setSkillModifier("private_damage_divisor", 20);
+
+		creature->addBuff(multBuff);
+
+		locker.release();
+
+		Locker blocker(buff);
+
+		buff->addSecondaryBuffCRC(multBuff->getBuffCRC());
+
+		if (creature->hasBuff(STRING_HASHCODE("burstrun")) || creature->hasBuff(STRING_HASHCODE("retreat"))) {
+			creature->removeBuff(STRING_HASHCODE("burstrun"));
+			creature->removeBuff(STRING_HASHCODE("retreat"));
 		}
-
-
-		// Force cost of skill.
-		int forceCost = 400;
-
-
-		//Check for and deduct Force cost.
-
-		ManagedReference<PlayerObject*> playerObject = creature->getPlayerObject();
-
-
-		if (playerObject->getForcePower() <= forceCost) {
-			creature->sendSystemMessage("@jedi_spam:no_force_power"); //"You do not have enough Force Power to peform that action.
-
-			return GENERALERROR;
-		}
-
-		playerObject->setForcePower(playerObject->getForcePower() - forceCost);
-
-		StringIdChatParameter startStringId("jedi_spam", "apply_forcerun2");
-		StringIdChatParameter endStringId("jedi_spam", "remove_forcerun2");
-
-		int duration = 120;
-		int divider = creature->getSkillMod("private_damage_divider");
-		if (divider == 0) divider = 4;
-
-		divider /= 4;
-
-		ManagedReference<Buff*> buff = new Buff(creature, buffcrc2, duration, BuffType::JEDI);
-		buff->setSpeedMultiplierMod(2.5f);
-		buff->setAccelerationMultiplierMod(2.5f);
-		buff->setStartMessage(startStringId);
-		buff->setEndMessage(endStringId);
-		buff->setSkillModifier("force_run", 2);
-		buff->setSkillModifier("private_damage_divisor", divider);
-
-		creature->addBuff(buff);
-		creature->playEffect("clienteffect/pl_force_run_self.cef", "");
 
 		return SUCCESS;
 	}

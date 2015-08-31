@@ -1,7 +1,7 @@
 flail_cutthroat = Creature:new {
 	objectName = "@mob/creature_names:flail_cutthroat",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "flail",
-	pvpFaction = "flail",
 	faction = "flail",
 	level = 15,
 	chanceHit = 0.31,
@@ -44,11 +44,11 @@ flail_cutthroat = Creature:new {
 				{group = "rifles", chance = 2000000},
 				{group = "color_crystals", chance = 1000000},
 				{group = "flail_common", chance = 500000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"rebel_weapons_medium"},
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlermid,marksmanmid)
 }
 

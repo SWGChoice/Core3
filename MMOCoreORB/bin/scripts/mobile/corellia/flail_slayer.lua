@@ -1,7 +1,7 @@
 flail_slayer = Creature:new {
 	objectName = "@mob/creature_names:flail_slayer",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "flail",
-	pvpFaction = "flail",
 	faction = "flail",
 	level = 20,
 	chanceHit = 0.33,
@@ -32,18 +32,18 @@ flail_slayer = Creature:new {
 		"object/mobile/dressed_villain_trandoshan_female_01.iff",
 		"object/mobile/dressed_villain_trandoshan_male_01.iff"},
 	lootGroups = {
-	 	{
+		{
 			groups = {
 				{group = "junk", chance = 3500000},
 				{group = "wearables_common", chance = 3000000},
 				{group = "rifles", chance = 2000000},
 				{group = "color_crystals", chance = 1000000},
 				{group = "flail_common", chance = 500000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_medium"},
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 

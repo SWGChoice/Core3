@@ -1,7 +1,6 @@
 vrelt = Creature:new {
 	objectName = "@mob/creature_names:vrelt",
 	socialGroup = "vrelt",
-	pvpFaction = "",
 	faction = "",
 	level = 6,
 	chanceHit = 0.25,
@@ -11,7 +10,7 @@ vrelt = Creature:new {
 	baseHAM = 180,
 	baseHAMmax = 220,
 	armor = 0,
-	resists = {0,0,0,0,0,0,0,0,0},
+	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 4,
 	hideType = "hide_leathery",

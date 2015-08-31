@@ -1,7 +1,6 @@
 gualama_patriarch = Creature:new {
 	objectName = "@mob/creature_names:gualama_patriarch",
 	socialGroup = "gualama",
-	pvpFaction = "",
 	faction = "",
 	level = 13,
 	chanceHit = 0.29,
@@ -11,7 +10,7 @@ gualama_patriarch = Creature:new {
 	baseHAM = 1500,
 	baseHAMmax = 1900,
 	armor = 0,
-	resists = {20,20,0,20,20,0,0,-1,-1},
+	resists = {115,115,0,0,0,0,0,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 250,
 	hideType = "hide_wooly",
@@ -32,7 +31,8 @@ gualama_patriarch = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"",""},
+		{"intimidationattack",""}
 	}
 }
 

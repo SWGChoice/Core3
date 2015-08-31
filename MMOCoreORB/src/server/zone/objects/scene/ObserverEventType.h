@@ -55,7 +55,7 @@ public:
 	const static int XPAWARDED 					= 43; // ManagedObject arg1 = player, long arg2 = xp amount
 	const static int SPICEDOWNERACTIVATED 		= 44; // ManagedObject arg1 = player, long arg2 = 0
 	const static int FORCEBUFFHIT 				= 45; // ManagedObject arg1 = player, long arg2 = damage amount absorbed.
-	const static int SPATIALCHATRECEIVED 		= 46; // ManagedObject arg1 = ChatMessage containing string text, long arg2 = 0
+	const static int SPATIALCHATRECEIVED 		= 46; // ManagedObject arg1 = ChatMessage containing string text, long arg2 = objectid of player speaking
 	const static int OBJECTINSERTED 			= 47; // ManagedObject arg1 = inserted object, long arg2 = 0
 	const static int OBJECTDISAPPEARED 			= 48; // ManagedObject arg1 = disappeared object, long arg2 = 0
 	const static int ITEMLOOTED 				= 49; // ManagedObject arg1 = looting player, long arg2 = 0
@@ -73,6 +73,9 @@ public:
 	const static int CONTAINERCONTENTSCHANGED	= 61; // ManagedObject arg1 = looting player, long arg2 = 0
 	const static int WASLISTENEDTO				= 62; // ManagedObject arg1 = player listening, long arg2 = 0
 	const static int WASWATCHED					= 63; // ManagedObject arg1 = player watching, long arg2 = 0
+	const static int FLEEING					= 64; // ManagedObject arg1 = creature, long arg2 = 0
+	const static int PEACE						= 65; // ManagedObject arg1 = null, long arg2 = 0
+	const static int PARENTCHANGED				= 66; // ManagedObject arg1 = newParent, long arg2 = 0
 };
 
 #endif /* OBSERVEREVENTTYPES_H_ */

@@ -24,9 +24,8 @@ class EmptyHopperCallback : public MessageCallback {
 	ObjectControllerMessageCallback* objectControllerMain;
 public:
 	EmptyHopperCallback(ObjectControllerMessageCallback* objectControllerCallback) :
-		MessageCallback(objectControllerCallback->getClient(), objectControllerCallback->getServer()) {
-
-		objectControllerMain = objectControllerCallback;
+		MessageCallback(objectControllerCallback->getClient(), objectControllerCallback->getServer()),
+		harvesterId(0), resourceId(0), quantity(0), byte1(0), byte2(0), objectControllerMain(objectControllerCallback) {
 	}
 
 	void parse(Message* message) {
@@ -121,11 +120,17 @@ public:
 				inso->updateResourceContainerQuantity(container, newQuantity, true);
 			} else if (byte1 == 0) {
 				if (inventory->getCountableObjectsRecursive() < inventory->getContainerVolumeLimit()) {
-					ManagedReference<ResourceContainer*> newContainer = container->getSpawnObject()->createResource(quantity);
-					inventory->transferObject(newContainer, -1, false);
-					inventory->broadcastObject(newContainer, true);
+					Reference<ResourceSpawn*> resSpawn = container->getSpawnObject();
+					Locker locker(resSpawn);
 
-					inso->updateResourceContainerQuantity(container, container->getQuantity() - quantity, true);
+					ManagedReference<ResourceContainer*> newContainer = resSpawn->createResource(quantity);
+					if (inventory->transferObject(newContainer, -1, false)) {
+						inventory->broadcastObject(newContainer, true);
+
+						inso->updateResourceContainerQuantity(container, container->getQuantity() - quantity, true);
+					} else {
+						newContainer->destroyObjectFromDatabase(true);
+					}
 				} else {
 					StringIdChatParameter stringId("error_message", "inv_full");
 					player->sendSystemMessage(stringId);

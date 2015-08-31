@@ -1,7 +1,6 @@
 blushing_jax = Creature:new {
 	objectName = "@mob/creature_names:blushing_jax",
 	socialGroup = "jax",
-	pvpFaction = "",
 	faction = "",
 	level = 27,
 	chanceHit = 0.36,
@@ -11,7 +10,7 @@ blushing_jax = Creature:new {
 	baseHAM = 8300,
 	baseHAMmax = 9900,
 	armor = 0,
-	resists = {35,30,50,-1,-1,-1,-1,-1,-1},
+	resists = {135,130,150,-1,-1,-1,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 25,
 	hideType = "hide_bristley",
@@ -32,8 +31,8 @@ blushing_jax = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"dizzyattack","dizzyChance=50"}
+		{"blindattack",""},
+		{"dizzyattack",""}
 	}
 }
 

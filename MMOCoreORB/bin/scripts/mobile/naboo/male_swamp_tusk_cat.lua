@@ -1,7 +1,6 @@
 male_swamp_tusk_cat = Creature:new {
 	objectName = "@mob/creature_names:male_swamp_tusk_cat",
 	socialGroup = "tusk_cat",
-	pvpFaction = "",
 	faction = "",
 	level = 17,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ male_swamp_tusk_cat = Creature:new {
 	baseHAM = 3500,
 	baseHAMmax = 4300,
 	armor = 0,
-	resists = {5,5,5,-1,35,-1,35,-1,-1},
+	resists = {5,5,5,-1,135,-1,135,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 70,
 	hideType = "hide_bristley",
@@ -32,7 +31,7 @@ male_swamp_tusk_cat = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"}
+		{"blindattack",""}
 	}
 }
 

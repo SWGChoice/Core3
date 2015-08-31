@@ -9,7 +9,6 @@
 #include "server/zone/ZoneServer.h"
 
 #include "server/zone/managers/auction/AuctionManager.h"
-#include "server/zone/managers/player/PlayerManager.h"
 
 #include "server/zone/managers/vendor/VendorManager.h"
 #include "server/zone/managers/vendor/VendorSelectionNode.h"
@@ -92,7 +91,7 @@ int CreateVendorSessionImplementation::initializeSession() {
 	player->getPlayerObject()->addSuiBox(suiSelectVendor);
 	player->sendMessage(suiSelectVendor->generateMessage());
 
-	player->addActiveSession(SessionFacadeType::CREATEVENDOR, _this.get());
+	player->addActiveSession(SessionFacadeType::CREATEVENDOR, _this.getReferenceUnsafeStaticCast());
 
 	return 0;
 }
@@ -141,6 +140,8 @@ void CreateVendorSessionImplementation::handleVendorSelection(byte menuID) {
 void CreateVendorSessionImplementation::createVendor(String& name) {
 	ManagedReference<CreatureObject*> player = this->player.get();
 
+	Locker locker(player);
+
 	if (!VendorManager::instance()->isValidVendorName(name)) {
 		player->sendSystemMessage("@player_structure:obscene");
 		SuiInputBox* input = new SuiInputBox(player, SuiWindowType::STRUCTURE_NAME_VENDOR);
@@ -154,6 +155,12 @@ void CreateVendorSessionImplementation::createVendor(String& name) {
 		return;
 	}
 
+	ManagedReference<SceneObject*> inventory = player->getSlottedObject("inventory");
+	if (inventory == NULL) {
+		cancelSession();
+		return;
+	}
+
 	ManagedReference<TangibleObject*> vendor;
 
 	try {
@@ -162,20 +169,26 @@ void CreateVendorSessionImplementation::createVendor(String& name) {
 		error(e.getMessage());
 	}
 
-	ManagedReference<SceneObject*> inventory = player->getSlottedObject("inventory");
-
-	if (vendor == NULL || inventory == NULL || !vendor->isVendor()) {
+	if (vendor == NULL) {
 		error("could not create vendor " + templatePath);
+		cancelSession();
+		return;
+	}
+
+	Locker clocker(vendor, player);
+
+	if (!vendor->isVendor()) {
+		error("could not create vendor " + templatePath);
+		vendor->destroyObjectFromDatabase(true);
 		cancelSession();
 		return;
 	}
 
 	vendor->createChildObjects();
 
-	Locker inventoryLocker(inventory);
-
 	if (inventory->hasFullContainerObjects()) {
 		player->sendSystemMessage("@player_structure:create_failed");
+		vendor->destroyObjectFromDatabase(true);
 		cancelSession();
 		return;
 	}
@@ -184,6 +197,7 @@ void CreateVendorSessionImplementation::createVendor(String& name) {
 	if(data == NULL || data->get() == NULL || !data->get()->isVendorData()) {
 		error("Invalid vendor, no data component: " + templatePath);
 		player->sendSystemMessage("@player_structure:create_failed");
+		vendor->destroyObjectFromDatabase(true);
 		cancelSession();
 		return;
 	}
@@ -192,6 +206,7 @@ void CreateVendorSessionImplementation::createVendor(String& name) {
 	if(vendorData == NULL) {
 		error("Invalid vendor, no data component: " + templatePath);
 		player->sendSystemMessage("@player_structure:create_failed");
+		vendor->destroyObjectFromDatabase(true);
 		cancelSession();
 		return ;
 	}
@@ -210,6 +225,7 @@ void CreateVendorSessionImplementation::createVendor(String& name) {
 
 	if(!inventory->transferObject(vendor, -1, false)) {
 		player->sendSystemMessage("@player_structure:create_failed");
+		vendor->destroyObjectFromDatabase(true);
 		cancelSession();
 		return;
 	}
@@ -252,10 +268,10 @@ void CreateVendorSessionImplementation::randomizeVendorClothing(CreatureObject* 
 			continue;
 
 		for (int j = 0; j < obj->getArrangementDescriptorSize(); ++j) {
-			Vector<String> descriptors = obj->getArrangementDescriptor(j);
+			const Vector<String>* descriptors = obj->getArrangementDescriptor(j);
 
-			for (int k = 0; k < descriptors.size(); ++k) {
-				ManagedReference<SceneObject*> slot = vendor->getSlottedObject(descriptors.get(k));
+			for (int k = 0; k < descriptors->size(); ++k) {
+				ManagedReference<SceneObject*> slot = vendor->getSlottedObject(descriptors->get(k));
 
 				if (slot != NULL) {
 					slot->destroyObjectFromWorld(true);
@@ -264,7 +280,9 @@ void CreateVendorSessionImplementation::randomizeVendorClothing(CreatureObject* 
 			}
 		}
 
-		vendor->transferObject(obj, 4);
+		if (!vendor->transferObject(obj, 4)) {
+			obj->destroyObjectFromDatabase(true);
+		}
 	}
 
 }
@@ -275,12 +293,21 @@ void CreateVendorSessionImplementation::randomizeVendorHair(CreatureObject* vend
 	ManagedReference<SceneObject*> hairSlot = vendor->getSlottedObject("hair");
 
 	if (hairSlot == NULL && !hairFile.isEmpty()) {
-		String hairCustomization;
-		ManagedReference<PlayerManager*> pman = player->getZoneServer()->getPlayerManager();
-		TangibleObject* hair = pman->createHairObject(hairFile, hairCustomization);
 
-		if (hair != NULL)
-			vendor->transferObject(hair, 4);
+		Reference<TangibleObject*> hair = player->getZoneServer()->createObject(hairFile.hashCode(), 1).castTo<TangibleObject*>();
+
+		if (hair != NULL) {
+			if (hair->getGameObjectType() != SceneObjectType::GENERICITEM || hair->getArrangementDescriptor(0)->get(0) != "hair") {
+				hair->destroyObjectFromDatabase(true);
+				return;
+			}
+
+			//TODO: randomize hair customization
+
+			if (!vendor->transferObject(hair, 4)) {
+				hair->destroyObjectFromDatabase(true);
+			}
+		}
 	}
 
 }

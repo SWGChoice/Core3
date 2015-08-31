@@ -1,7 +1,6 @@
 minor_guf_drolg = Creature:new {
 	objectName = "@mob/creature_names:minor_guf_drolg",
 	socialGroup = "guf_drolg",
-	pvpFaction = "",
 	faction = "",
 	level = 9,
 	chanceHit = 0.27,
@@ -11,7 +10,7 @@ minor_guf_drolg = Creature:new {
 	baseHAM = 675,
 	baseHAMmax = 825,
 	armor = 0,
-	resists = {0,0,10,0,0,0,0,-1,-1},
+	resists = {0,0,110,0,0,0,0,-1,-1},
 	meatType = "meat_reptilian",
 	meatAmount = 300,
 	hideType = "hide_leathery",
@@ -33,7 +32,7 @@ minor_guf_drolg = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""}
 	}
 }
 

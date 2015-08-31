@@ -1,7 +1,6 @@
 mantigrue_hunter = Creature:new {
 	objectName = "@mob/creature_names:mantigrue_hunter",
 	socialGroup = "mantigrue",
-	pvpFaction = "",
 	faction = "",
 	level = 38,
 	chanceHit = 0.41,
@@ -11,7 +10,7 @@ mantigrue_hunter = Creature:new {
 	baseHAM = 8800,
 	baseHAMmax = 10800,
 	armor = 0,
-	resists = {40,40,25,-1,80,-1,80,80,-1},
+	resists = {140,140,25,-1,180,-1,180,180,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 85,
 	hideType = "hide_wooly",
@@ -32,7 +31,7 @@ mantigrue_hunter = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"}
+		{"blindattack",""}
 	}
 }
 

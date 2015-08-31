@@ -1,7 +1,6 @@
 desert_scavenger = Creature:new {
 	objectName = "@mob/creature_names:borgle_desert_runner",
 	socialGroup = "borgle",
-	pvpFaction = "",
 	faction = "",
 	level = 37,
 	chanceHit = 0.41,
@@ -11,7 +10,7 @@ desert_scavenger = Creature:new {
 	baseHAM = 8700,
 	baseHAMmax = 10700,
 	armor = 0,
-	resists = {25,50,25,75,-1,95,25,-1,-1},
+	resists = {25,150,25,175,-1,195,25,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 20,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ desert_scavenger = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""},
+		{"blindattack",""}
 	}
 }
 

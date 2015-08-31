@@ -1,7 +1,6 @@
 tusken_bantha = Creature:new {
 	objectName = "@mob/creature_names:tusken_bantha",
 	socialGroup = "tusken_raider",
-	pvpFaction = "tusken_raider",
 	faction = "tusken_raider",
 	level = 25,
 	chanceHit = 0.36,
@@ -11,7 +10,7 @@ tusken_bantha = Creature:new {
 	baseHAM = 6300,
 	baseHAMmax = 7700,
 	armor = 0,
-	resists = {20,25,15,50,-1,-1,-1,-1,-1},
+	resists = {120,125,15,150,-1,-1,-1,-1,-1},
 	meatType = "meat_domesticated",
 	meatAmount = 475,
 	hideType = "hide_wooly",
@@ -34,7 +33,7 @@ tusken_bantha = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""}
 	}
 }
 

@@ -1,7 +1,6 @@
 tabage_protector = Creature:new {
 	objectName = "@mob/creature_names:tabage_protector",
 	socialGroup = "tabage",
-	pvpFaction = "",
 	faction = "",
 	level = 18,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ tabage_protector = Creature:new {
 	baseHAM = 3500,
 	baseHAMmax = 4300,
 	armor = 0,
-	resists = {0,15,0,0,0,-1,-1,-1,-1},
+	resists = {0,115,0,0,0,-1,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 14,
 	hideType = "hide_leathery",
@@ -33,8 +32,8 @@ tabage_protector = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"mildpoison",""},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"mildpoison",""}
 	}
 }
 

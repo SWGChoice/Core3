@@ -47,7 +47,7 @@ UnarmedSpinAttack1Command = {
 	damageMultiplier = 2.0,
 	speedMultiplier = 2,
 	areaAction = true,
-	areaRange = -1,
+	areaRange = 16,
 	accuracyBonus = 15,
 	
 	healthCostMultiplier = 1.5,
@@ -57,6 +57,8 @@ UnarmedSpinAttack1Command = {
 	animationCRC = hashCode("combo_3c_light"),
 
 	combatSpam = "leapingveermok",
+	
+	weaponType = UNARMEDWEAPON,
 
 	range = -1
 }

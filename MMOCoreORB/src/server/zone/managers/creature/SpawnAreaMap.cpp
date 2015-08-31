@@ -49,6 +49,8 @@ void SpawnAreaMap::loadMap(Zone* z) {
 		for (int i = 0; i < size(); ++i) {
 			SpawnArea* area = get(i);
 
+			Locker locker(area);
+
 			for (int j = 0; j < noSpawnAreas.size(); ++j) {
 				SpawnArea* notHere = noSpawnAreas.get(j);
 
@@ -122,7 +124,10 @@ void SpawnAreaMap::loadStaticSpawns() {
 			ManagedReference<CreatureObject*> creatureObject = creatureManager->spawnCreature(name.hashCode(), 0, x, z, y, parentID);
 
 			if (creatureObject != NULL) {
+				Locker objLocker(creatureObject);
+
 				creatureObject->setDirection(Math::deg2rad(heading));
+				
 				if (creatureObject->isJunkDealer()){
 					cast<JunkdealerCreature*>(creatureObject.get())->setJunkDealerConversationType(junkDealerConversationType);
 					cast<JunkdealerCreature*>(creatureObject.get())->setJunkDealerBuyerType(junkDealerBuyingType);
@@ -213,11 +218,13 @@ void SpawnAreaMap::readAreaObject(LuaObject& areaObj) {
 	if (radius == 0 && width == 0 && height == 0 && innerRadius == 0 && outerRadius == 0)
 		return;
 
-	uint32 crc = String("object/spawn_area.iff").hashCode();
+	static const uint32 crc = STRING_HASHCODE("object/spawn_area.iff");
 
 	ManagedReference<SpawnArea*> area = dynamic_cast<SpawnArea*>(ObjectManager::instance()->createObject(crc, 0, "spawnareas"));
 	if (area == NULL)
 		return;
+
+	Locker objLocker(area);
 
 	StringId nameID(zone->getZoneName() + "_region_names", name);
 
@@ -225,22 +232,26 @@ void SpawnAreaMap::readAreaObject(LuaObject& areaObj) {
 
 	if (height > 0 && width > 0) {
 		ManagedReference<RectangularAreaShape*> rectangularAreaShape = new RectangularAreaShape();
+		Locker shapeLocker(rectangularAreaShape);
 		rectangularAreaShape->setAreaCenter(x, y);
 		rectangularAreaShape->setDimensions(height, width);
 		area->setAreaShape(rectangularAreaShape);
 	} else if (radius > 0) {
 		ManagedReference<CircularAreaShape*> circularAreaShape = new CircularAreaShape();
+		Locker shapeLocker(circularAreaShape);
 		circularAreaShape->setAreaCenter(x, y);
 		circularAreaShape->setRadius(radius);
 		area->setAreaShape(circularAreaShape);
 	} else if (innerRadius > 0 && outerRadius > 0) {
 		ManagedReference<RingAreaShape*> ringAreaShape = new RingAreaShape();
+		Locker shapeLocker(ringAreaShape);
 		ringAreaShape->setAreaCenter(x, y);
 		ringAreaShape->setInnerRadius(innerRadius);
 		ringAreaShape->setOuterRadius(outerRadius);
 		area->setAreaShape(ringAreaShape);
 	} else {
 		ManagedReference<CircularAreaShape*> circularAreaShape = new CircularAreaShape();
+		Locker shapeLocker(circularAreaShape);
 		circularAreaShape->setAreaCenter(x, y);
 		circularAreaShape->setRadius(zone->getBoundingRadius());
 		area->setAreaShape(circularAreaShape);

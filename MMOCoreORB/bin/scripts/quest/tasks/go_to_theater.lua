@@ -56,16 +56,14 @@ end
 -- @param spawnPoint the coordinates to spawn the active area at.
 -- @return true if setup was successful, false otherwise.
 function GoToTheater:setupActiveArea(pCreatureObject, spawnPoint)
+	Logger:log("Setting up active area for " .. self.taskName .. " theater.", LT_INFO)
 	return ObjectManager.withCreatureObject(pCreatureObject, function(creatureObject)
-		local pActiveArea = spawnSceneObject(creatureObject:getZoneName(), ACTIVE_AREA_IFF, spawnPoint[1], 0, spawnPoint[3], 0, 0)
+		local pActiveArea = spawnActiveArea(creatureObject:getZoneName(), ACTIVE_AREA_IFF, spawnPoint[1], 0, spawnPoint[3], self.activeAreaRadius, 0)
 
 		return ObjectManager.withActiveArea(pActiveArea, function(activeArea)
-			return ObjectManager.withSceneObject(pActiveArea, function(activeAreaSceneObject)
-				writeData(creatureObject:getObjectID() .. self.taskName .. ACTIVE_AREA_ID_STRING, activeAreaSceneObject:getObjectID())
-				activeArea:setRadius(self.activeAreaRadius)
-				createObserver(ENTEREDAREA, self.taskName, "handleEnteredAreaEvent", pActiveArea)
-				return true
-			end) == true
+			writeData(creatureObject:getObjectID() .. self.taskName .. ACTIVE_AREA_ID_STRING, activeArea:getObjectID())
+			createObserver(ENTEREDAREA, self.taskName, "handleEnteredAreaEvent", pActiveArea)
+			return true
 		end) == true
 	end) == true
 end
@@ -75,6 +73,10 @@ end
 -- @param pCreatureObject pointer to the creature who is entering the active area.
 -- @param nothing not used.
 function GoToTheater:handleEnteredAreaEvent(pActiveArea, pCreatureObject, nothing)
+	if not SceneObject(pCreatureObject):isCreatureObject() then
+		return 0
+	end
+
 	ObjectManager.withCreatureObject(pCreatureObject, function(creatureObject)
 		local storedActiveAreaId = readData(creatureObject:getObjectID() .. self.taskName .. ACTIVE_AREA_ID_STRING)
 		ObjectManager.withSceneObject(pActiveArea, function(activeArea)
@@ -85,6 +87,8 @@ function GoToTheater:handleEnteredAreaEvent(pActiveArea, pCreatureObject, nothin
 			end
 		end)
 	end)
+
+	return 0
 end
 
 -- Start the GoToTheater.
@@ -102,17 +106,19 @@ function GoToTheater:taskStart(pCreatureObject)
 				writeData(creatureObject:getObjectID() .. self.taskName .. THEATER_ID_STRING, theater:getObjectID())
 				return pTheater
 			end) ~= nil then
-				local spawnedMobilesList = SpawnMobiles.spawnMobiles(pTheater, self.taskName, self.mobileList)
+				Logger:log("Spawning mobiles for " .. self.taskName .. " theater.", LT_INFO)
+				local spawnedMobilesList = SpawnMobiles.spawnMobiles(pTheater, self.taskName, self.mobileList, true)
 
 				if spawnedMobilesList ~= nil then
 					if self:setupActiveArea(pCreatureObject, spawnPoint) then
+						Logger:log("Creating waypoint for " .. self.taskName .. " theater.", LT_INFO)
 						local waypointId = ObjectManager.withPlayerObject(creatureObject:getPlayerObject(), function(playerObject)
 							return playerObject:addWaypoint(creatureObject:getZoneName(), self.waypointDescription, "", spawnPoint[1], spawnPoint[3], WAYPOINTWHITE, true, true, 0)
 						end)
 
 						if waypointId ~= nil then
 							writeData(creatureObject:getObjectID() .. self.taskName .. WAYPOINT_ID_STRING, waypointId)
-							createEvent(self.despawnTime, "handleDespawnTheater", self.taskName, pCreatureObject)
+							createEvent(self.despawnTime, self.taskName, "handleDespawnTheater", pCreatureObject)
 							self:callFunctionIfNotNil(self.onSuccessfulSpawn, nil, pCreatureObject, spawnedMobilesList)
 							return true
 						end
@@ -158,7 +164,7 @@ end
 
 -- Handle the despawn event.
 -- @param pCreatureObject pointer to the creature object of the player that the event was triggered for.
-function GoToTheater:handleDespawnEvent(pCreatureObject)
+function GoToTheater:handleDespawnTheater(pCreatureObject)
 	self:finish(pCreatureObject)
 end
 

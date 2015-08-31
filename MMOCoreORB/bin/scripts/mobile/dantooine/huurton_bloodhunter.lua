@@ -1,7 +1,6 @@
 huurton_bloodhunter = Creature:new {
 	objectName = "@mob/creature_names:huurton_bloodhunter",
 	socialGroup = "huurton",
-	pvpFaction = "",
 	faction = "",
 	level = 28,
 	chanceHit = 0.37,
@@ -11,7 +10,7 @@ huurton_bloodhunter = Creature:new {
 	baseHAM = 9000,
 	baseHAMmax = 9000,
 	armor = 0,
-	resists = {15,15,15,25,15,15,15,-1,-1},
+	resists = {115,115,15,125,115,15,15,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 15,
 	hideType = "hide_wooly",
@@ -33,7 +32,8 @@ huurton_bloodhunter = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"posturedownattack",""}
 	}
 }
 

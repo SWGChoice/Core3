@@ -1,7 +1,6 @@
 archaic_jinda_ritualist = Creature:new {
 	objectName = "@mob/creature_names:archaic_jinda_ritualist",
 	socialGroup = "jinda_tribe",
-	pvpFaction = "",
 	faction = "",
 	level = 41,
 	chanceHit = 0.44,
@@ -39,7 +38,7 @@ archaic_jinda_ritualist = Creature:new {
 				{group = "armor_attachments", chance = 450000},
 				{group = "clothing_attachments", chance = 450000}
 			},
-			lootChance = 2600000
+			lootChance = 1820000
 		}
 	},
 	weapons = {"ewok_weapons"},

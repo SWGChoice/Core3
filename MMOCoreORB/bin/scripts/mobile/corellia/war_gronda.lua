@@ -1,7 +1,6 @@
 war_gronda = Creature:new {
 	objectName = "@mob/creature_names:war_gronda",
 	socialGroup = "gronda",
-	pvpFaction = "",
 	faction = "",
 	level = 32,
 	chanceHit = 0.34,
@@ -11,7 +10,7 @@ war_gronda = Creature:new {
 	baseHAM = 5400,
 	baseHAMmax = 6600,
 	armor = 0,
-	resists = {40,10,40,10,10,-1,-1,-1,-1},
+	resists = {140,10,140,10,10,-1,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 390,
 	hideType = "hide_leathery",
@@ -24,7 +23,7 @@ war_gronda = Creature:new {
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = NONE,
 	optionsBitmask = 0,
-	diet = NONE,
+	diet = HERBIVORE,
 
 	templates = {"object/mobile/war_gronda.iff"},
 	controlDeviceTemplate = "object/intangible/pet/gronda_hue.iff",
@@ -33,8 +32,8 @@ war_gronda = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"knockdownattack","knockdownChance=50"},
-		{"stunattack","stunChance=50"}
+		{"knockdownattack",""},
+		{"stunattack",""}
 	}
 }
 

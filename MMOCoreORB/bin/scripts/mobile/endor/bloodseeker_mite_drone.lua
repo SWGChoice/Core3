@@ -1,7 +1,6 @@
 bloodseeker_mite_drone = Creature:new {
 	objectName = "@mob/creature_names:bloodseeker_mite_drone",
 	socialGroup = "bloodseeker",
-	pvpFaction = "",
 	faction = "",
 	level = 20,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ bloodseeker_mite_drone = Creature:new {
 	baseHAM = 2400,
 	baseHAMmax = 3000,
 	armor = 0,
-	resists = {-1,35,-1,45,-1,45,45,-1,-1},
+	resists = {-1,135,-1,145,-1,145,145,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 15,
 	hideType = "",

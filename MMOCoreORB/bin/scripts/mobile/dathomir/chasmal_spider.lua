@@ -1,7 +1,6 @@
 chasmal_spider = Creature:new {
 	objectName = "@mob/creature_names:gaping_spider_chasmal",
 	socialGroup = "spider",
-	pvpFaction = "",
 	faction = "",
 	level = 31,
 	chanceHit = 0.38,
@@ -11,7 +10,7 @@ chasmal_spider = Creature:new {
 	baseHAM = 8600,
 	baseHAMmax = 10500,
 	armor = 0,
-	resists = {30,20,20,20,20,20,10,20,-1},
+	resists = {130,120,20,20,20,20,110,20,-1},
 	meatType = "meat_insect",
 	meatAmount = 8,
 	hideType = "",
@@ -34,7 +33,7 @@ chasmal_spider = Creature:new {
 	conversationTemplate = "",
 	attacks = {
 		{"strongpoison",""},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

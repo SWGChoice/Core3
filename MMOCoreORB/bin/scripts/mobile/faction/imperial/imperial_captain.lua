@@ -1,7 +1,7 @@
 imperial_captain = Creature:new {
 	objectName = "@mob/creature_names:crackdown_imperial_army_captain",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "imperial",
-	pvpFaction = "imperial",
 	faction = "imperial",
 	level = 30,
 	chanceHit = 0.39,
@@ -39,13 +39,14 @@ imperial_captain = Creature:new {
 				{group = "armor_attachments", chance = 300000},
 				{group = "imperial_officer_common", chance = 450000},
 				{group = "wearables_common", chance = 1000000}
-			},
-			lootChance = 2900000
+			}
 		}
 	},
 	weapons = {"imperial_weapons_medium"},
 	attacks = merge(riflemanmaster,carbineermaster,brawlermaster),
 	conversationTemplate = "imperialRecruiterConvoTemplate",
+	reactionStf = "@npc_reaction/military",
+	personalityStf = "@hireling/hireling_military",
 	optionsBitmask = 136
 }
 

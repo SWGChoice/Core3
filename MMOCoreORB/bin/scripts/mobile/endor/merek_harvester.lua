@@ -1,7 +1,6 @@
 merek_harvester = Creature:new {
 	objectName = "@mob/creature_names:merek_harvester",
 	socialGroup = "merek",
-	pvpFaction = "",
 	faction = "",
 	level = 55,
 	chanceHit = 0.55,
@@ -11,7 +10,7 @@ merek_harvester = Creature:new {
 	baseHAM = 11000,
 	baseHAMmax = 14000,
 	armor = 1,
-	resists = {75,-1,10,10,10,-1,10,-1,-1},
+	resists = {175,-1,10,10,10,-1,10,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 64,
 	hideType = "hide_leathery",
@@ -33,7 +32,7 @@ merek_harvester = Creature:new {
 	conversationTemplate = "",
 	attacks = {
 		{"creatureareacombo",""},
-		{"dizzyattack","dizzyChance=50"}
+		{"dizzyattack",""}
 	}
 }
 

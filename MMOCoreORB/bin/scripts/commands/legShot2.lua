@@ -58,7 +58,7 @@ LegShot2Command = {
 		{ "stun_defense", "resistance_states" }, 
 		{ "jedi_state_defense" }, 
 		85, 
-		100, 
+		0, 
 		45 
 	  )
 	},
@@ -68,6 +68,8 @@ LegShot2Command = {
 	animationCRC = hashCode("test_homing"),
 
 	combatSpam = "legshot",
+	
+	weaponType = CARBINEWEAPON,
 
 	range = -1
 

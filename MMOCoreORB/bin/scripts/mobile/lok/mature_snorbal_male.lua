@@ -1,7 +1,6 @@
 mature_snorbal_male = Creature:new {
 	objectName = "@mob/creature_names:mature_snorbal_male",
 	socialGroup = "snorbal",
-	pvpFaction = "",
 	faction = "",
 	level = 32,
 	chanceHit = 0.4,
@@ -11,7 +10,7 @@ mature_snorbal_male = Creature:new {
 	baseHAM = 8600,
 	baseHAMmax = 10200,
 	armor = 0,
-	resists = {35,35,20,-1,-1,-1,-1,20,-1},
+	resists = {135,135,20,-1,-1,-1,-1,20,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 545,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ mature_snorbal_male = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"},
-		{"stunattack","stunChance=50"}
+		{"posturedownattack",""},
+		{"stunattack",""}
 	}
 }
 

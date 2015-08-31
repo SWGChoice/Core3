@@ -1,7 +1,7 @@
 kobola_guard = Creature:new {
 	objectName = "@mob/creature_names:kobola_guard",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "kobola",
-	pvpFaction = "kobola",
 	faction = "kobola",
 	level = 12,
 	chanceHit = 0.29,
@@ -30,18 +30,18 @@ kobola_guard = Creature:new {
 		"object/mobile/dressed_kobola_guard_trandoshan_female_01.iff",
 		"object/mobile/dressed_kobola_guard_trandoshan_male_01.iff"},
 	lootGroups = {
-	    {
+		{
 			groups = {
 				{group = "junk", chance = 2400000},
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "kobola_common", chance = 3600000}
-			},
-			lootChance = 2400000
-		}					
+			}
+		}
 	},
 	weapons = {"novice_weapons"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlermid,marksmanmid)
 }
 

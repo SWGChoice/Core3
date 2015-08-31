@@ -1,7 +1,6 @@
 sharptooth_langlatch = Creature:new {
 	objectName = "@mob/creature_names:sharptooth_langlatch",
 	socialGroup = "langlatch",
-	pvpFaction = "",
 	faction = "",
 	level = 17,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ sharptooth_langlatch = Creature:new {
 	baseHAM = 2900,
 	baseHAMmax = 3500,
 	armor = 0,
-	resists = {0,15,0,0,0,0,0,-1,-1},
+	resists = {0,115,0,0,0,0,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 16,
 	hideType = "hide_wooly",
@@ -33,7 +32,7 @@ sharptooth_langlatch = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"}
+		{"dizzyattack",""}
 	}
 }
 

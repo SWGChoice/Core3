@@ -1,17 +1,16 @@
 enhanced_kwi = Creature:new {
 	objectName = "@mob/creature_names:geonosian_enhanced_kwi",
 	socialGroup = "geonosian_creature",
-	pvpFaction = "",
 	faction = "",
 	level = 106,
 	chanceHit = 1.75,
 	damageMin = 690,
 	damageMax = 1090,
 	baseXp = 10081,
-	baseHAM = 30000,
-	baseHAMmax = 30000,
+	baseHAM = 27000,
+	baseHAMmax = 33000,
 	armor = 2,
-	resists = {40,40,5,40,5,5,5,5,-1},
+	resists = {140,140,5,140,5,5,5,5,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 100,
 	hideType = "hide_leathery",
@@ -33,14 +32,14 @@ enhanced_kwi = Creature:new {
 			groups = {
 				{group = "enhanced_kwi", chance = 10000000}
 			},
-			lootChance = 3000000
+			lootChance = 3120000
 		}
 	},
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"intimidationattack",""}
 	}
 }
 

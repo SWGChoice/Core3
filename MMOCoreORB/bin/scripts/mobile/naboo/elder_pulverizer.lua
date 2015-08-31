@@ -1,7 +1,6 @@
 elder_pulverizer = Creature:new {
 	objectName = "@mob/creature_names:bolle_bol_elder_pulverizer",
 	socialGroup = "bol",
-	pvpFaction = "",
 	faction = "",
 	level = 30,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ elder_pulverizer = Creature:new {
 	baseHAM = 8300,
 	baseHAMmax = 10100,
 	armor = 0,
-	resists = {25,25,15,15,15,-1,15,-1,-1},
+	resists = {125,125,15,15,115,-1,115,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 450,
 	hideType = "hide_leathery",
@@ -33,8 +32,8 @@ elder_pulverizer = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"knockdownattack","knockdownChance=50"}
+		{"dizzyattack",""},
+		{"knockdownattack",""}
 	}
 }
 

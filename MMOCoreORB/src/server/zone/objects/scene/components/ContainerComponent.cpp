@@ -1,48 +1,11 @@
 /*
-Copyright (C) 2007 <SWGEmu>
-This File is part of Core3.
-This program is free software; you can redistribute
-it and/or modify it under the terms of the GNU Lesser
-General Public License as published by the Free Software
-Foundation; either version 2 of the License,
-or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU Lesser General Public License for
-more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this program; if not, write to
-the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-
-Linking Engine3 statically or dynamically with other modules
-is making a combined work based on Engine3.
-Thus, the terms and conditions of the GNU Lesser General Public License
-cover the whole combination.
-
-In addition, as a special exception, the copyright holders of Engine3
-give you permission to combine Engine3 program with free software
-programs or libraries that are released under the GNU LGPL and with
-code included in the standard release of Core3 under the GNU LGPL
-license (or modified versions of such code, with unchanged license).
-You may copy and distribute such a system following the terms of the
-GNU LGPL for Engine3 and the licenses of the other code concerned,
-provided that you include the source code of that other code when
-and as the GNU LGPL requires distribution of source code.
-
-Note that people who make modified versions of Engine3 are not obligated
-to grant this special exception for their modified versions;
-it is their choice whether to do so. The GNU Lesser General Public License
-gives permission to release a modified version without this exception;
-this exception also makes it possible to release a modified version
-which carries forward this exception.
-
+				Copyright <SWGEmu>
+		See file COPYING for copying conditions.
 */
 
 #include "ContainerComponent.h"
 #include "server/zone/objects/scene/SceneObject.h"
+#include "server/zone/objects/building/BuildingObject.h"
 #include "server/zone/Zone.h"
 #include "server/zone/objects/creature/CreatureObject.h"
 #include "server/zone/objects/player/PlayerObject.h"
@@ -53,6 +16,46 @@ int ContainerComponent::canAddObject(SceneObject* sceneObject, SceneObject* obje
 		errorDescription = "@container_error_message:container02"; //You cannot add something to itself.
 
 		return TransferErrorCode::CANTADDTOITSELF;
+	}
+
+	if ((object->isNoTrade() || object->containsNoTradeObjectRecursive()) && !object->isVendor()) {
+		ManagedReference<SceneObject*> containerPlayerParent = sceneObject->getParentRecursively(SceneObjectType::PLAYERCREATURE);
+		ManagedReference<SceneObject*> containerBuildingParent = sceneObject->getParentRecursively(SceneObjectType::BUILDING);
+		ManagedReference<SceneObject*> containerFactoryParent = sceneObject->getParentRecursively(SceneObjectType::FACTORY);
+		ManagedReference<SceneObject*> objPlayerParent = object->getParentRecursively(SceneObjectType::PLAYERCREATURE);
+		ManagedReference<SceneObject*> objBuildingParent = object->getParentRecursively(SceneObjectType::BUILDING);
+
+
+		if (containerFactoryParent != NULL) {
+			errorDescription = "@container_error_message:container28";
+			return TransferErrorCode::CANTADD;
+		} else if (objPlayerParent == NULL && objBuildingParent != NULL) {
+			ManagedReference<BuildingObject*> buio = cast<BuildingObject*>( objBuildingParent.get());
+
+			if (buio != NULL ) {
+				uint64 bid = buio->getOwnerObjectID();
+
+				if ((containerPlayerParent != NULL && bid != containerPlayerParent->getObjectID()) || (sceneObject->isPlayerCreature() && bid != sceneObject->getObjectID())) {
+					errorDescription = "@container_error_message:container27";
+					return TransferErrorCode::CANTREMOVE;
+				}
+			}
+		} else if (objPlayerParent != NULL && containerPlayerParent == NULL && containerBuildingParent != NULL && !sceneObject->isPlayerCreature()) {
+			ManagedReference<BuildingObject*> buio = cast<BuildingObject*>( containerBuildingParent.get());
+
+			if (buio != NULL && buio->getOwnerObjectID() != objPlayerParent->getObjectID()) {
+
+				errorDescription = "@container_error_message:container28";
+				return TransferErrorCode::CANTADD;
+			}
+		}
+
+	} else if (object->isVendor()) {
+		ManagedReference<SceneObject*> containerPlayerParent = sceneObject->getParentRecursively(SceneObjectType::PLAYERCREATURE);
+
+		if (!sceneObject->isCellObject() && (!sceneObject->hasArrangementDescriptor("inventory") || containerPlayerParent == NULL)) {
+			return TransferErrorCode::CANTADD;
+		}
 	}
 
 	Locker contLocker(sceneObject->getContainerLock());
@@ -66,10 +69,10 @@ int ContainerComponent::canAddObject(SceneObject* sceneObject, SceneObject* obje
 		int arrangementGroup = containmentType - 4;
 
 		if (object->getArrangementDescriptorSize() > arrangementGroup) {
-			Vector<String> descriptors = object->getArrangementDescriptor(arrangementGroup);
+			const Vector<String>* descriptors = object->getArrangementDescriptor(arrangementGroup);
 
-			for (int i = 0; i < descriptors.size(); ++i){
-				String childArrangement = descriptors.get(i);
+			for (int i = 0; i < descriptors->size(); ++i){
+				const String& childArrangement = descriptors->get(i);
 
 				if (slottedObjects->contains(childArrangement)) {
 					errorDescription = "@container_error_message:container04"; //This slot is already occupied.
@@ -85,9 +88,9 @@ int ContainerComponent::canAddObject(SceneObject* sceneObject, SceneObject* obje
 		}
 
 	} else {
-		sceneObject->error("unkown containmentType in canAddObject type " + String::valueOf(containmentType));
+		sceneObject->error("unknown containmentType in canAddObject type " + String::valueOf(containmentType));
 
-		errorDescription = "DEBUG: cant move item unkown containmentType type";
+		errorDescription = "DEBUG: cant move item unknown containmentType type";
 		return TransferErrorCode::UNKNOWNCONTAIMENTTYPE;
 	}
 
@@ -137,8 +140,9 @@ bool ContainerComponent::checkContainerPermission(SceneObject* sceneObject, Crea
 }
 
 bool ContainerComponent::transferObject(SceneObject* sceneObject, SceneObject* object, int containmentType, bool notifyClient, bool allowOverflow) {
-	if (sceneObject == object)
+	if (sceneObject == object) {
 		return false;
+	}
 
 	ManagedReference<SceneObject*> objParent = object->getParent();
 	ManagedReference<Zone*> objZone = object->getLocalZone();
@@ -156,7 +160,7 @@ bool ContainerComponent::transferObject(SceneObject* sceneObject, SceneObject* o
 			objParent->removeObject(object, sceneObject, notifyClient);
 
 		if (object->getParent() != NULL) {
-			object->error("error removing from from parent");
+			object->error("error removing from parent");
 
 			return false;
 		}
@@ -182,29 +186,30 @@ bool ContainerComponent::transferObject(SceneObject* sceneObject, SceneObject* o
 		int arrangementGroup = containmentType - 4;
 
 		if (object->getArrangementDescriptorSize() > arrangementGroup) {
-			Vector<String> descriptors = object->getArrangementDescriptor(arrangementGroup);
+			const Vector<String>* descriptors = object->getArrangementDescriptor(arrangementGroup);
 
-			for (int i = 0; i < descriptors.size(); ++i){
-				String childArrangement = descriptors.get(i);
-
+			for (int i = 0; i < descriptors->size(); ++i){
+				const String& childArrangement = descriptors->get(i);
 				if (slottedObjects->contains(childArrangement)) {
 					return false;
 				}
 			}
 
-			for (int i = 0; i < descriptors.size(); ++i)	{
-				 slottedObjects->put(descriptors.get(i), object);
+			for (int i = 0; i < descriptors->size(); ++i)	{
+				 slottedObjects->put(descriptors->get(i), object);
 			}
-		} else
+		} else {
 			return false;
+		}
 
 		object->setParent(sceneObject);
 		object->setContainmentType(containmentType);
 	} else if (containmentType == -1) { /* else if (containerType == 2 || containerType == 3) {*/
 		Locker contLocker(sceneObject->getContainerLock());
 
-		if (!allowOverflow && containerObjects->size() >= sceneObject->getContainerVolumeLimit())
+		if (!allowOverflow && containerObjects->size() >= sceneObject->getContainerVolumeLimit()){
 			return false;
+		}
 
 		/*if (containerObjects.contains(object->getObjectID()))
 			return false*/
@@ -237,6 +242,8 @@ bool ContainerComponent::transferObject(SceneObject* sceneObject, SceneObject* o
 
 	if (rootParent != NULL)
 		rootParent->notifyObjectInsertedToChild(object, sceneObject, objParent);
+
+	object->notifyObservers(ObserverEventType::PARENTCHANGED, sceneObject);
 
 	return true;
 }
@@ -277,10 +284,10 @@ bool ContainerComponent::removeObject(SceneObject* sceneObject, SceneObject* obj
 	if (object->getArrangementDescriptorSize() > arrangementGroup) {
 		bool removeFromSlot = false;
 
-		Vector<String> descriptors = object->getArrangementDescriptor(arrangementGroup);
+		const Vector<String>* descriptors = object->getArrangementDescriptor(arrangementGroup);
 
-		for (int i = 0; i < descriptors.size(); ++i){
-			String childArrangement = descriptors.get(i);
+		for (int i = 0; i < descriptors->size(); ++i){
+			const String& childArrangement = descriptors->get(i);
 
 			ManagedReference<SceneObject*> obj = slottedObjects->get(childArrangement);
 
@@ -291,8 +298,8 @@ bool ContainerComponent::removeObject(SceneObject* sceneObject, SceneObject* obj
 		}
 
 		if (removeFromSlot) {
-			for (int i = 0; i < descriptors.size(); ++i)
-				slottedObjects->drop(descriptors.get(i));
+			for (int i = 0; i < descriptors->size(); ++i)
+				slottedObjects->drop(descriptors->get(i));
 		}
 	}
 

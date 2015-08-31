@@ -1,7 +1,6 @@
 ancient_reptilian_flier = Creature:new {
 	objectName = "@mob/creature_names:ancient_reptilian_flier",
 	socialGroup = "reptilian_flier",
-	pvpFaction = "",
 	faction = "",
 	level = 25,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ ancient_reptilian_flier = Creature:new {
 	baseHAM = 5000,
 	baseHAMmax = 6100,
 	armor = 0,
-	resists = {20,30,10,50,50,-1,50,-1,-1},
+	resists = {120,130,10,150,150,-1,150,-1,-1},
 	meatType = "meat_avian",
 	meatAmount = 135,
 	hideType = "hide_leathery",
@@ -33,7 +32,8 @@ ancient_reptilian_flier = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"}
+		{"",""},
+		{"blindattack",""}
 	}
 }
 

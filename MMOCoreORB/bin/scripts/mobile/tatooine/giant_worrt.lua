@@ -1,7 +1,6 @@
 giant_worrt = Creature:new {
 	objectName = "@mob/creature_names:giant_worrt",
 	socialGroup = "worrt",
-	pvpFaction = "",
 	faction = "",
 	level = 13,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ giant_worrt = Creature:new {
 	baseHAM = 1500,
 	baseHAMmax = 1900,
 	armor = 0,
-	resists = {0,0,0,0,0,10,0,-1,-1},
+	resists = {0,0,0,0,0,110,0,-1,-1},
 	meatType = "meat_reptilian",
 	meatAmount = 9,
 	hideType = "hide_leathery",
@@ -33,7 +32,7 @@ giant_worrt = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

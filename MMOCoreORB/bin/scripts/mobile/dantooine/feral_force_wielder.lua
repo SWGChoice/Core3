@@ -1,7 +1,7 @@
 feral_force_wielder = Creature:new {
 	objectName = "@mob/creature_names:feral_force_wilder",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "force",
-	pvpFaction = "",
 	faction = "",
 	level = 115,
 	chanceHit = 1,
@@ -37,8 +37,7 @@ feral_force_wielder = Creature:new {
 				{group = "armor_attachments", chance = 750000},
 				{group = "clothing_attachments", chance = 750000},
 				{group = "wearables_all", chance = 1000000}
-			},
-			lootChance = 3500000
+			}
 		}
 	},
 	weapons = {"mixed_force_weapons"},

@@ -1,7 +1,6 @@
 dragonet = Creature:new {
 	objectName = "@mob/creature_names:dragonet",
 	socialGroup = "lizard",
-	pvpFaction = "",
 	faction = "",
 	level = 29,
 	chanceHit = 0.37,
@@ -11,7 +10,7 @@ dragonet = Creature:new {
 	baseHAM = 8200,
 	baseHAMmax = 10000,
 	armor = 0,
-	resists = {25,40,15,15,15,-1,15,-1,-1},
+	resists = {125,140,15,15,15,-1,15,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 125,
 	hideType = "hide_bristley",
@@ -33,7 +32,7 @@ dragonet = Creature:new {
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"}
+		{"dizzyattack",""}
 	}
 }
 

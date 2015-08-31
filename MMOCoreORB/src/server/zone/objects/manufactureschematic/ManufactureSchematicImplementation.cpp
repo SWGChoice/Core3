@@ -1,46 +1,6 @@
 /*
-Copyright (C) 2007 <SWGEmu>
-
-This File is part of Core3.
-
-This program is free software; you can redistribute
-it and/or modify it under the terms of the GNU Lesser
-General Public License as published by the Free Software
-Foundation; either version 2 of the License,
-or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU Lesser General Public License for
-more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this program; if not, write to
-the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-
-Linking Engine3 statically or dynamically with other modules
-is making a combined work based on Engine3.
-Thus, the terms and conditions of the GNU Lesser General Public License
-cover the whole combination.
-
-In addition, as a special exception, the copyright holders of Engine3
-give you permission to combine Engine3 program with free software
-programs or libraries that are released under the GNU LGPL and with
-code included in the standard release of Core3 under the GNU LGPL
-license (or modified versions of such code, with unchanged license).
-You may copy and distribute such a system following the terms of the
-GNU LGPL for Engine3 and the licenses of the other code concerned,
-provided that you include the source code of that other code when
-and as the GNU LGPL requires distribution of source code.
-
-Note that people who make modified versions of Engine3 are not obligated
-to grant this special exception for their modified versions;
-it is their choice whether to do so. The GNU Lesser General Public License
-gives permission to release a modified version without this exception;
-this exception also makes it possible to release a modified version
-which carries forward this exception.
-*/
+				Copyright <SWGEmu>
+		See file COPYING for copying conditions.*/
 
 #include "server/zone/objects/manufactureschematic/ManufactureSchematic.h"
 #include "server/zone/objects/creature/CreatureObject.h"
@@ -112,7 +72,7 @@ void ManufactureSchematicImplementation::sendTo(SceneObject* player, bool doClos
 	sendContainerObjectsTo(player);
 
 	if(doClose) {
-		BaseMessage* msg = new SceneObjectCloseMessage(_this.get());
+		BaseMessage* msg = new SceneObjectCloseMessage(_this.getReferenceUnsafeStaticCast());
 		player->sendMessage(msg);
 	}
 
@@ -129,7 +89,7 @@ void ManufactureSchematicImplementation::sendBaselinesTo(SceneObject* player) {
 	ManufactureSchematicObjectMessage3* msco3;
 
 	if(prototype != NULL)
-		msco3 = new ManufactureSchematicObjectMessage3(_this.get(), playerCreature->getFirstName());
+		msco3 = new ManufactureSchematicObjectMessage3(_this.getReferenceUnsafeStaticCast(), playerCreature->getFirstName());
 	 else
 		msco3 = new ManufactureSchematicObjectMessage3(getObjectID(), complexity, playerCreature->getFirstName());
 
@@ -162,7 +122,7 @@ void ManufactureSchematicImplementation::synchronizedUIListen(SceneObject* playe
 		return;
 
 	Reference<CraftingSession*> session = player->getActiveSession(SessionFacadeType::CRAFTING).castTo<CraftingSession*>();
-	if(session == NULL || session->getSchematic() != _this.get()) {
+	if(session == NULL || session->getSchematic() != _this.getReferenceUnsafeStaticCast()) {
 		return;
 	}
 
@@ -180,7 +140,7 @@ void ManufactureSchematicImplementation::synchronizedUIListen(SceneObject* playe
 
 void ManufactureSchematicImplementation::sendMsco7(SceneObject* player) {
 
-	ManufactureSchematicObjectMessage7* mcso7 = new ManufactureSchematicObjectMessage7(_this.get());
+	ManufactureSchematicObjectMessage7* mcso7 = new ManufactureSchematicObjectMessage7(_this.getReferenceUnsafeStaticCast());
 
 	/// Slot names
 	ingredientNames.insertToMessage(mcso7);
@@ -301,7 +261,7 @@ void ManufactureSchematicImplementation::synchronizedUIStopListen(SceneObject* p
 
 void ManufactureSchematicImplementation::initializeIngredientSlots() {
 
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	if(draftSchematic == NULL || initialized)
 		return;
@@ -381,13 +341,10 @@ int ManufactureSchematicImplementation::addIngredientToSlot(CreatureObject* play
 
 	Reference<IngredientSlot*> ingredientSlot = ingredientSlots.get(slot);
 
-	if(ingredientSlot == NULL)
+	if (ingredientSlot == NULL)
 		return IngredientSlot::INVALID;
 
 	bool wasEmpty = false;
-
-	if (ingredientSlot == NULL)
-		return IngredientSlot::INVALIDINGREDIENT;
 
 	if(ingredientSlot->isFull())
 		return IngredientSlot::FULL;
@@ -398,7 +355,6 @@ int ManufactureSchematicImplementation::addIngredientToSlot(CreatureObject* play
 	if(!ingredientSlot->add(player, satchel, tano))
 		return IngredientSlot::INVALIDINGREDIENT;
 
-
 	if(wasEmpty) {
 
 		updateIngredientCounter();
@@ -406,7 +362,7 @@ int ManufactureSchematicImplementation::addIngredientToSlot(CreatureObject* play
 
 		// DMSCO6 ***************************************************
 		ManufactureSchematicObjectDeltaMessage6* dMsco6 =
-				new ManufactureSchematicObjectDeltaMessage6(_this.get());
+				new ManufactureSchematicObjectDeltaMessage6(_this.getReferenceUnsafeStaticCast());
 
 		dMsco6->insertToResourceSlot(slot);
 		dMsco6->close();
@@ -432,7 +388,7 @@ int ManufactureSchematicImplementation::addIngredientToSlot(CreatureObject* play
 	// Start DMSCO3 ***********************************************************
 	// Updates the Complexity
 	ManufactureSchematicObjectDeltaMessage3* dMsco3 =
-				new ManufactureSchematicObjectDeltaMessage3(_this.get());
+				new ManufactureSchematicObjectDeltaMessage3(_this.getReferenceUnsafeStaticCast());
 	dMsco3->updateComplexity(getComplexity());
 	dMsco3->close();
 
@@ -461,7 +417,7 @@ int ManufactureSchematicImplementation::removeIngredientFromSlot(CreatureObject*
 	// Start DMSCO3 ***********************************************************
 	// Updates the Complexity
 	ManufactureSchematicObjectDeltaMessage3* dMsco3 =
-			new ManufactureSchematicObjectDeltaMessage3(_this.get());
+			new ManufactureSchematicObjectDeltaMessage3(_this.getReferenceUnsafeStaticCast());
 	dMsco3->updateComplexity(getComplexity());
 	dMsco3->close();
 
@@ -474,7 +430,7 @@ int ManufactureSchematicImplementation::removeIngredientFromSlot(CreatureObject*
 void ManufactureSchematicImplementation::sendDelta7(IngredientSlot* ingredientSlot, int slot, CreatureObject* player) {
 	// DMSCO7 ***************************************************
 
-	ManufactureSchematicObjectDeltaMessage7* dmcso7 = new ManufactureSchematicObjectDeltaMessage7(_this.get());
+	ManufactureSchematicObjectDeltaMessage7* dmcso7 = new ManufactureSchematicObjectDeltaMessage7(_this.getReferenceUnsafeStaticCast());
 
 	/// Update slot type
 	int type = ingredientSlot->getClientSlotType();
@@ -517,7 +473,7 @@ void ManufactureSchematicImplementation::sendDelta7(IngredientSlot* ingredientSl
 
 void ManufactureSchematicImplementation::cleanupIngredientSlots(CreatureObject* player) {
 
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	while (ingredientSlots.size() > 0) {
 		Reference<IngredientSlot*>  slot = ingredientSlots.remove(0);
@@ -596,7 +552,7 @@ void ManufactureSchematicImplementation::setPrototype(TangibleObject* tano) {
 	/// This is where the schematic gets sent to the datapad, so wee need
 	/// To initialize all the values
 
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	prototype = tano;
 	crafter = NULL;

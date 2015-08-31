@@ -1,7 +1,7 @@
 gifted_jinda_shaman = Creature:new {
 	objectName = "@mob/creature_names:gifted_jinda_shaman",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "jinda_tribe",
-	pvpFaction = "",
 	faction = "",
 	level = 27,
 	chanceHit = 0.36,
@@ -27,18 +27,18 @@ gifted_jinda_shaman = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {
-			"object/mobile/jinda_male.iff",
-			"object/mobile/jinda_male_01.iff",
-			"object/mobile/jinda_female.iff",
-			"object/mobile/jinda_female_01.iff"},
+		"object/mobile/jinda_male.iff",
+		"object/mobile/jinda_male_01.iff",
+		"object/mobile/jinda_female.iff",
+		"object/mobile/jinda_female_01.iff"},
 	lootGroups = {
 		{
-	        groups = {
+			groups = {
 				{group = "ewok", chance = 9100000},
 				{group = "armor_attachments", chance = 450000},
 				{group = "clothing_attachments", chance = 450000}
 			},
-			lootChance = 2200000
+			lootChance = 1540000
 		}
 	},
 	weapons = {"ewok_weapons"},

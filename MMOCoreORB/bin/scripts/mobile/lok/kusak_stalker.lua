@@ -1,7 +1,6 @@
 kusak_stalker = Creature:new {
 	objectName = "@mob/creature_names:kusak_stalker",
 	socialGroup = "kusak",
-	pvpFaction = "",
 	faction = "",
 	level = 24,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ kusak_stalker = Creature:new {
 	baseHAM = 6800,
 	baseHAMmax = 8300,
 	armor = 0,
-	resists = {30,15,10,-1,10,10,-1,-1,-1},
+	resists = {130,115,10,-1,10,10,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 20,
 	hideType = "hide_bristley",
@@ -33,6 +32,7 @@ kusak_stalker = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
+		{"dizzyattack",""}
 	}
 }
 

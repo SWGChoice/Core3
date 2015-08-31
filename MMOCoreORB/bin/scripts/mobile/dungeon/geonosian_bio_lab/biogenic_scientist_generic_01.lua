@@ -1,7 +1,6 @@
 biogenic_scientist_generic_01 = Creature:new {
 	objectName = "@mob/creature_names:geonosian_scientist",
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 25,
 	chanceHit = 0.35,
@@ -25,7 +24,7 @@ biogenic_scientist_generic_01 = Creature:new {
 	creatureBitmask = NONE,
 	optionsBitmask = 392,
 	diet = HERBIVORE,
-	
+
 	templates = {
 		"object/mobile/dressed_geonosian_scientist_01.iff",
 		"object/mobile/dressed_geonosian_scientist_02.iff"},

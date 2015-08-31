@@ -1,7 +1,7 @@
 bith_sniper = Creature:new {
 	objectName = "@mob/creature_names:bith_sniper",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "bith",
-	pvpFaction = "",
 	faction = "",
 	level = 9,
 	chanceHit = 0.27,
@@ -28,18 +28,18 @@ bith_sniper = Creature:new {
 
 	templates = {"object/mobile/dressed_brigade_gunner_bith_male_01.iff"},
 	lootGroups = {
-      	{
+		{
 			groups = {
 				{group = "junk", chance = 4000000},
 				{group = "wearables_common", chance = 3000000},
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "tailor_components", chance = 1000000},
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"ranged_weapons"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(marksmannovice,brawlernovice)
 }
 

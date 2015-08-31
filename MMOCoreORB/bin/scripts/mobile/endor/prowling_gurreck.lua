@@ -1,7 +1,6 @@
 prowling_gurreck = Creature:new {
 	objectName = "@mob/creature_names:gurreck_prowler",
 	socialGroup = "gurreck",
-	pvpFaction = "",
 	faction = "",
 	level = 45,
 	chanceHit = 0.44,
@@ -11,7 +10,7 @@ prowling_gurreck = Creature:new {
 	baseHAM = 8900,
 	baseHAMmax = 10900,
 	armor = 0,
-	resists = {65,65,30,30,-1,30,30,30,-1},
+	resists = {165,165,30,30,-1,30,30,30,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 75,
 	hideType = "hide_wooly",
@@ -33,8 +32,8 @@ prowling_gurreck = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"posturedownattack","postureDownChance=50"}
+		{"blindattack",""},
+		{"posturedownattack",""}
 	}
 }
 

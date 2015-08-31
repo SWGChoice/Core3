@@ -16,10 +16,21 @@
 #include "server/zone/objects/player/sessions/StructureSetAccessFeeSession.h"
 #include "server/zone/objects/building/BuildingObject.h"
 #include "server/chat/StringIdChatParameter.h"
+#include "server/zone/objects/creature/DroidObject.h"
+#include "server/zone/objects/intangible/PetControlDevice.h"
+#include "server/zone/managers/creature/PetManager.h"
+
 
 void StructureTerminalMenuComponent::fillObjectMenuResponse(SceneObject* sceneObject, ObjectMenuResponse* menuResponse, CreatureObject* creature) {
 
 	if(!sceneObject->isTerminal())
+		return;
+
+	if(!creature->isPlayerCreature())
+		return;
+
+	ManagedReference<PlayerObject*> ghost = creature->getPlayerObject();
+	if( ghost == NULL )
 		return;
 
 	ManagedReference<Terminal*> terminal = cast<Terminal*>(sceneObject);
@@ -57,7 +68,28 @@ void StructureTerminalMenuComponent::fillObjectMenuResponse(SceneObject* sceneOb
 		menuResponse->addRadialMenuItemToRadialID(118, 128, 3, "@player_structure:permission_destroy"); //Destroy Structure
 		menuResponse->addRadialMenuItemToRadialID(118, 124, 3, "@player_structure:management_status"); //Status
 		menuResponse->addRadialMenuItemToRadialID(118, 129, 3, "@player_structure:management_pay"); //Pay Maintenance
+
+		if (structureObject->isGuildHall()) {
+			menuResponse->addRadialMenuItemToRadialID(118, 70, 3, "@player_structure:take_maintenance"); // Withdraw Maintenance
+		}
+
 		menuResponse->addRadialMenuItemToRadialID(118, 50, 3, "@player_structure:management_name_structure"); //Name Structure
+
+		ManagedReference<SceneObject*> datapad = creature->getSlottedObject("datapad");
+		if(datapad != NULL) {
+			for (int i = 0; i < datapad->getContainerObjectsSize(); ++i) {
+				ManagedReference<SceneObject*> object = datapad->getContainerObject(i);
+
+				if (object != NULL && object->isPetControlDevice()) {
+					PetControlDevice* device = cast<PetControlDevice*>( object.get());
+
+					if (device->getPetType() == PetManager::DROIDPET) {
+						menuResponse->addRadialMenuItemToRadialID(118, 131, 3, "@player_structure:assign_droid"); //Assign Droid
+						break;
+					}
+				}
+			}
+		}
 
 		if (structureObject->isBuildingObject()) {
 			menuResponse->addRadialMenuItemToRadialID(118, 127, 3, "@player_structure:management_residence"); //Declare Residence
@@ -77,7 +109,6 @@ void StructureTerminalMenuComponent::fillObjectMenuResponse(SceneObject* sceneOb
 
 
 			menuResponse->addRadialMenuItemToRadialID(118, 69, 3, "@player_structure:management_change_sign"); //Change Sign
-			//menuResponse->addRadialMenuItemToRadialID(118, 200, 3, "@player_structure:withdraw_maintenance"); //Withdraw from Treasury
 			menuResponse->addRadialMenuItemToRadialID(118, 201, 3, "@player_structure:delete_all_items"); //Delete all items
 			menuResponse->addRadialMenuItemToRadialID(118, 202, 3, "@player_structure:move_first_item"); //Find Lost Items
 		}
@@ -101,6 +132,13 @@ void StructureTerminalMenuComponent::fillObjectMenuResponse(SceneObject* sceneOb
 int StructureTerminalMenuComponent::handleObjectMenuSelect(SceneObject* sceneObject, CreatureObject* creature, byte selectedID) {
 	ManagedReference<Terminal*> terminal = cast<Terminal*>(sceneObject);
 	if(terminal == NULL)
+		return 1;
+
+	if(!creature->isPlayerCreature())
+		return 1;
+
+	ManagedReference<PlayerObject*> ghost = creature->getPlayerObject();
+	if( ghost == NULL )
 		return 1;
 
 	ManagedReference<StructureObject*> structureObject = cast<StructureObject*>(terminal->getControlledObject());
@@ -175,6 +213,9 @@ int StructureTerminalMenuComponent::handleObjectMenuSelect(SceneObject* sceneObj
 		case 129:
 			creature->executeObjectControllerAction(0xE7E35B30, structureObject->getObjectID(), ""); //payMaintenance
 			break;
+		case 70:
+			structureManager->promptWithdrawMaintenance(structureObject, creature);
+			break;
 		case 124:
 			creature->executeObjectControllerAction(0x13F7E585, structureObject->getObjectID(), ""); //structureStatus
 			break;
@@ -214,12 +255,16 @@ int StructureTerminalMenuComponent::handleObjectMenuSelect(SceneObject* sceneObj
 		case 69:
 			structureManager->promptSelectSign(structureObject, creature);
 			break;
+		case 131: // Assign Droid
+			structureManager->promptMaintenanceDroid(structureObject,creature);
+			break;
 		}
+
 	}
 
 	if(selectedID == 130 && (structureObject->isOnAdminList(creature) || structureObject->isOnPermissionList("VENDOR", creature))) {
 		if (creature->hasSkill("crafting_artisan_business_03")) {
-			creature->executeObjectControllerAction(String("createvendor").hashCode()); // Create Vendor
+			creature->executeObjectControllerAction(STRING_HASHCODE("createvendor")); // Create Vendor
 		}
 	}
 

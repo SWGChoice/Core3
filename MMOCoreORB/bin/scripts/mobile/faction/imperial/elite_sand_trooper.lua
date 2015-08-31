@@ -1,7 +1,7 @@
 elite_sand_trooper = Creature:new {
 	objectName = "@mob/creature_names:elite_sand_trooper",
+	randomNameType = NAME_STORMTROOPER_TAG,
 	socialGroup = "imperial",
-	pvpFaction = "imperial",
 	faction = "imperial",
 	level = 44,
 	chanceHit = 0.47,
@@ -26,7 +26,7 @@ elite_sand_trooper = Creature:new {
 	optionsBitmask = 128,
 	diet = HERBIVORE,
 
-	templates = {"object/mobile/dressed_stormtrooper_black_gold.iff"},
+	templates = {"object/mobile/dressed_stormtrooper_sand_trooper_m.iff"},
 	lootGroups = {
 		{
 			groups = {
@@ -41,12 +41,13 @@ elite_sand_trooper = Creature:new {
 				{group = "stormtrooper_common", chance = 100000},
 				{group = "wearables_common", chance = 500000},
 				{group = "wearables_uncommon", chance = 500000}
-			},
-			lootChance = 2800000
+			}
 		}
 	},
 	weapons = {"sandtrooper_weapons"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/stormtrooper",
+	personalityStf = "@hireling/hireling_stormtrooper",
 	attacks = merge(riflemanmaster,marksmanmaster,brawlermaster)
 }
 

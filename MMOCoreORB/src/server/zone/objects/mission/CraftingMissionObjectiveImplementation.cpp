@@ -39,8 +39,15 @@ void CraftingMissionObjectiveImplementation::updateMissionStatus(CreatureObject*
 		for (int i = 0; i < schematic->getDraftSlotCount(); i++) {
 			ManagedReference<TangibleObject*> item = ( player->getZoneServer()->createObject(schematic->getDraftSlot(i)->getResourceType().replaceFirst("/shared_", "/").hashCode(), 2)).castTo<TangibleObject*>();
 			if (item != NULL) {
-				item->sendTo(player, true);
-				inventory->transferObject(item, -1, true);
+				Locker locker(item);
+
+				if (inventory->transferObject(item, -1, true)) {
+					item->sendTo(player, true);
+				} else {
+					item->destroyObjectFromDatabase(true);
+					abort();
+					return;
+				}
 			}
 		}
 
@@ -51,9 +58,14 @@ void CraftingMissionObjectiveImplementation::updateMissionStatus(CreatureObject*
 	case 1:
 		//Check if player has the item.
 		for (int i = 0; i < inventory->getContainerObjectsSize(); i++) {
-			if (inventory->getContainerObject(i)->getObjectTemplate()->getFullTemplateString() == mission->getTemplateString2()) {
+			Reference<SceneObject*> item = inventory->getContainerObject(i);
+
+			Locker locker(item);
+
+			if (item != NULL && item->getObjectTemplate()->getFullTemplateString() == mission->getTemplateString2()) {
 				//Delete the item.
-				inventory->getContainerObject(i)->destroyObjectFromWorld(true);
+				item->destroyObjectFromWorld(true);
+				item->destroyObjectFromDatabase(true);
 
 				complete();
 

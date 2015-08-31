@@ -1,7 +1,6 @@
 woolamander_reaper = Creature:new {
 	objectName = "@mob/creature_names:woolamander_reaper",
 	socialGroup = "woolamander",
-	pvpFaction = "",
 	faction = "",
 	level = 47,
 	chanceHit = 0.48,
@@ -11,7 +10,7 @@ woolamander_reaper = Creature:new {
 	baseHAM = 9800,
 	baseHAMmax = 12000,
 	armor = 0,
-	resists = {20,20,0,70,70,70,0,0,0},
+	resists = {35,35,0,170,170,170,0,0,0},
 	meatType = "meat_carnivore",
 	meatAmount = 35,
 	hideType = "hide_wooly",
@@ -32,7 +31,8 @@ woolamander_reaper = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"creatureareadisease",""}
+		{"creatureareadisease",""},
+		{"intimidationattack",""}
 	}
 }
 

@@ -63,21 +63,21 @@ int CreatureImplementation::handleObjectMenuSelect(CreatureObject* player, byte 
 	if (getZone() == NULL)
 		return 0;
 
-	if (!(_this.get()->isDead())) {
+	if (!(_this.getReferenceUnsafeStaticCast()->isDead())) {
 		if (selectedID == 112) {
-			getZone()->getCreatureManager()->milk(_this.get(), player);
+			getZone()->getCreatureManager()->milk(_this.getReferenceUnsafeStaticCast(), player);
 		}
 	} else {
 		if ((selectedID == 112 || selectedID == 234 || selectedID == 235 || selectedID == 236)) {
 
-			getZone()->getCreatureManager()->harvest(_this.get(), player, selectedID);
+			getZone()->getCreatureManager()->harvest(_this.getReferenceUnsafeStaticCast(), player, selectedID);
 
 			return 0;
 		}
 	}
 
 	if (selectedID == 159) {
-		getZone()->getCreatureManager()->tame(_this.get(), player);
+		getZone()->getCreatureManager()->tame(_this.getReferenceUnsafeStaticCast(), player);
 	}
 
 	return AiAgentImplementation::handleObjectMenuSelect(player, selectedID);
@@ -152,11 +152,14 @@ void CreatureImplementation::fillAttributeList(AttributeListMessage* alm, Creatu
 	if (attackMap != NULL)
 		skillNum = attackMap->size();
 	if (creaKnowledge >= 70) {
-		String skillname = "none";
+		String skillname = "";
 		if (skillNum >= 1)
 			skillname = attackMap->getCommand(0);
+
 		if (skillname == "creatureareaattack")
 			skillname = "unknown_attack";
+		else if (skillname.isEmpty())
+			skillname = "none";
 
 		StringBuffer skillMsg;
 		skillMsg << "@combat_effects:" << skillname;
@@ -165,13 +168,16 @@ void CreatureImplementation::fillAttributeList(AttributeListMessage* alm, Creatu
 	}
 
 	if (creaKnowledge >= 80) {
-		String skillname = "none";
+		String skillname = "";
 		if (skillNum >= 2)
 			skillname = attackMap->getCommand(1);
 
-		StringBuffer skillMsg;
 		if (skillname == "creatureareaattack")
 			skillname = "unknown_attack";
+		else if (skillname.isEmpty())
+			skillname = "none";
+
+		StringBuffer skillMsg;
 		skillMsg << "@combat_effects:" << skillname;
 
 		alm->insertAttribute("pet_command_19", skillMsg.toString());
@@ -191,7 +197,7 @@ void CreatureImplementation::scheduleDespawn() {
 	if (getPendingTask("despawn") != NULL)
 		return;
 
-	Reference<DespawnCreatureTask*> despawn = new DespawnCreatureTask(_this.get());
+	Reference<DespawnCreatureTask*> despawn = new DespawnCreatureTask(_this.getReferenceUnsafeStaticCast());
 	//despawn->schedule(300000); /// 5 minutes
 	//addPendingTask("despawn", despawn, 45000); /// 45 second
 	addPendingTask("despawn", despawn, 300000);
@@ -206,6 +212,10 @@ bool CreatureImplementation::hasDNA() {
 		return false;
 	}
 	if (isPet() && !hasPetDeed()) {
+		return false;
+	}
+	// skip droids and anything that doesnt have organic bits or it doesnt eat
+	if (isDroidObject() || !hasOrganics() || getDiet() == CreatureFlag::NONE) {
 		return false;
 	}
 	return (dnaState == CreatureManager::HASDNA);
@@ -240,7 +250,7 @@ void CreatureImplementation::notifyDespawn(Zone* zone) {
 
 bool CreatureImplementation::canHarvestMe(CreatureObject* player) {
 
-	if(!player->isInRange(_this.get(), 10.0f) || player->isInCombat() || !player->hasSkill("outdoors_scout_novice")
+	if(!player->isInRange(_this.getReferenceUnsafeStaticCast(), 10.0f) || player->isInCombat() || !player->hasSkill("outdoors_scout_novice")
 			|| player->isDead() || player->isIncapacitated() || isPet())
 		return false;
 
@@ -265,6 +275,38 @@ bool CreatureImplementation::canHarvestMe(CreatureObject* player) {
 
 	return false;
 }
+bool CreatureImplementation::canDroidHarvestMe(CreatureObject* player,CreatureObject* droid) {
+
+	// droid should be able to harvest if in range, with current AI
+	if(!droid->isInRange(_this.getReferenceUnsafeStaticCast(), (10.0f + droid->getTemplateRadius() + getTemplateRadius())) || droid->isInCombat() || !player->hasSkill("outdoors_scout_novice")
+			|| droid->isDead() || droid->isIncapacitated() || isPet()) {
+		return false;
+	}
+
+	if (!hasOrganics()) {
+		return false;
+	}
+
+	if (player->getSkillMod("creature_harvesting") < 1) {
+		return false;
+	}
+
+	if (alreadyHarvested.contains(player->getObjectID())) {
+		return false;
+	}
+
+	SceneObject* creatureInventory = getSlottedObject("inventory");
+
+	if (creatureInventory == NULL) {
+		return false;
+	}
+
+	uint64 lootOwnerID = creatureInventory->getContainerPermissions()->getOwnerID();
+
+	if (player->getObjectID() == lootOwnerID || (player->isGrouped() && player->getGroupID() == lootOwnerID))
+		return true;
+	return false;
+}
 
 bool CreatureImplementation::hasSkillToHarvestMe(CreatureObject* player) {
 
@@ -286,7 +328,7 @@ bool CreatureImplementation::hasSkillToHarvestMe(CreatureObject* player) {
 }
 
 bool CreatureImplementation::canTameMe(CreatureObject* player) {
-	if (!isBaby() || _this.get()->isInCombat() || _this.get()->isDead() || isPet())
+	if (!isBaby() || _this.getReferenceUnsafeStaticCast()->isInCombat() || _this.getReferenceUnsafeStaticCast()->isDead() || isPet())
 		return false;
 
 	if(player->isInCombat() || player->isDead() || player->isIncapacitated() || player->isRidingMount())
@@ -319,10 +361,10 @@ bool CreatureImplementation::isVicious() {
 
 bool CreatureImplementation::canMilkMe(CreatureObject* player) {
 
-	if (!hasMilk() || milkState != CreatureManager::NOTMILKED  || _this.get()->isInCombat() || _this.get()->isDead() || isPet())
+	if (!hasMilk() || milkState != CreatureManager::NOTMILKED  || _this.getReferenceUnsafeStaticCast()->isInCombat() || _this.getReferenceUnsafeStaticCast()->isDead() || isPet())
 		return false;
 
-	if(!player->isInRange(_this.get(), 5.0f) || player->isInCombat() || player->isDead() || player->isIncapacitated() || !(player->hasState(CreatureState::MASKSCENT)))
+	if(!player->isInRange(_this.getReferenceUnsafeStaticCast(), 5.0f) || player->isInCombat() || player->isDead() || player->isIncapacitated() || !(player->hasState(CreatureState::MASKSCENT)))
 		return false;
 
 	return true;
@@ -337,7 +379,7 @@ bool CreatureImplementation::hasSkillToSampleMe(CreatureObject* player) {
 		return false;
 
 	int skillMod = player->getSkillMod("dna_harvesting");
-	int cl = _this.get()->getLevel();
+	int cl = _this.getReferenceUnsafeStaticCast()->getLevel();
 	// Skill Mod Check, you need atleast x skill points to be able to sample x level unless creature > 13k ham or CL 75 (we only generated values to 75)
 	if (skillMod < 1 || cl > skillMod + 15)
 		return false;
@@ -349,16 +391,16 @@ bool CreatureImplementation::hasSkillToSampleMe(CreatureObject* player) {
 }
 
 bool CreatureImplementation::canCollectDna(CreatureObject* player) {
-	if (!hasDNA() ||  _this.get()->isInCombat() || _this.get()->isDead() || !player->hasSkill("outdoors_bio_engineer_novice")){
+	if (!hasDNA() ||  _this.getReferenceUnsafeStaticCast()->isInCombat() || _this.getReferenceUnsafeStaticCast()->isDead() || !player->hasSkill("outdoors_bio_engineer_novice")){
 		return false;
 	}
 	if (player->getSkillMod("dna_harvesting") < 1)
 		return false;
 
-	if (_this.get()->isNonPlayerCreatureObject()) {
+	if (_this.getReferenceUnsafeStaticCast()->isNonPlayerCreatureObject()) {
 		return false;
 	}
-	if(!player->isInRange(_this.get(), 16.0f) || player->isInCombat() || player->isDead() || player->isIncapacitated() ){
+	if(!player->isInRange(_this.getReferenceUnsafeStaticCast(), 16.0f) || player->isInCombat() || player->isDead() || player->isIncapacitated() ){
 		return false;
 	}
 
@@ -397,11 +439,12 @@ void CreatureImplementation::setPetLevel(int newLevel) {
 		return;
 	}
 
+	clearBuffs(false);
+
 	int baseLevel = getTemplateLevel();
 
 	float minDmg = calculateAttackMinDamage(baseLevel);
 	float maxDmg = calculateAttackMaxDamage(baseLevel);
-	float speed = calculateAttackSpeed(newLevel);
 
 	Reference<WeaponObject*> defaultWeapon = getSlottedObject("default_weapon").castTo<WeaponObject*>();
 
@@ -409,21 +452,19 @@ void CreatureImplementation::setPetLevel(int newLevel) {
 	minDmg *= ratio;
 	maxDmg *= ratio;
 
-	for (int i = 0; i < weapons.size(); ++i) {
-		WeaponObject* weao = weapons.get(i);
+	if (readyWeapon != NULL) {
+		float mod = 1.f - 0.1f*float(readyWeapon->getArmorPiercing());
 
-		weao->setMinDamage(minDmg * 0.5);
-		weao->setMaxDamage(maxDmg * 0.5);
-		weao->setAttackSpeed(speed);
+		readyWeapon->setMinDamage(minDmg * mod);
+		readyWeapon->setMaxDamage(maxDmg * mod);
 	}
 
 	if (defaultWeapon != NULL) {
 		defaultWeapon->setMinDamage(minDmg);
 		defaultWeapon->setMaxDamage(maxDmg);
-		defaultWeapon->setAttackSpeed(speed);
 	}
 
-	int ham;
+	int ham = 0;
 
 	for (int i = 0; i < 9; ++i) {
 		if (i % 3 == 0) {
@@ -464,7 +505,7 @@ void CreatureImplementation::sendMessage(BasePacket* msg) {
 
 	ManagedReference<CreatureObject* > linkedCreature = this->linkedCreature.get();
 
-	if (linkedCreature != NULL && linkedCreature->getParent().get() == _this.get())
+	if (linkedCreature != NULL && linkedCreature->getParent().get() == _this.getReferenceUnsafeStaticCast())
 		linkedCreature->sendMessage(msg);
 	else
 		delete msg;

@@ -1,7 +1,6 @@
 bantha_matriarch = Creature:new {
 	objectName = "@mob/creature_names:matriarch_bantha",
 	socialGroup = "bantha",
-	pvpFaction = "",
 	faction = "",
 	level = 25,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ bantha_matriarch = Creature:new {
 	baseHAM = 7700,
 	baseHAMmax = 8550,
 	armor = 0,
-	resists = {35,10,10,50,-1,-1,-1,-1,-1},
+	resists = {135,110,10,150,-1,-1,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 485,
 	hideType = "hide_wooly",
@@ -33,7 +32,8 @@ bantha_matriarch = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"",""},
+		{"posturedownattack",""}
 	}
 }
 

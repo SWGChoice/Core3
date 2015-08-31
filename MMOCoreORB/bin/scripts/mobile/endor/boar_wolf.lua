@@ -1,7 +1,6 @@
 boar_wolf = Creature:new {
 	objectName = "@mob/creature_names:boar_wolf",
 	socialGroup = "boar",
-	pvpFaction = "",
 	faction = "",
 	level = 25,
 	chanceHit = 0.36,
@@ -11,7 +10,7 @@ boar_wolf = Creature:new {
 	baseHAM = 8100,
 	baseHAMmax = 9900,
 	armor = 0,
-	resists = {50,-1,30,-1,30,30,-1,-1,-1},
+	resists = {150,-1,130,-1,130,130,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 65,
 	hideType = "hide_leathery",
@@ -32,7 +31,7 @@ boar_wolf = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

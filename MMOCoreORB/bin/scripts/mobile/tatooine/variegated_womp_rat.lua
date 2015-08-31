@@ -1,7 +1,6 @@
 variegated_womp_rat = Creature:new {
 	objectName = "@mob/creature_names:variegated_womprat",
 	socialGroup = "rat",
-	pvpFaction = "",
 	faction = "",
 	level = 14,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ variegated_womp_rat = Creature:new {
 	baseHAM = 1500,
 	baseHAMmax = 1900,
 	armor = 0,
-	resists = {0,0,15,0,0,0,0,0,-1},
+	resists = {0,0,115,0,0,0,0,0,-1},
 	meatType = "meat_wild",
 	meatAmount = 3,
 	hideType = "hide_leathery",
@@ -33,7 +32,8 @@ variegated_womp_rat = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"",""},
+		{"stunattack",""}
 	}
 }
 

@@ -59,7 +59,7 @@ bool VendorManager::isValidVendorName(const String& name) {
 		return false;
 	}
 
-	return nameManager->validateName(name) == 7;
+	return nameManager->validateVendorName(name) == NameManagerResult::ACCEPTED;
 }
 
 void VendorManager::handleDisplayStatus(CreatureObject* player, TangibleObject* vendor) {
@@ -272,8 +272,12 @@ void VendorManager::destroyVendor(SceneObject* vendor) {
 		vendor->getZone()->unregisterObjectWithPlanetaryMap(vendor);
 	}
 
+	Locker locker(vendor);
+
 	vendor->destroyObjectFromWorld(true);
 	vendor->destroyObjectFromDatabase(true);
+
+	locker.release();
 
 	auctionsMap->deleteTerminalItems(vendor);
 }
@@ -416,9 +420,5 @@ void VendorManager::handleRenameVendor(CreatureObject* player, TangibleObject* v
 		player->sendSystemMessage("@player_structure:vendor_rename_unreg");
 	} else
 		player->sendSystemMessage("@player_structure:vendor_rename");
-
-}
-
-void VendorManager::randomizeCustomization(TangibleObject* vendor) {
 
 }

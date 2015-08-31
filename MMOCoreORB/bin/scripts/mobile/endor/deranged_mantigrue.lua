@@ -1,7 +1,6 @@
 deranged_mantigrue = Creature:new {
 	objectName = "@mob/creature_names:deranged_mantigrue",
 	socialGroup = "mantigrue",
-	pvpFaction = "",
 	faction = "",
 	level = 45,
 	chanceHit = 0.44,
@@ -11,7 +10,7 @@ deranged_mantigrue = Creature:new {
 	baseHAM = 8800,
 	baseHAMmax = 10800,
 	armor = 0,
-	resists = {50,45,70,-1,70,70,70,70,-1},
+	resists = {150,145,170,-1,170,170,170,170,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 80,
 	hideType = "hide_wooly",
@@ -32,8 +31,8 @@ deranged_mantigrue = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"stunattack","stunChance=50"}
+		{"blindattack",""},
+		{"stunattack",""}
 	}
 }
 

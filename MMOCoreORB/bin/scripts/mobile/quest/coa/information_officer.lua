@@ -1,7 +1,7 @@
 information_officer = Creature:new {
 	objectName = "@mob/creature_names:coa3_information_rebel",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "rebel",
-	pvpFaction = "rebel",
 	faction = "rebel",
 	level = 25,
 	chanceHit = 0.36,

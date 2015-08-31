@@ -1,7 +1,6 @@
 feral_orphan = Creature:new {
 	objectName = "@mob/creature_names:dire_cat_feral_orphan",
 	socialGroup = "dire_cat",
-	pvpFaction = "",
 	faction = "",
 	level = 16,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ feral_orphan = Creature:new {
 	baseHAM = 1200,
 	baseHAMmax = 1400,
 	armor = 0,
-	resists = {20,20,0,10,10,0,0,0,-1},
+	resists = {120,120,0,110,110,0,0,0,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 65,
 	hideType = "hide_bristley",
@@ -33,7 +32,8 @@ feral_orphan = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"",""},
+		{"stunattack",""}
 	}
 }
 

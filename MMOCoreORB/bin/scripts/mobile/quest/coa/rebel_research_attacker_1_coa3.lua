@@ -2,7 +2,6 @@ rebel_research_attacker_1_coa3 = Creature:new {
 	objectName = "",
 	customName = "a Rebel Research Attacker",
 	socialGroup = "imperial",
-	pvpFaction = "imperial",
 	faction = "imperial",
 	level = 35,
 	chanceHit = 0.41,
@@ -28,7 +27,18 @@ rebel_research_attacker_1_coa3 = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_stormtrooper_m.iff"},
-	lootGroups = {},
+	lootGroups = {
+		{
+			groups = {
+				{group = "junk", chance = 5000000},
+				{group = "rifles", chance = 1000000},
+				{group = "pistols", chance = 1000000},
+				{group = "melee_weapons", chance = 1000000},
+				{group = "carbines", chance = 1000000},
+				{group = "wearables_common", chance = 1000000}
+			}
+		}
+	},
 	weapons = {"imperial_weapons_heavy"},
 	conversationTemplate = "",
 	attacks = merge(riflemanmaster,carbineermaster,marksmanmaster,brawlermaster)

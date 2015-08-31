@@ -60,7 +60,7 @@ Melee1hHealthHit2Command = {
 	dotEffects = {
 	  DotEffect( 
 		BLEEDING, 
-		{ "resistance_bleeding", "bleed_resist", "combat_bleeding_defense" },
+		{ "resistance_bleeding", "bleed_resist" },
 		HEALTH,
 		true,
 		125,
@@ -69,6 +69,8 @@ Melee1hHealthHit2Command = {
 		60
 	  )
 	},
+	
+	weaponType = ONEHANDMELEEWEAPON,
 
 	range = -1
 }

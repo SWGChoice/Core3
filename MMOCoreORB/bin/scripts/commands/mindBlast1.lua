@@ -56,31 +56,27 @@ MindBlast1Command = {
 		{ "jedi_state_defense" }, 
 		{}, 
 		55, 
-		100, 
+		0, 
 		10 
-	  )
-	},
-	
-	stateEffects = {
+	  ),
+	  
 	  StateEffect( 
 		BLIND_EFFECT, 
 		{}, 
 		{ "jedi_state_defense" }, 
 		{}, 
 		55, 
-		100, 
+		0, 
 		10 
-	  )
-	},	
-	
-	stateEffects = {
+	  ),
+	  
 	  StateEffect( 
 		DIZZY_EFFECT, 
 		{}, 
 		{ "jedi_state_defense" }, 
 		{}, 
 		55, 
-		100, 
+		0, 
 		10 
 	  )
 	},	

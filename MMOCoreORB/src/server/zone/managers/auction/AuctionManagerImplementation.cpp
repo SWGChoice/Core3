@@ -38,7 +38,7 @@
 
 void AuctionManagerImplementation::initialize() {
 
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	auctionMap = new AuctionsMap();
 
@@ -88,7 +88,7 @@ void AuctionManagerImplementation::initialize() {
 			auctionMap->addToCommodityLimit(auctionItem);
 
 		if(auctionItem->isAuction()) {
-			Reference<Task*> newTask = new ExpireAuctionTask(_this.get(), auctionItem);
+			Reference<Task*> newTask = new ExpireAuctionTask(_this.getReferenceUnsafeStaticCast(), auctionItem);
 			newTask->schedule((auctionItem->getExpireTime() - time(0)) * 1000);
 
 			Locker locker(&auctionEvents);
@@ -108,7 +108,7 @@ void AuctionManagerImplementation::initialize() {
 			auctionItem->setVendorID(defaultBazaar->getObjectID());
 
 			if(auctionItem->isAuction()) {
-				Reference<Task*> newTask = new ExpireAuctionTask(_this.get(), auctionItem);
+				Reference<Task*> newTask = new ExpireAuctionTask(_this.getReferenceUnsafeStaticCast(), auctionItem);
 				newTask->schedule((auctionItem->getExpireTime() - time(0)) * 1000);
 
 				Locker locker(&auctionEvents);
@@ -146,7 +146,7 @@ void AuctionManagerImplementation::checkVendorItems() {
 
 void AuctionManagerImplementation::checkAuctions() {
 
-	Reference<CheckAuctionsTask*> task = new CheckAuctionsTask(_this.get());
+	Reference<CheckAuctionsTask*> task = new CheckAuctionsTask(_this.getReferenceUnsafeStaticCast());
 	task->schedule(CHECKEVERY * 60 * 1000);
 
 	TerminalListVector items = auctionMap->getBazaarTerminalData("", "", 0);
@@ -313,7 +313,11 @@ void AuctionManagerImplementation::addSaleItem(CreatureObject* player, uint64 ob
 		return;
 	}
 
+	Locker objectToSellLocker(objectToSell);
+
 	objectToSell->destroyObjectFromWorld(true);
+
+	objectToSellLocker.release();
 
 	if (vendor->isBazaarTerminal()) {
 		StringIdChatParameter str("@base_player:sale_fee"); // The fee for your listing is %DI credits.
@@ -359,7 +363,7 @@ void AuctionManagerImplementation::addSaleItem(CreatureObject* player, uint64 ob
 	item->setPersistent(1);
 
 	if(item->isAuction()) {
-		Reference<Task*> newTask = new ExpireAuctionTask(_this.get(), item);
+		Reference<Task*> newTask = new ExpireAuctionTask(_this.getReferenceUnsafeStaticCast(), item);
 		newTask->schedule((item->getExpireTime() - time(0)) * 1000);
 
 		Locker locker(&auctionEvents);
@@ -445,8 +449,20 @@ int AuctionManagerImplementation::checkSaleItem(CreatureObject* player, SceneObj
 
 	}
 
-	if(object->isIntangibleObject() && !object->isManufactureSchematic())
+	if (object->isIntangibleObject() && !object->isManufactureSchematic())
 		return ItemSoldMessage::INVALIDITEM;
+
+	for (int i = 0; i < object->getArrangementDescriptorSize(); ++i) {
+		const Vector<String>* descriptors = object->getArrangementDescriptor(i);
+
+		for (int j = 0; j < descriptors->size(); ++j) {
+			const String& descriptor = descriptors->get(j);
+
+			if (descriptor == "inventory" || descriptor == "datapad" || descriptor == "default_weapon"
+					|| descriptor == "mission_bag" || descriptor == "ghost" || descriptor == "bank" || descriptor == "hair")
+				return ItemSoldMessage::INVALIDITEM;
+		}
+	}
 
 	return 0;
 }
@@ -474,6 +490,8 @@ AuctionItem* AuctionManagerImplementation::createVendorItem(CreatureObject* play
 		region = cityRegion->getRegionName();
 
 	String name = objectToSell->getDisplayedName();
+
+	Locker locker(item);
 
 	item->setVendorUID(getVendorUID(vendor));
 	item->setOnBazaar(vendor->isBazaarTerminal());
@@ -593,13 +611,8 @@ void AuctionManagerImplementation::doInstantBuy(CreatureObject* player, AuctionI
 	float waypointX = vendor->getWorldPositionX();
 	float waypointY = vendor->getWorldPositionY();
 
-	ManagedReference<WaypointObject*> waypoint = zoneServer->createObject(0xc456e788, 1).castTo<WaypointObject*>();
-	waypoint->setPlanetCRC(vendor->getPlanetCRC());
-	waypoint->setPosition(waypointX, 0, waypointY);
-
-	waypoint->setCustomObjectName(vendor->getDisplayedName(), false);
-
-	WaypointChatParameter waypointParam(waypoint);
+	WaypointChatParameter waypointParam;
+	waypointParam.set(vendor->getDisplayedName(), waypointX, 0, waypointY, vendor->getPlanetCRC());
 
 	String itemName = removeColorCodes(item->getItemName());
 
@@ -982,6 +995,7 @@ void AuctionManagerImplementation::refundAuction(AuctionItem* item) {
 	buyerBody.setTT(item->getOwnerName());
 
 	if (bidder != NULL) {
+		Locker locker(bidder);
 		int bankCredits = bidder->getBankCredits();
 		bidder->setBankCredits(bankCredits + item->getPrice());
 		bidder->sendSystemMessage(buyerBody);
@@ -1377,7 +1391,7 @@ void AuctionManagerImplementation::cancelItem(CreatureObject* player, uint64 obj
 			float waypointX = vendor->getWorldPositionX();
 			float waypointY = vendor->getWorldPositionY();
 
-			ManagedReference<WaypointObject*> waypoint = zoneServer->createObject(0xc456e788, 1).castTo<WaypointObject*>();
+			ManagedReference<WaypointObject*> waypoint = zoneServer->createObject(0xc456e788, 0).castTo<WaypointObject*>();
 			waypoint->setPlanetCRC(vendor->getPlanetCRC());
 			waypoint->setPosition(waypointX, 0, waypointY);
 
@@ -1430,10 +1444,6 @@ void AuctionManagerImplementation::expireSale(AuctionItem* item) {
 
 	StringIdChatParameter sellerBody("@auction:seller_fail"); // Your auction of %TO has been completed and has not been purchased.
 	sellerBody.setTO(itemName);
-	
-	locker.release();
-
-	cman->sendMail(sender, sellerSubject, sellerBody, item->getOwnerName());
 
 	Time expireTime;
 	uint64 currentTime = expireTime.getMiliTime() / 1000;
@@ -1447,6 +1457,10 @@ void AuctionManagerImplementation::expireSale(AuctionItem* item) {
 	item->setStatus(AuctionItem::EXPIRED);
 	item->setExpireTime(availableTime);
 	item->clearAuctionWithdraw();
+
+	locker.release();
+
+	cman->sendMail(sender, sellerSubject, sellerBody, item->getOwnerName());
 
 	if (!item->isOnBazaar()) {
 		ManagedReference<SceneObject*> vendor = zoneServer->getObject(item->getVendorID());
@@ -1538,13 +1552,8 @@ void AuctionManagerImplementation::expireAuction(AuctionItem* item) {
 		float waypointX = vendor->getWorldPositionX();
 		float waypointY = vendor->getWorldPositionY();
 
-		ManagedReference<WaypointObject*> waypoint = zoneServer->createObject(0xc456e788, 1).castTo<WaypointObject*>();
-		waypoint->setPlanetCRC(vendor->getPlanetCRC());
-		waypoint->setPosition(waypointX, 0, waypointY);
-
-		waypoint->setCustomObjectName(vendor->getDisplayedName(), false);
-
-		WaypointChatParameter waypointParam(waypoint);
+		WaypointChatParameter waypointParam;
+		waypointParam.set(vendor->getDisplayedName(), waypointX, 0, waypointY, vendor->getPlanetCRC());
 
 		String sender = "SWG." + zoneServer->getGalaxyName() + ".auctioner";
 
@@ -1622,11 +1631,16 @@ void AuctionManagerImplementation::deleteExpiredSale(AuctionItem* item) {
 		float waypointX = vendor->getWorldPositionX();
 		float waypointY = vendor->getWorldPositionY();
 
-		ManagedReference<WaypointObject*> waypoint = zoneServer->createObject(0xc456e788, 1).castTo<WaypointObject*>();
+		ManagedReference<WaypointObject*> waypoint = zoneServer->createObject(0xc456e788, 0).castTo<WaypointObject*>();
+
+		Locker lockerWaypoint(waypoint);
+
 		waypoint->setPlanetCRC(vendor->getPlanetCRC());
 		waypoint->setPosition(waypointX, 0, waypointY);
 
 		waypoint->setCustomObjectName(vendor->getDisplayedName(), false);
+
+		lockerWaypoint.release();
 
 		String itemName = removeColorCodes(item->getItemName());
 

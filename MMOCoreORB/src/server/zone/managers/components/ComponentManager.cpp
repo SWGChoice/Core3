@@ -37,6 +37,8 @@
 #include "server/zone/objects/tangible/components/TrapMenuComponent.h"
 #include "server/zone/objects/tangible/components/LairMenuComponent.h"
 #include "server/zone/objects/tangible/components/generic/DiceMenuComponent.h"
+#include "server/zone/objects/tangible/components/generic/DataStorageUnitMenuComponent.h"
+#include "server/zone/objects/tangible/components/generic/DataStorageUnitAttributeListComponent.h"
 #include "server/zone/objects/tangible/components/TangibleObjectMenuComponent.h"
 #include "server/zone/objects/tangible/components/generic/LootSchematicMenuComponent.h"
 #include "server/zone/objects/tangible/components/BountyHunterDroidMenuComponent.h"
@@ -47,6 +49,7 @@
 #include "server/zone/objects/tangible/components/CloningTerminalMenuComponent.h"
 #include "server/zone/objects/tangible/components/HolocronMenuComponent.h"
 #include "server/zone/objects/tangible/components/WaypointDatapadMenuComponent.h"
+#include "server/zone/objects/tangible/components/ForceCrystalMenuComponent.h"
 #include "server/zone/objects/tangible/components/ForceShrineMenuComponent.h"
 #include "server/zone/objects/tangible/components/RobeObjectMenuComponent.h"
 #include "server/zone/objects/tangible/components/generic/ArtCrateMenuComponent.h"
@@ -57,6 +60,9 @@
 #include "server/zone/objects/tangible/components/SaberInventoryContainerComponent.h"
 #include "server/zone/objects/tangible/components/generic/LootSchematicAttributeListComponent.h"
 #include "server/zone/objects/tangible/components/RingObjectMenuComponent.h"
+#include "server/zone/objects/tangible/components/HeroRingMenuComponent.h"
+#include "server/zone/objects/tangible/components/HeroRingAttributeListComponent.h"
+#include "server/zone/objects/tangible/components/HeroRingDataComponent.h"
 #include "server/zone/objects/tangible/components/JediRobeAttributeListComponent.h"
 #include "server/zone/objects/tangible/components/SkillBuffObjectAttributeListComponent.h"
 #include "server/zone/objects/tangible/components/SkillBuffObjectMenuComponent.h"
@@ -84,6 +90,7 @@
 #include "server/zone/objects/region/components/CityVotingMenuComponent.h"
 #include "server/zone/objects/scene/components/DataObjectComponent.h"
 #include "server/zone/objects/tangible/components/generic/ShellfishHarvesterMenuComponent.h"
+#include "server/zone/objects/tangible/components/generic/DataStorageUnitDataComponent.h"
 #include "server/zone/objects/tangible/components/generic/DiceDataComponent.h"
 #include "server/zone/objects/tangible/components/generic/CreatureHabitatMenuComponent.h"
 #include "server/zone/objects/tangible/components/WearableObjectMenuComponent.h"
@@ -113,7 +120,25 @@
 #include "server/zone/objects/tangible/components/EventPerkDataComponent.h"
 #include "server/zone/objects/tangible/components/EventPerkMenuComponent.h"
 #include "server/zone/objects/tangible/components/EventPerkAttributeListComponent.h"
-
+#include "server/zone/objects/tangible/components/droid/DroidMaintenanceModuleDataComponent.h"
+#include "server/zone/objects/tangible/components/droid/DroidEffectsModuleDataComponent.h"
+#include "server/zone/objects/tangible/components/droid/DroidRepairModuleDataComponent.h"
+#include "server/zone/objects/tangible/components/droid/DroidAutoRepairModuleDataComponent.h"
+#include "server/zone/objects/tangible/components/droid/DroidCraftingModuleDataComponent.h"
+#include "server/zone/objects/tangible/components/droid/DroidArmorModuleDataComponent.h"
+#include "server/zone/objects/tangible/components/droid/DroidMedicalModuleDataComponent.h"
+#include "server/zone/objects/tangible/components/droid/DroidItemStorageModuleDataComponent.h"
+#include "server/zone/objects/tangible/components/droid/DroidDataStorageModuleDataComponent.h"
+#include "server/zone/objects/tangible/components/droid/DroidContainerComponent.h"
+#include "server/zone/objects/tangible/components/droid/DroidDatapadContainerComponent.h"
+#include "server/zone/objects/tangible/components/droid/DroidStimpackModuleDataComponent.h"
+#include "server/zone/objects/tangible/components/droid/DroidDetonationModuleDataComponent.h"
+#include "server/zone/objects/tangible/components/droid/DroidMerchantModuleDataComponent.h"
+#include "server/zone/objects/tangible/components/droid/DroidCombatModuleDataComponent.h"
+#include "server/zone/objects/tangible/components/droid/DroidPlaybackModuleDataComponent.h"
+#include "server/zone/objects/tangible/components/droid/DroidTrapModuleDataComponent.h"
+#include "server/zone/objects/tangible/components/droid/DroidHarvestModuleDataComponent.h"
+#include "server/zone/objects/tangible/components/droid/DroidPersonalityModuleDataComponent.h"
 
 ComponentManager::ComponentManager() {
 	components.put("ContainerComponent", new ContainerComponent());
@@ -161,6 +186,10 @@ ComponentManager::ComponentManager() {
 
 	components.put("RingObjectMenuComponent", new RingObjectMenuComponent());
 
+	components.put("HeroRingMenuComponent", new HeroRingMenuComponent());
+	components.put("HeroRingAttributeListComponent", new HeroRingAttributeListComponent());
+	dataObjectFactory.registerObject<HeroRingDataComponent>("HeroRingDataComponent");
+
 	components.put("JediRobeAttributeListComponent", new JediRobeAttributeListComponent());
 
 	components.put("SkillBuffObjectAttributeListComponent", new SkillBuffObjectAttributeListComponent());
@@ -180,6 +209,8 @@ ComponentManager::ComponentManager() {
 	components.put("StructureContainerComponent", new StructureContainerComponent());
 
 	components.put("VendorContainerComponent", new VendorContainerComponent());
+	components.put("DroidContainerComponent", new DroidContainerComponent());
+	components.put("DroidDatapadContainerComponent", new DroidDatapadContainerComponent());
 	components.put("VendorMenuComponent", new VendorMenuComponent());
 	components.put("VendorZoneComponent", new VendorZoneComponent());
 	components.put("TurretZoneComponent", new TurretZoneComponent());
@@ -205,6 +236,10 @@ ComponentManager::ComponentManager() {
 	components.put("DiceMenuComponent", new DiceMenuComponent());
 	dataObjectFactory.registerObject<DiceDataComponent>("DiceDataComponent");
 
+	components.put("DataStorageUnitMenuComponent", new DataStorageUnitMenuComponent());
+	components.put("DataStorageUnitAttributeListComponent", new DataStorageUnitAttributeListComponent());
+	dataObjectFactory.registerObject<DataStorageUnitDataComponent>("DataStorageUnitDataComponent");
+
 	dataObjectFactory.registerObject<TurretDataComponent>("TurretDataComponent");
 	dataObjectFactory.registerObject<MinefieldDataComponent>("MinefieldDataComponent");
 
@@ -218,6 +253,7 @@ ComponentManager::ComponentManager() {
 
 	components.put("LightsaberObjectMenuComponent", new LightsaberObjectMenuComponent());
 	components.put("RobeObjectMenuComponent", new RobeObjectMenuComponent());
+	components.put("ForceCrystalMenuComponent", new ForceCrystalMenuComponent());
 	components.put("ForceShrineMenuComponent", new ForceShrineMenuComponent());
 	components.put("SaberInventoryContainerComponent", new SaberInventoryContainerComponent());
 
@@ -268,4 +304,22 @@ ComponentManager::ComponentManager() {
 	components.put("EventPerkDataComponent", new EventPerkDataComponent() );
 	components.put("EventPerkAttributeListComponent", new EventPerkAttributeListComponent() );
 	dataObjectFactory.registerObject<EventPerkDataComponent>("EventPerkDataComponent");
+	// Droid components
+	dataObjectFactory.registerObject<DroidMaintenanceModuleDataComponent>("DroidMaintenanceModuleDataComponent");
+	dataObjectFactory.registerObject<DroidEffectsModuleDataComponent>("DroidEffectsModuleDataComponent");
+	dataObjectFactory.registerObject<DroidRepairModuleDataComponent>("DroidRepairModuleDataComponent");
+	dataObjectFactory.registerObject<DroidAutoRepairModuleDataComponent>("DroidAutoRepairModuleDataComponent");
+	dataObjectFactory.registerObject<DroidCraftingModuleDataComponent>("DroidCraftingModuleDataComponent");
+	dataObjectFactory.registerObject<DroidArmorModuleDataComponent>("DroidArmorModuleDataComponent");
+	dataObjectFactory.registerObject<DroidMedicalModuleDataComponent>("DroidMedicalModuleDataComponent");
+	dataObjectFactory.registerObject<DroidItemStorageModuleDataComponent>("DroidItemStorageModuleDataComponent");
+	dataObjectFactory.registerObject<DroidDataStorageModuleDataComponent>("DroidDataStorageModuleDataComponent");
+	dataObjectFactory.registerObject<DroidStimpackModuleDataComponent>("DroidStimpackModuleDataComponent");
+	dataObjectFactory.registerObject<DroidDetonationModuleDataComponent>("DroidDetonationModuleDataComponent");
+	dataObjectFactory.registerObject<DroidMerchantModuleDataComponent>("DroidMerchantModuleDataComponent");
+	dataObjectFactory.registerObject<DroidCombatModuleDataComponent>("DroidCombatModuleDataComponent");
+	dataObjectFactory.registerObject<DroidPlaybackModuleDataComponent>("DroidPlaybackModuleDataComponent");
+	dataObjectFactory.registerObject<DroidTrapModuleDataComponent>("DroidTrapModuleDataComponent");
+	dataObjectFactory.registerObject<DroidHarvestModuleDataComponent>("DroidHarvestModuleDataComponent");
+	dataObjectFactory.registerObject<DroidPersonalityModuleDataComponent>("DroidPersonalityModuleDataComponent");
 }

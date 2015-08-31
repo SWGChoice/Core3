@@ -1,7 +1,7 @@
 neo_cobral_bandit = Creature:new {
 	objectName = "@mob/creature_names:cobral_bandit",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "cobral",
-	pvpFaction = "cobral",
 	faction = "cobral",
 	level = 20,
 	chanceHit = 0.33,
@@ -30,19 +30,19 @@ neo_cobral_bandit = Creature:new {
 		"object/mobile/dressed_cobral_bandit_bith_female_01.iff",
 		"object/mobile/dressed_cobral_bandit_bith_male_01.iff"},
 	lootGroups = {
-	    {
+		{
 			groups = {
 				{group = "junk", chance = 2000000},
 				{group = "wearables_common", chance = 2000000},
 				{group = "rifles", chance = 2000000},
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000}
-			},
-			lootChance = 3200000
-		}					
+			}
+		}
 	},
 	weapons = {"ranged_weapons"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 

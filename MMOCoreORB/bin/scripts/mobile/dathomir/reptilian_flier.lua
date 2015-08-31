@@ -1,7 +1,6 @@
 reptilian_flier = Creature:new {
 	objectName = "@mob/creature_names:reptilian_flier",
 	socialGroup = "reptilian_flier",
-	pvpFaction = "",
 	faction = "",
 	level = 16,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ reptilian_flier = Creature:new {
 	baseHAM = 3500,
 	baseHAMmax = 4300,
 	armor = 0,
-	resists = {5,4,5,5,5,-1,5,-1,-1},
+	resists = {105,5,105,5,5,-1,5,-1,-1},
 	meatType = "meat_avian",
 	meatAmount = 125,
 	hideType = "hide_leathery",
@@ -32,7 +31,8 @@ reptilian_flier = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"",""},
+		{"posturedownattack",""}
 	}
 }
 

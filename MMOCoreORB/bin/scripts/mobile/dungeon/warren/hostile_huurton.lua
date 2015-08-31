@@ -1,7 +1,6 @@
 hostile_huurton = Creature:new {
 	objectName = "@mob/creature_names:warren_huurton_hostile",
 	socialGroup = "warren_huurton",
-	pvpFaction = "",
 	faction = "",
 	level = 18,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ hostile_huurton = Creature:new {
 	baseHAM = 4100,
 	baseHAMmax = 5000,
 	armor = 0,
-	resists = {5,5,5,5,5,0,0,0,-1},
+	resists = {5,5,5,5,-1,5,5,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 15,
 	hideType = "hide_wooly",

@@ -1,7 +1,7 @@
 senior_specforce_heavy_weapons_specialist = Creature:new {
 	objectName = "@mob/creature_names:senior_specforce_heavy_weapons_specialist",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "rebel",
-	pvpFaction = "rebel",
 	faction = "rebel",
 	level = 20,
 	chanceHit = 0.33,
@@ -43,11 +43,12 @@ senior_specforce_heavy_weapons_specialist = Creature:new {
 				{group = "clothing_attachments", chance = 100000},
 				{group = "armor_attachments", chance = 100000},
 				{group = "wearables_common", chance = 1000000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"rebel_weapons_heavy"},
+	reactionStf = "@npc_reaction/military",
+	personalityStf = "@hireling/hireling_military",
 	attacks = merge(commandomaster,marksmanmaster,brawlermaster)
 }
 

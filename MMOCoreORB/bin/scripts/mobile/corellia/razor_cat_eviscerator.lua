@@ -1,7 +1,6 @@
 razor_cat_eviscerator = Creature:new {
 	objectName = "@mob/creature_names:razor_cat_eviscerator",
 	socialGroup = "panther",
-	pvpFaction = "",
 	faction = "",
 	level = 24,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ razor_cat_eviscerator = Creature:new {
 	baseHAM = 7200,
 	baseHAMmax = 8800,
 	armor = 0,
-	resists = {10,10,5,15,5,5,-1,5,-1},
+	resists = {110,110,10,115,10,10,-1,10,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 65,
 	hideType = "hide_bristley",
@@ -33,8 +32,8 @@ razor_cat_eviscerator = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
-		{"knockdownattack","knockdownChance=50"}
+		{"knockdownattack",""},
+		{"intimidationattack",""}
 	}
 }
 

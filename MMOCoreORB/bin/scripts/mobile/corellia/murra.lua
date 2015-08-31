@@ -1,7 +1,6 @@
 murra = Creature:new {
 	objectName = "@mob/creature_names:murra",
 	socialGroup = "murra",
-	pvpFaction = "",
 	faction = "",
 	level = 10,
 	chanceHit = 0.27,
@@ -11,7 +10,7 @@ murra = Creature:new {
 	baseHAM = 810,
 	baseHAMmax = 990,
 	armor = 0,
-	resists = {0,0,10,0,0,0,0,-1,-1},
+	resists = {0,0,110,0,0,0,0,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 55,
 	hideType = "hide_bristley",
@@ -32,7 +31,7 @@ murra = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""}
 	}
 }
 

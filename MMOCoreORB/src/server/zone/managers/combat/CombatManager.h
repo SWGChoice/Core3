@@ -52,20 +52,37 @@ public:
 	const static int MIND = 4;
 	const static int RANDOM = 8;
 
-	const static int MELEEWEAPON = 0x1;
-	const static int RANGEDWEAPON = 0x2;
-	const static int THROWNWEAPON = 0x4;
-	const static int HEAVYWEAPON = 0x8;;
-	const static int MINE = 0x10;
-	const static int SPECIALHEAVYWEAPON = 0x20;
-	const static int ONEHANDMELEEWEAPON = 0x40;
-	const static int TWOHANDMELEEWEAPON = 0x80;
-	const static int POLEARM = 0x100;
-	const static int PISTOL = 0x200;
-	const static int CARBINE = 0x400;
-	const static int RIFLE = 0x800;
-	const static int GRENADE = 0x1000;
-	const static int LIGHTNINGRIFLE = 0x2000;
+	const static int ANYWEAPON = 0xFFFFFFFF;
+	const static int THROWNWEAPON = 0x1;
+	const static int HEAVYWEAPON = 0x2;
+	const static int MINEWEAPON = 0x4;
+	const static int SPECIALHEAVYWEAPON = 0x8;
+	const static int UNARMEDWEAPON = 0x10;
+	const static int ONEHANDMELEEWEAPON = 0x20;
+	const static int TWOHANDMELEEWEAPON = 0x40;
+	const static int POLEARMWEAPON = 0x80;
+	const static int PISTOLWEAPON = 0x100;
+	const static int CARBINEWEAPON = 0x200;
+	const static int RIFLEWEAPON = 0x400;
+	const static int GRENADEWEAPON = 0x800;
+	const static int LIGHTNINGRIFLEWEAPON = 0x1000;
+	const static int ONEHANDJEDIWEAPON = 0x2000;
+	const static int TWOHANDJEDIWEAPON = 0x4000;
+	const static int POLEARMJEDIWEAPON = 0x8000;
+
+	// multiple weapon type scenarios
+	const static int MELEEWEAPON = 0xF0;
+	const static int RANGEDWEAPON = 0x1F0B; // these are all weapons derived from ranged in the client
+	const static int JEDIWEAPON = 0xE000;
+
+	//Mitigation types
+	const static int PSG = 0x1;
+	const static int FORCESHIELD = 0x02;
+	const static int FORCEFEEDBACK = 0x03;
+	const static int FORCEABSORB = 0x04;
+	const static int FORCEARMOR = 0x5;
+	const static int ARMOR = 0x6;
+	const static int FOOD = 0x7;
 
 	// does not need to be bitmasked, these are just used so we know if we use a weapon or not in a command (not a bool for extensibility)
 	const static int WEAPONATTACK = 0x0;
@@ -154,13 +171,17 @@ public:
 	 */
 	void declineDuel(CreatureObject* player, CreatureObject* targetPlayer);
 
+	bool areInDuel(CreatureObject* player1, CreatureObject* player2);
+
 	float calculateWeaponAttackSpeed(CreatureObject* attacker, WeaponObject* weapon, float skillSpeedRatio);
 
-	void broadcastCombatSpam(TangibleObject* attacker, TangibleObject* defender, TangibleObject* weapon, uint32 damage, const String& stringid);
+	void sendMitigationCombatSpam(CreatureObject* defender, TangibleObject* item, uint32 damage, int type);
+	void broadcastCombatSpam(TangibleObject* attacker, TangibleObject* defender, TangibleObject* item, int damage, const String& file, const String& stringName, byte color);
+
 	void broadcastCombatAction(CreatureObject* attacker, TangibleObject* defenderObject, WeaponObject* weapon, const CreatureAttackData& data, uint8 hit);
 
-	float hitChanceEquation(float attackerAccuracy, float accuracyBonus, float targetDefense);
-
+	float hitChanceEquation(float attackerAccuracy, float attackerRoll, float targetDefense, float defenderRoll);
+	float doDroidDetonation(CreatureObject* droid, CreatureObject* defender, float damage);
 	//all the combat math will go here
 protected:
 
@@ -172,7 +193,7 @@ protected:
 	int doAreaCombatAction(TangibleObject* attacker, WeaponObject* weapon, TangibleObject* defenderObject, const CreatureAttackData& data);
 	int doAreaCombatAction(CreatureObject* attacker, WeaponObject* weapon, TangibleObject* defenderObject, const CreatureAttackData& data);
 	int doTargetCombatAction(CreatureObject* attacker, WeaponObject* weapon, TangibleObject* defenderObject, const CreatureAttackData& data);
-	void applyDots(CreatureObject* attacker, CreatureObject* defender, const CreatureAttackData& data, int appliedDamage);
+	void applyDots(CreatureObject* attacker, CreatureObject* defender, const CreatureAttackData& data, int appliedDamage, int unmitDamage);
 	void applyWeaponDots(CreatureObject* attacker, CreatureObject* defender, WeaponObject* weapon);
 
 	float getWeaponRangeModifier(float currentRange, WeaponObject* weapon);
@@ -187,24 +208,24 @@ protected:
 	int calculatePostureModifier(CreatureObject* creature, WeaponObject* weapon);
 	int calculateTargetPostureModifier(WeaponObject* weapon, CreatureObject* targetCreature);
 
-	int getAttackerAccuracyModifier(TangibleObject* attacker, WeaponObject* weapon);
+	int getAttackerAccuracyModifier(TangibleObject* attacker, CreatureObject* defender, WeaponObject* weapon);
 	int getAttackerAccuracyBonus(CreatureObject* attacker, WeaponObject* weapon);
-	int getDefenderDefenseModifier(CreatureObject* defender, WeaponObject* weapon);
+	int getDefenderDefenseModifier(CreatureObject* defender, WeaponObject* weapon, TangibleObject* attacker);
 	int getDefenderSecondaryDefenseModifier(CreatureObject* defender);
-	float getDefenderToughnessModifier(CreatureObject* defender, int attackType, int damType, float damage);
+	float getDefenderToughnessModifier(CreatureObject* defender, int attackType, int damType, float damage, Vector<int>& foodMitigation);
 	int calculateDamageRange(TangibleObject* attacker, CreatureObject* defender, WeaponObject* weapon);
 	float applyDamageModifiers(CreatureObject* attacker, WeaponObject* weapon, float damage);
 	int getSpeedModifier(CreatureObject* attacker, WeaponObject* weapon);
-	float calculateDamage(CreatureObject* attacker, WeaponObject* weapon, CreatureObject* defender, const CreatureAttackData& data);
-	float calculateDamage(TangibleObject* attacker, WeaponObject* weapon, CreatureObject* defender, const CreatureAttackData& data);
+	float calculateDamage(CreatureObject* attacker, WeaponObject* weapon, CreatureObject* defender, const CreatureAttackData& data, Vector<int>& foodMitigation);
+	float calculateDamage(TangibleObject* attacker, WeaponObject* weapon, CreatureObject* defender, const CreatureAttackData& data, Vector<int>& foodMitigation);
 	float calculateDamage(CreatureObject* attacker, WeaponObject* weapon, TangibleObject* defender);
 	bool checkConeAngle(SceneObject* targetCreature, float angle, float creatureVectorX, float creatureVectorY, float directionVectorX, float directionVectorY);
 
-	void doMiss(TangibleObject* attacker, WeaponObject* weapon, CreatureObject* defender, int damage, const String& cbtSpam);
-	void doCounterAttack(TangibleObject* attacker, WeaponObject* weapon, CreatureObject* defender, int damage, const String& cbtSpam);
-	void doBlock(TangibleObject* attacker, WeaponObject* weapon, CreatureObject* defender, int damage, const String& cbtSpam);
-	void doDodge(TangibleObject* attacker, WeaponObject* weapon, CreatureObject* defender, int damage, const String& cbtSpam);
-	void doLightsaberBlock(TangibleObject* attacker, WeaponObject* weapon, CreatureObject* defender, int damage, const String& cbtSpam);
+	void doMiss(TangibleObject* attacker, WeaponObject* weapon, CreatureObject* defender, int damage);
+	void doCounterAttack(TangibleObject* attacker, WeaponObject* weapon, CreatureObject* defender, int damage);
+	void doBlock(TangibleObject* attacker, WeaponObject* weapon, CreatureObject* defender, int damage);
+	void doDodge(TangibleObject* attacker, WeaponObject* weapon, CreatureObject* defender, int damage);
+	void doLightsaberBlock(TangibleObject* attacker, WeaponObject* weapon, CreatureObject* defender, int damage);
 
 	int applyDamage(CreatureObject* attacker, WeaponObject* weapon, TangibleObject* defender, int poolsToDamage, const CreatureAttackData& data);
 	int applyDamage(TangibleObject* attacker, WeaponObject* weapon, CreatureObject* defender, int damage, float damageMultiplier, int poolsToDamage, const CreatureAttackData& data);

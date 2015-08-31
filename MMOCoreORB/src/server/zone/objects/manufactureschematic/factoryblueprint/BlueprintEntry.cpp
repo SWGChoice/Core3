@@ -42,6 +42,8 @@ BlueprintEntry& BlueprintEntry::operator=(const BlueprintEntry& entry) {
 	serialNumber = entry.serialNumber;
 	identical = entry.identical;
 	quantity = entry.quantity;
+	inputHopper = entry.inputHopper;
+	matchingHopperItems = entry.matchingHopperItems;
 
 	return *this;
 }
@@ -138,6 +140,8 @@ void BlueprintEntry::removeResources(FactoryObject* factory) {
 
 	while(matchingHopperItems.size() > 0) {
 		TangibleObject* object = matchingHopperItems.get(0);
+
+		Locker locker(object);
 
 		if(object->getUseCount() < quantity) {
 			count += object->getUseCount();

@@ -1,7 +1,6 @@
 tortur = Creature:new {
 	objectName = "@mob/creature_names:tortur",
 	socialGroup = "tortur",
-	pvpFaction = "",
 	faction = "",
 	level = 21,
 	chanceHit = 0.34,
@@ -11,7 +10,7 @@ tortur = Creature:new {
 	baseHAM = 2900,
 	baseHAMmax = 3500,
 	armor = 0,
-	resists = {10,10,10,10,-1,-1,-1,45,-1},
+	resists = {10,10,10,10,-1,-1,-1,145,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 1000,
 	hideType = "hide_leathery",
@@ -31,8 +30,8 @@ tortur = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"knockdownattack","knockdownChance=50"},
-		{"dizzyattack","dizzyChance=50"}
+		{"knockdownattack",""},
+		{"dizzyattack",""}
 	}
 }
 

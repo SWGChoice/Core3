@@ -1,7 +1,6 @@
 piket = Creature:new {
 	objectName = "@mob/creature_names:piket",
 	socialGroup = "piket",
-	pvpFaction = "",
 	faction = "",
 	level = 30,
 	chanceHit = 0.39,
@@ -11,7 +10,7 @@ piket = Creature:new {
 	baseHAM = 8400,
 	baseHAMmax = 10200,
 	armor = 0,
-	resists = {25,25,25,25,25,25,-1,-1,-1},
+	resists = {25,25,25,-1,25,25,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 450,
 	hideType = "hide_scaley",
@@ -33,7 +32,8 @@ piket = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"",""},
+		{"stunattack",""}
 	}
 }
 

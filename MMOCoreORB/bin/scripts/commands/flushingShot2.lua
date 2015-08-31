@@ -61,7 +61,7 @@ FlushingShot2Command = {
 		{ "stun_defense", "resistance_states" }, 
 		{ "jedi_state_defense" }, 
 		100, 
-		100, 
+		0, 
 		35
 	  ),
 	  StateEffect( 
@@ -69,8 +69,8 @@ FlushingShot2Command = {
 		{ "postureUpRecovery" }, 
 		{ "posture_change_up_defense" }, 
 		{}, 
-		20, 
 		100, 
+		0, 
 		0 
 	  )
 	},
@@ -80,6 +80,8 @@ FlushingShot2Command = {
 	animationCRC = hashCode("fire_area_medium"),
 
 	combatSpam = "flushingvolley",
+	
+	weaponType = RIFLEWEAPON,
 
 	range = -1
 }

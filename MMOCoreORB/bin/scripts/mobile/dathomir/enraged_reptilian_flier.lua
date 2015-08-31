@@ -1,7 +1,6 @@
 enraged_reptilian_flier = Creature:new {
 	objectName = "@mob/creature_names:enraged_reptilian_flier",
 	socialGroup = "reptilian_flier",
-	pvpFaction = "",
 	faction = "",
 	level = 27,
 	chanceHit = 0.35,
@@ -10,8 +9,8 @@ enraged_reptilian_flier = Creature:new {
 	baseXp = 2730,
 	baseHAM = 5900,
 	baseHAMmax = 7200,
-	armor = 1,
-	resists = {5,30,5,100,100,-1,100,-1,-1},
+	armor = 0,
+	resists = {125,130,-1,150,150,-1,150,-1,-1},
 	meatType = "meat_avian",
 	meatAmount = 135,
 	hideType = "hide_leathery",
@@ -33,8 +32,8 @@ enraged_reptilian_flier = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"dizzyattack","dizzyChance=50"}
+		{"dizzyattack",""},
+		{"blindattack",""}
 	}
 }
 

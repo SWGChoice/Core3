@@ -34,7 +34,7 @@ public:
 		//defaultTime = 0;
 	}
 
-	void doAnimationsRange(CreatureObject* creature, CreatureObject* creatureTarget, uint64 oid, float range, bool area) {
+	void doAnimationsRange(CreatureObject* creature, CreatureObject* creatureTarget, uint64 oid, float range, bool area) const {
 		String crc;
 
 		if (range < 10.0f) {
@@ -61,32 +61,27 @@ public:
 		creature->broadcastMessage(action, true);
 	}
 
-	void parseModifier(const String& modifier, uint64& objectId) {
+	void parseModifier(const String& modifier, uint64& objectId) const {
 		if (!modifier.isEmpty())
 			objectId = Long::valueOf(modifier);
 		else
 			objectId = 0;
 	}
 
-	bool checkTarget(CreatureObject* creature, CreatureObject* targetCreature) {
+	bool checkTarget(CreatureObject* creature, CreatureObject* targetCreature, uint32 dotType) const {
 		if (!targetCreature->isAttackableBy(creature))
 			return false;
-		/*else if (targetCreature->isPlayingMusic())
-			targetCreature->stopPlayingMusic();
-		else if (targetCreature->isDancing())
-			targetCreature->stopDancing();
-		 */
 
-		PlayerManager* playerManager = server->getPlayerManager();
-
-		if (creature != targetCreature && !CollisionManager::checkLineOfSight(creature, targetCreature)) {
+		if (targetCreature->hasDotImmunity(dotType))
 			return false;
-		}
+
+		if (creature != targetCreature && !CollisionManager::checkLineOfSight(creature, targetCreature))
+			return false;
 
 		return true;
 	}
 
-	void awardXp(CreatureObject* creature, const String& type, int power) {
+	void awardXp(CreatureObject* creature, const String& type, int power) const {
 		if (!creature->isPlayerCreature())
 			return;
 
@@ -102,7 +97,7 @@ public:
 	}
 
 	void handleArea(CreatureObject* creature, CreatureObject* areaCenter, DotPack* pharma,
-			float range) {
+			float range) const {
 
 		Zone* zone = creature->getZone();
 
@@ -134,9 +129,8 @@ public:
 					if (!creatureTarget->isAttackableBy(creature))
 						continue;
 
-					if (checkTarget(creature, creatureTarget)) {
+					if (checkTarget(creature, creatureTarget, pharma->getDotType()))
 						doAreaMedicActionTarget(creature, creatureTarget, pharma);
-					}
 
 				} catch (Exception& e) {
 				}
@@ -145,7 +139,7 @@ public:
 		}
 	}
 
-	void doAreaMedicActionTarget(CreatureObject* creature, CreatureObject* creatureTarget, DotPack* pharma)	{
+	void doAreaMedicActionTarget(CreatureObject* creature, CreatureObject* creatureTarget, DotPack* pharma)	const {
 		DotPack* dotPack = NULL;
 
 		if (pharma->isPoisonDeliveryUnit() || pharma->isDiseaseDeliveryUnit())
@@ -167,7 +161,7 @@ public:
 
 			creatureTarget->sendSystemMessage(stringId2);
 
-			dotDMG = creatureTarget->addDotState(CreatureState::POISONED, dotPack->getServerObjectCRC(), dotPower, dotPack->getPool(), dotPack->getDuration(), dotPack->getPotency(), creatureTarget->getSkillMod("resistance_poison") + creatureTarget->getSkillMod("poison_disease_resist"));
+			dotDMG = creatureTarget->addDotState(creature, CreatureState::POISONED, dotPack->getServerObjectCRC(), dotPower, dotPack->getPool(), dotPack->getDuration(), dotPack->getPotency(), creatureTarget->getSkillMod("resistance_poison") + creatureTarget->getSkillMod("poison_disease_resist"));
 		} else {
 			StringIdChatParameter stringId("healing", "apply_disease_self");
 			stringId.setTT(creatureTarget->getObjectID());
@@ -179,7 +173,7 @@ public:
 
 			creatureTarget->sendSystemMessage(stringId2);
 
-			dotDMG = creatureTarget->addDotState(CreatureState::DISEASED, dotPack->getServerObjectCRC(), dotPower, dotPack->getPool(), dotPack->getDuration(), dotPack->getPotency(), creatureTarget->getSkillMod("resistance_disease") + creatureTarget->getSkillMod("poison_disease_resist"));
+			dotDMG = creatureTarget->addDotState(creature, CreatureState::DISEASED, dotPack->getServerObjectCRC(), dotPower, dotPack->getPool(), dotPack->getDuration(), dotPack->getPotency(), creatureTarget->getSkillMod("resistance_disease") + creatureTarget->getSkillMod("poison_disease_resist"));
 		}
 
 		if (dotDMG) {
@@ -194,9 +188,11 @@ public:
 
 			creature->sendSystemMessage(stringId);
 		}
+
+		checkForTef(creature, creatureTarget);
 	}
 
-	int hasCost(CreatureObject* creature) {
+	int hasCost(CreatureObject* creature) const {
 		if (!creature->isPlayerCreature())
 			return 0;
 
@@ -215,20 +211,19 @@ public:
 		return mindAttackCost;
 	}
 
-	void applyCost(CreatureObject* creature, int mindDamage) {
+	void applyCost(CreatureObject* creature, int mindDamage) const {
 		if (mindDamage == 0)
 			return;
 
 		creature->inflictDamage(creature, CreatureAttribute::MIND, mindDamage, false);
 	}
 
-	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) {
+	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) const {
 
-		if (!checkStateMask(creature))
-			return INVALIDSTATE;
+		int result = doCommonMedicalCommandChecks(creature);
 
-		if (!checkInvalidLocomotions(creature))
-			return INVALIDLOCOMOTION;
+		if (result != SUCCESS)
+			return result;
 
 		int cost = hasCost(creature);
 
@@ -236,13 +231,7 @@ public:
 			return INSUFFICIENTHAM;
 
 		ManagedReference<SceneObject*> object = server->getZoneServer()->getObject(target);
-
-		if (object != NULL && !object->isCreatureObject()) {
-			return INVALIDTARGET;
-		} else if (object == NULL)
-			return INVALIDTARGET;
-
-		if (creature == object)
+		if (object == NULL || !object->isCreatureObject() || creature == object)
 			return INVALIDTARGET;
 
 		uint64 objectId = 0;
@@ -259,9 +248,10 @@ public:
 		if (dotPack == NULL)
 			return GENERALERROR;
 
-		CreatureObject* creatureTarget = cast<CreatureObject*>( object.get());
-
 		PlayerManager* playerManager = server->getPlayerManager();
+		CombatManager* combatManager = CombatManager::instance();
+
+		CreatureObject* creatureTarget = cast<CreatureObject*>(object.get());
 
 		if (creature != creatureTarget && !CollisionManager::checkLineOfSight(creature, creatureTarget)) {
 			creature->sendSystemMessage("@container_error_message:container18");
@@ -270,15 +260,15 @@ public:
 
 		int	range = int(dotPack->getRange() + creature->getSkillMod("healing_range") / 100 * 14);
 
-		if (creature != creatureTarget && !creature->isInRange(creatureTarget, range)){
+		if (creature != creatureTarget && !creature->isInRange(creatureTarget, range + creatureTarget->getTemplateRadius() + creature->getTemplateRadius())){
 			creature->sendSystemMessage("@error_message:target_out_of_range"); //Your target is out of range for this action.
 			return TOOFAR;
 		}
 		//timer
 		if (!creature->checkCooldownRecovery(skillName)) {
 			creature->sendSystemMessage("@healing_response:healing_must_wait"); //You must wait before you can do that.
-
 			return GENERALERROR;
+
 		} else {
 			float modSkill = (float)creature->getSkillMod("healing_range_speed");
 			int delay = (int)round(12.0f - (6.0f * modSkill / 100 ));
@@ -301,38 +291,43 @@ public:
 
 		Locker clocker(creatureTarget, creature);
 
-		if (!CombatManager::instance()->startCombat(creature, creatureTarget))
+		if (!combatManager->startCombat(creature, creatureTarget))
 			return INVALIDTARGET;
 
 		applyCost(creature, cost);
 
 		int dotPower = dotPack->calculatePower(creature);
-
 		int dotDMG = 0;
+
 		if (dotPack->isPoisonDeliveryUnit()) {
-			StringIdChatParameter stringId("healing", "apply_poison_self");
-			stringId.setTT(creatureTarget->getObjectID());
+			if (!creatureTarget->hasDotImmunity(dotPack->getDotType())) {
+				StringIdChatParameter stringId("healing", "apply_poison_self");
+				stringId.setTT(creatureTarget->getObjectID());
 
-			creature->sendSystemMessage(stringId);
+				creature->sendSystemMessage(stringId);
 
-			StringIdChatParameter stringId2("healing", "apply_poison_other");
-			stringId2.setTU(creature->getObjectID());
+				StringIdChatParameter stringId2("healing", "apply_poison_other");
+				stringId2.setTU(creature->getObjectID());
 
-			creatureTarget->sendSystemMessage(stringId2);
+				creatureTarget->sendSystemMessage(stringId2);
 
-			dotDMG = creatureTarget->addDotState(CreatureState::POISONED, dotPack->getServerObjectCRC(), dotPower, dotPack->getPool(), dotPack->getDuration(), dotPack->getPotency(), creatureTarget->getSkillMod("resistance_poison") + creatureTarget->getSkillMod("poison_disease_resist"));
+				dotDMG = creatureTarget->addDotState(creature, CreatureState::POISONED, dotPack->getServerObjectCRC(), dotPower, dotPack->getPool(), dotPack->getDuration(), dotPack->getPotency(), creatureTarget->getSkillMod("resistance_poison") + creatureTarget->getSkillMod("poison_disease_resist"));
+			}
+
 		} else {
-			StringIdChatParameter stringId("healing", "apply_disease_self");
-			stringId.setTT(creatureTarget->getObjectID());
+			if (!creatureTarget->hasDotImmunity(dotPack->getDotType())) {
+				StringIdChatParameter stringId("healing", "apply_disease_self");
+				stringId.setTT(creatureTarget->getObjectID());
 
-			creature->sendSystemMessage(stringId);
+				creature->sendSystemMessage(stringId);
 
-			StringIdChatParameter stringId2("healing", "apply_disease_other");
-			stringId2.setTU(creature->getObjectID());
+				StringIdChatParameter stringId2("healing", "apply_disease_other");
+				stringId2.setTU(creature->getObjectID());
 
-			creatureTarget->sendSystemMessage(stringId2);
+				creatureTarget->sendSystemMessage(stringId2);
 
-			dotDMG = creatureTarget->addDotState(CreatureState::DISEASED, dotPack->getServerObjectCRC(), dotPower, dotPack->getPool(), dotPack->getDuration(), dotPack->getPotency(), creatureTarget->getSkillMod("resistance_disease") + creatureTarget->getSkillMod("poison_disease_resist"));
+				dotDMG = creatureTarget->addDotState(creature, CreatureState::DISEASED, dotPack->getServerObjectCRC(), dotPower, dotPack->getPool(), dotPack->getDuration(), dotPack->getPotency(), creatureTarget->getSkillMod("resistance_disease") + creatureTarget->getSkillMod("poison_disease_resist"));
+			}
 		}
 
 		if (dotDMG) {
@@ -343,7 +338,13 @@ public:
 			stringId.setTT(creatureTarget->getObjectID());
 
 			creature->sendSystemMessage(stringId);
+
+			StringIdChatParameter stringId2("healing", "dot_resist_other");
+
+			creatureTarget->sendSystemMessage(stringId2);
 		}
+
+		checkForTef(creature, creatureTarget);
 
 		if (dotPack->isArea()) {
 			if (creatureTarget != creature)
@@ -352,8 +353,13 @@ public:
 			handleArea(creature, creatureTarget, dotPack, dotPack->getArea());
 		}
 
-		if (dotPack != NULL)
+		if (dotPack != NULL) {
+			if (creatureTarget != creature)
+				clocker.release();
+
+			Locker dlocker(dotPack, creature);
 			dotPack->decreaseUseCount();
+		}
 
 		doAnimationsRange(creature, creatureTarget, dotPack->getObjectID(), creature->getDistanceTo(creatureTarget), dotPack->isArea());
 
@@ -363,6 +369,5 @@ public:
 	}
 
 };
-
 
 #endif /* DOTPACKCOMMAND_H_ */

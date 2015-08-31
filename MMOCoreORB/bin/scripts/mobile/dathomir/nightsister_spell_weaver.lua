@@ -1,7 +1,7 @@
 nightsister_spell_weaver = Creature:new {
 	objectName = "@mob/creature_names:nightsister_spell_weaver",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "nightsister",
-	pvpFaction = "nightsister",
 	faction = "nightsister",
 	level = 107,
 	chanceHit = 1,
@@ -42,8 +42,7 @@ nightsister_spell_weaver = Creature:new {
 				{group = "carbines", chance = 1000000},
 				{group = "wearables_common", chance = 500000},
 				{group = "wearables_uncommon", chance = 500000}
-			},
-			lootChance = 3100000
+			}
 		}
 	},
 	weapons = {},

@@ -1,7 +1,6 @@
 riverside_sulfur_mynock = Creature:new {
 	objectName = "@mob/creature_names:riverside_sulfur_mynock",
 	socialGroup = "mynock",
-	pvpFaction = "",
 	faction = "",
 	level = 33,
 	chanceHit = 0.4,
@@ -11,7 +10,7 @@ riverside_sulfur_mynock = Creature:new {
 	baseHAM = 8600,
 	baseHAMmax = 10500,
 	armor = 1,
-	resists = {10,35,35,100,35,0,100,-1,-1},
+	resists = {-1,135,0,165,-1,0,165,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 60,
 	hideType = "hide_leathery",
@@ -33,7 +32,7 @@ riverside_sulfur_mynock = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
+		{"blindattack",""},
 		{"mediumdisease",""}
 	}
 }

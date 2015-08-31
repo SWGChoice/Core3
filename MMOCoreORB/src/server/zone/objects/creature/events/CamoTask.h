@@ -29,11 +29,11 @@ public:
 	}
 
 	void run() {
-		int crc = String("skill_buff_mask_scent").hashCode();
+		int crc = STRING_HASHCODE("skill_buff_mask_scent");
 		String buffMsg = "@skl_use:sys_conceal_stop";
 
 		if (maskScent) {
-			crc = String("skill_buff_mask_scent_self").hashCode();
+			crc = STRING_HASHCODE("skill_buff_mask_scent_self");
 			buffMsg = "@skl_use:sys_scentmask_break";
 		}
 
@@ -45,7 +45,8 @@ public:
 		if (creature == NULL)
 			return;
 
-		Locker locker(creature);
+		Locker locker(target);
+		Locker clocker(creature, target);
 
 		if (!success && creature->hasBuff(crc)) {
 			creature->sendSystemMessage(buffMsg);

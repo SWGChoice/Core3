@@ -1,7 +1,6 @@
 skreeg_gatherer = Creature:new {
 	objectName = "@mob/creature_names:skreeg_gatherer",
 	socialGroup = "skreeg",
-	pvpFaction = "",
 	faction = "",
 	level = 15,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ skreeg_gatherer = Creature:new {
 	baseHAM = 2400,
 	baseHAMmax = 3500,
 	armor = 0,
-	resists = {5,15,5,-1,5,-1,-1,-1,-1},
+	resists = {105,115,5,-1,5,-1,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 18,
 	hideType = "hide_bristley",
@@ -33,7 +32,7 @@ skreeg_gatherer = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

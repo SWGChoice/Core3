@@ -254,6 +254,8 @@ TangibleObject* LootManagerImplementation::createLootObject(LootItemTemplate* te
 		return NULL;
 	}
 
+	Locker objLocker(prototype);
+
 	prototype->createChildObjects();
 
 	String serial = craftingManager->generateSerial();
@@ -274,24 +276,24 @@ TangibleObject* LootManagerImplementation::createLootObject(LootItemTemplate* te
 
 	float excMod = 1.0;
 
-	if (System::random(legendaryChance) == legendaryChance) {
-			uint32 bitmask = prototype->getOptionsBitmask() | OptionBitmask::YELLOW;
-
+	if (level >= 50 && System::random(legendaryChance) >= legendaryChance - (int) floor(((float)level - 50.f) / 2.f + 0.5)) {
 			UnicodeString newName = prototype->getDisplayedName() + " (Legendary)";
 			prototype->setCustomObjectName(newName, false);
 
 			excMod = legendaryModifier;
 
-			prototype->setOptionsBitmask(bitmask, false);
-	} else if (System::random(exceptionalChance) == exceptionalChance) {
-		uint32 bitmask = prototype->getOptionsBitmask() | OptionBitmask::YELLOW;
+			prototype->addMagicBit(false);
 
+			legendaryLooted.increment();
+	} else if (level >= 50 && System::random(exceptionalChance) >= exceptionalChance - (int) floor(((float)level-50)/2.f + 0.5)) {
 		UnicodeString newName = prototype->getDisplayedName() + " (Exceptional)";
 		prototype->setCustomObjectName(newName, false);
 
 		excMod = exceptionalModifier;
 
-		prototype->setOptionsBitmask(bitmask, false);
+		prototype->addMagicBit(false);
+
+		exceptionalLooted.increment();
 	}
 	String subtitle;
 	bool yellow = false;
@@ -379,6 +381,8 @@ TangibleObject* LootManagerImplementation::createLootObject(LootItemTemplate* te
 			}
 
 			yellow = true;
+
+			yellowLooted.increment();
 		}
 
 		craftingValues.setMinValue(subtitle, min);
@@ -390,13 +394,12 @@ TangibleObject* LootManagerImplementation::createLootObject(LootItemTemplate* te
 	}
 
 	if (yellow) {
-		uint32 bitmask = prototype->getOptionsBitmask() | OptionBitmask::YELLOW;
-		prototype->setOptionsBitmask(bitmask, false);
+		prototype->addMagicBit(false);
 		prototype->setJunkValue((int)(fJunkValue * 1.25));
-	}else{
+	} else {
 		if (excMod==1){
 			prototype->setJunkValue((int)(fJunkValue));
-		}else{
+		} else {
 			prototype->setJunkValue((int)(fJunkValue * (excMod/2)));
 		}
 	}
@@ -492,11 +495,8 @@ void LootManagerImplementation::setSkillMods(TangibleObject* object, LootItemTem
 		}
 	}
 
-	if (yellow) {
-	uint32 bitmask = object->getOptionsBitmask() | OptionBitmask::YELLOW;
-
-	object->setOptionsBitmask(bitmask, false);
-	}
+	if (yellow)
+		object->addMagicBit(false);
 
 	if (object->isWearableObject()) {
 		ManagedReference<WearableObject*> wearableObject = cast<WearableObject*>(object);
@@ -665,8 +665,12 @@ bool LootManagerImplementation::createLoot(SceneObject* container, const String&
 	if (obj == NULL)
 		return false;
 
-	if (container->transferObject(obj, -1, false, true))
+	if (container->transferObject(obj, -1, false, true)) {
 		container->broadcastObject(obj, true);
+	} else {
+		obj->destroyObjectFromDatabase(true);
+		return false;
+	}
 
 
 	return true;
@@ -872,11 +876,8 @@ void LootManagerImplementation::addRandomDots(TangibleObject* object, LootItemTe
 			weapon->addDotUses(use * excMod);
 		}
 
-		if (yellow) {
-			uint32 bitmask = weapon->getOptionsBitmask() | OptionBitmask::YELLOW;
-
-			weapon->setOptionsBitmask(bitmask, false);
-		}
+		if (yellow)
+			weapon->addMagicBit(false);
 	}
 }
 

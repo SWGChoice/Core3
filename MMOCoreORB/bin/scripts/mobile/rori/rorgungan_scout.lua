@@ -1,7 +1,7 @@
 rorgungan_scout = Creature:new {
 	objectName = "@mob/creature_names:rorgungan_scout",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "rorgungan",
-	pvpFaction = "rorgungan",
 	faction = "rorgungan",
 	level = 12,
 	chanceHit = 0.29,
@@ -26,7 +26,7 @@ rorgungan_scout = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/gungan_s04_male.iff"},
-	
+
 	lootGroups = {
 		{
 			groups = {
@@ -36,8 +36,7 @@ rorgungan_scout = Creature:new {
 				{group = "loot_kit_parts", chance = 1500000},
 				{group = "color_crystals", chance = 250000},
 				{group = "crystals_poor", chance = 250000}
-			},
-			lootChance = 3200000
+			}
 		}
 	},
 	weapons = {"rebel_weapons_heavy"},

@@ -1,7 +1,6 @@
 mature_reptilian_flier = Creature:new {
 	objectName = "@mob/creature_names:mature_reptilian_flier",
 	socialGroup = "reptilian_flier",
-	pvpFaction = "",
 	faction = "",
 	level = 20,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ mature_reptilian_flier = Creature:new {
 	baseHAM = 5000,
 	baseHAMmax = 6100,
 	armor = 0,
-	resists = {5,10,5,35,35,-1,5,-1,-1},
+	resists = {5,110,5,135,135,-1,5,-1,-1},
 	meatType = "meat_avian",
 	meatAmount = 130,
 	hideType = "hide_leathery",
@@ -33,7 +32,8 @@ mature_reptilian_flier = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"}
+		{"",""},
+		{"blindattack",""}
 	}
 }
 

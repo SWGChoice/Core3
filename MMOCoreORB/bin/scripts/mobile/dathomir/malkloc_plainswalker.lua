@@ -1,7 +1,6 @@
 malkloc_plainswalker = Creature:new {
 	objectName = "@mob/creature_names:malkloc_plainswalker",
 	socialGroup = "malkloc",
-	pvpFaction = "",
 	faction = "",
 	level = 84,
 	chanceHit = 0.7,
@@ -11,7 +10,7 @@ malkloc_plainswalker = Creature:new {
 	baseHAM = 29000,
 	baseHAMmax = 36000,
 	armor = 1,
-	resists = {100,50,25,-1,-1,-1,25,100,-1},
+	resists = {200,150,25,-1,-1,-1,25,200,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 1000,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ malkloc_plainswalker = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"creatureareaknockdown","knockdownChance=30"},
-		{"dizzyattack","dizzyChance=50"}
+		{"dizzyattack",""},
+		{"creatureareaknockdown",""}
 	}
 }
 

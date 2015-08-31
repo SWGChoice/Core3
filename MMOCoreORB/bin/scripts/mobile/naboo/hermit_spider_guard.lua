@@ -1,7 +1,6 @@
 hermit_spider_guard = Creature:new {
 	objectName = "@mob/creature_names:hermit_spider_guard",
 	socialGroup = "spider",
-	pvpFaction = "",
 	faction = "",
 	level = 10,
 	chanceHit = 0.27,
@@ -11,7 +10,7 @@ hermit_spider_guard = Creature:new {
 	baseHAM = 675,
 	baseHAMmax = 825,
 	armor = 0,
-	resists = {10,10,0,0,0,10,0,-1,-1},
+	resists = {110,110,0,0,0,110,0,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 9,
 	hideType = "",
@@ -32,8 +31,8 @@ hermit_spider_guard = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"mildpoison",""},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"mildpoison",""}
 	}
 }
 

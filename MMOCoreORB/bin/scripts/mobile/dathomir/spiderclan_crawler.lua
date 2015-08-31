@@ -1,7 +1,7 @@
 spiderclan_crawler = Creature:new {
 	objectName = "@mob/creature_names:spider_nightsister_crawler",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "spider_nightsister",
-	pvpFaction = "spider_nightsister",
 	faction = "spider_nightsister",
 	level = 85,
 	chanceHit = 0.75,
@@ -41,9 +41,8 @@ spiderclan_crawler = Creature:new {
 				{group = "carbines", chance = 1000000},
 				{group = "wearables_common", chance = 500000},
 				{group = "wearables_uncommon", chance = 500000}
-			},
-			lootChance = 2700000
-		}			
+			}
+		}
 	},
 	weapons = {"mixed_force_weapons"},
 	conversationTemplate = "",

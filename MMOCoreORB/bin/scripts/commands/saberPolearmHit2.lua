@@ -55,17 +55,19 @@ SaberPolearmHit2Command = {
 		{}, 
 		{ "stun_defense", "resistance_states" }, 
 		{ "jedi_state_defense" }, 
-		20, 
-		100, 
-		10 
+		50, 
+		0, 
+		45 
 	  )
 	},
 
-	animationCRC = hashCode("combo_3a_medium"),
+	animationCRC = hashCode("combo_5a_medium"),
 
 	combatSpam = "saberpolearmhit2",
 	
 	poolsToDamage = RANDOM_ATTRIBUTE,
+	
+	weaponType = POLEARMJEDIWEAPON,
 
 	range = -1
 }

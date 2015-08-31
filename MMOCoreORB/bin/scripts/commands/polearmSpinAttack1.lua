@@ -53,11 +53,13 @@ PolearmSpinAttack1Command = {
 	mindCostMultiplier = 1.0,
 
 	areaAction = true,
-	areaRange = -1,
+	areaRange = 16,
 
 	animationCRC = hashCode("attack_high_left_light_2"),
 
 	combatSpam = "limbsmasher",
+	
+	weaponType = POLEARMWEAPON,
 
 	range = -1
 

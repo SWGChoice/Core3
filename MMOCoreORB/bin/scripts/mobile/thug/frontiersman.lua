@@ -1,8 +1,8 @@
 frontiersman = Creature:new {
 	objectName = "",
-	customName = "Frontiersman",
+	randomNameType = NAME_GENERIC_TAG,
+	customName = "a Frontiersman",
 	socialGroup = "wilder",
-	pvpFaction = "",
 	faction = "",
 	level = 17,
 	chanceHit = 0.32,
@@ -28,20 +28,20 @@ frontiersman = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_criminal_thug_bothan_male_01.iff",
-			     "object/mobile/dressed_criminal_thug_bothan_female_01.iff"},
+		"object/mobile/dressed_criminal_thug_bothan_female_01.iff"},
 	lootGroups = {
-      	{
+		{
 			groups = {
 				{group = "junk", chance = 4000000},
 				{group = "wearables_common", chance = 3000000},
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "tailor_components", chance = 1000000},
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/townperson",
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 

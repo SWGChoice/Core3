@@ -1,7 +1,7 @@
 crazed_scientist = Creature:new {
 	objectName = "@mob/creature_names:warren_irradiated_worker",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "warren_imperial_worker",
-	pvpFaction = "",
 	faction = "",
 	level = 10,
 	chanceHit = 0.28,
@@ -30,7 +30,16 @@ crazed_scientist = Creature:new {
 		"object/mobile/warren_irradiated_worker_s01.iff",
 		"object/mobile/warren_irradiated_worker_s02.iff",
 		"object/mobile/warren_irradiated_worker_s03.iff"},
-	lootGroups = {},
+	lootGroups = {
+		{
+			groups = {
+				{group = "junk", chance = 4000000},
+				{group = "wearables_common", chance = 3000000},
+				{group = "loot_kit_parts", chance = 2000000},
+				{group = "tailor_components", chance = 1000000},
+			}
+		}
+	},
 	weapons = {},
 	conversationTemplate = "",
 	attacks = brawlernovice

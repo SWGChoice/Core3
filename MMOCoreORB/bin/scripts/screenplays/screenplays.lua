@@ -1,6 +1,8 @@
-package.path = package.path .. ";scripts/screenplays/themepark/?.lua;scripts/screenplays/?.lua"
+package.path = package.path .. ";scripts/screenplays/themepark/?.lua;scripts/screenplays/?.lua;scripts/screenplays/dungeon/corellian_corvette/?.lua"
 require("screenplay")
 require("themeParkLogic")
+require("corvetteTicketGiverLogic")
+require("corvetteTicketTakerLogic")
 
 -- Theme parks
 includeFile("themepark/conversations/goru_conv_handler.lua")
@@ -16,21 +18,58 @@ includeFile("themepark/rebel/themeParkRebel.lua")
 includeFile("themepark/jabba/themeParkJabba.lua")
 includeFile("themepark/valarian/themeParkValarian.lua")
 includeFile("themepark/marauder/themeParkMarauder.lua")
-includeFile("themepark/tutorial.lua")
 
--- Recruiters
-includeFile("recruiters/recruiterConvoHandler.lua")
-includeFile("recruiters/recruiterScreenplay.lua")
+
+-- GCW
+includeFile("gcw/newsnet.lua")
+includeFile("gcw/recruiters/recruiterConvoHandler.lua")
+includeFile("gcw/recruiters/recruiterScreenplay.lua")
+
+-- Tutorial
+includeFile("tutorial/tutorialContainerComponents.lua")
+includeFile("tutorial/tutorialMenuComponents.lua")
+includeFile("tutorial/tutorial.lua")
+includeFile("tutorial/conversations/tutorialStormtrooperFillerConvoHandler.lua")
+includeFile("tutorial/conversations/tutorialRoomTwoGreeterConvoHandler.lua")
+includeFile("tutorial/conversations/tutorialBankerConvoHandler.lua")
+includeFile("tutorial/conversations/tutorialCloneDroidConvoHandler.lua")
+includeFile("tutorial/conversations/tutorialCommonerConvoHandler.lua")
+includeFile("tutorial/conversations/tutorialCelebrityConvoHandler.lua")
+includeFile("tutorial/conversations/tutorialMissionGiverConvoHandler.lua")
+includeFile("tutorial/conversations/tutorialNervousGuyConvoHandler.lua")
+includeFile("tutorial/conversations/tutorialQuartermasterConvoHandler.lua")
+includeFile("tutorial/conversations/tutorialScaredSoldierConvoHandler.lua")
+includeFile("tutorial/conversations/tutorialTrainingRoomOfficerConvoHandler.lua")
 
 -- Dungeons
-includeFile("dungeon/death_watch_bunker.lua")
+includeFile("dungeon/death_watch_bunker/deathWatchBunker.lua")
+includeFile("dungeon/death_watch_bunker/deathWatchContainerComponents.lua")
+includeFile("dungeon/death_watch_bunker/deathWatchMenuComponents.lua")
+includeFile("dungeon/death_watch_bunker/deathWatchSpawnMap.lua")
+includeFile("dungeon/death_watch_bunker/conversations/deathWatchBobaFettConvoHandler.lua")
+includeFile("dungeon/death_watch_bunker/conversations/deathWatchCommanderDkrnConvoHandler.lua")
+includeFile("dungeon/death_watch_bunker/conversations/deathWatchForemanConvoHandler.lua")
+includeFile("dungeon/death_watch_bunker/conversations/deathWatchHaldoConvoHandler.lua")
+includeFile("dungeon/death_watch_bunker/conversations/deathWatchLutinNightstalkerConvoHandler.lua")
+includeFile("dungeon/death_watch_bunker/conversations/deathWatchMedicalDroidConvoHandler.lua")
+includeFile("dungeon/death_watch_bunker/conversations/deathWatchRescueScientistConvoHandler.lua")
+includeFile("dungeon/death_watch_bunker/conversations/deathWatchTechnicianConvoHandler.lua")
+includeFile("dungeon/death_watch_bunker/conversations/deathWatchWorkshopDroidConvoHandler.lua")
 includeFile("dungeon/geonosian_lab/geo_lab.lua")
 includeFile("dungeon/warren/warren.lua")
-includeFile("dungeon/death_watch_bunker_conv_handles.lua")
+includeFile("dungeon/corellian_corvette/corellianCorvette.lua")
+includeFile("dungeon/corellian_corvette/corvetteTicketGiverConvoHandler.lua")
+includeFile("dungeon/corellian_corvette/corvetteTicketTakerConvoHandler.lua")
+includeFile("dungeon/corellian_corvette/bronell.lua")
+includeFile("dungeon/corellian_corvette/ds_297.lua")
+includeFile("dungeon/corellian_corvette/klaatu.lua")
+includeFile("dungeon/corellian_corvette/lt_lance.lua")
 
 -- Village
 includeFile("village/fs_experience_converter_conv_handler.lua")
-
+includeFile("village/convos/elder_conv_handler.lua")
+includeFile("village/convos/fs_village_convo6_m_conv_handler.lua")
+includeFile("village/convos/fs_village_convo7_conv_handler.lua")
 -- Events
 includeFile("events/conversations/bestine_artist_conv_handler.lua")
 includeFile("events/conversations/life_day_anarra_conv_handler.lua")
@@ -43,6 +82,18 @@ includeFile("events/bestineMuseum.lua")
 includeFile("events/eventPromoter.lua")
 includeFile("events/lifeDay.lua")
 
+-- Hero of Tatooine
+includeFile("tasks/hero_of_tatooine/conversations/hermitConvoHandler.lua")
+includeFile("tasks/hero_of_tatooine/conversations/heroOfTatBountyHunterConvoHandler.lua")
+includeFile("tasks/hero_of_tatooine/conversations/heroOfTatFarmerConvoHandler.lua")
+includeFile("tasks/hero_of_tatooine/conversations/heroOfTatIntellectLiarConvoHandler.lua")
+includeFile("tasks/hero_of_tatooine/conversations/heroOfTatIntercomConvoHandler.lua")
+includeFile("tasks/hero_of_tatooine/conversations/heroOfTatMotherConvoHandler.lua")
+includeFile("tasks/hero_of_tatooine/conversations/heroOfTatPirateLeaderConvoHandler.lua")
+includeFile("tasks/hero_of_tatooine/conversations/heroOfTatRanchersWifeConvoHandler.lua")
+includeFile("tasks/hero_of_tatooine/heroOfTatooine.lua")
+includeFile("tasks/hero_of_tatooine/heroOfTatooineContainerComponents.lua")
+includeFile("tasks/hero_of_tatooine/heroOfTatooineMenuComponents.lua")
 
 -- Task/Quest
 includeFile("tasks/corellia/chertyl_ruluwoor.lua")
@@ -79,6 +130,10 @@ includeFile("tasks/dathomir/wallaw_loowobbli.lua")
 includeFile("tasks/dathomir/xarot_korlin.lua")
 includeFile("tasks/epic_quests/zicxBugBomb.lua")
 includeFile("tasks/epic_quests/kraytDragonSkull.lua")
+includeFile("tasks/generic/businessman.lua")
+includeFile("tasks/generic/criminal.lua")
+includeFile("tasks/generic/noble.lua")
+includeFile("tasks/generic/scientist.lua")
 includeFile("tasks/naboo/arven_wendik.lua")
 includeFile("tasks/naboo/boss_nass.lua")
 includeFile("tasks/naboo/captain_gavyn_sykes.lua")
@@ -144,6 +199,7 @@ includeFile("tasks/tatooine/vardias_tyne.lua")
 includeFile("tasks/yavin4/gins_darone.lua")
 includeFile("tasks/yavin4/lian_byrne.lua")
 includeFile("tasks/yavin4/ruwan_tokai.lua")
+includeFile("tasks/heralds.lua")
 includeFile("tasks/theater_manager.lua")
 
 -- Caves
@@ -299,10 +355,6 @@ includeFile("static_spawns/yavin4_static_spawns.lua")
 --Treasure Maps
 includeFile("treasure_map/EncodedDiskMenuComponent.lua")
 includeFile("treasure_map/TreasureMapMenuComponent.lua")
-
---Tests
---includeFile("tests/options_bitmask_test.lua")
---includeFile("event/stresstest_20120128.lua")
 
 --Race Tracks
 includeFile("racetracks/racetracks.lua")

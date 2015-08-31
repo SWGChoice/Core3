@@ -1,7 +1,6 @@
 roba = Creature:new {
 	objectName = "@mob/creature_names:roba",
 	socialGroup = "roba",
-	pvpFaction = "",
 	faction = "",
 	level = 26,
 	chanceHit = 0.36,
@@ -11,7 +10,7 @@ roba = Creature:new {
 	baseHAM = 7200,
 	baseHAMmax = 8800,
 	armor = 0,
-	resists = {20,20,20,60,-1,60,-1,-1,-1},
+	resists = {120,120,15,160,-1,160,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 15,
 	hideType = "hide_leathery",
@@ -31,8 +30,8 @@ roba = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"stunattack","stunChance=50"}
+		{"blindattack",""},
+		{"stunattack",""}
 	}
 }
 

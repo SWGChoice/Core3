@@ -1,7 +1,6 @@
 shear_mite = Creature:new {
 	objectName = "@mob/creature_names:shear_mite",
 	socialGroup = "shear_mite",
-	pvpFaction = "",
 	faction = "",
 	level = 16,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ shear_mite = Creature:new {
 	baseHAM = 2400,
 	baseHAMmax = 3000,
 	armor = 0,
-	resists = {-1,15,5,5,5,5,5,-1,-1},
+	resists = {-1,115,5,5,5,5,5,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 15,
 	hideType = "hide_scaley",
@@ -32,7 +31,7 @@ shear_mite = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"}
+		{"blindattack",""}
 	}
 }
 

@@ -1,7 +1,6 @@
 rhoa_kwi_hunter = Creature:new {
 	objectName = "@mob/creature_names:rhoa_kwi_hunter",
 	socialGroup = "kwi",
-	pvpFaction = "",
 	faction = "",
 	level = 43,
 	chanceHit = 0.44,
@@ -11,7 +10,7 @@ rhoa_kwi_hunter = Creature:new {
 	baseHAM = 9000,
 	baseHAMmax = 10900,
 	armor = 0,
-	resists = {40,55,30,80,30,30,-1,30,-1},
+	resists = {140,155,30,180,30,30,-1,30,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 120,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ rhoa_kwi_hunter = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"dizzyattack",""}
 	}
 }
 

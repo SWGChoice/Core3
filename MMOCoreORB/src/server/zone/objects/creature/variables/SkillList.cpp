@@ -16,8 +16,13 @@
 bool SkillList::containsSkill(const String& skillBox) {
 	String low = skillBox.toLowerCase();
 
+	ReadLocker readLocker(getLock());
+
 	for (int i = 0; i < vector.size(); ++i) {
 		Reference<Skill*> skill = vector.get(i);
+
+		if (skill == NULL)
+			continue;
 
 		String name = skill->getSkillName().toLowerCase();
 
@@ -39,6 +44,9 @@ bool SkillList::containsSkill(const String& skillBox) {
 void SkillList::getStringList(Vector<String>& skills) {
 	for (int i = 0; i < vector.size(); ++i) {
 		Reference<Skill*> skill = vector.get(i);
+
+		if (skill == NULL)
+			continue;
 
 		String& name = skill->getSkillName();
 
@@ -77,6 +85,9 @@ void SkillList::loadFromNames(Vector<String>& skillBoxes) {
 
 		Reference<Skill*> box = skillManager->getSkill(name);
 
+		if (box == NULL)
+			continue;
+
 		vector.add(box);
 	}
 }
@@ -84,7 +95,7 @@ void SkillList::loadFromNames(Vector<String>& skillBoxes) {
 bool SkillList::add(Skill* skill, DeltaMessage* message) {
 	bool val = vector.add(skill);
 
-	if (message != NULL) {
+	if (message != NULL && skill != NULL) {
 		message->startList(1, ++updateCounter);
 
 		message->insertByte(1);
@@ -101,7 +112,7 @@ void SkillList::remove(Skill* skill, DeltaMessage* message) {
 
 	Reference<Skill*> skillObject = vector.remove(index);
 
-	if (message != NULL) {
+	if (message != NULL  && skill != NULL) {
 		message->startList(1, ++updateCounter);
 
 		message->insertByte(0);
@@ -116,6 +127,10 @@ void SkillList::insertToMessage(BaseMessage* msg) {
 
 	for (int i = 0; i < vector.size(); ++i) {
 		Reference<Skill*> skill = get(i);
+
+		if (skill == NULL)
+			continue;
+
 		msg->insertAscii(skill->getSkillName());
 	}
 }

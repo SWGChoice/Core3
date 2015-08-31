@@ -1,7 +1,6 @@
 tusk_cat = Creature:new {
 	objectName = "@mob/creature_names:warren_tuskcat",
 	socialGroup = "warren_huurton",
-	pvpFaction = "",
 	faction = "",
 	level = 16,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ tusk_cat = Creature:new {
 	baseHAM = 2200,
 	baseHAMmax = 2200,
 	armor = 0,
-	resists = {0,0,0,30,30,-1,-1,-1,-1},
+	resists = {0,0,0,130,130,-1,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 75,
 	hideType = "hide_bristley",
@@ -31,7 +30,7 @@ tusk_cat = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"}
+		{"blindattack",""}
 	}
 }
 

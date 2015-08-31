@@ -1,7 +1,6 @@
 veermok_guard = Creature:new {
 	objectName = "@mob/creature_names:veermok_guard",
 	socialGroup = "veermok",
-	pvpFaction = "",
 	faction = "",
 	level = 16,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ veermok_guard = Creature:new {
 	baseHAM = 2900,
 	baseHAMmax = 3500,
 	armor = 0,
-	resists = {5,5,5,5,5,5,5,5,0},
+	resists = {5,5,5,5,5,5,5,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 150,
 	hideType = "hide_bristley",
@@ -32,7 +31,8 @@ veermok_guard = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"",""},
+		{"stunattack",""}
 	}
 }
 

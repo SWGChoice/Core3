@@ -1,7 +1,6 @@
 stintaril_scavenger = Creature:new {
 	objectName = "@mob/creature_names:stintaril_scavenger",
 	socialGroup = "stinaril",
-	pvpFaction = "",
 	faction = "",
 	level = 11,
 	chanceHit = 0.29,
@@ -11,7 +10,7 @@ stintaril_scavenger = Creature:new {
 	baseHAM = 1000,
 	baseHAMmax = 1200,
 	armor = 0,
-	resists = {5,10,5,0,0,0,0,-1,-1},
+	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 5,
 	hideType = "hide_bristley",
@@ -33,7 +32,7 @@ stintaril_scavenger = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""}
 	}
 }
 

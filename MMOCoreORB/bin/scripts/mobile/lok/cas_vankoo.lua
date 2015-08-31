@@ -1,7 +1,6 @@
 cas_vankoo = Creature:new {
 	objectName = "@mob/creature_names:cas_vankoo",
 	socialGroup = "kimogila",
-	pvpFaction = "bandit",
 	faction = "bandit",
 	level = 117,
 	chanceHit = 3.4,
@@ -38,12 +37,12 @@ cas_vankoo = Creature:new {
 				{group = "clothing_attachments", chance = 800000},
 				{group = "armor_attachments", chance = 800000},
 				{group = "wearables_all", chance = 1000000}
-			},
-			lootChance = 6500000
+			}
 		}
 	},
 	weapons = {"cas_vankoo_weapons"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/townperson",
 	attacks = merge(pistoleermaster,pikemanmaster,marksmanmaster,brawlermaster)
 }
 

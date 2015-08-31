@@ -1,7 +1,6 @@
 rancor_youth = Creature:new {
 	objectName = "@mob/creature_names:rancor_youth",
 	socialGroup = "rancor",
-	pvpFaction = "",
 	faction = "",
 	level = 45,
 	chanceHit = 0.44,
@@ -11,7 +10,7 @@ rancor_youth = Creature:new {
 	baseHAM = 8900,
 	baseHAMmax = 10900,
 	armor = 0,
-	resists = {35,60,30,100,100,100,30,30,-1},
+	resists = {135,160,30,200,200,200,30,30,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 700,
 	hideType = "hide_leathery",
@@ -32,24 +31,18 @@ rancor_youth = Creature:new {
 		{
 			groups = {
 				{group = "rancor_common", chance = 4000000},
-				{group = "pistols", chance = 750000},
-				{group = "heavy_weapons", chance = 500000},
-				{group = "rifles", chance = 750000},
-				{group = "carbines", chance = 500000},
-				{group = "grenades_looted", chance = 500000},
-				{group = "armor_all", chance = 1000000},
-				{group = "melee_unarmed", chance = 1000000},
-				{group = "wearables_common", chance = 500000},
-				{group = "wearables_uncommon", chance = 500000}
+				{group = "armor_all", chance = 2000000},
+				{group = "weapons_all", chance = 2500000},
+				{group = "wearables_all", chance = 1500000}
 			},
-			lootChance = 2400000
+			lootChance = 1900000
 		}
 	},
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"creatureareableeding",""},
-		{"knockdownattack","knockdownChance=50"}
+		{"knockdownattack",""},
+		{"creatureareableeding",""}
 	}
 }
 

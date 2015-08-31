@@ -1,7 +1,6 @@
 feral_forest_mite_king = Creature:new {
 	objectName = "@mob/creature_names:feral_forest_mite_king",
 	socialGroup = "mite",
-	pvpFaction = "",
 	faction = "",
 	level = 27,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ feral_forest_mite_king = Creature:new {
 	baseHAM = 6800,
 	baseHAMmax = 8300,
 	armor = 0,
-	resists = {10,40,-1,50,-1,50,50,-1,-1},
+	resists = {10,140,-1,150,-1,150,150,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 20,
 	hideType = "",
@@ -32,8 +31,8 @@ feral_forest_mite_king = Creature:new {
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"dizzyattack","dizzyChance=50"}
+		{"blindattack",""},
+		{"dizzyattack",""}
 	}
 }
 

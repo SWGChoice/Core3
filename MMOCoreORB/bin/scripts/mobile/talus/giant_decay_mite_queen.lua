@@ -1,7 +1,6 @@
 giant_decay_mite_queen = Creature:new {
 	objectName = "@mob/creature_names:giant_decay_mite_queen",
 	socialGroup = "mite",
-	pvpFaction = "",
 	faction = "",
 	level = 26,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ giant_decay_mite_queen = Creature:new {
 	baseHAM = 7200,
 	baseHAMmax = 8800,
 	armor = 0,
-	resists = {40,40,10,10,10,-1,10,-1,-1},
+	resists = {140,140,10,10,10,-1,10,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 28,
 	hideType = "hide_scaley",

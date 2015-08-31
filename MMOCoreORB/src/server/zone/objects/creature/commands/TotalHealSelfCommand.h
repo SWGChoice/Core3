@@ -1,46 +1,6 @@
 /*
-Copyright (C) 2007 <SWGEmu>
-
-This File is part of Core3.
-
-This program is free software; you can redistribute
-it and/or modify it under the terms of the GNU Lesser
-General Public License as published by the Free Software
-Foundation; either version 2 of the License,
-or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU Lesser General Public License for
-more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this program; if not, write to
-the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-
-Linking Engine3 statically or dynamically with other modules
-is making a combined work based on Engine3.
-Thus, the terms and conditions of the GNU Lesser General Public License
-cover the whole combination.
-
-In addition, as a special exception, the copyright holders of Engine3
-give you permission to combine Engine3 program with free software
-programs or libraries that are released under the GNU LGPL and with
-code included in the standard release of Core3 under the GNU LGPL
-license (or modified versions of such code, with unchanged license).
-You may copy and distribute such a system following the terms of the
-GNU LGPL for Engine3 and the licenses of the other code concerned,
-provided that you include the source code of that other code when
-and as the GNU LGPL requires distribution of source code.
-
-Note that people who make modified versions of Engine3 are not obligated
-to grant this special exception for their modified versions;
-it is their choice whether to do so. The GNU Lesser General Public License
-gives permission to release a modified version without this exception;
-this exception also makes it possible to release a modified version
-which carries forward this exception.
- */
+				Copyright <SWGEmu>
+		See file COPYING for copying conditions. */
 
 #ifndef TOTALHEALSELFCOMMAND_H_
 #define TOTALHEALSELFCOMMAND_H_
@@ -85,35 +45,36 @@ public:
 	TotalHealSelfCommand(const String& name, ZoneProcessServer* server)
 		: QueueCommand(name, server) {
 
-	forceCost = 0;
-	heal = 6000;
-		
-	healthHealed = 0;
-	actionHealed = 0;
-	mindHealed = 0;
-		
-	healthWoundHealed = 0;
-	strengthWoundHealed = 0;
-	constitutionWoundHealed = 0;		
-		
-	actionWoundHealed = 0;
-	quicknessWoundHealed = 0;
-	staminaWoundHealed = 0;	
+		forceCost = 0;
+		heal = 6000;
 
-	mindWoundHealed = 0;
-	focusWoundHealed = 0;
-	willpowerWoundHealed = 0;	
+		healthHealed = 0;
+		actionHealed = 0;
+		mindHealed = 0;
 
-	speed = 3.0f;
+		healthWoundHealed = 0;
+		strengthWoundHealed = 0;
+		constitutionWoundHealed = 0;
+
+		actionWoundHealed = 0;
+		quicknessWoundHealed = 0;
+		staminaWoundHealed = 0;
+
+		mindWoundHealed = 0;
+		focusWoundHealed = 0;
+		willpowerWoundHealed = 0;
+
+		speed = 3.0f;
+		range = 0;
 	
 	}
 	
-	void doAnimations(CreatureObject* creature) {
+	void doAnimations(CreatureObject* creature) const {
 			creature->playEffect("clienteffect/pl_force_healing.cef", "");
 	}
 		
 	
-	void sendWoundMessage(CreatureObject* creature, int healthWound, int actionWound, int mindWound, int strengthWound, int constitutionWound, int quicknessWound, int staminaWound, int focusWound, int willpowerWound) {
+	void sendWoundMessage(CreatureObject* creature, int healthWound, int actionWound, int mindWound, int strengthWound, int constitutionWound, int quicknessWound, int staminaWound, int focusWound, int willpowerWound) const {
 
 		StringBuffer msgPlayer, msgBody, msgTail;
 
@@ -149,7 +110,7 @@ public:
 
 	}
 	
-	void sendHealMessage(CreatureObject* creature, int healthDamage, int actionDamage, int mindDamage) {
+	void sendHealMessage(CreatureObject* creature, int healthDamage, int actionDamage, int mindDamage) const {
 
 		StringBuffer msgPlayer, msgBody, msgTail;
 
@@ -174,13 +135,12 @@ public:
 	}	
 		
 		
-	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) {
+	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) const {
 
-		if (!checkStateMask(creature))
-			return INVALIDSTATE;
+		int result = doCommonMedicalCommandChecks(creature);
 
-		if (!checkInvalidLocomotions(creature))
-			return INVALIDLOCOMOTION;
+		if (result != SUCCESS)
+			return result;
 
 		if (isWearingArmor(creature)) {
 			return NOJEDIARMOR;
@@ -212,7 +172,7 @@ public:
 		int healedAction = creature->healDamage(creature, CreatureAttribute::ACTION, heal);
 		int healedMind = creature->healDamage(creature, CreatureAttribute::MIND, heal, true, false);		
 
-		creature->addShockWounds(-1000);
+		creature->addShockWounds(-1000, true, false);
 		
 		creature->removeStateBuff(CreatureState::STUNNED);
 
@@ -230,7 +190,7 @@ public:
 		}
 		
 		
-		forceCost = MIN(((healedHealth + healedAction + healedMind + healedHealthWound + healedStrengthWound + healedConstitutionWound + healedActionWound + healedQuicknessWound + healedStaminaWound + healedMindWound + healedFocusWound + healedWillpowerWound + healDisease + healPoison + healBleeding + healOnFire) / 20), 400);
+		float forceCost = MIN(((healedHealth + healedAction + healedMind + healedHealthWound + healedStrengthWound + healedConstitutionWound + healedActionWound + healedQuicknessWound + healedStaminaWound + healedMindWound + healedFocusWound + healedWillpowerWound + healDisease + healPoison + healBleeding + healOnFire) / 20), 400);
 
 		
 		playerObject->setForcePower(playerObject->getForcePower() - forceCost); // Deduct force.	

@@ -1,7 +1,6 @@
 mamien_jungle_lord = Creature:new {
 	objectName = "@mob/creature_names:mamien_junglelord",
 	socialGroup = "mamien",
-	pvpFaction = "",
 	faction = "",
 	level = 24,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ mamien_jungle_lord = Creature:new {
 	baseHAM = 6300,
 	baseHAMmax = 7700,
 	armor = 0,
-	resists = {10,20,10,10,10,10,10,-1,-1},
+	resists = {10,120,10,10,10,10,10,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 18,
 	hideType = "hide_wooly",
@@ -33,8 +32,8 @@ mamien_jungle_lord = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"knockdownattack","knockdownChance=50"}
+		{"knockdownattack",""},
+		{"dizzyattack",""}
 	}
 }
 

@@ -1,7 +1,6 @@
 queen_merek_harvester = Creature:new {
 	objectName = "@mob/creature_names:queen_merek_harvester",
 	socialGroup = "merek",
-	pvpFaction = "",
 	faction = "",
 	level = 50,
 	chanceHit = 0.5,
@@ -11,7 +10,7 @@ queen_merek_harvester = Creature:new {
 	baseHAM = 10000,
 	baseHAMmax = 12000,
 	armor = 1,
-	resists = {60,-1,5,100,50,5,50,5,-1},
+	resists = {160,-1,5,200,150,5,150,5,-1},
 	meatType = "meat_wild",
 	meatAmount = 75,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ queen_merek_harvester = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"creatureareableeding",""},
-		{"knockdownattack","knockdownChance=50"}
+		{"knockdownattack",""},
+		{"creatureareableeding",""}
 	}
 }
 

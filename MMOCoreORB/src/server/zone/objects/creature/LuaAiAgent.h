@@ -41,6 +41,8 @@ namespace creature {
 		int restoreFollowObject(lua_State* L);
 		int getTargetOfTargetID(lua_State* L);
 		int getFollowState(lua_State* L);
+		int setFollowState(lua_State* L);
+		int setNextPosition(lua_State* L);
 		int findNextPosition(lua_State* L);
 		int getMaxDistance(lua_State* L);
 		int generatePatrol(lua_State* L);
@@ -50,11 +52,12 @@ namespace creature {
 		int getWait(lua_State* L);
 		int isWaiting(lua_State* L);
 		int stopWaiting(lua_State* L);
-		int getCurrentSpeed(lua_State* L);
 		int setCurrentSpeed(lua_State* L);
 		int getTargetFromMap(lua_State* L);
 		int getTargetFromDefenders(lua_State* L);
+		int getTargetFromTargetsDefenders(lua_State* L);
 		int validateTarget(lua_State* L);
+		int validateFollow(lua_State* L);
 		int followHasState(lua_State* L);
 		int selectWeapon(lua_State* L);
 		int selectDefaultWeapon(lua_State* L);
@@ -79,6 +82,7 @@ namespace creature {
 		int isStalker(lua_State* L);
 		int isKiller(lua_State* L);
 		int getFerocity(lua_State* L);
+		int getAggroRadius(lua_State* L);
 		int getArmor(lua_State* L);
 		int getDespawnOnNoPlayerInRange(lua_State* L);
 		int getNumberOfPlayersInRange(lua_State* L);
@@ -91,14 +95,13 @@ namespace creature {
 		int hasLoot(lua_State* L);
 		int isEventMob(lua_State* L);
 		int isPet(lua_State* L);
-		int getPvPFaction(lua_State* L);
-		int getAvgSpeed(lua_State* L);
 		int isAggressiveTo(lua_State* L);
 		int isAttackableBy(lua_State* L);
 		int isScentMasked(lua_State* L);
 		int isConcealed(lua_State* L);
 		int isCamouflaged(lua_State* L);
 		int shouldRetreat(lua_State* L);
+		int leash(lua_State* L);
 		int clearCombatState(lua_State* L);
 		int isInCombat(lua_State* L);
 		int checkLineOfSight(lua_State* L);
@@ -116,12 +119,17 @@ namespace creature {
 		int checkRange(lua_State* L);
 		int broadcastInterrupt(lua_State* L);
 		int getSocialGroup(lua_State* L);
-		int getOwner(lua_State* L);
 		int getLastCommand(lua_State* L);
 		int getLastCommandTarget(lua_State* L);
+		int setLastCommandTarget(lua_State* L);
 		int setAlertDuration(lua_State* L);
 		int alertedTimeIsPast(lua_State* L);
 		int setLevel(lua_State* L);
+		int hasReactionChatMessages(lua_State* L);
+		int sendReactionChat(lua_State* L);
+		int addPatrolPoint(lua_State* L);
+		int runAwarenessLogicCheck(lua_State* L);
+		int setConvoTemplate(lua_State* L);
 	private:
 		AiAgent* realObject;
 	};

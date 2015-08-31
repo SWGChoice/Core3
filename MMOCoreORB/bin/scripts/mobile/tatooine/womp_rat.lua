@@ -1,7 +1,6 @@
 womp_rat = Creature:new {
 	objectName = "@mob/creature_names:womprat",
 	socialGroup = "rat",
-	pvpFaction = "",
 	faction = "",
 	level = 10,
 	chanceHit = 0.28,
@@ -11,7 +10,7 @@ womp_rat = Creature:new {
 	baseHAM = 810,
 	baseHAMmax = 990,
 	armor = 0,
-	resists = {0,0,0,0,0,0,0,0,0},
+	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 4,
 	hideType = "hide_leathery",
@@ -32,7 +31,7 @@ womp_rat = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

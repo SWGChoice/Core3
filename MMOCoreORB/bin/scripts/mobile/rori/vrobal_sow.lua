@@ -1,7 +1,6 @@
 vrobal_sow = Creature:new {
 	objectName = "@mob/creature_names:vrobal_sow",
 	socialGroup = "vrobal",
-	pvpFaction = "",
 	faction = "",
 	level = 18,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ vrobal_sow = Creature:new {
 	baseHAM = 4100,
 	baseHAMmax = 5000,
 	armor = 0,
-	resists = {0,0,0,0,0,0,0,0,0},
+	resists = {5,5,5,5,5,5,5,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 13,
 	hideType = "hide_leathery",
@@ -33,7 +32,7 @@ vrobal_sow = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

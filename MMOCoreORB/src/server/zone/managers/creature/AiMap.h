@@ -26,20 +26,24 @@
 
 class AiMap : public Singleton<AiMap>, public Logger, public Object {
 public:
-	static const uint8 INVALID = 0;   // finished without result
-	static const uint8 SUCCESS = 1;   // finished with success
-	static const uint8 FAILURE = 2;   // finished with failure
-	static const uint8 RUNNING = 3;   // running and not finished
-	static const uint8 SUSPEND = 4;   // not yet started, or temporarily paused
+	enum {
+		INVALID,   // finished without result
+		SUCCESS,   // finished with success
+		FAILURE,   // finished with failure
+		RUNNING,   // running and not finished
+		SUSPEND,   // not yet started, or temporarily paused
+	};
 
 	// class types
-	static const uint8 BEHAVIOR = 0;
-	static const uint8 SEQUENCEBEHAVIOR = 1;
-	static const uint8 SELECTORBEHAVIOR = 2;
-	static const uint8 NONDETERMINISTICSEQUENCEBEHAVIOR = 3;
-	static const uint8 NONDETERMINISTICSELECTORBEHAVIOR = 4;
-	static const uint8 PARALLELSEQUENCEBEHAVIOR = 5;
-	static const uint8 PARALLELSELECTORBEHAVIOR = 6;
+	enum {
+		BEHAVIOR,
+		SEQUENCEBEHAVIOR,
+		SELECTORBEHAVIOR,
+		NONDETERMINISTICSEQUENCEBEHAVIOR,
+		NONDETERMINISTICSELECTORBEHAVIOR,
+		PARALLELSEQUENCEBEHAVIOR,
+		PARALLELSELECTORBEHAVIOR
+	};
 
 	HashTable<String, Reference<AiTemplate*> > aiMap;
 	HashTable<String, Reference<LuaBehavior*> > behaviors;
@@ -119,22 +123,22 @@ public:
 		return behaviors.size();
 	}
 
-	void putTemplate(String name, Reference<AiTemplate*> ait) {
+	void putTemplate(const String& name, Reference<AiTemplate*> ait) {
 		aiMap.put(name, ait);
 	}
 
-	Reference<AiTemplate*> getTemplate(String name) {
+	Reference<AiTemplate*> getTemplate(const String& name) {
 		if (name == "none")
 			return NULL;
 
 		return aiMap.get(name);
 	}
 
-	void putBehavior(String name, Reference<LuaBehavior*> b) {
+	void putBehavior(const String& name, Reference<LuaBehavior*> b) {
 		behaviors.put(name, b);
 	}
 
-	Reference<LuaBehavior*> getBehavior(String name) {
+	Reference<LuaBehavior*> getBehavior(const String& name) {
 		return behaviors.get(name);
 	}
 
@@ -155,7 +159,7 @@ public:
 	}
 
 private:
-	static const uint8 DEBUG_MODE = 0;
+	static const bool DEBUG_MODE = false;
 
 	void registerFunctions(Lua* lua) {
 		lua_register(lua->getLuaState(), "addAiTemplate", addAiTemplate);
@@ -178,11 +182,15 @@ private:
 		lua->setGlobalInt("PARALLELSEQUENCEBEHAVIOR",AiMap::PARALLELSEQUENCEBEHAVIOR);
 		lua->setGlobalInt("PARALLELSELECTORBEHAVIOR",AiMap::PARALLELSELECTORBEHAVIOR);
 
+		lua->setGlobalInt("DEFAULTAGGRORADIUS",AiAgent::DEFAULTAGGRORADIUS); // TODO: this could perhaps be set in a lua config
+
 		lua->setGlobalInt("OBLIVIOUS",AiAgent::OBLIVIOUS);
 		lua->setGlobalInt("WATCHING",AiAgent::WATCHING);
 		lua->setGlobalInt("STALKING",AiAgent::STALKING);
 		lua->setGlobalInt("FOLLOWING",AiAgent::FOLLOWING);
 		lua->setGlobalInt("PATROLLING",AiAgent::PATROLLING);
+		lua->setGlobalInt("FLEEING",AiAgent::FLEEING);
+		lua->setGlobalInt("LEASHING",AiAgent::LEASHING);
 
 		lua->setGlobalInt("NONE",CreatureFlag::NONE);
 		lua->setGlobalInt("PACK",CreatureFlag::PACK);
@@ -193,7 +201,10 @@ private:
 		lua->setGlobalInt("LAIR",CreatureFlag::LAIR);
 		lua->setGlobalInt("HEALER",CreatureFlag::HEALER);
 		lua->setGlobalInt("STATIC",CreatureFlag::STATIC);
-		lua->setGlobalInt("PET",CreatureFlag::PET);
+		lua->setGlobalInt("CREATURE_PET",CreatureFlag::PET);
+		lua->setGlobalInt("DROID_PET",CreatureFlag::DROID_PET);
+		lua->setGlobalInt("FACTION_PET",CreatureFlag::FACTION_PET);
+		lua->setGlobalInt("WANDER",CreatureFlag::WANDER);
 
 		lua->setGlobalInt("PET_FOLLOW", PetManager::FOLLOW);
 		lua->setGlobalInt("PET_STORE", PetManager::STORE);
@@ -213,6 +224,7 @@ private:
 		lua->setGlobalInt("PET_STAY", PetManager::STAY);
 		lua->setGlobalInt("PET_RECHARGEOTHER", PetManager::RECHARGEOTHER);
 		lua->setGlobalInt("PET_TRANSFER", PetManager::TRANSFER);
+		lua->setGlobalInt("PET_THROW",PetManager::THROWTRAP);
 	}
 
 	void putTemplate(Lua* lua, String key, HashTable<unsigned int, Reference<AiTemplate*> >* table) {
@@ -290,7 +302,7 @@ private:
 	}
 
 public:
-	static Behavior* createNewInstance(AiAgent* _agent, String _name, uint16 _type) {
+	static Behavior* createNewInstance(AiAgent* _agent, const String& _name, uint16 _type) {
 		Behavior* newBehavior;
 
 		switch (_type) {

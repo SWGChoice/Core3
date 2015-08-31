@@ -1,7 +1,6 @@
 guf_drolg_female = Creature:new {
 	objectName = "@mob/creature_names:guf_drolg_female",
 	socialGroup = "guf_drolg",
-	pvpFaction = "",
 	faction = "",
 	level = 15,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ guf_drolg_female = Creature:new {
 	baseHAM = 2000,
 	baseHAMmax = 2400,
 	armor = 0,
-	resists = {15,5,0,0,0,0,0,-1,-1},
+	resists = {115,105,0,0,0,0,0,-1,-1},
 	meatType = "meat_reptilian",
 	meatAmount = 325,
 	hideType = "hide_leathery",
@@ -33,7 +32,8 @@ guf_drolg_female = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"",""},
+		{"intimidationattack",""}
 	}
 }
 

@@ -1,7 +1,6 @@
 bolma_male = Creature:new {
 	objectName = "@mob/creature_names:bolma_male",
 	socialGroup = "bolma",
-	pvpFaction = "",
 	faction = "",
 	level = 27,
 	chanceHit = 0.37,
@@ -11,7 +10,7 @@ bolma_male = Creature:new {
 	baseHAM = 8100,
 	baseHAMmax = 9900,
 	armor = 0,
-	resists = {38,20,15,-1,-1,-1,-1,-1,-1},
+	resists = {135,120,15,-1,-1,-1,-1,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 320,
 	hideType = "hide_leathery",
@@ -33,7 +32,8 @@ bolma_male = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"",""},
+		{"stunattack",""}
 	}
 }
 

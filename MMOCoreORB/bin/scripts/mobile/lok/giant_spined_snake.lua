@@ -1,7 +1,6 @@
 giant_spined_snake = Creature:new {
 	objectName = "@mob/creature_names:giant_spined_snake",
 	socialGroup = "spine_snake",
-	pvpFaction = "",
 	faction = "",
 	level = 22,
 	chanceHit = 0.34,
@@ -11,7 +10,7 @@ giant_spined_snake = Creature:new {
 	baseHAM = 4100,
 	baseHAMmax = 5000,
 	armor = 0,
-	resists = {10,10,50,50,50,-1,-1,-1,-1},
+	resists = {10,10,150,150,150,-1,-1,-1,-1},
 	meatType = "meat_reptilian",
 	meatAmount = 15,
 	hideType = "hide_leathery",
@@ -32,7 +31,7 @@ giant_spined_snake = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
+		{"dizzyattack",""},
 		{"strongpoison",""}
 	}
 }

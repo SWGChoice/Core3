@@ -1,46 +1,6 @@
 /*
-Copyright (C) 2007 <SWGEmu>
-
-This File is part of Core3.
-
-This program is free software; you can redistribute
-it and/or modify it under the terms of the GNU Lesser
-General Public License as published by the Free Software
-Foundation; either version 2 of the License,
-or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU Lesser General Public License for
-more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this program; if not, write to
-the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-
-Linking Engine3 statically or dynamically with other modules
-is making a combined work based on Engine3.
-Thus, the terms and conditions of the GNU Lesser General Public License
-cover the whole combination.
-
-In addition, as a special exception, the copyright holders of Engine3
-give you permission to combine Engine3 program with free software
-programs or libraries that are released under the GNU LGPL and with
-code included in the standard release of Core3 under the GNU LGPL
-license (or modified versions of such code, with unchanged license).
-You may copy and distribute such a system following the terms of the
-GNU LGPL for Engine3 and the licenses of the other code concerned,
-provided that you include the source code of that other code when
-and as the GNU LGPL requires distribution of source code.
-
-Note that people who make modified versions of Engine3 are not obligated
-to grant this special exception for their modified versions;
-it is their choice whether to do so. The GNU Lesser General Public License
-gives permission to release a modified version without this exception;
-this exception also makes it possible to release a modified version
-which carries forward this exception.
- */
+				Copyright <SWGEmu>
+		See file COPYING for copying conditions. */
 
 
 #include "NameManager.h"
@@ -51,6 +11,8 @@ which carries forward this exception.
 #include "server/zone/objects/creature/CreatureObject.h"
 
 NameManager::NameManager() {
+	setLoggingName("NameManager");
+
 	initialize();
 
 	profaneNames = new Vector<String>(55, 5); //based on the original number of banned words
@@ -180,6 +142,29 @@ bool NameManager::loadConfigData() {
 
 	npcSurnamesObject.pop();
 
+	LuaObject stormtrooperPrefixesObject = lua->getGlobalObject("stormtrooperPrefixes");
+	for (int i = 1; i <= stormtrooperPrefixesObject.getTableSize(); ++i)
+		stormtrooperPrefixes.add(stormtrooperPrefixesObject.getStringAt(i));
+
+	stormtrooperPrefixesObject.pop();
+
+	LuaObject scouttrooperPrefixesObject = lua->getGlobalObject("scouttrooperPrefixes");
+	for (int i = 1; i <= scouttrooperPrefixesObject.getTableSize(); ++i)
+		scouttrooperPrefixes.add(scouttrooperPrefixesObject.getStringAt(i));
+
+	scouttrooperPrefixesObject.pop();
+
+	LuaObject darktrooperPrefixesObject = lua->getGlobalObject("darktrooperPrefixes");
+	for (int i = 1; i <= darktrooperPrefixesObject.getTableSize(); ++i)
+		darktrooperPrefixes.add(darktrooperPrefixesObject.getStringAt(i));
+
+	darktrooperPrefixesObject.pop();
+
+	LuaObject swamptrooperPrefixesObject = lua->getGlobalObject("swamptrooperPrefixes");
+	for (int i = 1; i <= swamptrooperPrefixesObject.getTableSize(); ++i)
+		swamptrooperPrefixes.add(swamptrooperPrefixesObject.getStringAt(i));
+
+	swamptrooperPrefixesObject.pop();
 	return true;
 }
 
@@ -196,7 +181,7 @@ void NameManager::fillNames() {
 
 		info("parsing restricted names list: restrictednames.lst", true);
 
-		BannedNameSet* setp;
+		BannedNameSet* setp = NULL;
 
 		String line;
 		bool isset = false;
@@ -251,15 +236,39 @@ bool NameManager::isProfane(String name) {
 }
 
 inline bool NameManager::isDeveloper(String name) {
-	return developerNames->contains(name.toLowerCase());
+	name = name.toLowerCase();
+
+	HashSetIterator<String> iter = developerNames->iterator();
+	while (iter.hasNext()) {
+		if (name.indexOf(iter.next()) != -1)
+			return true;
+	}
+
+	return false;
 }
 
 inline bool NameManager::isFiction(String name) {
-	return fictionNames->contains(name.toLowerCase());
+	name = name.toLowerCase();
+
+	HashSetIterator<String> iter = fictionNames->iterator();
+	while (iter.hasNext()) {
+		if (name.indexOf(iter.next()) != -1)
+			return true;
+	}
+
+	return false;
 }
 
 inline bool NameManager::isReserved(String name) {
-	return reservedNames->contains(name.toLowerCase());
+	name = name.toLowerCase();
+
+	HashSetIterator<String> iter = reservedNames->iterator();
+	while (iter.hasNext()) {
+		if (name.indexOf(iter.next()) != -1)
+			return true;
+	}
+
+	return false;
 }
 
 int NameManager::validateName(CreatureObject* obj) {
@@ -302,7 +311,8 @@ int NameManager::validateName(const String& name, int species) {
 		return NameManagerResult::DECLINED_RESERVED;
 
 	//Make sure that only valid characters are allowed in the name.
-	if (strspn(name.toCharArray(), "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'- ") != name.length())
+	if (strspn(fname.toCharArray(), "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'-") != fname.length() ||
+			strspn(lname.toCharArray(), "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'-") != lname.length())
 		return NameManagerResult::DECLINED_SYNTAX;
 
 	if (species == -1)
@@ -311,13 +321,13 @@ int NameManager::validateName(const String& name, int species) {
 	if (fname.length() < 3 || fname.length() > 15 || lname.length() > 20)
 		return NameManagerResult::DECLINED_RACE_INAPP;
 
-	//Wookies are not allowed to have last names.
+	//Wookiees are not allowed to have last names.
 	if (!lname.isEmpty() && species == CreatureObject::WOOKIE)
 		return NameManagerResult::DECLINED_RACE_INAPP;
 
 	//If the name has a hyphen or apostrophe, make sure they are the proper species.
 	if (name.indexOf("'") != -1 || name.indexOf("-") != -1) {
-		//Must be a human, twilek, or moncal to have a hyphen or apostrophe.
+		//Must be a human, twilek, moncal, or zabrak to have a hyphen or apostrophe.
 		if (species != CreatureObjectImplementation::HUMAN && species != CreatureObjectImplementation::TWILEK && species != CreatureObjectImplementation::MONCAL && species != CreatureObjectImplementation::ZABRAK)
 			return NameManagerResult::DECLINED_RACE_INAPP;
 
@@ -337,14 +347,222 @@ int NameManager::validateName(const String& name, int species) {
 	return NameManagerResult::ACCEPTED;
 }
 
-const String NameManager::makeCreatureName(bool lastName) {
+int NameManager::validateGuildName(const String& name, int type) {
+	if (name.isEmpty())
+		return NameManagerResult::DECLINED_EMPTY;
 
-	String name = makeName(3 + System::random(6));
+	if ((type == NameManagerType::GUILD_NAME || type == NameManagerType::GUILD_TITLE) && name.length() > 25)
+		return NameManagerResult::DECLINED_GUILD_LENGTH;
 
-	if(lastName) {
-		name += " ";
-		name += makeName(3 + System::random(6));
+	if (type == NameManagerType::GUILD_ABBREV && name.length() > 5)
+		return NameManagerResult::DECLINED_GUILD_LENGTH;
+
+	if (isProfane(name))
+		return NameManagerResult::DECLINED_PROFANE;
+
+	if (isDeveloper(name))
+		return NameManagerResult::DECLINED_DEVELOPER;
+
+	if (isFiction(name))
+		return NameManagerResult::DECLINED_FICT_RESERVED;
+
+	if (isReserved(name))
+		return NameManagerResult::DECLINED_RESERVED;
+
+	// Guilds allowed multiple spaces
+	if (strspn(name.toCharArray(), "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'- ") != name.length())
+		return NameManagerResult::DECLINED_SYNTAX;
+
+	// Multiple consecutive spaces not allowed
+	if (name.indexOf("  ") != -1)
+		return NameManagerResult::DECLINED_SYNTAX;
+
+	if (name.contains("\\") || name.contains("\n") || name.contains("\r") || name.contains("#"))
+		return NameManagerResult::DECLINED_SYNTAX;
+
+	return NameManagerResult::ACCEPTED;
+}
+
+int NameManager::validateCityName(const String& name) {
+	if (name.isEmpty())
+		return NameManagerResult::DECLINED_EMPTY;
+
+	if (name.length() > 40)
+		return NameManagerResult::DECLINED_SYNTAX;
+
+	if (isProfane(name))
+		return NameManagerResult::DECLINED_PROFANE;
+
+	if (isDeveloper(name))
+		return NameManagerResult::DECLINED_DEVELOPER;
+
+	if (isFiction(name))
+		return NameManagerResult::DECLINED_FICT_RESERVED;
+
+	if (isReserved(name))
+		return NameManagerResult::DECLINED_RESERVED;
+
+	// Cities allowed multiple spaces
+	if (strspn(name.toCharArray(), "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'- ") != name.length())
+		return NameManagerResult::DECLINED_SYNTAX;
+
+	// Multiple consecutive spaces not allowed
+	if (name.indexOf("  ") != -1)
+		return NameManagerResult::DECLINED_SYNTAX;
+
+	return NameManagerResult::ACCEPTED;
+}
+
+int NameManager::validateVendorName(const String& name) {
+	if (name.isEmpty())
+		return NameManagerResult::DECLINED_EMPTY;
+
+	if (name.length() > 40)
+		return NameManagerResult::DECLINED_SYNTAX;
+
+	if (isProfane(name))
+		return NameManagerResult::DECLINED_PROFANE;
+
+	if (isDeveloper(name))
+		return NameManagerResult::DECLINED_DEVELOPER;
+
+	if (isFiction(name))
+		return NameManagerResult::DECLINED_FICT_RESERVED;
+
+	if (isReserved(name))
+		return NameManagerResult::DECLINED_RESERVED;
+
+	// Vendors allowed multiple spaces
+	if (strspn(name.toCharArray(), "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'- ") != name.length())
+		return NameManagerResult::DECLINED_SYNTAX;
+
+	// Multiple consecutive spaces not allowed
+	if (name.indexOf("  ") != -1)
+		return NameManagerResult::DECLINED_SYNTAX;
+
+	return NameManagerResult::ACCEPTED;
+}
+
+int NameManager::validateFirstName(const String& name, int species) {
+	if (name.isEmpty())
+		return NameManagerResult::DECLINED_EMPTY;
+
+	if (name.length() < 3 || name.length() > 15)
+		return NameManagerResult::DECLINED_RACE_INAPP;
+
+	if (isProfane(name))
+		return NameManagerResult::DECLINED_PROFANE;
+
+	if (isDeveloper(name))
+		return NameManagerResult::DECLINED_DEVELOPER;
+
+	if (isFiction(name))
+		return NameManagerResult::DECLINED_FICT_RESERVED;
+
+	if (isReserved(name))
+		return NameManagerResult::DECLINED_RESERVED;
+
+	//Make sure that only valid characters are allowed in the name.
+	if (strspn(name.toCharArray(), "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'-") != name.length())
+		return NameManagerResult::DECLINED_SYNTAX;
+
+	//If the name has a hyphen or apostrophe, make sure they are the proper species.
+	if (name.indexOf("'") != -1 || name.indexOf("-") != -1) {
+		//Must be a human, twilek, moncal, or zabrak to have a hyphen or apostrophe.
+		if (species != CreatureObjectImplementation::HUMAN && species != CreatureObjectImplementation::TWILEK && species != CreatureObjectImplementation::MONCAL && species != CreatureObjectImplementation::ZABRAK)
+			return NameManagerResult::DECLINED_RACE_INAPP;
+
+		//Moncal's aren't allowed to have apostrophes.
+		if (species == CreatureObjectImplementation::MONCAL && name.indexOf("'") != -1)
+			return NameManagerResult::DECLINED_RACE_INAPP;
+
+		//Make sure they only have one hyphen and apostrophe in firstname.
+		if (name.indexOf('\'') != name.lastIndexOf('\'') || name.indexOf('-') != name.lastIndexOf('-'))
+			return NameManagerResult::DECLINED_RACE_INAPP;
 	}
+
+	return NameManagerResult::ACCEPTED;
+}
+
+int NameManager::validateLastName(const String& name, int species) {
+	if (name.isEmpty())
+		return NameManagerResult::ACCEPTED;
+
+	//Wookiees are not allowed to have last names.
+	if (species == CreatureObject::WOOKIE)
+		return NameManagerResult::DECLINED_RACE_INAPP;
+
+	if (name.length() > 20)
+		return NameManagerResult::DECLINED_RACE_INAPP;
+
+	if (isProfane(name))
+		return NameManagerResult::DECLINED_PROFANE;
+
+	if (isDeveloper(name))
+		return NameManagerResult::DECLINED_DEVELOPER;
+
+	if (isFiction(name))
+		return NameManagerResult::DECLINED_FICT_RESERVED;
+
+	if (isReserved(name))
+		return NameManagerResult::DECLINED_RESERVED;
+
+	//Make sure that only valid characters are allowed in the name.
+	if (strspn(name.toCharArray(), "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'-") != name.length())
+		return NameManagerResult::DECLINED_SYNTAX;
+
+	//If the name has a hyphen or apostrophe, make sure they are the proper species.
+	if (name.indexOf("'") != -1 || name.indexOf("-") != -1) {
+		//Must be a human, twilek, moncal, or zabrak to have a hyphen or apostrophe.
+		if (species != CreatureObjectImplementation::HUMAN && species != CreatureObjectImplementation::TWILEK && species != CreatureObjectImplementation::MONCAL && species != CreatureObjectImplementation::ZABRAK)
+			return NameManagerResult::DECLINED_RACE_INAPP;
+
+		//Moncal's aren't allowed to have apostrophes.
+		if (species == CreatureObjectImplementation::MONCAL && name.indexOf("'") != -1)
+			return NameManagerResult::DECLINED_RACE_INAPP;
+
+		//Make sure they only have one hyphen and apostrophe in lastname.
+		if (name.indexOf('\'') != name.lastIndexOf('\'') || name.indexOf('-') != name.lastIndexOf('-'))
+			return NameManagerResult::DECLINED_RACE_INAPP;
+	}
+
+	return NameManagerResult::ACCEPTED;
+}
+
+const String NameManager::makeCreatureName(int type) {
+	String name;
+
+	if (type == NameManagerType::STORMTROOPER || type == NameManagerType::STORMTROOPER_TAG
+			|| type == NameManagerType::SCOUTTROOPER || type == NameManagerType::SCOUTTROOPER_TAG
+				||type == NameManagerType::DARKTROOPER || type == NameManagerType::DARKTROOPER_TAG
+					|| type == NameManagerType::SWAMPTROOPER || type == NameManagerType::SWAMPTROOPER_TAG) {
+		name = makeImperialTrooperName(type);
+	} else {
+		name = makeName(3 + System::random(6));
+
+		if (type == NameManagerType::GENERIC || type == NameManagerType::GENERIC_TAG) {
+			name += " ";
+			name += makeName(3 + System::random(6));
+		}
+	}
+
+	return name;
+}
+
+String NameManager::makeImperialTrooperName(int type) {
+	String name;
+
+	if (type == NameManagerType::STORMTROOPER || type == NameManagerType::STORMTROOPER_TAG)
+		name += stormtrooperPrefixes.get(System::random(stormtrooperPrefixes.size() - 1));
+	else if (type == NameManagerType::SCOUTTROOPER || type == NameManagerType::SCOUTTROOPER_TAG)
+		name += scouttrooperPrefixes.get(System::random(scouttrooperPrefixes.size() - 1));
+	else if (type == NameManagerType::DARKTROOPER || type == NameManagerType::DARKTROOPER_TAG)
+		name += darktrooperPrefixes.get(System::random(darktrooperPrefixes.size() - 1));
+	else if (type == NameManagerType::SWAMPTROOPER || type == NameManagerType::SWAMPTROOPER_TAG)
+		name += swamptrooperPrefixes.get(System::random(swamptrooperPrefixes.size() - 1));
+
+	name += "-";
+	name += String::valueOf(1 + System::random(898));
 
 	return name;
 }

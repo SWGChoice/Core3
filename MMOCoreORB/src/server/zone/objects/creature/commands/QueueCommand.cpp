@@ -7,7 +7,10 @@
 
 #include "QueueCommand.h"
 #include "server/zone/objects/creature/CreatureObject.h"
+#include "server/zone/objects/player/PlayerObject.h"
+#include "server/zone/objects/player/FactionStatus.h"
 #include "server/zone/objects/tangible/weapon/WeaponObject.h"
+#include "server/zone/managers/combat/CombatManager.h"
 
 QueueCommand::QueueCommand(const String& skillname, ZoneProcessServer* serv) : Logger() {
 	server = serv;
@@ -57,7 +60,7 @@ void QueueCommand::setInvalidLocomotions(const String& lStr) {
 /*
  * Checks each invalid locomotion with the player's current locomotion
  */
-bool QueueCommand::checkInvalidLocomotions(CreatureObject* creature) {
+bool QueueCommand::checkInvalidLocomotions(CreatureObject* creature) const {
 	for (int i = 0; i < invalidLocomotion.size(); ++i) {
 		if (invalidLocomotion.get(i) == creature->getLocomotion())
 			return false;
@@ -66,7 +69,7 @@ bool QueueCommand::checkInvalidLocomotions(CreatureObject* creature) {
 	return true;
 }
 
-void QueueCommand::onStateFail(CreatureObject* creature, uint32 actioncntr) {
+void QueueCommand::onStateFail(CreatureObject* creature, uint32 actioncntr) const {
 	if (!addToQueue)
 		return;
 
@@ -87,10 +90,10 @@ void QueueCommand::onStateFail(CreatureObject* creature, uint32 actioncntr) {
 		++num;
 	}
 
-	error("unknown invalid state in onStateFail");
+	creature->error("unknown invalid state in onStateFail");
 }
 
-void QueueCommand::onLocomotionFail(CreatureObject* creature, uint32 actioncntr) {
+void QueueCommand::onLocomotionFail(CreatureObject* creature, uint32 actioncntr) const {
 	if (!checkInvalidLocomotions(creature))
 		creature->clearQueueAction(actioncntr, 0, 1, creature->getLocomotion());
 }
@@ -98,7 +101,7 @@ void QueueCommand::onLocomotionFail(CreatureObject* creature, uint32 actioncntr)
 /*
  * Unsuccessful command completion alerts the player of the invalid state
  */
-void QueueCommand::onFail(uint32 actioncntr, CreatureObject* creature, uint32 errorNumber) {
+void QueueCommand::onFail(uint32 actioncntr, CreatureObject* creature, uint32 errorNumber) const {
 	StringIdChatParameter prm;
 	switch (errorNumber) {
 	case INVALIDSYNTAX:
@@ -162,6 +165,13 @@ void QueueCommand::onFail(uint32 actioncntr, CreatureObject* creature, uint32 er
 		if (addToQueue)
 			creature->clearQueueAction(actioncntr);
 		break;
+	case TOOCLOSE:
+		prm.setStringId("combat_effects", "prone_ranged_too_close");
+		creature->sendSystemMessage(prm);
+
+		if (addToQueue)
+			creature->clearQueueAction(actioncntr);
+		break;
 	default:
 		if (addToQueue)
 			creature->clearQueueAction(actioncntr);
@@ -169,7 +179,7 @@ void QueueCommand::onFail(uint32 actioncntr, CreatureObject* creature, uint32 er
 	}
 }
 
-void QueueCommand::onComplete(uint32 actioncntr, CreatureObject* player, float commandDuration) {
+void QueueCommand::onComplete(uint32 actioncntr, CreatureObject* player, float commandDuration) const {
 	if (!player->isPlayerCreature())
 		return;
 
@@ -177,3 +187,54 @@ void QueueCommand::onComplete(uint32 actioncntr, CreatureObject* player, float c
 		player->clearQueueAction(actioncntr, commandDuration);
 }
 
+int QueueCommand::doCommonMedicalCommandChecks(CreatureObject* creature) const {
+	if (!checkStateMask(creature))
+		return INVALIDSTATE;
+
+	if (!checkInvalidLocomotions(creature))
+		return INVALIDLOCOMOTION;
+
+	if (creature->hasAttackDelay() || !creature->checkPostureChangeDelay()) // no message associated with this
+		return GENERALERROR;
+
+	if (creature->isProne() || creature->isMeditating() || creature->isSwimming()) {
+		creature->sendSystemMessage("@error_message:wrong_state"); //You cannot complete that action while in your current state.
+		return GENERALERROR;
+	}
+
+	if (creature->isRidingMount()) {
+		creature->sendSystemMessage("@error_message:survey_on_mount"); //You cannot perform that action while mounted on a creature or driving a vehicle.
+		return GENERALERROR;
+	}
+
+	return SUCCESS;
+}
+
+void QueueCommand::checkForTef(CreatureObject* creature, CreatureObject* target) const {
+	if (!creature->isPlayerCreature() || creature == target)
+		return;
+
+	PlayerObject* ghost = creature->getPlayerObject().get();
+	if (ghost == NULL)
+		return;
+
+	if (target->isPlayerCreature()) {
+		PlayerObject* targetGhost = target->getPlayerObject().get();
+
+		if (!CombatManager::instance()->areInDuel(creature, target)
+				&& targetGhost != NULL && targetGhost->getFactionStatus() == FactionStatus::OVERT && targetGhost->hasPvpTef()) {
+			ghost->updateLastPvpCombatActionTimestamp();
+		}
+	} else if (target->isPet()) {
+		ManagedReference<CreatureObject*> owner = target->getLinkedCreature().get();
+
+		if (owner != NULL && owner->isPlayerCreature()) {
+			PlayerObject* ownerGhost = owner->getPlayerObject().get();
+
+			if (!CombatManager::instance()->areInDuel(creature, owner)
+					&& ownerGhost != NULL && ownerGhost->getFactionStatus() == FactionStatus::OVERT && ownerGhost->hasPvpTef()) {
+				ghost->updateLastPvpCombatActionTimestamp();
+			}
+		}
+	}
+}

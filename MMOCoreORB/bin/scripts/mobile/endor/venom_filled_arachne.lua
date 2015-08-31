@@ -1,7 +1,6 @@
 venom_filled_arachne = Creature:new {
 	objectName = "@mob/creature_names:venom_filled_arachne",
 	socialGroup = "arachne",
-	pvpFaction = "",
 	faction = "",
 	level = 36,
 	chanceHit = 0.4,
@@ -11,7 +10,7 @@ venom_filled_arachne = Creature:new {
 	baseHAM = 8500,
 	baseHAMmax = 10300,
 	armor = 0,
-	resists = {45,45,20,65,65,20,65,-1,-1},
+	resists = {145,145,20,165,165,20,165,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 50,
 	hideType = "",
@@ -28,11 +27,11 @@ venom_filled_arachne = Creature:new {
 
 	templates = {"object/mobile/queen_arachne.iff"},
 	lootGroups = {},
-	weapons = {},
+	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"strongpoison",""},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"strongpoison",""}
 	}
 }
 

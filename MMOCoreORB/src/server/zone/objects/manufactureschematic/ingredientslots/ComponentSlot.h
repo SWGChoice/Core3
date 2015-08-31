@@ -1,46 +1,6 @@
 /*
- Copyright (C) 2007 <SWGEmu>
-
- This File is part of Core3.
-
- This program is free software; you can redistribute
- it and/or modify it under the terms of the GNU Lesser
- General Public License as published by the Free Software
- Foundation; either version 2 of the License,
- or (at your option) any later version.
-
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- See the GNU Lesser General Public License for
- more details.
-
- You should have received a copy of the GNU Lesser General
- Public License along with this program; if not, write to
- the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-
- Linking Engine3 statically or dynamically with other modules
- is making a combined work based on Engine3.
- Thus, the terms and conditions of the GNU Lesser General Public License
- cover the whole combination.
-
- In addition, as a special exception, the copyright holders of Engine3
- give you permission to combine Engine3 program with free software
- programs or libraries that are released under the GNU LGPL and with
- code included in the standard release of Core3 under the GNU LGPL
- license (or modified versions of such code, with unchanged license).
- You may copy and distribute such a system following the terms of the
- GNU LGPL for Engine3 and the licenses of the other code concerned,
- provided that you include the source code of that other code when
- and as the GNU LGPL requires distribution of source code.
-
- Note that people who make modified versions of Engine3 are not obligated
- to grant this special exception for their modified versions;
- it is their choice whether to do so. The GNU Lesser General Public License
- gives permission to release a modified version without this exception;
- this exception also makes it possible to release a modified version
- which carries forward this exception.
- */
+ 				Copyright <SWGEmu>
+		See file COPYING for copying conditions. */
 
 #ifndef COMPONENTSLOT_H_
 #define COMPONENTSLOT_H_
@@ -53,7 +13,7 @@
 class ComponentSlot: public IngredientSlot {
 
 	/// Indexed by <object, parent>
-	VectorMap<ManagedReference<TangibleObject*>, ManagedReference<SceneObject*> > contents;
+	Vector<ManagedReference<TangibleObject*> > contents;
 
 
 public:
@@ -111,7 +71,7 @@ public:
 
 		// Serial Number check
 		if (requiresIdentical() && !contents.isEmpty()) {
-			TangibleObject* tano = contents.elementAt(0).getKey();
+			TangibleObject* tano = contents.elementAt(0);
 
 			if(tano == NULL) {
 				error("Null items in contents when checking serial number");
@@ -130,12 +90,6 @@ public:
 		/// How much do we need
 		int slotNeeds = requiredQuantity - currentQuantity;
 
-		/// Get parent
-		ManagedReference<SceneObject*> parent = incomingTano->getParent().get();
-		if(parent == NULL) {
-			error("Object inserted didn't have a parent");
-			return false;
-		}
 		/// Extract tano from crate and set it to the incoming object
 		if (crate != NULL) {
 
@@ -161,6 +115,13 @@ public:
 			incomingTano->setUseCount(newCount, true);
 
 			itemToUse = cast<TangibleObject*>( objectManager->cloneObject(incomingTano));
+
+			Locker ilocker(itemToUse);
+
+			if (itemToUse->hasAntiDecayKit()) {
+				itemToUse->removeAntiDecayKit();
+			}
+
 			itemToUse->setUseCount(slotNeeds, false);
 			itemToUse->setParent(NULL);
 			itemToUse->sendAttributeListTo(player);
@@ -176,9 +137,20 @@ public:
 		while(itemToUse->getUseCount() > 1) {
 
 			ManagedReference<TangibleObject*> newTano = cast<TangibleObject*>( objectManager->cloneObject(itemToUse));
+
+			Locker ilocker(newTano);
+
+			if (newTano->hasAntiDecayKit()) {
+				newTano->removeAntiDecayKit();
+			}
+
 			newTano->setParent(NULL);
 			newTano->setUseCount(1, false);
 			itemsToAdd.add(newTano);
+
+			ilocker.release();
+
+			Locker itemToUseLocker(itemToUse);
 
 			itemToUse->decreaseUseCount();
 		}
@@ -189,13 +161,8 @@ public:
 				error("cant transfer crafting component Has Items: " + String::valueOf(satchel->getContainerObjectsSize()));
 				return false;
 			}
-			VectorMapEntry<ManagedReference<TangibleObject*>, ManagedReference<SceneObject*> > entry(tano, parent);
 
-			if(!contents.isEmpty()) {
-				parent->broadcastDestroy(tano, true);
-			}
-
-			contents.add(entry);
+			contents.add(tano);
 		}
 
 		return true;
@@ -204,20 +171,21 @@ public:
 	bool returnToParents(CreatureObject* player) {
 
 		for(int i = 0; i < contents.size(); ++i) {
-			TangibleObject* object = contents.elementAt(i).getKey();
-			SceneObject* parent = contents.elementAt(i).getValue();
-
-			if(parent == NULL) {
-				warning("Can't return object, parent is null");
-				continue;
-			}
+			TangibleObject* object = contents.get(i);
 
 			if(object == NULL) {
 				warning("Can't return object, object is null");
 				continue;
 			}
 
-			parent->transferObject(object, -1, true);
+			SceneObject* parent = player->getSlottedObject("inventory");
+
+			if(parent == NULL) {
+				warning("Can't return object, inventory is null");
+				continue;
+			}
+
+			parent->transferObject(object, -1, true, true);
 			parent->broadcastObject(object, true);
 		}
 
@@ -230,7 +198,7 @@ public:
 	int getSlotQuantity() {
 		int quantity = 0;
 		for(int i = 0; i < contents.size(); ++i) {
-			TangibleObject* tano =  contents.elementAt(i).getKey();
+			TangibleObject* tano =  contents.elementAt(i);
 			if(tano != NULL)
 				quantity += tano->getUseCount();
 		}
@@ -250,7 +218,7 @@ public:
 		if(contents.isEmpty())
 			return NULL;
 
-		return contents.elementAt(0).getKey();
+		return contents.elementAt(0);
 	}
 
 	SceneObject* getFactoryIngredient() {

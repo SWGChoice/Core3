@@ -1,7 +1,7 @@
 nightsister_ranger = Creature:new {
 	objectName = "@mob/creature_names:nightsister_ranger",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "nightsister",
-	pvpFaction = "nightsister",
 	faction = "nightsister",
 	level = 81,
 	chanceHit = 0.75,
@@ -41,8 +41,7 @@ nightsister_ranger = Creature:new {
 				{group = "carbines", chance = 1000000},
 				{group = "wearables_common", chance = 500000},
 				{group = "wearables_uncommon", chance = 500000}
-			},
-			lootChance = 2600000
+			}
 		}
 	},
 	weapons = {"mixed_force_weapons"},

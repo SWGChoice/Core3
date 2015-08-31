@@ -22,9 +22,7 @@ CreatureTemplate::CreatureTemplate() {
 	scale = 1.f;
 
 	objectName = "";
-	generateRandomName = false;
-	useOnlyRandomName = false;
-	hasLastName = true;
+	randomNameType = 0;
 	customName = "";
 	socialGroup = "";
 	faction = "";
@@ -47,6 +45,7 @@ CreatureTemplate::CreatureTemplate() {
 	milk = 0.f;
 	tamingChance = 0.f;
 	ferocity = 0;
+	aggroRadius = 0;
 	pvpBitmask = 0;
 	creatureBitmask = 0;
 	diet = 0;
@@ -63,6 +62,8 @@ CreatureTemplate::CreatureTemplate() {
 	defaultAttack = "defaultattack";
 	controlDeviceTemplate = "object/intangible/pet/pet_control.iff";
 	containerComponentTemplate = "";
+	reactionStf = "";
+	personalityStf = "";
 }
 
 CreatureTemplate::~CreatureTemplate() {
@@ -77,27 +78,19 @@ CreatureTemplate::~CreatureTemplate() {
 void CreatureTemplate::readObject(LuaObject* templateData) {
 	conversationTemplate = String(templateData->getStringField("conversationTemplate").trim()).hashCode();
 	objectName = templateData->getStringField("objectName").trim();
-
-	generateRandomName = templateData->getBooleanField("generateRandomName");
-	useOnlyRandomName = templateData->getBooleanField("useOnlyRandomName");
-	if(useOnlyRandomName)generateRandomName = true;
-	hasLastName = ! templateData->getBooleanField("firstNameOnly");
-
-
-
+	randomNameType = templateData->getIntField("randomNameType");
 
 	customName = templateData->getStringField("customName").trim();
 	socialGroup = templateData->getStringField("socialGroup").trim();
 	faction = templateData->getStringField("faction").trim().toLowerCase();
-	pvpFaction = templateData->getStringField("pvpFaction").trim().toLowerCase();
-	level = templateData->getIntField("level");
-	chanceHit = templateData->getFloatField("chanceHit");
-	damageMin = templateData->getIntField("damageMin");
-	damageMax = templateData->getIntField("damageMax");
+	level = templateData->getIntField("level") - 1;
+	chanceHit = templateData->getFloatField("chanceHit") * 0.7f;
+	damageMin = templateData->getIntField("damageMin") * 0.5;
+	damageMax = templateData->getIntField("damageMax") * 0.5;
 	//range = templateData->getIntField("range");
 	baseXp = templateData->getIntField("baseXp");
-	baseHAM = templateData->getIntField("baseHAM");
-	baseHAMmax = templateData->getIntField("baseHAMmax");
+	baseHAM = templateData->getIntField("baseHAM") * 0.75;
+	baseHAMmax = templateData->getIntField("baseHAMmax") * 0.75;
 	armor = templateData->getIntField("armor");
 	meatType = templateData->getStringField("meatType").trim();
 	meatAmount = templateData->getIntField("meatAmount");
@@ -108,6 +101,7 @@ void CreatureTemplate::readObject(LuaObject* templateData) {
 	milk = templateData->getIntField("milk");
 	tamingChance = templateData->getFloatField("tamingChance");
 	ferocity = templateData->getIntField("ferocity");
+	aggroRadius = templateData->getIntField("aggroRadius") * 0.75;
 	pvpBitmask = templateData->getIntField("pvpBitmask");
 	creatureBitmask = templateData->getIntField("creatureBitmask");
 	diet = templateData->getIntField("diet");
@@ -133,7 +127,7 @@ void CreatureTemplate::readObject(LuaObject* templateData) {
 		cold = res.getFloatAt(5);
 		electricity = res.getFloatAt(6);
 		acid = res.getFloatAt(7);
-		stun = res.getFloatAt(8);
+		stun = res.getFloatAt(8); 
 		lightSaber = res.getFloatAt(9);
 	}
 
@@ -149,7 +143,7 @@ void CreatureTemplate::readObject(LuaObject* templateData) {
 	temps.pop();
 
 	LuaObject lootCollections = templateData->getObjectField("lootGroups");
-	lootgroups.readObject(&lootCollections);
+	lootgroups.readObject(&lootCollections, level);
 	lootCollections.pop();
 
 	LuaObject weps = templateData->getObjectField("weapons");
@@ -195,7 +189,6 @@ void CreatureTemplate::readObject(LuaObject* templateData) {
 
 	containerComponentTemplate = templateData->getStringField("containerComponentTemplate");
 
-	/*if ((pvpBitmask & CreatureFlag::ATTACKABLE) && attacks->size() == 0) {
-		System::out << "ERROR " << templateName << " is attackable but has no skills\n";
-	}*/
+	reactionStf = templateData->getStringField("reactionStf");
+	personalityStf = templateData->getStringField("personalityStf");
 }

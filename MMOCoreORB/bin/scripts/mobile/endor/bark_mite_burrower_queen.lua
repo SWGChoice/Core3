@@ -1,7 +1,6 @@
 bark_mite_burrower_queen = Creature:new {
 	objectName = "@mob/creature_names:bark_mite_burrower_queen",
 	socialGroup = "mite",
-	pvpFaction = "",
 	faction = "",
 	level = 60,
 	chanceHit = 0.55,
@@ -11,7 +10,7 @@ bark_mite_burrower_queen = Creature:new {
 	baseHAM = 11000,
 	baseHAMmax = 13000,
 	armor = 1,
-	resists = {60,50,-1,80,-1,80,80,10,-1},
+	resists = {160,150,-1,180,-1,180,180,10,-1},
 	meatType = "meat_insect",
 	meatAmount = 50,
 	hideType = "",
@@ -32,8 +31,8 @@ bark_mite_burrower_queen = Creature:new {
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"strongdisease",""},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"strongdisease",""}
 	}
 }
 

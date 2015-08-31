@@ -1,7 +1,7 @@
 spice_fiend = Creature:new {
 	objectName = "@mob/creature_names:spice_fiend",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "thug",
-	pvpFaction = "thug",
 	faction = "thug",
 	level = 8,
 	chanceHit = 0.270000,
@@ -27,18 +27,18 @@ spice_fiend = Creature:new {
 
 	templates = {"object/mobile/dressed_tatooine_spice_fiend.iff"},
 	lootGroups = {
-      	{
+		{
 			groups = {
 				{group = "junk", chance = 3000000},
 				{group = "wearables_common", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "tailor_components", chance = 1000000},
 				{group = "pistols", chance = 2000000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_light"},
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(marksmannovice,brawlernovice)
 }
 

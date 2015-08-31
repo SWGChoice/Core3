@@ -1,7 +1,6 @@
 mammoth_thune = Creature:new {
 	objectName = "@mob/creature_names:mammoth_thune",
 	socialGroup = "thune",
-	pvpFaction = "",
 	faction = "",
 	level = 129,
 	chanceHit = 4.75,
@@ -10,8 +9,8 @@ mammoth_thune = Creature:new {
 	baseXp = 12235,
 	baseHAM = 81000,
 	baseHAMmax = 99000,
-	armor = 0,
-	resists = {55,55,45,45,45,45,45,45,-1},
+	armor = 2,
+	resists = {35,35,25,25,25,25,25,25,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 225,
 	hideType = "hide_wooly",
@@ -32,8 +31,8 @@ mammoth_thune = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"posturedownattack","postureDownChance=50"}
+		{"dizzyattack",""},
+		{"posturedownattack",""}
 	}
 }
 

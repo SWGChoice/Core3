@@ -1,7 +1,6 @@
 vrelt_mother = Creature:new {
 	objectName = "@mob/creature_names:startled_vrelt_mother",
 	socialGroup = "vrelt",
-	pvpFaction = "",
 	faction = "",
 	level = 14,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ vrelt_mother = Creature:new {
 	baseHAM = 1500,
 	baseHAMmax = 1900,
 	armor = 0,
-	resists = {0,0,0,0,0,0,0,0,0},
+	resists = {110,110,0,0,0,0,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 13,
 	hideType = "hide_bristley",
@@ -30,11 +29,11 @@ vrelt_mother = Creature:new {
 	controlDeviceTemplate = "object/intangible/pet/stintaril_hue.iff",
 	scale = 1.2,
 	lootGroups = {},
-	weapons = {},
+	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
-		{"knockdownattack","knockdownChance=50"}
+		{"knockdownattack",""},
+		{"intimidationattack",""}
 	}
 }
 

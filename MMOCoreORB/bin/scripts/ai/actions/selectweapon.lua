@@ -22,12 +22,8 @@ end
 function SelectWeaponBase:doAction(pAgent)
 	if (pAgent ~= nil) then
 		local agent = AiAgent(pAgent)
-		
-		if (getRandomNumber(10) == 0) then
-			agent:selectDefaultWeapon()
-		else
-			agent:selectWeapon()
-		end
+
+		agent:selectWeapon()
 		
 		return BEHAVIOR_SUCCESS
 	end
@@ -35,9 +31,26 @@ function SelectWeaponBase:doAction(pAgent)
 end
 
 SelectWeapon = createClass(SelectWeaponBase, Interrupt)
-SelectWeaponPet = createClass(SelectWeaponBase, PetInterrupt)
+SelectWeaponCreaturePet = createClass(SelectWeaponBase, CreaturePetInterrupt)
+SelectWeaponDroidPet = createClass(SelectWeaponBase, DroidPetInterrupt)
+SelectWeaponFactionPet = createClass(SelectWeaponBase, FactionPetInterrupt)
 
-function SelectWeaponPet:terminate(pAgent)
+function SelectWeaponCreaturePet:terminate(pAgent)
+	if pAgent ~= nil then
+		local agent = AiAgent(pAgent)
+		if agent:getBehaviorStatus() == BEHAVIOR_FAILURE then agent:restoreFollowObject() end
+	end
+	return 0
+end
+
+function SelectWeaponDroidPet:terminate(pAgent)
+	if pAgent ~= nil then
+		local agent = AiAgent(pAgent)
+		if agent:getBehaviorStatus() == BEHAVIOR_FAILURE then agent:restoreFollowObject() end
+	end
+	return 0
+end
+function SelectWeaponFactionPet:terminate(pAgent)
 	if pAgent ~= nil then
 		local agent = AiAgent(pAgent)
 		if agent:getBehaviorStatus() == BEHAVIOR_FAILURE then agent:restoreFollowObject() end

@@ -1,7 +1,7 @@
 gondula_elder_worker = Creature:new {
 	objectName = "@mob/creature_names:gondula_elder_worker",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "gondula_tribe",
-	pvpFaction = "gondula_tribe",
 	faction = "gondula_tribe",
 	level = 19,
 	chanceHit = 0.32,
@@ -32,11 +32,11 @@ gondula_elder_worker = Creature:new {
 		"object/mobile/dressed_ewok_m_05.iff",
 		"object/mobile/dressed_ewok_m_08.iff"},
 	lootGroups = {
-		 {
-	        groups = {
+		{
+			groups = {
 				{group = "ewok", chance = 10000000}
 			},
-			lootChance = 3000000
+			lootChance = 1380000
 		}
 	},
 	weapons = {"ewok_weapons"},

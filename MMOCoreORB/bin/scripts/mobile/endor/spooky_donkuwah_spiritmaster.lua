@@ -1,7 +1,7 @@
 spooky_donkuwah_spiritmaster = Creature:new {
 	objectName = "@mob/creature_names:spooky_donkuwah_spiritmaster",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "donkuwah_tribe",
-	pvpFaction = "donkuwah_tribe",
 	faction = "donkuwah_tribe",
 	level = 26,
 	chanceHit = 0.36,
@@ -27,15 +27,15 @@ spooky_donkuwah_spiritmaster = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {
-			"object/mobile/dulok_male.iff",
-			"object/mobile/dulok_female.iff"},
+		"object/mobile/dulok_male.iff",
+		"object/mobile/dulok_female.iff"},
 	lootGroups = {
-		 {
-	        groups = {
+		{
+			groups = {
 				{group = "donkuwah_common", chance = 9000000},
 				{group = "wearables_uncommon", chance = 1000000},
 			},
-			lootChance = 2300000
+			lootChance = 1520000
 		}
 	},
 	weapons = {"donkuwah_weapons"},

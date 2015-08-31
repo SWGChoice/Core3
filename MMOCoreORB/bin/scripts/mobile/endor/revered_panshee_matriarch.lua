@@ -1,7 +1,6 @@
 revered_panshee_matriarch = Creature:new {
 	objectName = "@mob/creature_names:revered_panshee_matriarch",
 	socialGroup = "panshee_tribe",
-	pvpFaction = "panshee_tribe",
 	faction = "panshee_tribe",
 	level = 39,
 	chanceHit = 0.43,
@@ -33,7 +32,7 @@ revered_panshee_matriarch = Creature:new {
 	        groups = {
 				{group = "ewok", chance = 10000000}
 			},
-			lootChance = 3000000
+			lootChance = 1780000
 		}
 	},
 	weapons = {"ewok_weapons"},

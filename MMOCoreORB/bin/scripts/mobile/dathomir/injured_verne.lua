@@ -1,7 +1,6 @@
 injured_verne = Creature:new {
 	objectName = "@mob/creature_names:injured_verne",
 	socialGroup = "verne",
-	pvpFaction = "",
 	faction = "",
 	level = 6,
 	chanceHit = 0.25,
@@ -11,7 +10,7 @@ injured_verne = Creature:new {
 	baseHAM = 180,
 	baseHAMmax = 220,
 	armor = 0,
-	resists = {5,5,5,0,0,0,0,-1,-1},
+	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 30,
 	hideType = "hide_leathery",

@@ -1,7 +1,6 @@
 thune_grassland_guardian = Creature:new {
 	objectName = "@mob/creature_names:thune_grassland_guardian",
 	socialGroup = "thune",
-	pvpFaction = "",
 	faction = "",
 	level = 40,
 	chanceHit = 0.44,
@@ -11,7 +10,7 @@ thune_grassland_guardian = Creature:new {
 	baseHAM = 8300,
 	baseHAMmax = 11300,
 	armor = 0,
-	resists = {45,60,30,-1,-1,-1,-1,-1,-1},
+	resists = {145,160,30,-1,-1,-1,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 135,
 	hideType = "hide_wooly",
@@ -34,8 +33,8 @@ thune_grassland_guardian = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"posturedownattack","postureDownChance=50"}
+		{"dizzyattack",""},
+		{"posturedownattack",""}
 	}
 }
 

@@ -1,7 +1,6 @@
 spineflap_queen = Creature:new {
 	objectName = "@mob/creature_names:spineflap_queen",
 	socialGroup = "spineflap",
-	pvpFaction = "",
 	faction = "",
 	level = 19,
 	chanceHit = 0.33,
@@ -11,7 +10,7 @@ spineflap_queen = Creature:new {
 	baseHAM = 4500,
 	baseHAMmax = 5500,
 	armor = 0,
-	resists = {-1,30,5,5,5,-1,5,-1,-1},
+	resists = {-1,130,5,5,5,-1,5,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 20,
 	hideType = "hide_scaley",
@@ -32,7 +31,7 @@ spineflap_queen = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"knockdownattack","knockdownChance=50"},
+		{"knockdownattack",""},
 		{"mediumpoison",""}
 	}
 }

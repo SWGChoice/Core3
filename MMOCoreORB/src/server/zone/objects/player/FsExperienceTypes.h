@@ -5,15 +5,24 @@
 
 class FsExperienceTypes {
 public:
-	static const int COMBAT = 1;
-	static const int SQUADLEADER = 2;
-	static const int INVESTIGATION = 3;
-	static const int IMAGEDESIGNER = 4;
-	static const int DANCER = 5;
-	static const int MUSICIAN = 6;
-	static const int CRAFTING = 7;
-	static const int SPACE = 8;
-	static const int HEALING = 9;
+	enum {
+		COMBAT        = 1,
+		SQUADLEADER   = 2,
+		INVESTIGATION = 3,
+		IMAGEDESIGNER = 4,
+		DANCER        = 5,
+		MUSICIAN      = 6,
+		CRAFTING      = 7,
+		SPACE         = 8,
+		HEALING       = 9,
+		WEAPON        = 10
+	};
+
+	// Ratios.
+	enum {
+		WEAPON_RATIO = 10,
+		COMBAT_RATIO = 1
+	};
 
 	static String getFsExperienceTypeName(uint8 type) {
 		String name = "";
@@ -47,12 +56,26 @@ public:
 		case HEALING:
 			name = "heal";
 			break;
+		case WEAPON:
+			name = "weapon_";
+			break;
 		default:
 			break;
 		}
 
 		return name;
 
+	}
+
+	// Getting ratios for conversion.
+
+	static String getFsRatio(String type) {
+		if (type.contains(getFsExperienceTypeName(FsExperienceTypes::WEAPON))) {
+			return String::valueOf(FsExperienceTypes::WEAPON_RATIO);
+		} else if (type.contains(getFsExperienceTypeName(FsExperienceTypes::COMBAT))) {
+				return String::valueOf(FsExperienceTypes::COMBAT_RATIO);
+			}
+		return "";
 	}
 
 	/* This boolean checks to see whether or not the experience types are valid from the LUA call for the Experience Converter.
@@ -63,9 +86,9 @@ public:
 		switch (type) {
 		case 0: // Type = Combat Prowess. We want combative-type experiences.
 			if ((experienceType.contains(getFsExperienceTypeName(FsExperienceTypes::COMBAT)) ||
-				experienceType.contains(getFsExperienceTypeName(FsExperienceTypes::SQUADLEADER)) ||
-				experienceType.contains(getFsExperienceTypeName(FsExperienceTypes::INVESTIGATION))) &&
-				!experienceType.contains(getFsExperienceTypeName(FsExperienceTypes::SPACE))) {
+					experienceType.contains(getFsExperienceTypeName(FsExperienceTypes::SQUADLEADER)) ||
+					experienceType.contains(getFsExperienceTypeName(FsExperienceTypes::INVESTIGATION))) &&
+					!experienceType.contains(getFsExperienceTypeName(FsExperienceTypes::SPACE))) {
 				return true;
 				break;
 			}
@@ -83,9 +106,9 @@ public:
 			break;
 		case 2: // Type = Enhanced Reflexes, same as Combat Prowess.
 			if ((experienceType.contains(getFsExperienceTypeName(FsExperienceTypes::COMBAT)) ||
-				experienceType.contains(getFsExperienceTypeName(FsExperienceTypes::SQUADLEADER)) ||
-				experienceType.contains(getFsExperienceTypeName(FsExperienceTypes::INVESTIGATION))) &&
-				!experienceType.contains(getFsExperienceTypeName(FsExperienceTypes::SPACE))) {
+					experienceType.contains(getFsExperienceTypeName(FsExperienceTypes::SQUADLEADER)) ||
+					experienceType.contains(getFsExperienceTypeName(FsExperienceTypes::INVESTIGATION))) &&
+					!experienceType.contains(getFsExperienceTypeName(FsExperienceTypes::SPACE))) {
 				return true;
 				break;
 			}

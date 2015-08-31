@@ -1,7 +1,6 @@
 alpha_bolma = Creature:new {
 	objectName = "@mob/creature_names:alpha_bolma",
 	socialGroup = "bolma",
-	pvpFaction = "",
 	faction = "",
 	level = 33,
 	chanceHit = 0.4,
@@ -11,7 +10,7 @@ alpha_bolma = Creature:new {
 	baseHAM = 8600,
 	baseHAMmax = 10600,
 	armor = 0,
-	resists = {45,25,20,-1,20,-1,-1,-1,-1},
+	resists = {145,125,20,-1,20,-1,-1,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 500,
 	hideType = "hide_leathery",
@@ -32,7 +31,7 @@ alpha_bolma = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

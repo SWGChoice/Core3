@@ -1,7 +1,7 @@
 blood_razor_captain = Creature:new {
 	objectName = "@mob/creature_names:blood_razor_captain",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "bloodrazor",
-	pvpFaction = "bloodrazor",
 	faction = "bloodrazor",
 	level = 42,
 	chanceHit = 0.44,
@@ -30,7 +30,7 @@ blood_razor_captain = Creature:new {
 		"object/mobile/dressed_blood_razor_pirate_captain_hum_m.iff",
 		"object/mobile/dressed_blood_razor_pirate_captain_nikto_m.iff",
 		"object/mobile/dressed_blood_razor_pirate_captain_wee_m.iff"
-		},
+	},
 
 	lootGroups = {
 		{
@@ -46,12 +46,12 @@ blood_razor_captain = Creature:new {
 				{group = "armor_attachments", chance = 300000},
 				{group = "bloodrazor_common", chance = 1500000},
 				{group = "wearables_all", chance = 500000},
-			},
-			lootChance = 3500000
+			}
 		}
 	},
 	weapons = {"blood_razer_weapons"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(pistoleermaster,pikemanmaster,tkamaster,brawlermaster,marksmanmaster)
 }
 

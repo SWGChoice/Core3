@@ -50,7 +50,7 @@ Melee2hSweep2Command = {
 	mindCostMultiplier = 1.0,
         accuracyBonus = 10,
 
-	areaRange = 7,
+	areaRange = 16,
 	areaAction = true,
 
 	animationCRC = hashCode("lower_posture_2hmelee_6"),
@@ -63,11 +63,13 @@ Melee2hSweep2Command = {
 		{ "postureDownRecovery" }, 
 		{ "posture_change_down_defense" }, 
 		{}, 
-		40, 
 		100, 
+		0, 
 		0 
 	  )
 	},
+	
+	weaponType = TWOHANDMELEEWEAPON,
 
 	range = -1
 }

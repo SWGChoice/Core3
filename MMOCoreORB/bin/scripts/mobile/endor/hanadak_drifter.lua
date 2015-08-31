@@ -1,7 +1,6 @@
 hanadak_drifter = Creature:new {
 	objectName = "@mob/creature_names:hanadak_drifter",
 	socialGroup = "hanadak",
-	pvpFaction = "",
 	faction = "",
 	level = 28,
 	chanceHit = 0.37,
@@ -10,8 +9,8 @@ hanadak_drifter = Creature:new {
 	baseXp = 2914,
 	baseHAM = 8100,
 	baseHAMmax = 9900,
-	armor = 1,
-	resists = {20,20,-1,80,80,80,-1,-1,-1},
+	armor = 0,
+	resists = {120,120,-1,160,160,160,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 35,
 	hideType = "hide_bristley",
@@ -33,8 +32,8 @@ hanadak_drifter = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"dizzyattack",""}
 	}
 }
 

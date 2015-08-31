@@ -1,7 +1,7 @@
 skilled_panshee_worker = Creature:new {
 	objectName = "@mob/creature_names:skilled_panshee_worker",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "panshee_tribe",
-	pvpFaction = "panshee_tribe",
 	faction = "panshee_tribe",
 	level = 36,
 	chanceHit = 0.42,
@@ -37,12 +37,12 @@ skilled_panshee_worker = Creature:new {
 		"object/mobile/dressed_ewok_f_12.iff",
 		"object/mobile/dressed_ewok_m_01.iff"},
 	lootGroups = {
-		 {
-	        groups = {
+		{
+			groups = {
 				{group = "ewok", chance = 9000000},
 				{group = "wearables_uncommon", chance = 1000000},
 			},
-			lootChance = 3000000
+			lootChance = 1720000
 		}
 	},
 	weapons = {"ewok_weapons"},

@@ -1,7 +1,6 @@
 swirl_prong = Creature:new {
 	objectName = "@mob/creature_names:swirl_prong",
 	socialGroup = "prong",
-	pvpFaction = "",
 	faction = "",
 	level = 19,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ swirl_prong = Creature:new {
 	baseHAM = 4100,
 	baseHAMmax = 5000,
 	armor = 0,
-	resists = {15,15,15,50,50,-1,-1,-1,-1},
+	resists = {5,120,5,135,135,-1,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 125,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ swirl_prong = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"knockdownattack","knockdownChance=50"},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"knockdownattack",""}
 	}
 }
 

@@ -1,7 +1,6 @@
 gronda_juggernaut = Creature:new {
 	objectName = "@mob/creature_names:gronda_juggernaut",
 	socialGroup = "gronda",
-	pvpFaction = "",
 	faction = "",
 	level = 70,
 	chanceHit = 0.65,
@@ -11,7 +10,7 @@ gronda_juggernaut = Creature:new {
 	baseHAM = 12000,
 	baseHAMmax = 15000,
 	armor = 1,
-	resists = {65,65,75,-1,100,20,20,-1,-1},
+	resists = {165,165,175,-1,200,20,20,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 500,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ gronda_juggernaut = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"knockdownattack","knockdownChance=50"}
+		{"knockdownattack",""},
+		{"dizzyattack",""}
 	}
 }
 

@@ -1,7 +1,6 @@
 purbole_hunter = Creature:new {
 	objectName = "@mob/creature_names:purbole_hunter",
 	socialGroup = "purbole",
-	pvpFaction = "",
 	faction = "",
 	level = 21,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ purbole_hunter = Creature:new {
 	baseHAM = 5000,
 	baseHAMmax = 6100,
 	armor = 0,
-	resists = {25,25,5,-1,-1,45,-1,-1,-1},
+	resists = {125,125,5,-1,-1,145,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 15,
 	hideType = "hide_bristley",
@@ -33,8 +32,8 @@ purbole_hunter = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"intimidationattack",""}
 	}
 }
 

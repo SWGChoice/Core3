@@ -1,7 +1,7 @@
 chunker_swindler = Creature:new {
 	objectName = "@mob/creature_names:chunker_swindler",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "chunker",
-	pvpFaction = "thug",
 	faction = "thug",
 	level = 8,
 	chanceHit = 0.27,
@@ -26,8 +26,8 @@ chunker_swindler = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_criminal_thug_rodian_female_01.iff",
-			"object/mobile/dressed_crook_zabrak_female_01.iff",
-			"object/mobile/dressed_criminal_thug_aqualish_female_01.iff"},
+		"object/mobile/dressed_crook_zabrak_female_01.iff",
+		"object/mobile/dressed_criminal_thug_aqualish_female_01.iff"},
 	lootGroups = {
 		{
 			groups = {
@@ -37,11 +37,11 @@ chunker_swindler = Creature:new {
 				{group = "pistols", chance = 700000},
 				{group = "carbines", chance = 700000},
 				{group = "chunker_common", chance = 6000000},
-			},
-			lootChance = 3500000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_light"},
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(marksmannovice,brawlernovice)
 }
 

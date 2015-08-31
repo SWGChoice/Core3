@@ -1,7 +1,6 @@
 plumed_rasp = Creature:new {
 	objectName = "@mob/creature_names:plumed_rasp",
 	socialGroup = "rasp",
-	pvpFaction = "",
 	faction = "",
 	level = 7,
 	chanceHit = 0.26,
@@ -11,7 +10,7 @@ plumed_rasp = Creature:new {
 	baseHAM = 135,
 	baseHAMmax = 165,
 	armor = 0,
-	resists = {0,0,0,0,0,15,0,-1,-1},
+	resists = {0,0,0,0,0,115,0,-1,-1},
 	meatType = "meat_avian",
 	meatAmount = 3,
 	hideType = "",

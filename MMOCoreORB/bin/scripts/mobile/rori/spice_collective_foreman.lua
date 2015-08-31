@@ -1,7 +1,7 @@
 spice_collective_foreman = Creature:new {
 	objectName = "@mob/creature_names:spice_collective_foreman",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "spice_collective",
-	pvpFaction = "spice_collective",
 	faction = "spice_collective",
 	level = 18,
 	chanceHit = 0.32,
@@ -36,11 +36,11 @@ spice_collective_foreman = Creature:new {
 				{group = "rifles", chance = 2000000},
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000}
-			},
-			lootChance = 3200000
+			}
 		}
 	},
 	weapons = {"ranged_weapons"},
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 

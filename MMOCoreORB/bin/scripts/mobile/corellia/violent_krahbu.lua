@@ -1,7 +1,6 @@
 violent_krahbu = Creature:new {
 	objectName = "@mob/creature_names:violent_krahbu",
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 13,
 	chanceHit = 0.29,
@@ -11,7 +10,7 @@ violent_krahbu = Creature:new {
 	baseHAM = 1000,
 	baseHAMmax = 1200,
 	armor = 0,
-	resists = {0,0,0,0,0,0,0,0,0},
+	resists = {110,125,0,0,0,0,0,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 225,
 	hideType = "hide_bristley",
@@ -33,7 +32,8 @@ violent_krahbu = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"",""},
+		{"intimidationattack",""}
 	}
 }
 

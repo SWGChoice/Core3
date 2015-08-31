@@ -1,7 +1,6 @@
 kiin_dray = Creature:new {
 	objectName = "@mob/creature_names:gaping_spider_recluse_giant_kiin_dray",
 	socialGroup = "spider_nightsister",
-	pvpFaction = "spider_nightsister",
 	faction = "spider_nightsister",
 	level = 126,
 	chanceHit = 4.75,
@@ -11,7 +10,7 @@ kiin_dray = Creature:new {
 	baseHAM = 41000,
 	baseHAMmax = 50000,
 	armor = 2,
-	resists = {55,55,35,30,30,30,15,30,-1},
+	resists = {155,155,135,130,130,130,15,130,-1},
 	meatType = "meat_insect",
 	meatAmount = 11,
 	hideType = "",

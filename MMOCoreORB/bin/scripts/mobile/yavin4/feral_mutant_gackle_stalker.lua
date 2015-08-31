@@ -1,7 +1,6 @@
 feral_mutant_gackle_stalker = Creature:new {
 	objectName = "@mob/creature_names:feral_mutant_gackle_stalker",
 	socialGroup = "gacklebat",
-	pvpFaction = "",
 	faction = "",
 	level = 15,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ feral_mutant_gackle_stalker = Creature:new {
 	baseHAM = 2400,
 	baseHAMmax = 3000,
 	armor = 0,
-	resists = {15,15,0,-1,-1,-1,-1,-1,-1},
+	resists = {115,115,0,-1,-1,-1,-1,-1,-1},
 	meatType = "meat_avian",
 	meatAmount = 9,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ feral_mutant_gackle_stalker = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"milddisease",""},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"milddisease",""}
 	}
 }
 

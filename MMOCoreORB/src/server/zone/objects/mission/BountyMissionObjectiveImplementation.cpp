@@ -58,6 +58,7 @@ void BountyMissionObjectiveImplementation::deactivate() {
 
 	if (activeDroid != NULL) {
 		if (!activeDroid->isPlayerCreature()) {
+			Locker locker(activeDroid);
 			activeDroid->destroyObjectFromDatabase();
 			activeDroid->destroyObjectFromWorld(true);
 		}
@@ -86,6 +87,7 @@ void BountyMissionObjectiveImplementation::abort() {
 
 	WaypointObject* waypoint = strongRef->getWaypointToMission();
 	if (waypoint != NULL && waypoint->isActive()) {
+		Locker wplocker(waypoint);
 		waypoint->setActive(false);
 	}
 
@@ -221,8 +223,11 @@ void BountyMissionObjectiveImplementation::updateWaypoint() {
 	WaypointObject* waypoint = mission->getWaypointToMission();
 
 	if (waypoint == NULL) {
+		Locker mlocker(mission);
 		waypoint = mission->createWaypoint();
 	}
+
+	Locker wplocker(waypoint);
 
 	waypoint->setPlanetCRC(getTargetZoneName().hashCode());
 	Vector3 position = getTargetPosition();
@@ -279,7 +284,7 @@ bool BountyMissionObjectiveImplementation::playerHasMissionOfCorrectLevel(int ac
 	ManagedReference<MissionObject* > mission = this->mission.get();
 
 	int levelNeeded = 2;
-	if (action == BountyHunterDroid::CALLDROID || action == BountyHunterDroid::TRANSMITBIOLOGICALSIGNATURE) {
+	if (action == BountyHunterDroid::FINDANDTRACKTARGET) {
 		levelNeeded = 3;
 	}
 
@@ -460,7 +465,7 @@ void BountyMissionObjectiveImplementation::removeObserver(int observerNumber, un
 }
 
 void BountyMissionObjectiveImplementation::addObserverToCreature(unsigned int observerType, CreatureObject* creature) {
-	ManagedReference<MissionObserver*> observer = new MissionObserver(_this.get());
+	ManagedReference<MissionObserver*> observer = new MissionObserver(_this.getReferenceUnsafeStaticCast());
 	addObserver(observer, true);
 
 	creature->registerObserver(observerType, observer);
@@ -527,10 +532,17 @@ void BountyMissionObjectiveImplementation::handleNpcTargetKilled(ManagedObject* 
 	if (owner == NULL)
 		return;
 
-	if (attacker != NULL && attacker->getFirstName() == owner->getFirstName() &&
-			attacker->isPlayerCreature()) {
+	if (attacker != NULL && attacker->getObjectID() == owner->getObjectID() && attacker->isPlayerCreature()) {
 		//Target killed by player, complete mission.
 		complete();
+	} else if (attacker != NULL && attacker->isPet()) {
+		// Target killed by pet
+		ManagedReference<CreatureObject*> petOwner = attacker->getLinkedCreature().get();
+
+		if (petOwner != NULL && petOwner->getObjectID() == owner->getObjectID()) {
+			// Pet is owned by mission owner, complete mission.
+			complete();
+		}
 	} else {
 		//Target killed by other player, fail mission.
 		owner->sendSystemMessage("@mission/mission_generic:failed"); // Mission failed

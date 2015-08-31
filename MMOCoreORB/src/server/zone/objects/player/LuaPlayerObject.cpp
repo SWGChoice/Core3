@@ -21,7 +21,6 @@ Luna<LuaPlayerObject>::RegType LuaPlayerObject::Register[] = {
 		{ "isOnLeave", &LuaPlayerObject::isOnLeave },
 		{ "isOvert", &LuaPlayerObject::isOvert },
 		{ "isCovert", &LuaPlayerObject::isCovert },
-		{ "isChangingFactionStatus", &LuaPlayerObject::isChangingFactionStatus },
 		{ "increaseFactionStanding", &LuaPlayerObject::increaseFactionStanding },
 		{ "decreaseFactionStanding", &LuaPlayerObject::decreaseFactionStanding },
 		{ "addWaypoint", &LuaPlayerObject::addWaypoint },
@@ -57,21 +56,35 @@ Luna<LuaPlayerObject>::RegType LuaPlayerObject::Register[] = {
 		{ "getEventPerkCount", &LuaPlayerObject::getEventPerkCount},
 		{ "getCharacterAgeInDays", &LuaPlayerObject::getCharacterAgeInDays},
 		{ "isPrivileged", &LuaPlayerObject::isPrivileged},
+		{ "getExperienceRatio", &LuaPlayerObject::getExperienceRatio},
+		{ "closeSuiWindowType", &LuaPlayerObject::closeSuiWindowType},
 		{ 0, 0 }
 };
 
 
 LuaPlayerObject::LuaPlayerObject(lua_State *L) : LuaIntangibleObject(L) {
-	realObject = (PlayerObject*)lua_touserdata(L, 1);
+#ifdef DYNAMIC_CAST_LUAOBJECTS
+	realObject = dynamic_cast<PlayerObject*>(_getRealSceneObject());
+
+	assert(!_getRealSceneObject() || realObject != NULL);
+#else
+	realObject = reinterpret_cast<PlayerObject*>(lua_touserdata(L, 1));
+#endif
 }
 
 LuaPlayerObject::~LuaPlayerObject() {
 }
 
 int LuaPlayerObject::_setObject(lua_State* L) {
-	realObject = (PlayerObject*)lua_touserdata(L, -1);
-
 	LuaIntangibleObject::_setObject(L);
+
+#ifdef DYNAMIC_CAST_LUAOBJECTS
+	realObject = dynamic_cast<PlayerObject*>(_getRealSceneObject());
+
+	assert(!_getRealSceneObject() || realObject != NULL);
+#else
+	realObject = (PlayerObject*)lua_touserdata(L, -1);
+#endif
 
 	return 0;
 }
@@ -104,12 +117,6 @@ int LuaPlayerObject::isOvert(lua_State* L) {
 
 int LuaPlayerObject::isCovert(lua_State* L) {
 	lua_pushboolean(L, realObject->getFactionStatus() == FactionStatus::COVERT);
-
-	return 1;
-}
-
-int LuaPlayerObject::isChangingFactionStatus(lua_State* L) {
-	lua_pushboolean(L, realObject->getFactionStatus() == FactionStatus::CHANGINGSTATUS);
 
 	return 1;
 }
@@ -173,6 +180,9 @@ int LuaPlayerObject::addWaypoint(lua_State* L) {
 	}
 
 	ManagedReference<WaypointObject*> waypoint = realObject->getZoneServer()->createObject(0xc456e788, persistence).castTo<WaypointObject*>();
+
+	Locker locker(waypoint);
+
 	waypoint->setPlanetCRC(planet.hashCode());
 	waypoint->setPosition(x, 0, y);
 	waypoint->setSpecialTypeID(specialTypeID);
@@ -487,4 +497,22 @@ int LuaPlayerObject::isPrivileged(lua_State* L) {
 	lua_pushboolean(L, realObject->isPrivileged());
 
 	return 1;
+}
+
+int LuaPlayerObject::getExperienceRatio(lua_State* L) {
+	String type = lua_tostring(L, -1);
+
+	String ratio = realObject->getForceSensitiveExperienceRatio(type);
+	lua_pushstring(L, ratio.toCharArray());
+
+	return 1;
+}
+
+int LuaPlayerObject::closeSuiWindowType(lua_State* L) {
+        int type = lua_tointeger(L, -1);
+ 	unsigned suiType = (unsigned)type;
+
+	realObject->closeSuiWindowType( suiType );
+
+	return 0;
 }

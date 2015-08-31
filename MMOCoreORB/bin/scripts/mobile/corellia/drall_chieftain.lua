@@ -1,7 +1,7 @@
 drall_chieftain = Creature:new {
 	objectName = "@mob/creature_names:drall_chieftain",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "drall",
-	pvpFaction = "drall",
 	faction = "drall",
 	level = 22,
 	chanceHit = 0.35,
@@ -28,17 +28,17 @@ drall_chieftain = Creature:new {
 
 	templates = {"object/mobile/drall_male.iff"},
 	lootGroups = {
-	      	{
+		{
 			groups = {
 				{group = "junk", chance = 7000000},
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "tailor_components", chance = 1000000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_heavy"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/military",
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 

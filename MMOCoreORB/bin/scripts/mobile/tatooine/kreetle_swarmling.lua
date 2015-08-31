@@ -1,7 +1,6 @@
 kreetle_swarmling = Creature:new {
 	objectName = "@mob/creature_names:kreetle_swarming",
 	socialGroup = "kreetle",
-	pvpFaction = "",
 	faction = "",
 	level = 6,
 	chanceHit = 0.25,
@@ -11,7 +10,7 @@ kreetle_swarmling = Creature:new {
 	baseHAM = 113,
 	baseHAMmax = 138,
 	armor = 0,
-	resists = {5,5,0,0,0,0,0,-1,-1},
+	resists = {105,105,0,0,0,0,0,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 1,
 	hideType = "hide_scaley",
@@ -31,7 +30,7 @@ kreetle_swarmling = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""}
 	}
 }
 

@@ -1,7 +1,6 @@
 kliknik_hatchling = Creature:new {
 	objectName = "@mob/creature_names:kliknik_hatchling",
 	socialGroup = "kliknik",
-	pvpFaction = "",
 	faction = "",
 	level = 22,
 	chanceHit = 0.35,
@@ -33,7 +32,7 @@ kliknik_hatchling = Creature:new {
 	        groups = {
 				{group = "kliknik_common", chance = 10000000}
 			},
-			lootChance = 2000000
+			lootChance = 1440000
 		}
 	},
 	weapons = {},

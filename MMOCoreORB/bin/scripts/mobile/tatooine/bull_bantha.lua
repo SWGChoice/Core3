@@ -1,7 +1,6 @@
 bull_bantha = Creature:new {
 	objectName = "@mob/creature_names:bull_bantha",
 	socialGroup = "bantha",
-	pvpFaction = "",
 	faction = "",
 	level = 20,
 	chanceHit = 0.33,
@@ -11,7 +10,7 @@ bull_bantha = Creature:new {
 	baseHAM = 4500,
 	baseHAMmax = 5500,
 	armor = 0,
-	resists = {5,25,5,40,-1,-1,-1,-1,-1},
+	resists = {5,125,5,140,-1,-1,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 475,
 	hideType = "hide_wooly",
@@ -33,7 +32,8 @@ bull_bantha = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"",""},
+		{"stunattack",""}
 	}
 }
 

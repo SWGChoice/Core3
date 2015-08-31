@@ -6,6 +6,8 @@ global_commoner_neutral_none = Lair:new {
 	buildingsMedium = {},
 	buildingsHard = {},
 	buildingsVeryHard = {},
+	mobType = "npc",
+	buildingType = "none"
 }
 
 addLairTemplate("global_commoner_neutral_none", global_commoner_neutral_none)

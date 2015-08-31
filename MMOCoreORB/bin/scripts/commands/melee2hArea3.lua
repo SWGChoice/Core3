@@ -58,7 +58,7 @@ Melee2hArea3Command = {
 		{ "dizzy_defense", "resistance_states" }, 
 		{ "jedi_state_defense" }, 
 		30, 
-		100, 
+		0, 
 		30
 	  ),
 	  StateEffect( 
@@ -66,18 +66,20 @@ Melee2hArea3Command = {
 		{ "postureDownRecovery" }, 
 		{ "posture_change_down_defense" }, 
 		{}, 
-		15, 
 		100, 
+		0, 
 		0 
 	  )
 	},
 
-	areaRange = 7,
+	areaRange = 16,
 	areaAction = true,
 
 	animationCRC = hashCode("combo_3a_light"),
 
 	combatSpam = "domination",
+	
+	weaponType = TWOHANDMELEEWEAPON,
 
 	range = -1
 }

@@ -44,7 +44,9 @@ int VehicleCustomKitObjectMenuComponent::handleObjectMenuSelect(SceneObject* sce
 	if(!sceneObject->isTangibleObject())
 		return 0;
 
-	ManagedReference<TangibleObject*> tano = cast<TangibleObject*>(sceneObject);
+	ManagedReference<TangibleObject*> kitTano = cast<TangibleObject*>(sceneObject);
+	if(kitTano == NULL)
+		return 0;
 
 	uint64 targetID = player->getTargetID();
 	ZoneServer* server = player->getZoneServer();
@@ -56,6 +58,7 @@ int VehicleCustomKitObjectMenuComponent::handleObjectMenuSelect(SceneObject* sce
 		player->sendSystemMessage("You can only use this tool to customize vehicle");
 		return 0;
 	}
+
 	//permission check
 	CreatureObject* vehicle = cast<CreatureObject*>(target.get());
 	uint64 ownerID = vehicle->getCreatureLinkID();
@@ -65,6 +68,7 @@ int VehicleCustomKitObjectMenuComponent::handleObjectMenuSelect(SceneObject* sce
 		ManagedReference<CreatureObject*> targetOwner = server->getObject(ownerID, true).castTo<CreatureObject*>();
 		if (targetOwner != NULL)
 		{
+			Locker crossLock(targetOwner, player);
 			ManagedReference<PlayerObject*> ghostOwner = targetOwner->getPlayerObject();
 			for (int i = 0; i < ghostOwner->getConsentListSize(); ++i) {
 				String entryName = ghostOwner->getConsentName(i);
@@ -81,6 +85,8 @@ int VehicleCustomKitObjectMenuComponent::handleObjectMenuSelect(SceneObject* sce
 		}
 	}
 	//end permission check
+
+	Locker clocker(vehicle, player);
 
 	String appearanceFilename = target->getObjectTemplate()->getAppearanceFilename();
 	VectorMap<String, Reference<CustomizationVariable*> > variables;
@@ -100,7 +106,6 @@ int VehicleCustomKitObjectMenuComponent::handleObjectMenuSelect(SceneObject* sce
 		return 0;
 	}
 
-	tano->decreaseUseCount();
 	VehicleObject* painted = cast<VehicleObject*>(vehicle);
 	if (painted != NULL){
 		painted->refreshPaint();
@@ -108,7 +113,7 @@ int VehicleCustomKitObjectMenuComponent::handleObjectMenuSelect(SceneObject* sce
 
 	ManagedReference<SuiListBox*> frameTrimSelector = new SuiListBox(player, SuiWindowType::CUSTOMIZE_KIT);
 	frameTrimSelector->setUsingObject(player);
-	frameTrimSelector->setCallback(new CustomVehicleSuiCallback(server, numPalette));
+	frameTrimSelector->setCallback(new CustomVehicleSuiCallback(server, numPalette, kitTano ));
 	frameTrimSelector->setUsingObject(target);
 	frameTrimSelector->setPromptTitle("Customize");
 	frameTrimSelector->setPromptText("Please select the customization action you would like to take");

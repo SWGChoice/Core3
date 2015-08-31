@@ -1,7 +1,6 @@
 tusken_death_hunter = Creature:new {
 	objectName = "@mob/creature_names:tusken_death_hunter",
 	socialGroup = "tusken_raider",
-	pvpFaction = "tusken_raider",
 	faction = "tusken_raider",
 	level = 50,
 	chanceHit = 0.5,
@@ -40,9 +39,8 @@ tusken_death_hunter = Creature:new {
 				{group = "clothing_attachments", chance = 500000},
 				{group = "color_crystals", chance = 500000},
 				{group = "crystals_okay", chance = 500000}
-			},
-			lootChance = 3000000
-		}			
+			}
+		}
 	},
 	weapons = {"tusken_weapons"},
 	conversationTemplate = "",

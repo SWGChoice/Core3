@@ -58,7 +58,7 @@ PanicShotCommand = {
 		{ "warcry_defense" }, 
 		{}, 
 		100, 
-		100, 
+		0, 
 		10 
 	  )
 	},
@@ -69,6 +69,8 @@ PanicShotCommand = {
 
 	coneAction = true,
 	coneAngle = 45,
+	
+	weaponType = PISTOLWEAPON,
 
 	range = -1
 }

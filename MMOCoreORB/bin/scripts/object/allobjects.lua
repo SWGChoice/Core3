@@ -836,3 +836,10 @@ includeFile("weapon/ranged/objects.lua")
 includeFile("weapon/trap/objects.lua")
 includeFile("weapon/objects.lua")
 
+--Post Publish 14.1 includes
+includeFile("building/player/new_houses/objects.lua")
+includeFile("tangible/deed/player_house_deed/new_house_deeds/objects.lua")
+includeFile("tangible/loot/loot_schematic/new_house_loot_schem/objects.lua")
+includeFile("draft_schematic/structure/new_house_schem/objects.lua")
+
+

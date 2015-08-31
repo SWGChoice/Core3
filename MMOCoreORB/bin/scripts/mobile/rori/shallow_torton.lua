@@ -1,7 +1,6 @@
 shallow_torton = Creature:new {
 	objectName = "@mob/creature_names:shallow_torton",
 	socialGroup = "torton",
-	pvpFaction = "",
 	faction = "",
 	level = 19,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ shallow_torton = Creature:new {
 	baseHAM = 4500,
 	baseHAMmax = 5500,
 	armor = 0,
-	resists = {5,5,5,-1,-1,-1,-1,25,-1},
+	resists = {5,5,5,-1,-1,-1,-1,125,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 650,
 	hideType = "hide_wooly",
@@ -32,7 +31,7 @@ shallow_torton = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"}
+		{"dizzyattack",""}
 	}
 }
 

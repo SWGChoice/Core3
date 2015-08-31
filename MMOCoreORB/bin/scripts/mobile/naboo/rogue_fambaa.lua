@@ -1,7 +1,6 @@
 rogue_fambaa = Creature:new {
 	objectName = "@mob/creature_names:rogue_fambaa",
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 37,
 	chanceHit = 0.42,
@@ -11,7 +10,7 @@ rogue_fambaa = Creature:new {
 	baseHAM = 9000,
 	baseHAMmax = 11000,
 	armor = 0,
-	resists = {25,25,25,25,60,60,-1,25,-1},
+	resists = {25,25,25,25,160,160,-1,25,-1},
 	meatType = "meat_reptilian",
 	meatAmount = 1000,
 	hideType = "hide_leathery",
@@ -34,13 +33,13 @@ rogue_fambaa = Creature:new {
 	        groups = {
 				{group = "fambaa_common", chance = 10000000}
 			},
-			lootChance = 2200000
+			lootChance = 1740000
 		}
 	},
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""}
 	}
 }
 

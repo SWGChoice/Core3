@@ -1,7 +1,7 @@
 nightsister_protector = Creature:new {
 	objectName = "@mob/creature_names:nightsister_protector",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "nightsister",
-	pvpFaction = "nightsister",
 	faction = "nightsister",
 	level = 131,
 	chanceHit = 4.75,
@@ -41,8 +41,7 @@ nightsister_protector = Creature:new {
 				{group = "pistols", chance = 1000000},
 				{group = "carbines", chance = 1000000},
 				{group = "wearables_all", chance = 1000000}
-			},
-			lootChance = 3600000
+			}
 		}
 	},
 	weapons = {"mixed_force_weapons"},

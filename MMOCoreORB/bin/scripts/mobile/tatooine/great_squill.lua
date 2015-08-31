@@ -1,7 +1,6 @@
 great_squill = Creature:new {
 	objectName = "@mob/creature_names:squill_great",
 	socialGroup = "squill",
-	pvpFaction = "",
 	faction = "",
 	level = 20,
 	chanceHit = 0.33,
@@ -11,7 +10,7 @@ great_squill = Creature:new {
 	baseHAM = 5400,
 	baseHAMmax = 6600,
 	armor = 0,
-	resists = {10,10,10,10,-1,-1,10,-1,-1},
+	resists = {110,110,10,10,-1,-1,10,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 6,
 	hideType = "hide_leathery",
@@ -33,7 +32,7 @@ great_squill = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

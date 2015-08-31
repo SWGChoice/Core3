@@ -34,7 +34,7 @@ void GeneratorObjectImplementation::synchronizedUIListen(SceneObject* player, in
 
 	updateInstallationWork();
 
-	HarvesterObjectMessage7* msg = new HarvesterObjectMessage7(_this.get());
+	HarvesterObjectMessage7* msg = new HarvesterObjectMessage7(_this.getReferenceUnsafeStaticCast());
 	player->sendMessage(msg);
 
 	activateUiSync();
@@ -71,7 +71,7 @@ String GeneratorObjectImplementation::getRedeedMessage() {
 	if(operating)
 		return "destroy_deactivate_first";
 
-	if(resourceHopper.size() > 0)
+	if(getHopperSize() > 0)
 		return "destroy_empty_hopper";
 
 

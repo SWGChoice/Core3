@@ -1,7 +1,6 @@
 arachne_hatchling = Creature:new {
 	objectName = "@mob/creature_names:arachne_hatchling",
 	socialGroup = "arachne",
-	pvpFaction = "",
 	faction = "",
 	level = 18,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ arachne_hatchling = Creature:new {
 	baseHAM = 3500,
 	baseHAMmax = 4300,
 	armor = 0,
-	resists = {10,10,5,-1,-1,5,85,5,-1},
+	resists = {110,110,5,-1,-1,5,185,5,-1},
 	meatType = "meat_insect",
 	meatAmount = 1,
 	hideType = "",
@@ -32,6 +31,7 @@ arachne_hatchling = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
+		{"",""},
 		{"mediumpoison",""}
 	}
 }

@@ -1,7 +1,6 @@
 male_langlatch = Creature:new {
 	objectName = "@mob/creature_names:langlatch_male",
 	socialGroup = "langlatch",
-	pvpFaction = "",
 	faction = "",
 	level = 14,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ male_langlatch = Creature:new {
 	baseHAM = 2000,
 	baseHAMmax = 2400,
 	armor = 0,
-	resists = {0,15,0,0,0,0,0,-1,-1},
+	resists = {0,115,0,0,0,0,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 10,
 	hideType = "hide_wooly",
@@ -32,7 +31,7 @@ male_langlatch = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""}
 	}
 }
 

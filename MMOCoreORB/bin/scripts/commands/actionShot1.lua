@@ -72,7 +72,7 @@ ActionShot1Command = {
 	dotEffects = {
 	  DotEffect( 
 		BLEEDING, 
-		{ "resistance_bleeding", "bleed_resist", "combat_bleeding_defense" },
+		{ "resistance_bleeding", "bleed_resist" },
 		ACTION,
 		true,
 		125,
@@ -81,6 +81,8 @@ ActionShot1Command = {
 		60
 	  )	  
 	},
+	
+	weaponType = CARBINEWEAPON,
 
 	range = -1
 }

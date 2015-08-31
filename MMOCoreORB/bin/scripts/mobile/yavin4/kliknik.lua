@@ -1,7 +1,6 @@
 kliknik = Creature:new {
 	objectName = "@mob/creature_names:kliknik",
 	socialGroup = "kliknik",
-	pvpFaction = "",
 	faction = "",
 	level = 18,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ kliknik = Creature:new {
 	baseHAM = 4100,
 	baseHAMmax = 5000,
 	armor = 0,
-	resists = {20,15,15,-1,0,-1,0,-1,-1},
+	resists = {120,5,5,-1,5,-1,5,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 5,
 	hideType = "hide_scaley",
@@ -34,13 +33,13 @@ kliknik = Creature:new {
 	        groups = {
 				{group = "kliknik_common", chance = 10000000}
 			},
-			lootChance = 2000000
+			lootChance = 1360000
 		}
 	},
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""}
 	}
 }
 

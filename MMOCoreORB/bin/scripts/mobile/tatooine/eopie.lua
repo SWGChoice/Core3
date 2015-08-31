@@ -1,7 +1,6 @@
 eopie = Creature:new {
 	objectName = "@mob/creature_names:eopie",
 	socialGroup = "eopie",
-	pvpFaction = "",
 	faction = "",
 	level = 7,
 	chanceHit = 0.26,
@@ -11,7 +10,7 @@ eopie = Creature:new {
 	baseHAM = 405,
 	baseHAMmax = 495,
 	armor = 0,
-	resists = {0,0,0,20,20,0,0,-1,-1},
+	resists = {0,0,0,120,120,0,0,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 315,
 	hideType = "hide_leathery",

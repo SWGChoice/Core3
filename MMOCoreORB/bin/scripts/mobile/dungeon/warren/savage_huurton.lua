@@ -1,7 +1,6 @@
 savage_huurton = Creature:new {
 	objectName = "@mob/creature_names:warren_huurton_savage",
 	socialGroup = "warren_huurton",
-	pvpFaction = "",
 	faction = "",
 	level = 26,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ savage_huurton = Creature:new {
 	baseHAM = 6800,
 	baseHAMmax = 8300,
 	armor = 0,
-	resists = {35,35,0,-1,0,0,-1,-1,-1},
+	resists = {135,135,0,-1,0,0,-1,-1,-1},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "hide_wooly",
@@ -32,8 +31,8 @@ savage_huurton = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"intimidationattack",""}
 	}
 }
 

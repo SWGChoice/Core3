@@ -1,7 +1,6 @@
 leviasquall = Creature:new {
 	objectName = "@mob/creature_names:leviasquall",
 	socialGroup = "squall",
-	pvpFaction = "",
 	faction = "",
 	level = 19,
 	chanceHit = 0.33,
@@ -11,7 +10,7 @@ leviasquall = Creature:new {
 	baseHAM = 4500,
 	baseHAMmax = 5500,
 	armor = 0,
-	resists = {15,5,-1,-1,30,30,-1,5,-1},
+	resists = {115,5,-1,-1,130,130,-1,5,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 50,
 	hideType = "hide_bristley",
@@ -33,7 +32,7 @@ leviasquall = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

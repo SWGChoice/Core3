@@ -1,7 +1,6 @@
 gurk_gatherer = Creature:new {
 	objectName = "@mob/creature_names:gurk_gatherer",
 	socialGroup = "gurk",
-	pvpFaction = "",
 	faction = "",
 	level = 30,
 	chanceHit = 0.37,
@@ -11,7 +10,7 @@ gurk_gatherer = Creature:new {
 	baseHAM = 8200,
 	baseHAMmax = 10000,
 	armor = 0,
-	resists = {35,30,15,15,15,15,40,0,-1},
+	resists = {135,130,15,15,15,15,140,15,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 350,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ gurk_gatherer = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"},
-		{"stunattack","stunChance=50"}
+		{"posturedownattack",""},
+		{"stunattack",""}
 	}
 }
 

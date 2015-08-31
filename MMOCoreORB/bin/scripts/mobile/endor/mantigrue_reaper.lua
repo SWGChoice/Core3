@@ -1,7 +1,6 @@
 mantigrue_reaper = Creature:new {
 	objectName = "@mob/creature_names:mantigrue_reaper",
 	socialGroup = "mantigrue",
-	pvpFaction = "",
 	faction = "",
 	level = 50,
 	chanceHit = 0.47,
@@ -11,7 +10,7 @@ mantigrue_reaper = Creature:new {
 	baseHAM = 9700,
 	baseHAMmax = 11900,
 	armor = 1,
-	resists = {40,40,70,0,70,70,70,70,-1},
+	resists = {140,140,170,0,170,170,170,170,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 110,
 	hideType = "hide_wooly",
@@ -32,7 +31,7 @@ mantigrue_reaper = Creature:new {
 	weapons = {"creature_spit_small_red"},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

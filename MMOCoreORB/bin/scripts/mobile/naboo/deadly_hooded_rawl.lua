@@ -1,7 +1,6 @@
 deadly_hooded_rawl = Creature:new {
 	objectName = "@mob/creature_names:rawl_deadly_hooded",
 	socialGroup = "rawl",
-	pvpFaction = "",
 	faction = "",
 	level = 12,
 	chanceHit = 0.29,
@@ -11,7 +10,7 @@ deadly_hooded_rawl = Creature:new {
 	baseHAM = 1200,
 	baseHAMmax = 1400,
 	armor = 0,
-	resists = {0,0,0,20,-1,0,0,0,-1},
+	resists = {0,0,0,120,-1,0,0,0,-1},
 	meatType = "meat_reptilian",
 	meatAmount = 25,
 	hideType = "hide_scaley",
@@ -33,8 +32,8 @@ deadly_hooded_rawl = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"mildpoison",""},
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""},
+		{"mildpoison",""}
 	}
 }
 

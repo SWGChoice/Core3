@@ -1,7 +1,6 @@
 ferocious_kusak = Creature:new {
 	objectName = "@mob/creature_names:ferocious_kusak",
 	socialGroup = "kusak",
-	pvpFaction = "",
 	faction = "",
 	level = 21,
 	chanceHit = 0.33,
@@ -11,7 +10,7 @@ ferocious_kusak = Creature:new {
 	baseHAM = 4100,
 	baseHAMmax = 5000,
 	armor = 0,
-	resists = {30,10,10,-1,10,10,-1,-1,-1},
+	resists = {130,10,10,-1,10,10,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 21,
 	hideType = "hide_bristley",
@@ -33,7 +32,8 @@ ferocious_kusak = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"}
+		{"blindattack",""},
+		{"posturedownattack",""}
 	}
 }
 

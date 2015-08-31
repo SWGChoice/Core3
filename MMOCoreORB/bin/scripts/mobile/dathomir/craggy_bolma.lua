@@ -1,7 +1,6 @@
 craggy_bolma = Creature:new {
 	objectName = "@mob/creature_names:craggy_bolma",
 	socialGroup = "bolma",
-	pvpFaction = "",
 	faction = "",
 	level = 47,
 	chanceHit = 0.47,
@@ -11,7 +10,7 @@ craggy_bolma = Creature:new {
 	baseHAM = 10000,
 	baseHAMmax = 13000,
 	armor = 1,
-	resists = {25,40,0,0,-1,0,0,-1,-1},
+	resists = {125,140,0,0,-1,0,0,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 500,
 	hideType = "hide_leathery",

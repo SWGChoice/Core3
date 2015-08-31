@@ -1,7 +1,6 @@
 ikopi_stag = Creature:new {
 	objectName = "@mob/creature_names:ikopi_stag",
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 30,
 	chanceHit = 0.39,
@@ -11,7 +10,7 @@ ikopi_stag = Creature:new {
 	baseHAM = 8400,
 	baseHAMmax = 10300,
 	armor = 0,
-	resists = {30,30,20,20,20,-1,-1,-1,-1},
+	resists = {130,130,20,20,20,-1,-1,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 100,
 	hideType = "hide_bristley",
@@ -32,7 +31,7 @@ ikopi_stag = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

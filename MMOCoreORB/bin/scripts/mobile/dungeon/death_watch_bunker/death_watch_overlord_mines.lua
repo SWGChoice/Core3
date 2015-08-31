@@ -1,7 +1,7 @@
 death_watch_overlord_mines = Creature:new {
 	objectName = "@mob/creature_names:mand_bunker_dthwatch_gold",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "death_watch",
-	pvpFaction = "",
 	faction = "",
 	level = 221,
 	chanceHit = 19,
@@ -32,7 +32,7 @@ death_watch_overlord_mines = Creature:new {
 			groups = {
 				{group = "death_watch_bunker_overlord_shared", chance =  10000000}
 			},
-			lootChance = 5000000
+			lootChance = 10000000
 		}
 	},
 	weapons = {"dark_trooper_weapons"},

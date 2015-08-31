@@ -1,7 +1,7 @@
 rebel_surface_marshall = Creature:new {
 	objectName = "@mob/creature_names:rebel_surface_marshal",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "rebel",
-	pvpFaction = "rebel",
 	faction = "rebel",
 	level = 21,
 	chanceHit = 0.33,
@@ -47,12 +47,13 @@ rebel_surface_marshall = Creature:new {
 				{group = "armor_attachments", chance = 240000},
 				{group = "rebel_officer_common", chance = 450000},
 				{group = "wearables_common", chance = 500000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"rebel_weapons_heavy"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/military",
+	personalityStf = "@hireling/hireling_military",
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 

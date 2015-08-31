@@ -1,7 +1,7 @@
 enraged_korga = Creature:new {
 	objectName = "@mob/creature_names:enraged_korga",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "korga_tribe",
-	pvpFaction = "korga_tribe",
 	faction = "korga_tribe",
 	level = 32,
 	chanceHit = 0.39,
@@ -27,14 +27,14 @@ enraged_korga = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {
-			"object/mobile/dulok_male.iff",
-			"object/mobile/dulok_female.iff"},
+		"object/mobile/dulok_male.iff",
+		"object/mobile/dulok_female.iff"},
 	lootGroups = {
-		 {
-	        groups = {
+		{
+			groups = {
 				{group = "ewok", chance = 10000000}
 			},
-			lootChance = 2300000
+			lootChance = 1640000
 		}
 	},
 	weapons = {},

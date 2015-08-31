@@ -1,7 +1,6 @@
 corporal_sova = Creature:new {
 	objectName = "@mob/creature_names:corporal_sova",
 	socialGroup = "imperial",
-	pvpFaction = "imperial",
 	faction = "imperial",
 	level = 17,
 	chanceHit = 0.32,
@@ -38,12 +37,13 @@ corporal_sova = Creature:new {
 				{group = "melee_weapons", chance = 1200000},
 				{group = "clothing_attachments", chance = 150000},
 				{group = "armor_attachments", chance = 150000}
-			},
-			lootChance = 2300000
+			}
 		}
 	},
 	weapons = {"stormtrooper_weapons"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/military",
+	personalityStf = "@hireling/hireling_military",	
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 

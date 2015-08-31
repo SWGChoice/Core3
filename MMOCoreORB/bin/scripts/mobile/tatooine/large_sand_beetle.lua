@@ -1,7 +1,6 @@
 large_sand_beetle = Creature:new {
 	objectName = "@mob/creature_names:large_sand_beetle",
 	socialGroup = "beetle",
-	pvpFaction = "",
 	faction = "",
 	level = 29,
 	chanceHit = 0.37,
@@ -11,7 +10,7 @@ large_sand_beetle = Creature:new {
 	baseHAM = 8200,
 	baseHAMmax = 10000,
 	armor = 0,
-	resists = {35,30,15,15,-1,15,15,15,-1},
+	resists = {135,130,15,15,-1,15,15,15,-1},
 	meatType = "meat_insect",
 	meatAmount = 10,
 	hideType = "hide_scaley",
@@ -33,8 +32,8 @@ large_sand_beetle = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"stunattack","stunChance=50"}
+		{"blindattack",""},
+		{"stunattack",""}
 	}
 }
 

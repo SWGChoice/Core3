@@ -1,7 +1,6 @@
 cyst_covered_rot_mite_guard = Creature:new {
 	objectName = "@mob/creature_names:cyst_covered_rot_guard",
 	socialGroup = "mite",
-	pvpFaction = "",
 	faction = "",
 	level = 13,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ cyst_covered_rot_mite_guard = Creature:new {
 	baseHAM = 1500,
 	baseHAMmax = 1900,
 	armor = 0,
-	resists = {0,0,0,0,0,0,15,-1,-1},
+	resists = {15,125,15,0,0,0,115,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 9,
 	hideType = "",
@@ -34,7 +33,7 @@ cyst_covered_rot_mite_guard = Creature:new {
 	conversationTemplate = "",
 	attacks = {
 		{"mediumdisease",""},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

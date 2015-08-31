@@ -1,7 +1,6 @@
 choku_female = Creature:new {
 	objectName = "@mob/creature_names:choku_female",
 	socialGroup = "choku",
-	pvpFaction = "",
 	faction = "",
 	level = 13,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ choku_female = Creature:new {
 	baseHAM = 2000,
 	baseHAMmax = 2400,
 	armor = 0,
-	resists = {20,20,20,20,0,0,0,-1,-1},
+	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_avian",
 	meatAmount = 10,
 	hideType = "",
@@ -33,7 +32,8 @@ choku_female = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"",""},
+		{"stunattack",""}
 	}
 }
 

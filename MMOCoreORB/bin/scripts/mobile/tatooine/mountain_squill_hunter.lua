@@ -1,7 +1,6 @@
 mountain_squill_hunter = Creature:new {
 	objectName = "@mob/creature_names:mountain_squill_hunter",
 	socialGroup = "squill",
-	pvpFaction = "",
 	faction = "",
 	level = 25,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ mountain_squill_hunter = Creature:new {
 	baseHAM = 5900,
 	baseHAMmax = 7200,
 	armor = 0,
-	resists = {35,35,10,10,-1,-1,-1,-1,-1},
+	resists = {135,135,10,10,-1,-1,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 2,
 	hideType = "hide_leathery",
@@ -32,7 +31,7 @@ mountain_squill_hunter = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

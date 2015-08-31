@@ -1,7 +1,6 @@
 piket_longhorn = Creature:new {
 	objectName = "@mob/creature_names:piket_longhorn",
 	socialGroup = "piket",
-	pvpFaction = "",
 	faction = "",
 	level = 37,
 	chanceHit = 0.41,
@@ -11,7 +10,7 @@ piket_longhorn = Creature:new {
 	baseHAM = 8800,
 	baseHAMmax = 10800,
 	armor = 0,
-	resists = {45,40,-1,25,25,25,25,25,-1},
+	resists = {145,140,-1,25,25,25,25,25,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 450,
 	hideType = "hide_scaley",
@@ -33,8 +32,8 @@ piket_longhorn = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"intimidationattack","intimidationChance=50"}
+		{"blindattack",""},
+		{"intimidationattack",""}
 	}
 }
 

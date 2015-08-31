@@ -6,6 +6,8 @@ dantooine_mokk_shaman_neutral_none = Lair:new {
 	buildingsMedium = {},
 	buildingsHard = {},
 	buildingsVeryHard = {},
+	mobType = "npc",
+	missionBuilding = "object/tangible/lair/base/objective_dantari_monolith.iff",
 	buildingType = "none"
 }
 

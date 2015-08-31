@@ -1,7 +1,6 @@
 rogue_bageraset = Creature:new {
 	objectName = "@mob/creature_names:rogue_bageraset",
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 13,
 	chanceHit = 0.29,
@@ -11,7 +10,7 @@ rogue_bageraset = Creature:new {
 	baseHAM = 1200,
 	baseHAMmax = 1400,
 	armor = 0,
-	resists = {10,5,20,0,0,0,0,-1,-1},
+	resists = {110,105,0,0,0,0,0,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 230,
 	hideType = "hide_leathery",
@@ -34,7 +33,7 @@ rogue_bageraset = Creature:new {
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

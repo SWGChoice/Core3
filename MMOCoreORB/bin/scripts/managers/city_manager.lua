@@ -67,24 +67,39 @@ CityUpdateInterval = 10080
 NewCityGracePeriod = 1440
 
 --The amount of time in minutes an old city has to regain enough citizens to remain a city.
-OldCityGracePeriod = 30240
+OldCityGracePeriod = 4320
 
 --Whether or not to allow the use of the command, /cityWarn to give players a TEF while in the city limits.
 EnableCityWarn = false
 
 --The number of citizens required to achieve each city rank. (Outpost, Village, Township, City, Metropolis)
---CitizensPerRank = {1, 2, 3, 5, 8}
+--CitizensPerRank = {2, 4, 6, 8, 10}
 --Publish 14.1 CitizensPerRank = {10, 20, 35, 55, 85}
 --Using the NGE values
 CitizensPerRank = {5, 10, 15, 30, 40}
 
 --The radius in meters of the city at each city rank. (Outpost, Village, Township, City, Metropolis)
 --RadiusPerRank = {150, 200, 300, 400, 450}
+--Making all cities the same size to circumvent takeovers by ranking up
 RadiusPerRank = {450, 450, 450, 450, 450}
 
--- Maximum for each rank.  rank 1 = decorationsperrank * 1, rank 5 = decorationsperrank * 5	82
+-- Maximum for each rank.  ex. rank 1 = DecorationsPerRank * 1, rank 5 = DecorationsPerRank * 5
 --DecorationsPerRank = 10
-DecorationsPerRank = 25
+DecorationsPerRank = 30
+--TrainersPerRank = 3
+TrainersPerRank = 10
+--MissionTerminalsPerRank = 3
+MissionTerminalsPerRank = 5
+
+-- Individually adjust city maintenace cost of decorations, terminals and trainers
+--DecorationCostPer = 1500
+DecorationCostPer = 150
+--TrainerCostPer = 1500
+TrainerCostPer = 150
+--MissionTerminalCostPer = 1500
+MissionTerminalCostPer = 150
+--City Registration
+CityRegistrationCost = 5000
 
 -- Amount to discount city maintenance  float.  1 = 100%, .75 =75%, .5=50% etc
 maintenanceDiscount = 1.0
@@ -102,7 +117,7 @@ CitiesAllowed = {
 	{"dathomir", {0, 0, 0, 0, 0}},
 	{"endor", {0, 0, 0, 0, 0}},
 	{"lok", {50, 50, 30, 20, 20}},
-	{"naboo", {20, 20, 15, 10, 10}},
+	{"naboo", {20, 20, 15, 10, 11}},
 	{"rori", {50, 50, 30, 20, 20}},
 	{"talus", {50, 50, 30, 20, 20}},
 	{"tatooine", {20, 20, 15, 10, 10}},
@@ -127,16 +142,6 @@ CitiesAllowed = {
 	emailBody: The body of the email that is sent to citizens when this tax changes. %DI = Amount of new tax; %TO = Name of the city.
 --]]
 CityTaxes = {
-	{--Property Tax
-		min = 0, max = 50,
-		menuText = "@city/city:property_tax_prompt",
-		inputTitle = "@city/city:set_tax_t_property",
-		inputText = "@city/city:set_tax_d_property",
-		statusPrompt = "@city/city:promperty_tax_prompt",
-		systemMessage = "@city/city:set_property_tax",
-		emailSubject = "@city/city:tax_property_subject",
-		emailBody = "@city/city:tax_property_body"
-	},
 	{--Income Tax
 		min = 0, max = 2000,
 		menuText = "@city/city:income_tax",
@@ -146,6 +151,16 @@ CityTaxes = {
 		systemMessage = "@city/city:set_income_tax",
 		emailSubject = "@city/city:tax_income_subject",
 		emailBody = "@city/city:tax_income_body"
+	},
+	{--Property Tax
+		min = 0, max = 50,
+		menuText = "@city/city:property_tax_prompt",
+		inputTitle = "@city/city:set_tax_t_property",
+		inputText = "@city/city:set_tax_d_property",
+		statusPrompt = "@city/city:promperty_tax_prompt",
+		systemMessage = "@city/city:set_property_tax",
+		emailSubject = "@city/city:tax_property_subject",
+		emailBody = "@city/city:tax_property_body"
 	},
 	{--Sales Tax
 		min = 0, max = 20,
@@ -170,9 +185,9 @@ CityTaxes = {
 	{--Garage Tax
 		min = 0, max = 30,
 		menuText = "@city/city:garage_tax",
-		inputTitle = "@city/city:set_tax_t_garage",
+		inputTitle = "Adjust Garage Service Fee", -- missing from stf
 		inputText = "@city/city:set_tax_d_garage",
-		statusPrompt = "Garage Cost: ",
+		statusPrompt = "Garage Cost: ", -- missing from stf
 		systemMessage = "@city/city:set_garage_tax",
 		emailSubject = "@city/city:garage_fee_subject",
 		emailBody = "@city/city:garage_fee_body"
@@ -190,26 +205,27 @@ CitySpecializations = {
 		name = "@city/city:city_spec_sample_rich",
 		cost = 7000,
 		skillMods = {
-			{"private_spec_samplesize", 20},
-			{"private_spec_samplerate", 10}
+			{"private_spec_samplesize", 200},
+			{"private_spec_samplerate", 100}
 		}
 	},
 	{--Manufacturing Center
 		name = "@city/city:city_spec_industry",
-		cost = 5000,
+		cost = 1250,
 		skillMods = {
-			{"private_spec_assembly", 10}
+			{"private_spec_assembly", 10},
+			{"private_spec_experimentation", 15}
 		}
 	},
 	{--Medical Center
 		name = "@city/city:city_spec_doctor",
 		cost = 8000,
 		skillMods = {
-			{"private_medical_rating", 10}
+			{"private_medical_rating", 100}
 		}
 	},
 	{--Clone Lab
-		name = "@city/city:city_spec_clone",
+		name = "@city/city:city_spec_cloning",
 		cost = 8000,
 		skillMods = {
 			{"private_spec_cloning", 20}
@@ -219,7 +235,8 @@ CitySpecializations = {
 		name = "@city/city:city_spec_research",
 		cost = 1250,
 		skillMods = {
-			{"private_spec_experimentation", 15}
+			{"private_spec_assembly", 100},
+			{"private_spec_experimentation", 150}
 		}
 	},
 	{--Improved Job Market
@@ -233,14 +250,14 @@ CitySpecializations = {
 		name = "@city/city:city_spec_entertainer",
 		cost = 8000,
 		skillMods = {
-			{"private_spec_entertainer", 10}
+			{"private_spec_entertainer", 300}
 		}
 	},
 	{--Stronghold
 		name = "@city/city:city_spec_stronghold",
-		cost = 150000,
+		cost = 1500000,
 		skillMods = {
-			{"private_defense", 50}
+			{"private_defense", 30}
 		}
 	},
 }

@@ -1,46 +1,6 @@
 /*
-Copyright (C) 2007 <SWGEmu>
-
-This File is part of Core3.
-
-This program is free software; you can redistribute
-it and/or modify it under the terms of the GNU Lesser
-General Public License as published by the Free Software
-Foundation; either version 2 of the License,
-or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU Lesser General Public License for
-more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this program; if not, write to
-the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-
-Linking Engine3 statically or dynamically with other modules
-is making a combined work based on Engine3.
-Thus, the terms and conditions of the GNU Lesser General Public License
-cover the whole combination.
-
-In addition, as a special exception, the copyright holders of Engine3
-give you permission to combine Engine3 program with free software
-programs or libraries that are released under the GNU LGPL and with
-code included in the standard release of Core3 under the GNU LGPL
-license (or modified versions of such code, with unchanged license).
-You may copy and distribute such a system following the terms of the
-GNU LGPL for Engine3 and the licenses of the other code concerned,
-provided that you include the source code of that other code when
-and as the GNU LGPL requires distribution of source code.
-
-Note that people who make modified versions of Engine3 are not obligated
-to grant this special exception for their modified versions;
-it is their choice whether to do so. The GNU Lesser General Public License
-gives permission to release a modified version without this exception;
-this exception also makes it possible to release a modified version
-which carries forward this exception.
- */
+				Copyright <SWGEmu>
+		See file COPYING for copying conditions. */
 
 #include "server/zone/objects/player/PlayerObject.h"
 
@@ -93,6 +53,7 @@ which carries forward this exception.
 #include "server/zone/objects/intangible/PetControlDevice.h"
 #include "server/zone/objects/player/Races.h"
 #include "server/zone/objects/installation/InstallationObject.h"
+#include "server/zone/objects/structure/events/StructureSetOwnerTask.h"
 #include "badges/Badge.h"
 #include "badges/Badges.h"
 #include "server/zone/packets/player/BadgesResponseMessage.h"
@@ -108,6 +69,8 @@ which carries forward this exception.
 #include "server/zone/objects/player/sessions/TradeSession.h"
 #include "server/zone/objects/player/events/StoreSpawnedChildrenTask.h"
 #include "server/zone/objects/player/events/BountyHunterTefRemovalTask.h"
+#include "server/zone/objects/player/events/RemoveSpouseTask.h"
+#include "server/zone/objects/player/events/PvpTefRemovalTask.h"
 #include "server/zone/managers/visibility/VisibilityManager.h"
 #include "server/zone/managers/gcw/GCWManager.h"
 #include "server/zone/managers/jedi/JediManager.h"
@@ -147,6 +110,8 @@ void PlayerObjectImplementation::loadTemplateData(SharedObjectTemplate* template
 
 	drinkFilling = 0;
 	drinkFillingMax = 100;
+
+	reactionFines = 0;
 
 	jediState = getJediState();
 
@@ -208,7 +173,7 @@ void PlayerObjectImplementation::unload() {
 	notifyOffline();
 
 	if (creature->isRidingMount()) {
-		creature->executeObjectControllerAction(String("dismount").hashCode());
+		creature->executeObjectControllerAction(STRING_HASHCODE("dismount"));
 	}
 
 	unloadSpawnedChildren();
@@ -273,19 +238,19 @@ void PlayerObjectImplementation::unload() {
 
 	updateToDatabase();
 	/*StringBuffer msg;
-	msg << "remaining ref count: " << _this.get()->getReferenceCount();
+	msg << "remaining ref count: " << _this.getReferenceUnsafeStaticCast()->getReferenceCount();
 	info(msg.toString(), true);
 
-	_this.get()->printReferenceHolders();*/
+	_this.getReferenceUnsafeStaticCast()->printReferenceHolders();*/
 }
 
 void PlayerObjectImplementation::sendBaselinesTo(SceneObject* player) {
 	info("sending player object baselines");
 
-	BaseMessage* play3 = new PlayerObjectMessage3(_this.get());
+	BaseMessage* play3 = new PlayerObjectMessage3(_this.getReferenceUnsafeStaticCast());
 	player->sendMessage(play3);
 
-	BaseMessage* play6 = new PlayerObjectMessage6(_this.get());
+	BaseMessage* play6 = new PlayerObjectMessage6(_this.getReferenceUnsafeStaticCast());
 	player->sendMessage(play6);
 
 	if (player == parent.get().get()) {
@@ -299,6 +264,7 @@ void PlayerObjectImplementation::sendBaselinesTo(SceneObject* player) {
 
 void PlayerObjectImplementation::notifySceneReady() {
 	teleporting = false;
+	onLoadScreen = false;
 
 	BaseMessage* msg = new CmdSceneReady();
 	sendMessage(msg);
@@ -307,6 +273,8 @@ void PlayerObjectImplementation::notifySceneReady() {
 
 	if (creature == NULL)
 		return;
+
+	creature->broadcastPvpStatusBitmask();
 
 	creature->sendBuffsTo(creature);
 
@@ -339,7 +307,7 @@ void PlayerObjectImplementation::notifySceneReady() {
 
 	ZoneServer* zoneServer = getZoneServer();
 
-	if (zoneServer != NULL && zoneServer->isServerLoading())
+	if (zoneServer == NULL || zoneServer->isServerLoading())
 		return;
 
 	// Leave all planet chat rooms
@@ -387,13 +355,13 @@ void PlayerObjectImplementation::sendFriendLists() {
 	friendList.resetUpdateCounter();
 	ignoreList.resetUpdateCounter();
 
-	FriendsListMessage* flist = new FriendsListMessage(_this.get());
+	FriendsListMessage* flist = new FriendsListMessage(_this.getReferenceUnsafeStaticCast());
 	getParent().get()->sendMessage(flist);
 
-	IgnoreListMessage* ilist = new IgnoreListMessage(_this.get());
+	IgnoreListMessage* ilist = new IgnoreListMessage(_this.getReferenceUnsafeStaticCast());
 	getParent().get()->sendMessage(ilist);
 
-	DeltaMessage* delta = new PlayerObjectDeltaMessage9(_this.get());
+	DeltaMessage* delta = new PlayerObjectDeltaMessage9(_this.getReferenceUnsafeStaticCast());
 	friendList.insertToDeltaMessage(delta);
 	ignoreList.insertToDeltaMessage(delta);
 	delta->close();
@@ -415,7 +383,7 @@ bool PlayerObjectImplementation::setCharacterBit(uint32 bit, bool notifyClient) 
 		characterBitmask |= bit;
 
 		if (notifyClient) {
-			PlayerObjectDeltaMessage3* delta = new PlayerObjectDeltaMessage3(_this.get());
+			PlayerObjectDeltaMessage3* delta = new PlayerObjectDeltaMessage3(_this.getReferenceUnsafeStaticCast());
 			delta->updateCharacterBitmask(characterBitmask);
 			delta->close();
 
@@ -451,7 +419,7 @@ bool PlayerObjectImplementation::clearCharacterBit(uint32 bit, bool notifyClient
 		characterBitmask &= ~bit;
 
 		if (notifyClient) {
-			PlayerObjectDeltaMessage3* delta = new PlayerObjectDeltaMessage3(_this.get());
+			PlayerObjectDeltaMessage3* delta = new PlayerObjectDeltaMessage3(_this.getReferenceUnsafeStaticCast());
 			delta->updateCharacterBitmask(characterBitmask);
 			delta->close();
 
@@ -470,7 +438,7 @@ void PlayerObjectImplementation::sendBadgesResponseTo(CreatureObject* player) {
 
 void PlayerObjectImplementation::awardBadge(uint32 badge) {
 	PlayerManager* playerManager = getZoneServer()->getPlayerManager();
-	playerManager->awardBadge(_this.get(), badge);
+	playerManager->awardBadge(_this.getReferenceUnsafeStaticCast(), badge);
 }
 
 void PlayerObjectImplementation::setFactionStatus(int status) {
@@ -492,15 +460,12 @@ void PlayerObjectImplementation::setFactionStatus(int status) {
 			pvpStatusBitmask -= CreatureFlag::BLINK_GREEN;*/
 
 		creature->setPvpStatusBitmask(pvpStatusBitmask);
-	} else if (factionStatus == FactionStatus::CHANGINGSTATUS) {
-		creature->setPvpStatusBitmask(pvpStatusBitmask | CreatureFlag::CHANGEFACTIONSTATUS);
 	} else if (factionStatus == FactionStatus::OVERT) {
 
-		if(!(pvpStatusBitmask & CreatureFlag::OVERT))
+		if(!(pvpStatusBitmask & CreatureFlag::OVERT)) {
 			creature->addCooldown("declare_overt_cooldown",GCWManagerImplementation::overtCooldown*1000);
-
-		if (!(pvpStatusBitmask & CreatureFlag::OVERT))
 			pvpStatusBitmask |= CreatureFlag::OVERT;
+		}
 
 		if (pvpStatusBitmask & CreatureFlag::CHANGEFACTIONSTATUS)
 			pvpStatusBitmask -= CreatureFlag::CHANGEFACTIONSTATUS;
@@ -556,26 +521,7 @@ void PlayerObjectImplementation::setFactionStatus(int status) {
 	StoreSpawnedChildrenTask* task = new StoreSpawnedChildrenTask(creature, petsToStore);
 	task->execute();
 
-	ManagedReference<SceneObject*> parent = getParent().get();
-
-	Zone* zone = parent->getZone();
-
-	if (zone == NULL)
-		return;
-
-	CloseObjectsVector* vec = (CloseObjectsVector*) parent->getCloseObjects();
-
-	SortedVector<ManagedReference<QuadTreeEntry* > > closeObjects;
-	vec->safeCopyTo(closeObjects);
-
-	for (int i = 0; i < closeObjects.size(); ++i) {
-		BuildingObject* building = closeObjects.get(i).castTo<BuildingObject*>();
-
-		if (building != NULL) {
-			building->updateCellPermissionsTo(creature);
-		}
-	}
-
+	updateInRangeBuildingPermissions();
 }
 
 int PlayerObjectImplementation::addExperience(const String& xpType, int xp, bool notifyClient) {
@@ -584,14 +530,19 @@ int PlayerObjectImplementation::addExperience(const String& xpType, int xp, bool
 
 	int valueToAdd = xp;
 
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	if (experienceList.contains(xpType)) {
 		xp += experienceList.get(xpType);
 
+
+
 		if (xp <= 0 && xpType != "jedi_general") {
 			removeExperience(xpType, notifyClient);
 			return 0;
+		// -10 million experience cap for Jedi experience loss
+		} else if(xp < -10000000 && xpType == "jedi_general") {
+			xp = -10000000;
 		}
 	}
 
@@ -663,34 +614,42 @@ void PlayerObjectImplementation::setWaypoint(WaypointObject* waypoint, bool noti
 
 void PlayerObjectImplementation::addWaypoint(WaypointObject* waypoint, bool checkName, bool notifyClient) {
 	uint64 waypointID = waypoint->getObjectID();
+
+	if (waypointList.contains(waypointID)) {
+		updateWaypoint(waypointID);
+		return;
+	}
+
 	int specialTypeID = waypoint->getSpecialTypeID();
 	bool doRemove = false;
+	bool destroy = false;
 
-	if (waypointList.contains(waypointID))
-		doRemove = true;
-
-	if (!doRemove && checkName) {
+	if (checkName) {
 		String name = waypoint->getCustomObjectName().toString();
 		waypointID = waypointList.find(name);
 
-		if(waypointID != 0)
+		if(waypointID != 0) {
 			doRemove = true;
+			destroy = true;
+		}
 	}
 
 	if (!doRemove && specialTypeID != 0) {
 		waypointID = waypointList.getWaypointBySpecialType(specialTypeID);
 
-		if(waypointID != 0)
+		if(waypointID != 0) {
 			doRemove = true;
+			destroy = true;
+		}
 	}
 
 	if(doRemove)
-		removeWaypoint(waypointID, notifyClient);
+		removeWaypoint(waypointID, notifyClient, destroy);
 
 	setWaypoint(waypoint, notifyClient);
 }
 
-void PlayerObjectImplementation::removeWaypoint(uint64 waypointID, bool notifyClient) {
+void PlayerObjectImplementation::removeWaypoint(uint64 waypointID, bool notifyClient, bool destroy) {
 	ManagedReference<WaypointObject*> waypoint = waypointList.get(waypointID);
 
 	if (waypoint == NULL)
@@ -707,22 +666,31 @@ void PlayerObjectImplementation::removeWaypoint(uint64 waypointID, bool notifyCl
 		waypointList.drop(waypointID);
 	}
 
+	if (destroy && waypoint->isPersistent()) {
+		waypoint->destroyObjectFromDatabase(true);
+	}
+}
+
+void PlayerObjectImplementation::updateWaypoint(uint64 waypointID) {
+	ManagedReference<WaypointObject*> waypoint = waypointList.get(waypointID);
+
+	if (waypoint == NULL)
+		return;
+
+	PlayerObjectDeltaMessage8* msg = new PlayerObjectDeltaMessage8(this);
+	msg->startUpdate(1);
+	waypointList.update(waypointID, msg, 1);
+	msg->close();
+
+	sendMessage(msg);
+
 }
 
 void PlayerObjectImplementation::removeWaypointBySpecialType(int specialTypeID, bool notifyClient) {
 	uint64 waypointID = waypointList.getWaypointBySpecialType(specialTypeID);
 
 	while (waypointID != 0) {
-		if (notifyClient) {
-			PlayerObjectDeltaMessage8* msg = new PlayerObjectDeltaMessage8(this);
-			msg->startUpdate(1);
-			waypointList.drop(waypointID, msg, 1);
-			msg->close();
-
-			sendMessage(msg);
-		} else {
-			waypointList.drop(waypointID);
-		}
+		removeWaypoint(waypointID, notifyClient);
 
 		waypointID = waypointList.getWaypointBySpecialType(specialTypeID);
 	}
@@ -754,7 +722,7 @@ WaypointObject* PlayerObjectImplementation::addWaypoint(const String& planet, fl
 
 void PlayerObjectImplementation::addAbility(Ability* ability, bool notifyClient) {
 	if (notifyClient) {
-		PlayerObjectDeltaMessage9* msg = new PlayerObjectDeltaMessage9(_this.get());
+		PlayerObjectDeltaMessage9* msg = new PlayerObjectDeltaMessage9(_this.getReferenceUnsafeStaticCast());
 		msg->startUpdate(0);
 		abilityList.add(ability, msg, 1);
 		msg->close();
@@ -769,7 +737,7 @@ void PlayerObjectImplementation::addAbilities(Vector<Ability*>& abilities, bool 
 		return;
 
 	if (notifyClient) {
-		PlayerObjectDeltaMessage9* msg = new PlayerObjectDeltaMessage9(_this.get());
+		PlayerObjectDeltaMessage9* msg = new PlayerObjectDeltaMessage9(_this.getReferenceUnsafeStaticCast());
 		msg->startUpdate(0);
 
 		abilityList.add(abilities.get(0), msg, abilities.size());
@@ -787,14 +755,19 @@ void PlayerObjectImplementation::addAbilities(Vector<Ability*>& abilities, bool 
 }
 
 void PlayerObjectImplementation::removeAbility(Ability* ability, bool notifyClient) {
+	int index = abilityList.find(ability);
+
+	if (index == -1)
+		return;
+
 	if (notifyClient) {
-		PlayerObjectDeltaMessage9* msg = new PlayerObjectDeltaMessage9(_this.get());
+		PlayerObjectDeltaMessage9* msg = new PlayerObjectDeltaMessage9(_this.getReferenceUnsafeStaticCast());
 		msg->startUpdate(0);
-		abilityList.remove(abilityList.find(ability), msg, 1);
+		abilityList.remove(index, msg, 1);
 		msg->close();
 		sendMessage(msg);
 	} else {
-		abilityList.remove(abilityList.find(ability));
+		abilityList.remove(index);
 	}
 }
 
@@ -803,7 +776,7 @@ void PlayerObjectImplementation::removeAbilities(Vector<Ability*>& abilities, bo
 		return;
 
 	if (notifyClient) {
-		PlayerObjectDeltaMessage9* msg = new PlayerObjectDeltaMessage9(_this.get());
+		PlayerObjectDeltaMessage9* msg = new PlayerObjectDeltaMessage9(_this.getReferenceUnsafeStaticCast());
 		msg->startUpdate(0);
 
 		abilityList.remove(abilityList.find(abilities.get(0)), msg, abilities.size());
@@ -837,7 +810,7 @@ bool PlayerObjectImplementation::addSchematics(Vector<ManagedReference<DraftSche
 		return false;
 
 	if (notifyClient) {
-		PlayerObjectDeltaMessage9* msg = new PlayerObjectDeltaMessage9(_this.get());
+		PlayerObjectDeltaMessage9* msg = new PlayerObjectDeltaMessage9(_this.getReferenceUnsafeStaticCast());
 		msg->startUpdate(4);
 
 		schematicList.add(schematicsToSend.get(0), msg, schematicsToSend.size());
@@ -863,7 +836,7 @@ bool PlayerObjectImplementation::addRewardedSchematic(DraftSchematic* schematic,
 
 	schematics.add(schematic);
 
-	CreatureObject* parent = cast<CreatureObject*>(_this.get()->getParent().get().get());
+	CreatureObject* parent = cast<CreatureObject*>(_this.getReferenceUnsafeStaticCast()->getParent().get().get());
 
 	if (parent == NULL)
 		return false;
@@ -915,7 +888,7 @@ void PlayerObjectImplementation::removeSchematics(Vector<ManagedReference<DraftS
 		return;
 
 	if (notifyClient) {
-		PlayerObjectDeltaMessage9* msg = new PlayerObjectDeltaMessage9(_this.get());
+		PlayerObjectDeltaMessage9* msg = new PlayerObjectDeltaMessage9(_this.getReferenceUnsafeStaticCast());
 		msg->startUpdate(4);
 
 		schematicList.removeAll(msg);
@@ -945,10 +918,10 @@ void PlayerObjectImplementation::removeSchematics(Vector<ManagedReference<DraftS
 
 	for(int i = 0; i < playerSkillBoxList->size(); ++i) {
 		Skill* skillBox = playerSkillBoxList->get(i);
-		skillManager->awardDraftSchematics(skillBox, _this.get(), true);
+		skillManager->awardDraftSchematics(skillBox, _this.getReferenceUnsafeStaticCast(), true);
 	}
 
-	schematicList.addRewardedSchematics(_this.get());
+	schematicList.addRewardedSchematics(_this.getReferenceUnsafeStaticCast());
 }
 
 void PlayerObjectImplementation::doDigest(int fillingReduction) {
@@ -978,7 +951,7 @@ void PlayerObjectImplementation::doDigest(int fillingReduction) {
 Vector<ManagedReference<DraftSchematic* > > PlayerObjectImplementation::filterSchematicList(
 		CreatureObject* player, Vector<uint32>* enabledTabs, int complexityLevel) {
 
-	Locker _locker(_this.get());
+	Locker _locker(_this.getReferenceUnsafeStaticCast());
 
 	return schematicList.filterSchematicList(player, enabledTabs, complexityLevel);
 }
@@ -1029,7 +1002,7 @@ void PlayerObjectImplementation::addFriend(const String& name, bool notifyClient
 
 		friendList.add(nameLower);
 
-		PlayerObjectDeltaMessage9* delta = new PlayerObjectDeltaMessage9(_this.get());
+		PlayerObjectDeltaMessage9* delta = new PlayerObjectDeltaMessage9(_this.getReferenceUnsafeStaticCast());
 		friendList.insertToDeltaMessage(delta);
 		delta->close();
 
@@ -1092,7 +1065,7 @@ void PlayerObjectImplementation::removeFriend(const String& name, bool notifyCli
 
 		friendList.removePlayer(nameLower);
 
-		PlayerObjectDeltaMessage9* delta = new PlayerObjectDeltaMessage9(_this.get());
+		PlayerObjectDeltaMessage9* delta = new PlayerObjectDeltaMessage9(_this.getReferenceUnsafeStaticCast());
 		friendList.insertToDeltaMessage(delta);
 		delta->close();
 
@@ -1137,32 +1110,21 @@ void PlayerObjectImplementation::removeAllFriends() {
 		friendList.removePlayer(name);
 	}
 
-	Vector<String>* reverse = friendList.getReverseTable();
-	while (reverse->size() > 0) {
-		String name = reverse->get(0).toLowerCase();
+	while (friendList.reversePlayerCount() > 0) {
+		String name = friendList.getReversePlayer(0).toLowerCase();
 		uint64 objID = playerManager->getObjectID(name);
 
 		ManagedReference<CreatureObject*> playerToRemove = zoneServer->getObject(objID).castTo<CreatureObject*>();
 
 		if (playerToRemove != NULL && playerToRemove->isPlayerCreature()) {
-			class RemoveFriendTask : public Task {
-				ManagedReference<CreatureObject*> player;
-				String name;
+			EXECUTE_TASK_2(playerToRemove, name, {
+					Locker locker(playerToRemove_p);
 
-			public:
-				RemoveFriendTask(CreatureObject* play, String nam) : player(play), name(nam) {}
-
-				void run() {
-					Locker locker(player);
-					PlayerObject* ghost = player->getPlayerObject();
+					PlayerObject* ghost = playerToRemove_p->getPlayerObject();
 					if (ghost != NULL) {
-						ghost->removeFriend(name, false);
+						ghost->removeFriend(name_p, false);
 					}
-				}
-			};
-
-			RemoveFriendTask* task = new RemoveFriendTask(playerToRemove.get(), playerName);
-			task->execute();
+			});
 		}
 
 		removeReverseFriend(name);
@@ -1179,7 +1141,7 @@ void PlayerObjectImplementation::addIgnore(const String& name, bool notifyClient
 
 		ignoreList.add(nameLower);
 
-		PlayerObjectDeltaMessage9* delta = new PlayerObjectDeltaMessage9(_this.get());
+		PlayerObjectDeltaMessage9* delta = new PlayerObjectDeltaMessage9(_this.getReferenceUnsafeStaticCast());
 		ignoreList.insertToDeltaMessage(delta);
 		delta->close();
 
@@ -1217,7 +1179,7 @@ void PlayerObjectImplementation::removeIgnore(const String& name, bool notifyCli
 
 		ignoreList.removePlayer(nameLower);
 
-		PlayerObjectDeltaMessage9* delta = new PlayerObjectDeltaMessage9(_this.get());
+		PlayerObjectDeltaMessage9* delta = new PlayerObjectDeltaMessage9(_this.getReferenceUnsafeStaticCast());
 		ignoreList.insertToDeltaMessage(delta);
 		delta->close();
 
@@ -1248,7 +1210,7 @@ void PlayerObjectImplementation::setTitle(const String& characterTitle, bool not
 	title = characterTitle;
 
 	if (notifyClient) {
-		PlayerObjectDeltaMessage3* dplay3 = new PlayerObjectDeltaMessage3(_this.get());
+		PlayerObjectDeltaMessage3* dplay3 = new PlayerObjectDeltaMessage3(_this.getReferenceUnsafeStaticCast());
 		dplay3->setCurrentTitle(title);
 		dplay3->close();
 		broadcastMessage(dplay3, true); //update the zone.
@@ -1262,13 +1224,12 @@ void PlayerObjectImplementation::notifyOnline() {
 		return;
 
 	ChatManager* chatManager = server->getChatManager();
-	Vector<String>* reverseTable = friendList.getReverseTable();
 
 	String firstName = playerCreature->getFirstName();
 	firstName = firstName.toLowerCase();
 
-	for (int i = 0; i < reverseTable->size(); ++i) {
-		ManagedReference<CreatureObject*> player = chatManager->getPlayer(reverseTable->get(i));
+	for (int i = 0; i < friendList.reversePlayerCount(); ++i) {
+		ManagedReference<CreatureObject*> player = chatManager->getPlayer(friendList.getReversePlayer(i));
 
 		if (player != NULL) {
 			FriendStatusChangeMessage* notifyStatus = new FriendStatusChangeMessage(firstName, "Core3", true);
@@ -1301,6 +1262,8 @@ void PlayerObjectImplementation::notifyOnline() {
 
 	if (getForcePowerMax() > 0 && getForcePower() < getForcePowerMax())
 		activateForcePowerRegen();
+
+	schedulePvpTefRemovalTask();
 }
 
 void PlayerObjectImplementation::notifyOffline() {
@@ -1309,8 +1272,6 @@ void PlayerObjectImplementation::notifyOffline() {
 	if (chatManager == NULL)
 		return;
 
-	Vector<String>* reverseTable = friendList.getReverseTable();
-
 	ManagedReference<CreatureObject*> playerCreature = cast<CreatureObject*>(parent.get().get());
 	if (playerCreature == NULL)
 		return;
@@ -1318,8 +1279,8 @@ void PlayerObjectImplementation::notifyOffline() {
 	String firstName = playerCreature->getFirstName();
 	firstName = firstName.toLowerCase();
 
-	for (int i = 0; i < reverseTable->size(); ++i) {
-		ManagedReference<CreatureObject*> player = chatManager->getPlayer(reverseTable->get(i));
+	for (int i = 0; i < friendList.reversePlayerCount(); ++i) {
+		ManagedReference<CreatureObject*> player = chatManager->getPlayer(friendList.getReversePlayer(i));
 
 		if (player != NULL) {
 			FriendStatusChangeMessage* notifyStatus = new FriendStatusChangeMessage(firstName, "Core3", false);
@@ -1341,7 +1302,7 @@ void PlayerObjectImplementation::setLanguageID(byte language, bool notifyClient)
 	languageID = language;
 
 	if (notifyClient) {
-		PlayerObjectDeltaMessage9* dplay9 = new PlayerObjectDeltaMessage9(_this.get());
+		PlayerObjectDeltaMessage9* dplay9 = new PlayerObjectDeltaMessage9(_this.getReferenceUnsafeStaticCast());
 		dplay9->setLanguageID(languageID);
 		dplay9->close();
 		getParent().get()->sendMessage(dplay9);
@@ -1363,7 +1324,7 @@ void PlayerObjectImplementation::setFoodFilling(int newValue, bool notifyClient)
 	foodFilling = newValue;
 
 	if (notifyClient) {
-		PlayerObjectDeltaMessage9* dplay9 = new PlayerObjectDeltaMessage9(_this.get());
+		PlayerObjectDeltaMessage9* dplay9 = new PlayerObjectDeltaMessage9(_this.getReferenceUnsafeStaticCast());
 		dplay9->updateFoodFilling(newValue);
 		dplay9->close();
 		getParent().get()->sendMessage(dplay9);
@@ -1377,7 +1338,7 @@ void PlayerObjectImplementation::setDrinkFilling(int newValue, bool notifyClient
 	drinkFilling = newValue;
 
 	if (notifyClient) {
-		PlayerObjectDeltaMessage9* dplay9 = new PlayerObjectDeltaMessage9(_this.get());
+		PlayerObjectDeltaMessage9* dplay9 = new PlayerObjectDeltaMessage9(_this.getReferenceUnsafeStaticCast());
 		dplay9->updateDrinkFilling(drinkFilling);
 		dplay9->close();
 		getParent().get()->sendMessage(dplay9);
@@ -1400,23 +1361,27 @@ void PlayerObjectImplementation::increaseFactionStanding(const String& factionNa
 
 	if (!factionStandingList.isPvpFaction(factionName))
 		newAmount = MIN(5000, newAmount);
-	else
+	else if (player->getFaction() == factionName.hashCode())
 		newAmount = MIN(FactionManager::instance()->getFactionPointsCap(player->getFactionRank()), newAmount);
+	else
+		newAmount = MIN(1000, newAmount);;
 
 	factionStandingList.put(factionName, newAmount);
 
-	int change = floor(newAmount - currentAmount);
+	if (amount != 0) {
+		int change = floor(newAmount - currentAmount);
 
-	//Send the proper system message.
-	StringIdChatParameter msg("@base_player:prose_award_faction");
-	msg.setTO("@faction/faction_names:" + factionName);
-	msg.setDI(change);
+		//Send the proper system message.
+		StringIdChatParameter msg("@base_player:prose_award_faction");
+		msg.setTO("@faction/faction_names:" + factionName);
+		msg.setDI(change);
 
-	if (change == 0)
-		msg.setStringId("@base_player:prose_max_faction");
+		if (change == 0)
+			msg.setStringId("@base_player:prose_max_faction");
 
 
-	player->sendSystemMessage(msg);
+		player->sendSystemMessage(msg);
+	}
 }
 
 uint32 PlayerObjectImplementation::getNewSuiBoxID(uint32 type) {
@@ -1457,19 +1422,28 @@ void PlayerObjectImplementation::decreaseFactionStanding(const String& factionNa
 	//Ensure that the new amount is not less than -5000.
 	float newAmount = MAX(-5000, currentAmount - amount);
 
+	if (factionStandingList.isPvpFaction(factionName)) {
+		if (player->getFaction() == factionName.hashCode())
+			newAmount = MIN(FactionManager::instance()->getFactionPointsCap(player->getFactionRank()), newAmount);
+		else
+			newAmount = MIN(1000, newAmount);
+	}
+
 	factionStandingList.put(factionName, newAmount);
 
-	int change = floor(currentAmount - newAmount);
+	if (amount != 0) {
+		int change = floor(currentAmount - newAmount);
 
-	//Send the proper system message.
-	StringIdChatParameter msg("@base_player:prose_lose_faction");
-	msg.setTO("@faction/faction_names:" + factionName);
-	msg.setDI(change);
+		//Send the proper system message.
+		StringIdChatParameter msg("@base_player:prose_lose_faction");
+		msg.setTO("@faction/faction_names:" + factionName);
+		msg.setDI(change);
 
-	if (change == 0)
-		msg.setStringId("@base_player:prose_min_faction");
+		if (change == 0)
+			msg.setStringId("@base_player:prose_min_faction");
 
-	player->sendSystemMessage(msg);
+		player->sendSystemMessage(msg);
+	}
 }
 
 float PlayerObjectImplementation::getFactionStanding(const String& factionName) {
@@ -1503,7 +1477,7 @@ void PlayerObjectImplementation::logout(bool doLock) {
 		if (disconnectEvent == NULL) {
 			info("creating disconnect event");
 
-			disconnectEvent = new PlayerDisconnectEvent(_this.get());
+			disconnectEvent = new PlayerDisconnectEvent(_this.getReferenceUnsafeStaticCast());
 
 			if (isLoggingOut()) {
 				disconnectEvent->schedule(10);
@@ -1579,12 +1553,20 @@ void PlayerObjectImplementation::doRecovery() {
 		damageOverTimeList->activateDots(creature);
 	}
 
+	if (creature->isBleeding() && !damageOverTimeList->hasDot(CreatureState::BLEEDING))
+		creature->clearState(CreatureState::BLEEDING);
+	if (creature->isPoisoned() && !damageOverTimeList->hasDot(CreatureState::POISONED))
+		creature->clearState(CreatureState::POISONED);
+	if (creature->isDiseased() && !damageOverTimeList->hasDot(CreatureState::DISEASED))
+		creature->clearState(CreatureState::DISEASED);
+	if (creature->isOnFire() && !damageOverTimeList->hasDot(CreatureState::ONFIRE))
+		creature->clearState(CreatureState::ONFIRE);
+
 	CommandQueueActionVector* commandQueue = creature->getCommandQueue();
 
 	if (creature->isInCombat() && creature->getTargetID() != 0 && !creature->isPeaced()
 			&& (commandQueue->size() == 0) && creature->isNextActionPast() && !creature->isDead() && !creature->isIncapacitated()) {
-		creature->sendExecuteConsoleCommand("/attack");
-		//enqueueCommand(0xA8FEF90A, 0, getTargetID(), ""); // Do default attack
+		creature->sendCommand(STRING_HASHCODE("attack"), "", creature->getTargetID());
 	}
 
 	if (!getZoneServer()->isServerLoading()) {
@@ -1601,7 +1583,7 @@ void PlayerObjectImplementation::doRecovery() {
 
 void PlayerObjectImplementation::activateRecovery() {
 	if (recoveryEvent == NULL) {
-		recoveryEvent = new PlayerRecoveryEvent(_this.get());
+		recoveryEvent = new PlayerRecoveryEvent(_this.getReferenceUnsafeStaticCast());
 
 		recoveryEvent->schedule(3000);
 	}
@@ -1609,11 +1591,11 @@ void PlayerObjectImplementation::activateRecovery() {
 
 void PlayerObjectImplementation::activateForcePowerRegen() {
 	if (forceRegenerationEvent == NULL) {
-		forceRegenerationEvent = new ForceRegenerationEvent(_this.get());
+		forceRegenerationEvent = new ForceRegenerationEvent(_this.getReferenceUnsafeStaticCast());
 
-		float timer = getForcePowerRegen() / 5;
+		float timer = ((float) getForcePowerRegen()) / 5.f;
 		float scheduledTime = 10 / timer;
-		uint64 miliTime = scheduledTime * 1000;
+		uint64 miliTime = static_cast<uint64>(scheduledTime * 1000.f);
 		forceRegenerationEvent->schedule(miliTime);
 	}
 }
@@ -1767,6 +1749,7 @@ void PlayerObjectImplementation::activateMissions() {
 				//Check if it is target or destination NPC
 				MissionObjective* objective = mission->getMissionObjective();
 				if (objective != NULL) {
+					Locker locker(objective);
 					objective->activate();
 				}
 			}
@@ -1831,18 +1814,20 @@ void PlayerObjectImplementation::doForceRegen() {
 	if (creature == NULL || creature->isIncapacitated() || creature->isDead())
 		return;
 
-	uint32 tick = 5;
+	const static uint32 tick = 5;
 
 	uint32 modifier = 1;
 
 	// TODO: Re-factor Force Meditate so TKA meditate doesn't effect.
 	if (creature->isMeditating())
-		modifier = 3.f;
+		modifier = 3;
 
 	uint32 forceTick = tick * modifier;
 
-	if (forceTick < 1)
+	//forceTick cant be <1 as per above code, tick is always positive and modifier as well
+	/*if (forceTick < 1)
 		forceTick = 1;
+		*/
 
 	if (forceTick > getForcePowerMax() - getForcePower()){   // If the player's Force Power is going to regen again and it's close to max,
 		setForcePower(getForcePowerMax());             // Set it to max, so it doesn't go over max.
@@ -1864,7 +1849,7 @@ void PlayerObjectImplementation::addToBountyLockList(uint64 playerId) {
 			bountyLockList.get(playerId)->cancel();
 		}
 	} else {
-		bountyLockList.put(playerId, new BountyHunterTefRemovalTask(_this.get(), playerId));
+		bountyLockList.put(playerId, new BountyHunterTefRemovalTask(_this.getReferenceUnsafeStaticCast(), playerId));
 		updateBountyPvpStatus(playerId);
 	}
 }
@@ -1929,6 +1914,62 @@ Time PlayerObjectImplementation::getLastVisibilityUpdateTimestamp() {
 	return lastVisibilityUpdateTimestamp;
 }
 
+Time PlayerObjectImplementation::getLastPvpCombatActionTimestamp() {
+	return lastPvpCombatActionTimestamp;
+}
+
+void PlayerObjectImplementation::updateLastPvpCombatActionTimestamp() {
+	ManagedReference<CreatureObject*> parent = getParent().get().castTo<CreatureObject*>();
+
+	if (parent == NULL)
+		return;
+
+	bool alreadyHasTef = hasPvpTef();
+
+	lastPvpCombatActionTimestamp.updateToCurrentTime();
+	lastPvpCombatActionTimestamp.addMiliTime(300000); // 5 minutes
+
+	schedulePvpTefRemovalTask();
+
+	if (!alreadyHasTef) {
+		updateInRangeBuildingPermissions();
+		parent->setPvpStatusBit(CreatureFlag::TEF);
+	}
+}
+
+bool PlayerObjectImplementation::hasPvpTef() {
+	return !lastPvpCombatActionTimestamp.isPast();
+}
+
+void PlayerObjectImplementation::schedulePvpTefRemovalTask(bool removeNow) {
+	ManagedReference<CreatureObject*> parent = getParent().get().castTo<CreatureObject*>();
+
+	if (parent == NULL)
+		return;
+
+	if (pvpTefTask == NULL) {
+		pvpTefTask = new PvpTefRemovalTask(parent);
+	}
+
+	if (removeNow) {
+		lastPvpCombatActionTimestamp.updateToCurrentTime();
+
+		if (pvpTefTask->isScheduled()) {
+			pvpTefTask->cancel();
+		}
+
+		pvpTefTask->execute();
+
+	} else if (!pvpTefTask->isScheduled()) {
+		if (hasPvpTef()) {
+			pvpTefTask->schedule(llabs(getLastPvpCombatActionTimestamp().miliDifference()));
+		} else {
+			pvpTefTask->execute();
+		}
+	}
+
+}
+
 Vector3 PlayerObjectImplementation::getTrainerCoordinates() {
 	return trainerCoordinates;
 }
@@ -1937,43 +1978,22 @@ void PlayerObjectImplementation::setTrainerCoordinates(const Vector3& trainer) {
 	trainerCoordinates = trainer;
 }
 
-void PlayerObjectImplementation::addPermissionGroup(const String& group, bool updateInRangeBuildingPermissions) {
+void PlayerObjectImplementation::addPermissionGroup(const String& group, bool updatePermissions) {
 	permissionGroups.put(group);
 
-	if (!updateInRangeBuildingPermissions)
-		return;
-
-	ManagedReference<SceneObject*> parent = getParent().get();
-
-	if (parent == NULL)
-		return;
-
-	Zone* zone = parent->getZone();
-
-	if (zone == NULL)
-		return;
-
-	CloseObjectsVector* vec = (CloseObjectsVector*) parent->getCloseObjects();
-
-	SortedVector<ManagedReference<QuadTreeEntry* > > closeObjects;
-	vec->safeCopyTo(closeObjects);
-
-	for (int i = 0; i < closeObjects.size(); ++i) {
-		BuildingObject* building = closeObjects.get(i).castTo<BuildingObject*>();
-
-		if (building != NULL) {
-			building->broadcastCellPermissions();
-		}
-	}
+	if (updatePermissions)
+		updateInRangeBuildingPermissions();
 }
 
-void PlayerObjectImplementation::removePermissionGroup(const String& group, bool updateInRangeBuildingPermissions) {
+void PlayerObjectImplementation::removePermissionGroup(const String& group, bool updatePermissions) {
 	permissionGroups.drop(group);
 
-	if (!updateInRangeBuildingPermissions)
-		return;
+	if (updatePermissions)
+		updateInRangeBuildingPermissions();
+}
 
-	ManagedReference<SceneObject*> parent = getParent().get();
+void PlayerObjectImplementation::updateInRangeBuildingPermissions() {
+	ManagedReference<CreatureObject*> parent = getParent().get().castTo<CreatureObject*>();
 
 	if (parent == NULL)
 		return;
@@ -1992,7 +2012,7 @@ void PlayerObjectImplementation::removePermissionGroup(const String& group, bool
 		BuildingObject* building = closeObjects.get(i).castTo<BuildingObject*>();
 
 		if (building != NULL) {
-			building->broadcastCellPermissions();
+			building->updateCellPermissionsTo(parent);
 		}
 	}
 }
@@ -2034,10 +2054,17 @@ void PlayerObjectImplementation::destroyObjectFromDatabase(bool destroyContained
 		if (structure != NULL) {
 			Zone* zone = structure->getZone();
 
-			if (zone != NULL)
+			if (zone != NULL) {
+				if (structure->isCivicStructure()) {
+					StructureSetOwnerTask* task = new StructureSetOwnerTask(structure, 0);
+					task->execute();
+					continue;
+				}
+
 				StructureManager::instance()->destroyStructure(structure);
-			else
+			} else {
 				structure->destroyObjectFromDatabase(true);
+			}
 		}
 	}
 
@@ -2049,17 +2076,15 @@ void PlayerObjectImplementation::destroyObjectFromDatabase(bool destroyContained
 			PlayerObject* spouseGhost = spouse->getPlayerObject();
 
 			if (spouseGhost != NULL) {
-				Locker locker(_this.get());
-				Locker clocker(spouseGhost, _this.get());
-
-				spouseGhost->removeSpouse();
+				RemoveSpouseTask* task = new RemoveSpouseTask(spouse);
+				task->execute();
 			}
 		}
 	}
 }
 
 int PlayerObjectImplementation::getLotsRemaining() {
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	int lotsRemaining = maximumLots;
 
@@ -2085,7 +2110,7 @@ void PlayerObjectImplementation::setJediState(int state, bool notifyClient) {
 	if (!notifyClient)
 		return;
 
-	PlayerObjectDeltaMessage9* delta = new PlayerObjectDeltaMessage9(_this.get());
+	PlayerObjectDeltaMessage9* delta = new PlayerObjectDeltaMessage9(_this.getReferenceUnsafeStaticCast());
 	delta->setJediState(state);
 	delta->close();
 
@@ -2212,4 +2237,10 @@ int PlayerObjectImplementation::getCharacterAgeInDays() {
 	int days = timeDelta / 60 / 60 / 24;
 
 	return days;
+}
+
+String PlayerObjectImplementation::getForceSensitiveExperienceRatio(const String& type) {
+	if (!FsExperienceTypes::getFsRatio(type).isEmpty())
+		return FsExperienceTypes::getFsRatio(type);
+	else return "";
 }

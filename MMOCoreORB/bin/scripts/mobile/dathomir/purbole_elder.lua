@@ -1,7 +1,6 @@
 purbole_elder = Creature:new {
 	objectName = "@mob/creature_names:purbole_elder",
 	socialGroup = "purbole",
-	pvpFaction = "",
 	faction = "",
 	level = 24,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ purbole_elder = Creature:new {
 	baseHAM = 7700,
 	baseHAMmax = 9400,
 	armor = 0,
-	resists = {20,25,10,-1,-1,70,-1,-1,-1},
+	resists = {120,125,10,-1,-1,170,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 15,
 	hideType = "hide_bristley",
@@ -32,8 +31,8 @@ purbole_elder = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"},
-		{"stunattack","stunChance=50"}
+		{"posturedownattack",""},
+		{"stunattack",""}
 	}
 }
 

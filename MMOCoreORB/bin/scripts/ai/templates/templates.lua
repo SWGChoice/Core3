@@ -6,6 +6,7 @@ includeAiFile("templates/idlewander.lua")
 includeAiFile("templates/idlewait.lua")
 includeAiFile("templates/idlepet.lua")
 includeAiFile("templates/gettargetreactive.lua")
+includeAiFile("templates/manualescort.lua")
 includeAiFile("templates/selectattacksimple.lua")
 includeAiFile("templates/combatmovesimple.lua")
 includeAiFile("templates/gettargetpet.lua")
@@ -13,22 +14,31 @@ includeAiFile("templates/selectattackpet.lua")
 includeAiFile("templates/combatmovepet.lua")
 
 getTarget = {
-	{PET, "gettargetpet"},
+	{CREATURE_PET, "gettargetpetc"},
+	{DROID_PET, "gettargetpetd"},
+	{FACTION_PET, "gettargetpetf"},
 	{NONE, "gettargetreactive"},
 }
 
 selectAttack = {
-	{PET, "selectattackpet"},
+	{CREATURE_PET, "selectattackpetc"},
+	{DROID_PET, "selectattackpetd"},
+	{FACTION_PET, "selectattackpetf"},
 	{NONE, "selectattacksimple"},
 }
 
 combatMove = {
-	{PET, "combatmovepet"},
+	{CREATURE_PET, "combatmovepetc"},
+	{DROID_PET, "combatmovepetd"},
+	{FACTION_PET, "combatmovepetf"},
 	{NONE, "combatmovesimple"},
 }
 
 idle = {
-	{PET, "idlepet"},
+	{CREATURE_PET, "idlepetc"},
+	{DROID_PET, "idlepetd"},
+	{FACTION_PET, "idlepetf"},
+	{STATIC + WANDER, "idlewanderstatic"},
 	{STATIC, "idlewait"},
 	{PACK, "idlewanderpack"},
 	{NONE, "idlewander"},
@@ -59,10 +69,32 @@ addAiBehavior("MovePack")
 addAiBehavior("WalkPack")
 addAiBehavior("GeneratePatrolPack")
 
-addAiBehavior("CompositePet")
-addAiBehavior("WaitPet")
-addAiBehavior("MovePet")
-addAiBehavior("CombatMovePet")
-addAiBehavior("GetTargetPet")
-addAiBehavior("SelectAttackPet")
-addAiBehavior("SelectWeaponPet")
+addAiBehavior("CompositeCreaturePet")
+addAiBehavior("WaitCreaturePet")
+addAiBehavior("Wait10CreaturePet")
+addAiBehavior("MoveCreaturePet")
+addAiBehavior("WalkCreaturePet")
+addAiBehavior("CombatMoveCreaturePet")
+addAiBehavior("GetTargetCreaturePet")
+addAiBehavior("SelectAttackCreaturePet")
+addAiBehavior("SelectWeaponCreaturePet")
+
+addAiBehavior("CompositeDroidPet")
+addAiBehavior("WaitDroidPet")
+addAiBehavior("Wait10DroidPet")
+addAiBehavior("MoveDroidPet")
+addAiBehavior("WalkDroidPet")
+addAiBehavior("CombatMoveDroidPet")
+addAiBehavior("GetTargetDroidPet")
+addAiBehavior("SelectAttackDroidPet")
+addAiBehavior("SelectWeaponDroidPet")
+
+addAiBehavior("CompositeFactionPet")
+addAiBehavior("WaitFactionPet")
+addAiBehavior("Wait10FactionPet")
+addAiBehavior("MoveFactionPet")
+addAiBehavior("WalkFactionPet")
+addAiBehavior("CombatMoveFactionPet")
+addAiBehavior("GetTargetFactionPet")
+addAiBehavior("SelectAttackFactionPet")
+addAiBehavior("SelectWeaponFactionPet")

@@ -1,7 +1,6 @@
 domestic_bol_mount = Creature:new {
 	objectName = "@mob/creature_names:domestic_bol_mount",
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 30,
 	chanceHit = 0.39,
@@ -11,7 +10,7 @@ domestic_bol_mount = Creature:new {
 	baseHAM = 8600,
 	baseHAMmax = 10600,
 	armor = 0,
-	resists = {35,20,-1,20,20,-1,20,-1,-1},
+	resists = {135,20,-1,20,20,-1,20,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 180,
 	hideType = "hide_leathery",
@@ -31,8 +30,8 @@ domestic_bol_mount = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"dizzyattack","dizzyChance=50"}
+		{"blindattack",""},
+		{"dizzyattack",""}
 	}
 }
 

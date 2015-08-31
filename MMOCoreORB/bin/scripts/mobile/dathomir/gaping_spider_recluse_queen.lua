@@ -1,7 +1,6 @@
 gaping_spider_recluse_queen = Creature:new {
 	objectName = "@mob/creature_names:gaping_spider_recluse_queen",
 	socialGroup = "spider",
-	pvpFaction = "",
 	faction = "",
 	level = 68,
 	chanceHit = 0.65,
@@ -11,7 +10,7 @@ gaping_spider_recluse_queen = Creature:new {
 	baseHAM = 11000,
 	baseHAMmax = 14000,
 	armor = 0,
-	resists = {45,65,45,90,-1,0,0,-1,-1},
+	resists = {145,165,145,190,-1,0,0,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 11,
 	hideType = "",

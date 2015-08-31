@@ -1,7 +1,6 @@
 hagrin_aide = Creature:new {
 	objectName = "@mob/creature_names:businessman",
 	socialGroup = "townsperson",
-	pvpFaction = "townsperson",
 	faction = "townsperson",
 	level = 4,
 	chanceHit = 0.24,
@@ -57,7 +56,16 @@ hagrin_aide = Creature:new {
 					"object/mobile/dressed_diplomat_zabrak_male_01.iff",
 					"object/mobile/dressed_diplomat_zabrak_male_02.iff"
 					},
-	lootGroups = {},
+	lootGroups = {
+		{
+			groups = {
+				{group = "junk", chance = 4000000},
+				{group = "wearables_common", chance = 3000000},
+				{group = "loot_kit_parts", chance = 2000000},
+				{group = "tailor_components", chance = 1000000},
+			}
+		}
+	},
 	weapons = {},
 	conversationTemplate = "",
 	attacks = brawlermaster

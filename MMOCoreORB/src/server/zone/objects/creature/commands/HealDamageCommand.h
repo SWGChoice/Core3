@@ -1,46 +1,6 @@
 /*
-Copyright (C) 2007 <SWGEmu>
-
-This File is part of Core3.
-
-This program is free software; you can redistribute
-it and/or modify it under the terms of the GNU Lesser
-General Public License as published by the Free Software
-Foundation; either version 2 of the License,
-or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU Lesser General Public License for
-more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this program; if not, write to
-the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-
-Linking Engine3 statically or dynamically with other modules
-is making a combined work based on Engine3.
-Thus, the terms and conditions of the GNU Lesser General Public License
-cover the whole combination.
-
-In addition, as a special exception, the copyright holders of Engine3
-give you permission to combine Engine3 program with free software
-programs or libraries that are released under the GNU LGPL and with
-code included in the standard release of Core3 under the GNU LGPL
-license (or modified versions of such code, with unchanged license).
-You may copy and distribute such a system following the terms of the
-GNU LGPL for Engine3 and the licenses of the other code concerned,
-provided that you include the source code of that other code when
-and as the GNU LGPL requires distribution of source code.
-
-Note that people who make modified versions of Engine3 are not obligated
-to grant this special exception for their modified versions;
-it is their choice whether to do so. The GNU Lesser General Public License
-gives permission to release a modified version without this exception;
-this exception also makes it possible to release a modified version
-which carries forward this exception.
-*/
+				Copyright <SWGEmu>
+		See file COPYING for copying conditions.*/
 
 #ifndef HEALDAMAGECOMMAND_H_
 #define HEALDAMAGECOMMAND_H_
@@ -68,7 +28,7 @@ public:
 		mindCost = 50;
 	}
 
-	void deactivateInjuryTreatment(CreatureObject* creature, bool isRangedStim) {
+	void deactivateInjuryTreatment(CreatureObject* creature, bool isRangedStim) const {
 		float modSkill = 0.0f;
 
 		if (isRangedStim)
@@ -96,7 +56,7 @@ public:
 		creature->addPendingTask("injuryTreatment", task, delay * 1000);
 	}
 
-	void doAnimations(CreatureObject* creature, CreatureObject* creatureTarget) {
+	void doAnimations(CreatureObject* creature, CreatureObject* creatureTarget) const {
 		creatureTarget->playEffect("clienteffect/healing_healdamage.cef", "");
 
 		if (creature == creatureTarget)
@@ -105,7 +65,7 @@ public:
 			creature->doAnimation("heal_other");
 	}
 
-	void doAnimationsRange(CreatureObject* creature, CreatureObject* creatureTarget, int oid, float range) {
+	void doAnimationsRange(CreatureObject* creature, CreatureObject* creatureTarget, int oid, float range) const {
 		String crc;
 
 		if (range < 10.0f) {
@@ -122,7 +82,7 @@ public:
 		creature->broadcastMessage(action, true);
 	}
 
-	StimPack* findStimPack(CreatureObject* creature) {
+	StimPack* findStimPack(CreatureObject* creature) const {
 		SceneObject* inventory = creature->getSlottedObject("inventory");
 
 		if (inventory == NULL)
@@ -163,7 +123,7 @@ public:
 		return NULL;
 	}
 
-	bool checkTarget(CreatureObject* creature, CreatureObject* creatureTarget) {
+	bool checkTarget(CreatureObject* creature, CreatureObject* creatureTarget) const {
 		if (!creatureTarget->hasDamage(CreatureAttribute::HEALTH) && !creatureTarget->hasDamage(CreatureAttribute::ACTION)) {
 			return false;
 		}
@@ -180,7 +140,7 @@ public:
 		return true;
 	}
 
-	bool canPerformSkill(CreatureObject* creature, CreatureObject* creatureTarget, StimPack* stimPack) {
+	bool canPerformSkill(CreatureObject* creature, CreatureObject* creatureTarget, StimPack* stimPack) const {
 		if (!creature->canTreatInjuries()) {
 			creature->sendSystemMessage("@healing_response:healing_must_wait"); //You must wait before you can do that.
 			return false;
@@ -188,16 +148,6 @@ public:
 
 		if (stimPack == NULL) {
 			creature->sendSystemMessage("@healing_response:healing_response_60"); //No valid medicine found.
-			return false;
-		}
-
-		if (creature->isProne() || creature->isMeditating()) {
-			creature->sendSystemMessage("@error_message:wrong_state"); //You cannot complete that action while in your current state.
-			return false;
-		}
-
-		if (creature->isRidingMount()) {
-			creature->sendSystemMessage("@error_message:survey_on_mount"); //You cannot perform that action while mounted on a creature or driving a vehicle.
 			return false;
 		}
 
@@ -241,7 +191,7 @@ public:
 		return true;
 	}
 
-	void sendHealMessage(CreatureObject* creature, CreatureObject* creatureTarget, uint32 healthDamage, uint32 actionDamage) {
+	void sendHealMessage(CreatureObject* creature, CreatureObject* creatureTarget, uint32 healthDamage, uint32 actionDamage) const {
 		if (!creature->isPlayerCreature())
 			return;
 
@@ -276,7 +226,7 @@ public:
 		}
 	}
 
-	void awardXp(CreatureObject* creature, const String& type, int power) {
+	void awardXp(CreatureObject* creature, const String& type, int power) const {
 		if (!creature->isPlayerCreature())
 			return;
 
@@ -291,11 +241,11 @@ public:
 		playerManager->awardExperience(player, type, amount, true);
 	}
 
-	void doAreaMedicActionTarget(CreatureObject* creature, CreatureObject* targetCreature, PharmaceuticalObject* pharma) {
+	void doAreaMedicActionTarget(CreatureObject* creature, CreatureObject* targetCreature, PharmaceuticalObject* pharma) const {
 		if (pharma->isRangedStimPack()) {
 			RangedStimPack* rangeStim = cast<RangedStimPack*>( pharma);
 
-			if (pharma == NULL)
+			if (rangeStim == NULL)
 				return;
 
 			uint32 stimPower = rangeStim->calculatePower(creature, targetCreature);
@@ -312,11 +262,13 @@ public:
 
 			if (targetCreature != creature && !targetCreature->isPet())
 				awardXp(creature, "medical", (healthHealed + actionHealed)); //No experience for healing yourself or pets.
+
+			checkForTef(creature, targetCreature);
 		}
 	}
 
 	void handleArea(CreatureObject* creature, CreatureObject* areaCenter, StimPack* pharma,
-			float range) {
+			float range) const {
 
 		Zone* zone = creature->getZone();
 
@@ -372,13 +324,12 @@ public:
 		}
 	}
 
-	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) {
+	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) const {
 
-		if (!checkStateMask(creature))
-			return INVALIDSTATE;
+		int result = doCommonMedicalCommandChecks(creature);
 
-		if (!checkInvalidLocomotions(creature))
-			return INVALIDLOCOMOTION;
+		if (result != SUCCESS)
+			return result;
 
 		ManagedReference<SceneObject*> object = server->getZoneServer()->getObject(target);
 
@@ -393,14 +344,15 @@ public:
 					return GENERALERROR;
 				}
 			}
-		} else
+		} else {
 			object = creature;
+		}
 
 		CreatureObject* targetCreature = cast<CreatureObject*>( object.get());
 
 		Locker clocker(targetCreature, creature);
 
-		if ((targetCreature->isAiAgent() && !targetCreature->isPet()) || targetCreature->isDroidObject() || targetCreature->isDead() || targetCreature->isRidingMount() || targetCreature->isAttackableBy(creature))
+		if ((targetCreature->isAiAgent() && !targetCreature->isPet()) || targetCreature->isDroidObject() || targetCreature->isVehicleObject() || targetCreature->isDead() || targetCreature->isRidingMount() || targetCreature->isAttackableBy(creature))
 			targetCreature = creature;
 
 		uint64 pharmaceuticalObjectID = 0;
@@ -432,7 +384,7 @@ public:
 		if (stimPack->isRangedStimPack())
 			rangeToCheck = (cast<RangedStimPack*>(stimPack.get()))->getRange();
 
-		if (!creature->isInRange(targetCreature, rangeToCheck))
+		if (!creature->isInRange(targetCreature, rangeToCheck + targetCreature->getTemplateRadius() + creature->getTemplateRadius()))
 			return TOOFAR;
 
 		if (creature != targetCreature && !CollisionManager::checkLineOfSight(creature, targetCreature)) {
@@ -453,6 +405,8 @@ public:
 		sendHealMessage(creature, targetCreature, healthHealed, actionHealed);
 
 		creature->inflictDamage(creature, CreatureAttribute::MIND, mindCost, false);
+
+		Locker locker(stimPack);
 		stimPack->decreaseUseCount();
 
 		if (targetCreature != creature && !targetCreature->isPet())
@@ -467,12 +421,15 @@ public:
 
 		if (stimPack->isRangedStimPack()) {
 			doAnimationsRange(creature, targetCreature, stimPack->getObjectID(), creature->getDistanceTo(targetCreature));
-		} else
+		} else {
 			doAnimations(creature, targetCreature);
+		}
 
 		deactivateInjuryTreatment(creature, stimPack->isRangedStimPack());
 
 		creature->notifyObservers(ObserverEventType::MEDPACKUSED);
+
+		checkForTef(creature, targetCreature);
 
 		return SUCCESS;
 	}

@@ -1,7 +1,7 @@
 slaver = Creature:new {
 	objectName = "@mob/creature_names:slaver",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "slaver",
-	pvpFaction = "",
 	faction = "",
 	level = 4,
 	chanceHit = 0.240000,
@@ -27,18 +27,18 @@ slaver = Creature:new {
 
 	templates = {"object/mobile/dressed_tatooine_slaver.iff"},
 	lootGroups = {
-	    {
+		{
 			groups = {
 				{group = "junk", chance = 2500000},
 				{group = "wearables_common", chance = 2000000},
 				{group = "pistols", chance = 2000000},
 				{group = "tailor_components", chance = 1500000},
 				{group = "loot_kit_parts", chance = 2000000}
-			},
-			lootChance = 2000000
-		}			
+			}
+		}
 	},
 	weapons = {"pirate_weapons_light"},
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(marksmannovice,brawlernovice)
 }
 

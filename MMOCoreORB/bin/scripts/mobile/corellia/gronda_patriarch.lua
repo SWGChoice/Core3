@@ -1,7 +1,6 @@
 gronda_patriarch = Creature:new {
 	objectName = "@mob/creature_names:gronda_patriarch",
 	socialGroup = "gronda",
-	pvpFaction = "",
 	faction = "",
 	level = 45,
 	chanceHit = 0.44,
@@ -11,7 +10,7 @@ gronda_patriarch = Creature:new {
 	baseHAM = 9300,
 	baseHAMmax = 11300,
 	armor = 0,
-	resists = {65,50,80,30,30,30,10,25,-1},
+	resists = {165,150,180,30,30,30,110,125,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 360,
 	hideType = "hide_leathery",
@@ -32,7 +31,8 @@ gronda_patriarch = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"",""},
+		{"stunattack",""}
 	}
 }
 

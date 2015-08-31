@@ -1,7 +1,6 @@
 sludge_panther = Creature:new {
 	objectName = "@mob/creature_names:sludge_panther",
 	socialGroup = "panther",
-	pvpFaction = "",
 	faction = "",
 	level = 16,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ sludge_panther = Creature:new {
 	baseHAM = 2900,
 	baseHAMmax = 3500,
 	armor = 0,
-	resists = {15,5,5,-1,-1,-1,-1,-1,-1},
+	resists = {115,5,5,-1,-1,-1,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 24,
 	hideType = "hide_leathery",
@@ -32,7 +31,7 @@ sludge_panther = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

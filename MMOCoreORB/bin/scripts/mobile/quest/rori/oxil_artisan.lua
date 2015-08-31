@@ -1,7 +1,6 @@
 oxil_artisan = Creature:new {
   objectName = "@mob/creature_names:artisan",
   socialGroup = "townsperson",
-  pvpFaction = "townsperson",
   faction = "townsperson",
   level = 4,
   chanceHit = 0.24,
@@ -11,7 +10,7 @@ oxil_artisan = Creature:new {
   baseHAM = 113,
   baseHAMmax = 138,
   armor = 0,
-  resists = {0,0,0,0,0,0,0,1,-1},
+  resists = {0,0,0,0,0,0,0,-1,-1},
   meatType = "",
   meatAmount = 0,
   hideType = "",

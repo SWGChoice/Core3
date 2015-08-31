@@ -1,7 +1,6 @@
 arachne_fleshripper = Creature:new {
 	objectName = "@mob/creature_names:arachne_fleshripper",
 	socialGroup = "arachne",
-	pvpFaction = "",
 	faction = "",
 	level = 30,
 	chanceHit = 0.36,
@@ -11,7 +10,7 @@ arachne_fleshripper = Creature:new {
 	baseHAM = 7700,
 	baseHAMmax = 9400,
 	armor = 0,
-	resists = {10,40,-1,20,20,15,20,15,-1},
+	resists = {110,140,-1,120,120,15,120,15,-1},
 	meatType = "meat_insect",
 	meatAmount = 55,
 	hideType = "",
@@ -33,8 +32,8 @@ arachne_fleshripper = Creature:new {
 	weapons = {"creature_spit_small_toxicgreen"},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"},
-		{"strongpoison",""}
+		{"strongpoison",""},
+		{"posturedownattack",""}
 	}
 }
 

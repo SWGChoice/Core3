@@ -1,7 +1,7 @@
 palace_guard = Creature:new {
 	objectName = "@mob/creature_names:palace_guard",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "naboo_security_force",
-	pvpFaction = "naboo_security_force",
 	faction = "naboo_security_force",
 	level = 16,
 	chanceHit = 0.310000,
@@ -27,18 +27,18 @@ palace_guard = Creature:new {
 
 	templates = {"object/mobile/dressed_palace_guard.iff"},
 	lootGroups = {
-	    {
+		{
 			groups = {
 				{group = "junk", chance = 2000000},
 				{group = "wearables_common", chance = 2000000},
-				{group = "carbines", chance = 2000000},				
+				{group = "carbines", chance = 2000000},
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000}
-			},
-			lootChance = 4800000
-		}				
+			}
+		}
 	},
 	weapons = {"pirate_weapons_medium"},
+	reactionStf = "@npc_reaction/townperson",
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 

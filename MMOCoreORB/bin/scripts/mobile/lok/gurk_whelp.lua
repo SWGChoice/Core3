@@ -1,7 +1,6 @@
 gurk_whelp = Creature:new {
 	objectName = "@mob/creature_names:gurk_whelp",
 	socialGroup = "gurk",
-	pvpFaction = "",
 	faction = "",
 	level = 27,
 	chanceHit = 0.36,
@@ -11,7 +10,7 @@ gurk_whelp = Creature:new {
 	baseHAM = 5900,
 	baseHAMmax = 7200,
 	armor = 0,
-	resists = {30,30,15,15,15,15,40,0,-1},
+	resists = {130,130,15,15,15,15,140,15,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 300,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ gurk_whelp = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"intimidationattack","intimidationChance=50"}
+		{"blindattack",""},
+		{"intimidationattack",""}
 	}
 }
 

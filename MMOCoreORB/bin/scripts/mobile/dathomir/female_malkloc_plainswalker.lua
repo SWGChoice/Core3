@@ -1,7 +1,6 @@
 female_malkloc_plainswalker = Creature:new {
 	objectName = "@mob/creature_names:malkloc_plainswalker_female",
 	socialGroup = "malkloc",
-	pvpFaction = "",
 	faction = "",
 	level = 81,
 	chanceHit = 0.65,
@@ -11,7 +10,7 @@ female_malkloc_plainswalker = Creature:new {
 	baseHAM = 16000,
 	baseHAMmax = 19000,
 	armor = 1,
-	resists = {100,50,20,-1,-1,20,20,100,-1},
+	resists = {200,150,20,-1,-1,20,20,200,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 1000,
 	hideType = "hide_leathery",
@@ -33,8 +32,8 @@ female_malkloc_plainswalker = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"creatureareaknockdown","knockdownChance=30"},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"creatureareaknockdown",""}
 	}
 }
 

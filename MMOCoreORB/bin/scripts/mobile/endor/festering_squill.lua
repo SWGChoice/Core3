@@ -1,7 +1,6 @@
 festering_squill = Creature:new {
 	objectName = "@mob/creature_names:festering_squill",
 	socialGroup = "squill",
-	pvpFaction = "",
 	faction = "",
 	level = 31,
 	chanceHit = 0.38,
@@ -11,7 +10,7 @@ festering_squill = Creature:new {
 	baseHAM = 6300,
 	baseHAMmax = 7700,
 	armor = 0,
-	resists = {40,40,15,-1,15,15,50,-1,-1},
+	resists = {140,140,15,-1,15,15,150,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 3,
 	hideType = "hide_leathery",
@@ -33,7 +32,7 @@ festering_squill = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
+		{"blindattack",""},
 		{"mediumdisease",""}
 	}
 }

@@ -35,16 +35,14 @@ public:
 		if (!terminal->isGuildTerminal())
 			return;
 
-		Locker _lock(terminal);
-
-		GuildTerminal* guildTerminal = cast<GuildTerminal*>( terminal);
-
-		ManagedReference<GuildObject*> guild = guildTerminal->getGuildObject();
+		ManagedReference<GuildObject*> guild = player->getGuildObject();
 
 		if (guild == NULL)
 			return;
 
-		guildManager->disbandGuild(player, guildTerminal,  guild);
+		Locker guildLocker(guild, player);
+
+		guildManager->disbandGuild(player, guild);
 	}
 };
 

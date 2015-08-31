@@ -1,7 +1,6 @@
 gungan_falumpaset = Creature:new {
 	objectName = "@mob/creature_names:gungan_falumpaset",
 	socialGroup = "gungan",
-	pvpFaction = "",
 	faction = "gungan",
 	level = 26,
 	chanceHit = 0.36,
@@ -11,7 +10,7 @@ gungan_falumpaset = Creature:new {
 	baseHAM = 7700,
 	baseHAMmax = 9400,
 	armor = 0,
-	resists = {25,15,15,35,35,-1,-1,-1,-1},
+	resists = {125,15,15,135,135,-1,-1,-1,-1},
 	meatType = "meat_domesticated",
 	meatAmount = 230,
 	hideType = "hide_leathery",
@@ -33,7 +32,8 @@ gungan_falumpaset = Creature:new {
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"}
+		{"",""},
+		{"blindattack",""}
 	}
 }
 

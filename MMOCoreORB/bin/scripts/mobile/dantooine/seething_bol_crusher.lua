@@ -1,7 +1,6 @@
 seething_bol_crusher = Creature:new {
 	objectName = "@mob/creature_names:seething_bol_crusher",
 	socialGroup = "bol",
-	pvpFaction = "",
 	faction = "",
 	level = 44,
 	chanceHit = 0.44,
@@ -11,7 +10,7 @@ seething_bol_crusher = Creature:new {
 	baseHAM = 9300,
 	baseHAMmax = 11300,
 	armor = 0,
-	resists = {65,45,80,-1,30,30,30,100,-1},
+	resists = {165,145,180,-1,30,30,30,200,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 180,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ seething_bol_crusher = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"mediumdisease",""}
+		{"mediumdisease",""},
+		{"dizzyattack",""}
 	}
 }
 

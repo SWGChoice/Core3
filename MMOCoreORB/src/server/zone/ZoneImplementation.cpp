@@ -1,46 +1,6 @@
 /*
-Copyright (C) 2007 <SWGEmu>
-
-This File is part of Core3.
-
-This program is free software; you can redistribute
-it and/or modify it under the terms of the GNU Lesser
-General Public License as published by the Free Software
-Foundation; either version 2 of the License,
-or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU Lesser General Public License for
-more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this program; if not, write to
-the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-
-Linking Engine3 statically or dynamically with other modules
-is making a combined work based on Engine3.
-Thus, the terms and conditions of the GNU Lesser General Public License
-cover the whole combination.
-
-In addition, as a special exception, the copyright holders of Engine3
-give you permission to combine Engine3 program with free software
-programs or libraries that are released under the GNU LGPL and with
-code included in the standard release of Core3 under the GNU LGPL
-license (or modified versions of such code, with unchanged license).
-You may copy and distribute such a system following the terms of the
-GNU LGPL for Engine3 and the licenses of the other code concerned,
-provided that you include the source code of that other code when
-and as the GNU LGPL requires distribution of source code.
-
-Note that people who make modified versions of Engine3 are not obligated
-to grant this special exception for their modified versions;
-it is their choice whether to do so. The GNU Lesser General Public License
-gives permission to release a modified version without this exception;
-this exception also makes it possible to release a modified version
-which carries forward this exception.
-*/
+				Copyright <SWGEmu>
+		See file COPYING for copying conditions.*/
 
 #include "server/zone/Zone.h"
 
@@ -58,6 +18,7 @@ which carries forward this exception.
 #include "server/zone/objects/cell/CellObject.h"
 #include "server/zone/objects/region/Region.h"
 #include "server/zone/objects/building/BuildingObject.h"
+#include "server/zone/objects/tangible/terminal/Terminal.h"
 #include "server/zone/templates/SharedObjectTemplate.h"
 #include "server/zone/templates/appearance/PortalLayout.h"
 #include "server/zone/templates/appearance/FloorMesh.h"
@@ -100,16 +61,16 @@ void ZoneImplementation::createContainerComponent() {
 
 void ZoneImplementation::initializePrivateData() {
 	if (zoneName.contains("space_")) {
-		planetManager = new SpaceManager(_this.get(), processor);
+		planetManager = new SpaceManager(_this.getReferenceUnsafeStaticCast(), processor);
 	} else {
-		planetManager = new PlanetManager(_this.get(), processor);
+		planetManager = new PlanetManager(_this.getReferenceUnsafeStaticCast(), processor);
 	}
 
-	creatureManager = new CreatureManager(_this.get());
+	creatureManager = new CreatureManager(_this.getReferenceUnsafeStaticCast());
 	creatureManager->deploy("CreatureManager " + zoneName);
 	creatureManager->setZoneProcessor(processor);
 
-	gcwManager = new GCWManager(_this.get());
+	gcwManager = new GCWManager(_this.getReferenceUnsafeStaticCast());
 }
 
 void ZoneImplementation::finalize() {
@@ -125,21 +86,15 @@ void ZoneImplementation::initializeTransientMembers() {
 }
 
 void ZoneImplementation::startManagers() {
+	gcwManager->start();
+
 	planetManager->initialize();
 
 	creatureManager->initialize();
 
 	StructureManager::instance()->loadPlayerStructures(getZoneName());
 
-	//gcwManager->loadFactionStructures(getZoneName());
-
-	gcwManager->start();
-
-	updateCityRegions();
-
 	ObjectDatabaseManager::instance()->commitLocalTransaction();
-
-
 
 	managersStarted = true;
 }
@@ -175,20 +130,20 @@ float ZoneImplementation::getHeight(float x, float y) {
 }
 
 void ZoneImplementation::insert(QuadTreeEntry* entry) {
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	quadTree->insert(entry);
 }
 
 void ZoneImplementation::remove(QuadTreeEntry* entry) {
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	if (entry->isInQuadTree())
 		quadTree->remove(entry);
 }
 
 void ZoneImplementation::update(QuadTreeEntry* entry) {
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	quadTree->update(entry);
 }
@@ -198,13 +153,13 @@ void ZoneImplementation::inRange(QuadTreeEntry* entry, float range) {
 }
 
 int ZoneImplementation::getInRangeObjects(float x, float y, float range, SortedVector<ManagedReference<QuadTreeEntry*> >* objects, bool readLockZone) {
-	//Locker locker(_this.get());
+	//Locker locker(_this.getReferenceUnsafeStaticCast());
 
-	bool readlock = readLockZone && !_this.get()->isLockedByCurrentThread();
+	bool readlock = readLockZone && !_this.getReferenceUnsafeStaticCast()->isLockedByCurrentThread();
 
 	Vector<ManagedReference<QuadTreeEntry*> > buildingObjects;
 
-//	_this.get()->rlock(readlock);
+//	_this.getReferenceUnsafeStaticCast()->rlock(readlock);
 
 	try {
 		_this.getReferenceUnsafeStaticCast()->rlock(readlock);
@@ -247,7 +202,7 @@ int ZoneImplementation::getInRangeObjects(float x, float y, float range, SortedV
 			}
 		}
 
-	//_this.get()->runlock(readlock);
+	//_this.getReferenceUnsafeStaticCast()->runlock(readlock);
 
 	for (int i = 0; i < buildingObjects.size(); ++i)
 		objects->put(buildingObjects.get(i));
@@ -256,11 +211,11 @@ int ZoneImplementation::getInRangeObjects(float x, float y, float range, SortedV
 }
 
 int ZoneImplementation::getInRangeActiveAreas(float x, float y, SortedVector<ManagedReference<ActiveArea*> >* objects, bool readLockZone) {
-	//Locker locker(_this.get());
+	//Locker locker(_this.getReferenceUnsafeStaticCast());
 
-	bool readlock = readLockZone && !_this.get()->isLockedByCurrentThread();
+	bool readlock = readLockZone && !_this.getReferenceUnsafeStaticCast()->isLockedByCurrentThread();
 
-	//_this.get()->rlock(readlock);
+	//_this.getReferenceUnsafeStaticCast()->rlock(readlock);
 
 	Zone* thisZone = _this.getReferenceUnsafeStaticCast();
 
@@ -278,22 +233,22 @@ int ZoneImplementation::getInRangeActiveAreas(float x, float y, SortedVector<Man
 			objects->put(obj);
 		}
 	}catch (...) {
-//		_this.get()->runlock(readlock);
+//		_this.getReferenceUnsafeStaticCast()->runlock(readlock);
 
 		throw;
 	}
 
-//	_this.get()->runlock(readlock);
+//	_this.getReferenceUnsafeStaticCast()->runlock(readlock);
 
 	return objects->size();
 }
 
 int ZoneImplementation::getInRangeActiveAreas(float x, float y, float range, SortedVector<ManagedReference<ActiveArea*> >* objects, bool readLockZone) {
-	//Locker locker(_this.get());
+	//Locker locker(_this.getReferenceUnsafeStaticCast());
 
-	bool readlock = readLockZone && !_this.get()->isLockedByCurrentThread();
+	bool readlock = readLockZone && !_this.getReferenceUnsafeStaticCast()->isLockedByCurrentThread();
 
-	//_this.get()->rlock(readlock);
+	//_this.getReferenceUnsafeStaticCast()->rlock(readlock);
 	
 	Zone* thisZone = _this.getReferenceUnsafeStaticCast();
 
@@ -311,18 +266,18 @@ int ZoneImplementation::getInRangeActiveAreas(float x, float y, float range, Sor
 			objects->put(obj);
 		}
 	}catch (...) {
-//		_this.get()->runlock(readlock);
+//		_this.getReferenceUnsafeStaticCast()->runlock(readlock);
 
 		throw;
 	}
 
-//	_this.get()->runlock(readlock);
+//	_this.getReferenceUnsafeStaticCast()->runlock(readlock);
 
 	return objects->size();
 }
 
 void ZoneImplementation::updateActiveAreas(TangibleObject* tano) {
-	//Locker locker(_this.get());
+	//Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	Locker _alocker(tano->getContainerLock());
 
@@ -418,7 +373,7 @@ void ZoneImplementation::updateActiveAreas(TangibleObject* tano) {
 }
 
 void ZoneImplementation::addSceneObject(SceneObject* object) {
-	objectMap->put(object->getObjectID(), object);
+	SceneObject* old = objectMap->put(object->getObjectID(), object);
 	
 	//Civic and commercial structures map registration will be handled by their city
 	if (object->isStructureObject()) {
@@ -426,6 +381,17 @@ void ZoneImplementation::addSceneObject(SceneObject* object) {
 		if (structure->isCivicStructure() || structure->isCommercialStructure()) {
 			return;
 		}
+	//Same thing for player city bank/mission terminals
+	} else if (object->isTerminal()) {
+		Terminal* terminal = cast<Terminal*>(object);
+		ManagedReference<SceneObject*> controlledObject = terminal->getControlledObject();
+		if (controlledObject != NULL && controlledObject->isStructureObject()) {
+			StructureObject* structure = controlledObject.castTo<StructureObject*>();
+			if (structure->isCivicStructure())
+				return;
+		}
+	} else if (old == NULL && object->isAiAgent()) {
+		spawnedAiAgents.increment();
 	}
 	
 	registerObjectWithPlanetaryMap(object);
@@ -461,8 +427,13 @@ void ZoneImplementation::updatePlanetaryMapIcon(SceneObject* object, byte icon) 
 }
 
 void ZoneImplementation::dropSceneObject(SceneObject* object)  {
-	objectMap->remove(object->getObjectID());
+	SceneObject* oldObject = objectMap->remove(object->getObjectID());
+
 	unregisterObjectWithPlanetaryMap(object);
+
+	if (oldObject != NULL && oldObject->isAiAgent()) {
+		spawnedAiAgents.decrement();
+	}
 }
 
 void ZoneImplementation::sendMapLocationsTo(SceneObject* player) {
@@ -542,10 +513,12 @@ float ZoneImplementation::getMaxY() {
 }
 
 void ZoneImplementation::updateCityRegions() {
-	info("updating " + String::valueOf(cityRegionUpdateVector.size()) + " cities", true);
+	info("scheduling updates for " + String::valueOf(cityRegionUpdateVector.size()) + " cities", true);
 
 	for (int i = 0; i < cityRegionUpdateVector.size(); ++i) {
 		CityRegion* city = cityRegionUpdateVector.get(i);
+
+		Locker locker(city);
 
 		Time* nextUpdateTime = city->getNextUpdateTime();
 		int seconds = -1 * round(nextUpdateTime->miliDifference() / 1000.f);
@@ -560,6 +533,16 @@ void ZoneImplementation::updateCityRegions() {
 		city->cleanupDuplicateCityStructures();
 
 		city->rescheduleUpdateEvent(seconds);
+
+		if (city->hasAssessmentPending()) {
+			Time* nextAssessmentTime = city->getNextAssessmentTime();
+			int seconds2 = -1 * round(nextAssessmentTime->miliDifference() / 1000.f);
+
+			if (seconds2 < 0)
+				seconds2 = 0;
+
+			city->scheduleCitizenAssessment(seconds2);
+		}
 
 		if (!city->isRegistered())
 			continue;

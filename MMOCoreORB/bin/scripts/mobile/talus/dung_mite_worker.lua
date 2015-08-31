@@ -1,7 +1,6 @@
 dung_mite_worker = Creature:new {
 	objectName = "@mob/creature_names:sickening_dung_mite_worker",
 	socialGroup = "mite",
-	pvpFaction = "",
 	faction = "",
 	level = 15,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ dung_mite_worker = Creature:new {
 	baseHAM = 2400,
 	baseHAMmax = 3000,
 	armor = 0,
-	resists = {5,10,-1,5,-1,-1,5,-1,-1},
+	resists = {5,110,-1,5,-1,-1,5,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 11,
 	hideType = "",
@@ -33,8 +32,8 @@ dung_mite_worker = Creature:new {
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"mediumdisease",""},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"mediumdisease",""}
 	}
 }
 

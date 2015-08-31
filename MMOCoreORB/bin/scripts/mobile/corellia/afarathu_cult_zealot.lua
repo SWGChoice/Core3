@@ -1,7 +1,7 @@
 afarathu_cult_zealot = Creature:new {
 	objectName = "@mob/creature_names:afarathu_cult_zealot",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "afarathu",
-	pvpFaction = "afarathu",
 	faction = "afarathu",
 	level = 12,
 	chanceHit = 0.29,
@@ -56,12 +56,12 @@ afarathu_cult_zealot = Creature:new {
 				{group = "junk", chance = 7000000},
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "tailor_components", chance = 1000000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_light"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlermid,marksmanmid)
 }
 

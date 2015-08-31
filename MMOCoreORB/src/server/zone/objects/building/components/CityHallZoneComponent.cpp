@@ -13,20 +13,16 @@
 #include "server/zone/ZoneServer.h"
 
 void CityHallZoneComponent::destroyObjectFromWorld(SceneObject* sceneObject, bool sendSelfDestroy) {
-	ManagedReference<CityRegion*> cityRegion = sceneObject->getCityRegion();
+	ManagedReference<CityRegion*> cityRegion = sceneObject->getCityRegion().get();
 
 	if (cityRegion != NULL ) {
-		int i;
-		for ( i = CityManager::METROPOLIS; i > 0; i--)
-			cityRegion->destroyAllStructuresForRank(uint8(i));
-
-		cityRegion->removeAllTerminals();
-		cityRegion->removeAllSkillTrainers();
-		cityRegion->removeAllDecorations();
+		Locker clocker(cityRegion, sceneObject);
 
 		if (cityRegion->getCityHall() == sceneObject) {
 			cityRegion->setCityHall(NULL);
 		}
+
+		clocker.release();
 
 		CityManager* cityManager = sceneObject->getZoneServer()->getCityManager();
 

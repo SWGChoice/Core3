@@ -57,8 +57,8 @@ UnarmedKnockdown1Command = {
 		{ "knockdownRecovery", "lastKnockdown" }, 
 		{ "knockdown_defense" }, 
 		{}, 
-		15, 
 		100, 
+		0, 
 		0 
 	  )
 	},
@@ -66,6 +66,8 @@ UnarmedKnockdown1Command = {
 	animationCRC = hashCode("attack_special_shoulder_bash_medium"),
 
 	combatSpam = "sleepingkrayt",
+	
+	weaponType = UNARMEDWEAPON,
 
 	range = -1
 }

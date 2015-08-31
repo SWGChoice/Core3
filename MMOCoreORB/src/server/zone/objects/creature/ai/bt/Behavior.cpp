@@ -10,15 +10,16 @@
 #include "server/zone/managers/creature/AiMap.h"
 #include "LuaBehavior.h"
 
-Behavior::Behavior(AiAgent* _agent, String className) {
+Behavior::Behavior(AiAgent* _agent, const String& className) {
 	agent = _agent;
 	result = AiMap::SUSPEND;
 	parent = NULL;
 	interface = AiMap::instance()->getBehavior(className);
 	id = 0;
 
-	if (interface == NULL)
-		agent->error("Null interface in Behavior: " + className);
+	if (interface == NULL) {
+		_agent->error("Null interface in Behavior: " + className);
+	}
 }
 
 void Behavior::start() {
@@ -29,16 +30,24 @@ void Behavior::start() {
 
 	result = AiMap::RUNNING;
 
-	if (interface != NULL)
-		interface->start(agent);
+	if (interface != NULL) {
+		Reference<AiAgent*> strongReference = agent.get();
+
+		interface->start(strongReference);
+	}
 }
 
 void Behavior::end() {
-	if (interface != NULL)
-		interface->end(agent);
+	if (interface != NULL) {
+		Reference<AiAgent*> strongReference = agent.get();
+
+		interface->end(strongReference);
+	}
 }
 
 void Behavior::doAction(bool directlyExecuted) {
+	Reference<AiAgent*> agent = this->agent.get();
+
 	if (agent->isDead() || agent->isIncapacitated() || (agent->getZone() == NULL)) {
 		agent->setFollowObject(NULL);
 		return;
@@ -51,6 +60,8 @@ void Behavior::doAction(bool directlyExecuted) {
 		this->start();
 	else if (!this->checkConditions())
 		endWithFailure();
+
+	agent = this->agent.get();
 
 	if (finished()) {
 		if (parent == NULL) {
@@ -77,9 +88,15 @@ void Behavior::doAction(bool directlyExecuted) {
 		endWithFailure();
 		break;
 	case AiMap::INVALID:
+		if (agent == NULL)
+			return;
+
 		agent->resetBehaviorList();
 		break;
 	default:
+		if (agent == NULL)
+			return;
+
 		break;
 	}
 
@@ -87,6 +104,7 @@ void Behavior::doAction(bool directlyExecuted) {
 		agent->activateMovementEvent();
 	else if (directlyExecuted) {
 		agent->setCurrentBehavior(parent->id);
+
 		parent->doAction(true);
 	}
 }

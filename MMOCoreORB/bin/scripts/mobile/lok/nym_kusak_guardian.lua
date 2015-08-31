@@ -1,7 +1,6 @@
 nym_kusak_guardian = Creature:new {
 	objectName = "@mob/creature_names:nym_kusak_guardian",
 	socialGroup = "nym",
-	pvpFaction = "nym",
 	faction = "nym",
 	level = 29,
 	chanceHit = 0.37,
@@ -11,7 +10,7 @@ nym_kusak_guardian = Creature:new {
 	baseHAM = 8200,
 	baseHAMmax = 10000,
 	armor = 0,
-	resists = {35,15,35,-1,-1,80,80,-1,-1},
+	resists = {135,15,15,-1,-1,160,160,-1,-1},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "",
@@ -31,8 +30,8 @@ nym_kusak_guardian = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"stunattack","stunChance=50"}
+		{"dizzyattack",""},
+		{"stunattack",""}
 	}
 }
 

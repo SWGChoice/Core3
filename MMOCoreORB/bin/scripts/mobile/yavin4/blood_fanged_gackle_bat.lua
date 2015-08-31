@@ -1,7 +1,6 @@
 blood_fanged_gackle_bat = Creature:new {
 	objectName = "@mob/creature_names:bloodfanged_gackle_bat",
 	socialGroup = "gacklebat",
-	pvpFaction = "",
 	faction = "",
 	level = 14,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ blood_fanged_gackle_bat = Creature:new {
 	baseHAM = 1500,
 	baseHAMmax = 1900,
 	armor = 0,
-	resists = {0,0,15,0,0,0,0,-1,-1},
+	resists = {0,0,115,0,0,0,0,-1,-1},
 	meatType = "meat_avian",
 	meatAmount = 9,
 	hideType = "hide_leathery",
@@ -33,8 +32,8 @@ blood_fanged_gackle_bat = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"intimidationattack","intimidationChance=50"}
+		{"blindattack",""},
+		{"intimidationattack",""}
 	}
 }
 

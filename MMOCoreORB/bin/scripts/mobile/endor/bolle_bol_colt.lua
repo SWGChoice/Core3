@@ -1,7 +1,6 @@
 bolle_bol_colt = Creature:new {
 	objectName = "@mob/creature_names:bolle_bol_colt",
 	socialGroup = "bol",
-	pvpFaction = "",
 	faction = "",
 	level = 17,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ bolle_bol_colt = Creature:new {
 	baseHAM = 3500,
 	baseHAMmax = 4300,
 	armor = 0,
-	resists = {10,10,5,5,5,5,5,-1,-1},
+	resists = {110,110,5,5,5,5,5,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 450,
 	hideType = "hide_leathery",

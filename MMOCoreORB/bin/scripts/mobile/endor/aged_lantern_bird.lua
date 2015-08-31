@@ -1,7 +1,6 @@
 aged_lantern_bird = Creature:new {
 	objectName = "@mob/creature_names:aged_lantern_bird",
 	socialGroup = "lantern",
-	pvpFaction = "",
 	faction = "",
 	level = 27,
 	chanceHit = 0.36,
@@ -11,7 +10,7 @@ aged_lantern_bird = Creature:new {
 	baseHAM = 7200,
 	baseHAMmax = 8800,
 	armor = 0,
-	resists = {0,55,-1,0,0,0,-1,0,-1},
+	resists = {15,155,-1,15,15,15,-1,15,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 75,
 	hideType = "hide_leathery",

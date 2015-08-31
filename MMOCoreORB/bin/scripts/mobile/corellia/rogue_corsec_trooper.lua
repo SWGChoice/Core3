@@ -1,7 +1,7 @@
 rogue_corsec_trooper = Creature:new {
 	objectName = "@mob/creature_names:corsec_rogue",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "rogue_corsec",
-	pvpFaction = "rogue_corsec",
 	faction = "rogue_corsec",
 	level = 7,
 	chanceHit = 0.26,
@@ -30,17 +30,17 @@ rogue_corsec_trooper = Creature:new {
 		"object/mobile/dressed_corsec_officer_human_male_01.iff",
 		"object/mobile/dressed_corsec_officer_human_female_01.iff"},
 	lootGroups = {
-	    {
+		{
 			groups = {
 				{group = "junk", chance = 6000000},
 				{group = "corsec_weapons", chance = 2500000},
 				{group = "tailor_components", chance = 1500000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"ranged_weapons"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlernovice,marksmannovice)
 }
 

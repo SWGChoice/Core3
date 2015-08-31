@@ -1,7 +1,7 @@
 gundark_ruffian = Creature:new {
 	objectName = "@mob/creature_names:gundark_ruffian",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "gundark_gang",
-	pvpFaction = "thug",
 	faction = "thug",
 	level = 9,
 	chanceHit = 0.270000,
@@ -28,18 +28,18 @@ gundark_ruffian = Creature:new {
 	templates = {
 		"object/mobile/dressed_ruffian_zabrak_female_01.iff"},
 	lootGroups = {
-	    {
+		{
 			groups = {
 				{group = "junk", chance = 2000000},
 				{group = "wearables_common", chance = 2000000},
 				{group = "pistols", chance = 2000000},
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000}
-			},
-			lootChance = 3200000
-		}					
+			}
+		}
 	},
 	weapons = {"pirate_weapons_light"},
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlernovice,marksmannovice)
 }
 

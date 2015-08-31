@@ -1,7 +1,6 @@
 stormtrooper_dewback = Creature:new {
 	objectName = "@mob/creature_names:stormtrooper_dewback",
 	socialGroup = "imperial",
-	pvpFaction = "imperial",
 	faction = "imperial",
 	level = 29,
 	chanceHit = 0.38,
@@ -11,7 +10,7 @@ stormtrooper_dewback = Creature:new {
 	baseHAM = 8300,
 	baseHAMmax = 10100,
 	armor = 0,
-	resists = {40,20,0,40,-1,-1,-1,-1,-1},
+	resists = {140,120,0,140,-1,-1,-1,-1,-1},
 	meatType = "meat_reptilian",
 	meatAmount = 360,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ stormtrooper_dewback = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"stunattack","stunChance=50"}
+		{"dizzyattack",""},
+		{"stunattack",""}
 	}
 }
 

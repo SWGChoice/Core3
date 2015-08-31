@@ -1,7 +1,6 @@
 hanadak_ancient = Creature:new {
 	objectName = "@mob/creature_names:hanadak_ancient",
 	socialGroup = "hanadak",
-	pvpFaction = "",
 	faction = "",
 	level = 41,
 	chanceHit = 0.44,
@@ -10,8 +9,8 @@ hanadak_ancient = Creature:new {
 	baseXp = 4097,
 	baseHAM = 9300,
 	baseHAMmax = 11300,
-	armor = 1,
-	resists = {30,30,-1,100,100,100,-1,-1,-1},
+	armor = 0,
+	resists = {30,30,-1,200,200,200,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 40,
 	hideType = "hide_bristley",
@@ -32,8 +31,8 @@ hanadak_ancient = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"knockdownattack","knockdownChance=50"}
+		{"knockdownattack",""},
+		{"blindattack",""}
 	}
 }
 

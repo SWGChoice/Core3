@@ -1,46 +1,6 @@
 /*
- Copyright (C) 2007 <SWGEmu>
-
- This File is part of Core3.
-
- This program is free software; you can redistribute
- it and/or modify it under the terms of the GNU Lesser
- General Public License as published by the Free Software
- Foundation; either version 2 of the License,
- or (at your option) any later version.
-
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- See the GNU Lesser General Public License for
- more details.
-
- You should have received a copy of the GNU Lesser General
- Public License along with this program; if not, write to
- the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-
- Linking Engine3 statically or dynamically with other modules
- is making a combined work based on Engine3.
- Thus, the terms and conditions of the GNU Lesser General Public License
- cover the whole combination.
-
- In addition, as a special exception, the copyright holders of Engine3
- give you permission to combine Engine3 program with free software
- programs or libraries that are released under the GNU LGPL and with
- code included in the standard release of Core3 under the GNU LGPL
- license (or modified versions of such code, with unchanged license).
- You may copy and distribute such a system following the terms of the
- GNU LGPL for Engine3 and the licenses of the other code concerned,
- provided that you include the source code of that other code when
- and as the GNU LGPL requires distribution of source code.
-
- Note that people who make modified versions of Engine3 are not obligated
- to grant this special exception for their modified versions;
- it is their choice whether to do so. The GNU Lesser General Public License
- gives permission to release a modified version without this exception;
- this exception also makes it possible to release a modified version
- which carries forward this exception.
- */
+ 				Copyright <SWGEmu>
+		See file COPYING for copying conditions. */
 
 #include "server/zone/managers/crafting/CraftingManager.h"
 #include "server/zone/objects/resource/ResourceContainer.h"
@@ -73,70 +33,9 @@ void CraftingManagerImplementation::sendResourceWeightsTo(CreatureObject* player
 	schematicMap->sendResourceWeightsTo(player, schematicID);
 }
 
-int CraftingManagerImplementation::calculateAssemblySuccess(CreatureObject* player,
-		DraftSchematic* draftSchematic, float effectiveness) {
-
-	// assemblyPoints is 0-12
-	/// City bonus should be 10
-	float cityBonus = player->getSkillMod("private_spec_assembly");
-
-	float assemblyPoints = ((float)player->getSkillMod(draftSchematic->getAssemblySkill())) / 10.0f;
-	int failMitigate = (player->getSkillMod(draftSchematic->getAssemblySkill()) - 100 + cityBonus) / 7;
-
-	if(failMitigate < 0)
-		failMitigate = 0;
-	if(failMitigate > 5)
-		failMitigate = 5;
-
-	// 0.85-1.15
-	float toolModifier = 1.0f + (effectiveness / 100.0f);
-
-	//Pyollian Cake
-
-	float craftbonus = 0;
-	if (player->hasBuff(BuffCRC::FOOD_CRAFT_BONUS)) {
-		Buff* buff = player->getBuff(BuffCRC::FOOD_CRAFT_BONUS);
-
-		if (buff != NULL) {
-			craftbonus = buff->getSkillModifierValue("craft_bonus");
-			toolModifier *= 1.0f + (craftbonus / 100.0f);
-		}
-	}
-
-	int luckRoll = System::random(100) + cityBonus;
-
-	if(luckRoll > (95 - craftbonus))
-		return AMAZINGSUCCESS;
-
-	if(luckRoll < (5 - craftbonus - failMitigate))
-		luckRoll -= System::random(100);
-
-	//if(luckRoll < 5)
-	//	return CRITICALFAILURE;
-
-	luckRoll += System::random(player->getSkillMod("luck") + player->getSkillMod("force_luck"));
-
-	int assemblyRoll = (toolModifier * (luckRoll + (assemblyPoints * 5)));
-
-	if (assemblyRoll > 70)
-		return GREATSUCCESS;
-
-	if (assemblyRoll > 60)
-		return GOODSUCCESS;
-
-	if (assemblyRoll > 50)
-		return MODERATESUCCESS;
-
-	if (assemblyRoll > 40)
-		return SUCCESS;
-
-	if (assemblyRoll > 30)
-		return MARGINALSUCCESS;
-
-	if (assemblyRoll > 20)
-		return OK;
-
-	return BARELYSUCCESSFUL;
+int CraftingManagerImplementation::calculateAssemblySuccess(CreatureObject* player,	DraftSchematic* draftSchematic, float effectiveness) {
+	SharedLabratory* lab = labs.get(draftSchematic->getLabratory());
+	return lab->calculateAssemblySuccess(player,draftSchematic,effectiveness);
 }
 
 

@@ -1,7 +1,6 @@
 dine_lizard = Creature:new {
 	objectName = "@mob/creature_names:dune_lizard",
 	socialGroup = "dune_lizard",
-	pvpFaction = "",
 	faction = "",
 	level = 19,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ dine_lizard = Creature:new {
 	baseHAM = 4100,
 	baseHAMmax = 5000,
 	armor = 0,
-	resists = {0,20,0,45,-1,-1,-1,-1,-1},
+	resists = {0,120,0,145,-1,-1,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 85,
 	hideType = "hide_bristley",
@@ -31,7 +30,7 @@ dine_lizard = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"}
+		{"dizzyattack",""}
 	}
 }
 

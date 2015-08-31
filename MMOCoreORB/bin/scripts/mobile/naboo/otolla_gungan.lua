@@ -1,7 +1,7 @@
 otolla_gungan = Creature:new {
 	objectName = "@mob/creature_names:otolla_gungan",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "gungan",
-	pvpFaction = "gungan",
 	faction = "gungan",
 	level = 10,
 	chanceHit = 0.28,
@@ -34,8 +34,7 @@ otolla_gungan = Creature:new {
 				{group = "melee_weapons", chance = 2000000},
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000}
-			},
-			lootChance = 3200000
+			}
 		}
 	},
 	weapons = {"rebel_weapons_light"},

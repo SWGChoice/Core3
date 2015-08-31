@@ -1,7 +1,6 @@
 snorbal_matriarch = Creature:new {
 	objectName = "@mob/creature_names:snorbal_matriarch",
 	socialGroup = "snorbal",
-	pvpFaction = "",
 	faction = "",
 	level = 45,
 	chanceHit = 0.47,
@@ -11,7 +10,7 @@ snorbal_matriarch = Creature:new {
 	baseHAM = 9700,
 	baseHAMmax = 11700,
 	armor = 0,
-	resists = {35,35,0,-1,-1,0,0,0,-1},
+	resists = {135,135,0,-1,-1,0,0,0,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 600,
 	hideType = "hide_leathery",
@@ -33,8 +32,8 @@ snorbal_matriarch = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""},
+		{"dizzyattack",""}
 	}
 }
 

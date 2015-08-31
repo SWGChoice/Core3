@@ -1,7 +1,6 @@
 toxic_merek_battlelord = Creature:new {
 	objectName = "@mob/creature_names:toxic_merek_battlelord",
 	socialGroup = "merek",
-	pvpFaction = "",
 	faction = "",
 	level = 45,
 	chanceHit = 0.47,
@@ -11,7 +10,7 @@ toxic_merek_battlelord = Creature:new {
 	baseHAM = 9700,
 	baseHAMmax = 11900,
 	armor = 1,
-	resists = {40,-1,60,60,50,60,80,50,-1},
+	resists = {140,-1,160,160,150,160,180,150,-1},
 	meatType = "meat_wild",
 	meatAmount = 65,
 	hideType = "hide_leathery",
@@ -30,11 +29,11 @@ toxic_merek_battlelord = Creature:new {
 	controlDeviceTemplate = "object/intangible/pet/merek_hue.iff",
 	scale = 1.05,
 	lootGroups = {},
-	weapons = {},
+	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"strongpoison",""}
+		{"strongpoison",""},
+		{"blindattack",""}
 	}
 }
 

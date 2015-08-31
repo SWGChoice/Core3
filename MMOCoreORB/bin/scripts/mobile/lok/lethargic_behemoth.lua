@@ -1,7 +1,6 @@
 lethargic_behemoth = Creature:new {
 	objectName = "@mob/creature_names:flit_lethargic_behemoth",
 	socialGroup = "flit",
-	pvpFaction = "",
 	faction = "",
 	level = 23,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ lethargic_behemoth = Creature:new {
 	baseHAM = 6300,
 	baseHAMmax = 7700,
 	armor = 0,
-	resists = {10,10,-1,-1,0,-1,0,0,-1},
+	resists = {110,110,-1,-1,0,-1,0,0,-1},
 	meatType = "meat_avian",
 	meatAmount = 11,
 	hideType = "",
@@ -33,6 +32,8 @@ lethargic_behemoth = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
+		{"stunattack",""},
+		{"knockdownattack",""}
 	}
 }
 

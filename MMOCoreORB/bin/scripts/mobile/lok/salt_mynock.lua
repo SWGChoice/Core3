@@ -1,7 +1,6 @@
 salt_mynock = Creature:new {
 	objectName = "@mob/creature_names:salt_mynock",
 	socialGroup = "mynock",
-	pvpFaction = "",
 	faction = "",
 	level = 23,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ salt_mynock = Creature:new {
 	baseHAM = 5900,
 	baseHAMmax = 7200,
 	armor = 0,
-	resists = {10,20,10,40,40,-1,-1,-1,-1},
+	resists = {10,120,10,140,140,-1,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 50,
 	hideType = "hide_leathery",
@@ -33,8 +32,8 @@ salt_mynock = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"knockdownattack","knockdownChance=50"}
+		{"knockdownattack",""},
+		{"blindattack",""}
 	}
 }
 

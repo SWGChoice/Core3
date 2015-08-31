@@ -1,7 +1,6 @@
 huurton_howler = Creature:new {
 	objectName = "@mob/creature_names:huurton_howler",
 	socialGroup = "huurton",
-	pvpFaction = "",
 	faction = "",
 	level = 25,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ huurton_howler = Creature:new {
 	baseHAM = 5400,
 	baseHAMmax = 6600,
 	armor = 0,
-	resists = {15,15,10,40,60,-1,-1,-1,-1},
+	resists = {115,115,10,140,160,-1,-1,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 15,
 	hideType = "hide_wooly",
@@ -33,8 +32,8 @@ huurton_howler = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"posturedownattack",""}
 	}
 }
 

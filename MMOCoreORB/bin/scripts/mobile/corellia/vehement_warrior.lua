@@ -1,7 +1,6 @@
 vehement_warrior = Creature:new {
 	objectName = "@mob/creature_names:durni_vehement_warrior",
 	socialGroup = "durni",
-	pvpFaction = "",
 	faction = "",
 	level = 9,
 	chanceHit = 0.28,
@@ -11,7 +10,7 @@ vehement_warrior = Creature:new {
 	baseHAM = 625,
 	baseHAMmax = 825,
 	armor = 0,
-	resists = {10,5,0,0,0,0,0,0,-1},
+	resists = {105,105,0,0,0,0,0,110,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 5,
 	hideType = "hide_wooly",
@@ -33,7 +32,7 @@ vehement_warrior = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

@@ -1,7 +1,6 @@
 spineflap_guard = Creature:new {
 	objectName = "@mob/creature_names:spineflap_guard",
 	socialGroup = "spineflap",
-	pvpFaction = "",
 	faction = "",
 	level = 18,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ spineflap_guard = Creature:new {
 	baseHAM = 4100,
 	baseHAMmax = 5000,
 	armor = 0,
-	resists = {-1,20,5,-1,5,-1,5,-1,-1},
+	resists = {-1,120,5,-1,5,-1,5,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 10,
 	hideType = "hide_scaley",
@@ -33,8 +32,8 @@ spineflap_guard = Creature:new {
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"stunattack","stunChance=50"}
+		{"blindattack",""},
+		{"stunattack",""}
 	}
 }
 

@@ -1,7 +1,6 @@
 huurton_pup = Creature:new {
 	objectName = "@mob/creature_names:huurton_pup",
 	socialGroup = "huurton",
-	pvpFaction = "",
 	faction = "",
 	level = 2,
 	chanceHit = 0.21,
@@ -11,7 +10,7 @@ huurton_pup = Creature:new {
 	baseHAM = 68,
 	baseHAMmax = 83,
 	armor = 0,
-	resists = {15,15,15,0,0,0,0,-1,-1},
+	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 10,
 	hideType = "hide_wooly",

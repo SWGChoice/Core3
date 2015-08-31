@@ -51,33 +51,25 @@ Melee2hArea2Command = {
         accuracyBonus = 10,
 
 	stateEffects = {
-        --documentation says nothing about blind effect
-	--StateEffect( 
-	--	BLIND_EFFECT, 
-	--	{}, 
-	--	{ "blind_defense", "resistance_states" }, 
-	--	{ "jedi_state_defense" }, 
-	--	20, 
-	--	100, 
-	--	10 
-	--),
 	  StateEffect( 
 		POSTUREDOWN_EFFECT, 
 		{ "postureDownRecovery" }, 
 		{ "posture_change_down_defense" }, 
 		{}, 
-		15, 
 		100, 
+		0, 
 		0 
 	  )
 	},
 
-	areaRange = 7,
+	areaRange = 16,
 	areaAction = true,
 
 	animationCRC = hashCode("combo_4b_medium"),
 
 	combatSpam = "descendingslam",
+	
+	weaponType = TWOHANDMELEEWEAPON,
 
 	range = -1
 }

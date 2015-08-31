@@ -1,7 +1,6 @@
 imperial_retreat_guard = Creature:new {
 	objectName = "@mob/creature_names:imperial_retreat_guard",
 	socialGroup = "imperial",
-	pvpFaction = "imperial",
 	faction = "imperial",
 	level = 72,
 	chanceHit = 0.75,
@@ -36,11 +35,11 @@ imperial_retreat_guard = Creature:new {
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "clothing_attachments", chance = 250000},
 				{group = "armor_attachments", chance = 250000}
-			},
-			lootChance = 3200000
+			}
 		}
 	},
 	weapons = {"imperial_weapons_medium"},
+	reactionStf = "@npc_reaction/military",
 	attacks = merge(brawlermaster,marksmanmaster,riflemanmaster,carbineermaster,tkamaster)
 }
 

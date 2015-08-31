@@ -1,7 +1,6 @@
 blister_rot_mite_queen = Creature:new {
 	objectName = "@mob/creature_names:blister_rot_queen",
 	socialGroup = "mite",
-	pvpFaction = "",
 	faction = "",
 	level = 15,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ blister_rot_mite_queen = Creature:new {
 	baseHAM = 2000,
 	baseHAMmax = 2400,
 	armor = 0,
-	resists = {0,0,0,0,10,0,10,-1,-1},
+	resists = {0,0,0,0,110,0,110,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 10,
 	hideType = "",
@@ -33,7 +32,7 @@ blister_rot_mite_queen = Creature:new {
 	conversationTemplate = "",
 	attacks = {
 		{"mediumdisease",""},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

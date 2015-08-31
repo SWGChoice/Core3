@@ -1,7 +1,6 @@
 nudfuh = Creature:new {
 	objectName = "@mob/creature_names:nudfuh",
 	socialGroup = "nudfuh",
-	pvpFaction = "",
 	faction = "",
 	level = 13,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ nudfuh = Creature:new {
 	baseHAM = 1500,
 	baseHAMmax = 1900,
 	armor = 0,
-	resists = {0,0,0,0,15,0,0,0,-1},
+	resists = {0,0,0,0,115,0,0,0,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 1000,
 	hideType = "hide_leathery",
@@ -31,7 +30,7 @@ nudfuh = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

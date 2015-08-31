@@ -1,7 +1,6 @@
 sharnaff_bull = Creature:new {
 	objectName = "@mob/creature_names:sharnaff_bull",
 	socialGroup = "sharnaff",
-	pvpFaction = "",
 	faction = "",
 	level = 38,
 	chanceHit = 0.41,
@@ -11,7 +10,7 @@ sharnaff_bull = Creature:new {
 	baseHAM = 9400,
 	baseHAMmax = 11400,
 	armor = 0,
-	resists = {25,25,25,20,20,20,20,50,-1},
+	resists = {25,25,25,120,120,120,120,150,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 482,
 	hideType = "hide_scaley",
@@ -32,14 +31,14 @@ sharnaff_bull = Creature:new {
 			groups = {
 				{group = "sharnaff_common", chance = 10000000}
 			},
-			lootChance = 3300000
+			lootChance = 1760000
 		}
 	},
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"stunattack","stunChance=50"}
+		{"dizzyattack",""},
+		{"stunattack",""}
 	}
 }
 

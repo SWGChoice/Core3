@@ -1,7 +1,7 @@
 mercenary_elite = Creature:new {
 	objectName = "@mob/creature_names:mercenary_elite",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "lok_mercenaries",
-	pvpFaction = "lok_mercenaries",
 	faction = "lok_mercenaries",
 	level = 40,
 	chanceHit = 0.43,
@@ -32,21 +32,21 @@ mercenary_elite = Creature:new {
 		"object/mobile/dressed_mercenary_elite_nikto_m.iff",
 		"object/mobile/dressed_mercenary_elite_rod_m.iff",
 		"object/mobile/dressed_mercenary_elite_wee_m.iff"
-		},
+	},
 	lootGroups = {
-      	{
+		{
 			groups = {
 				{group = "junk", chance = 3000000},
 				{group = "wearables_common", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "tailor_components", chance = 1000000},
 				{group = "rifles", chance = 2000000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"rebel_weapons_heavy"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(commandomaster,marksmanmaster,brawlermaster)
 }
 

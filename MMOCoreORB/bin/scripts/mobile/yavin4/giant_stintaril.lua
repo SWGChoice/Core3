@@ -1,7 +1,6 @@
 giant_stintaril = Creature:new {
 	objectName = "@mob/creature_names:giant_stintaril",
 	socialGroup = "stinaril",
-	pvpFaction = "",
 	faction = "",
 	level = 22,
 	chanceHit = 0.34,
@@ -11,7 +10,7 @@ giant_stintaril = Creature:new {
 	baseHAM = 5400,
 	baseHAMmax = 6600,
 	armor = 0,
-	resists = {20,20,10,-1,10,-1,-1,-1,-1},
+	resists = {120,120,10,-1,10,-1,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 9,
 	hideType = "hide_bristley",
@@ -33,7 +32,7 @@ giant_stintaril = Creature:new {
 	weapons = {"creature_spit_small_red"},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

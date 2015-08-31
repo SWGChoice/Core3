@@ -1,7 +1,7 @@
 imprisoned_jabba_employee = Creature:new {
 	objectName = "@mob/creature_names:imprisoned_jabba_employee",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "jabba",
-	pvpFaction = "jabba",
 	faction = "jabba",
 	level = 12,
 	chanceHit = 0.29,
@@ -38,8 +38,7 @@ imprisoned_jabba_employee = Creature:new {
 				{group = "clothing_attachments", chance = 200000},
 				{group = "armor_attachments", chance = 200000},
 				{group = "wearables_common", chance = 1000000}
-			},
-			lootChance = 2500000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_light"},

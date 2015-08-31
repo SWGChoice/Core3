@@ -1,7 +1,6 @@
 shaupaut_hunter = Creature:new {
 	objectName = "@mob/creature_names:shaupaut_hunter",
 	socialGroup = "shaupaut",
-	pvpFaction = "",
 	faction = "",
 	level = 22,
 	chanceHit = 0.34,
@@ -11,7 +10,7 @@ shaupaut_hunter = Creature:new {
 	baseHAM = 5400,
 	baseHAMmax = 6600,
 	armor = 0,
-	resists = {20,20,10,-1,10,-1,10,-1,-1},
+	resists = {120,120,10,-1,10,-1,10,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 10,
 	hideType = "hide_bristley",
@@ -33,8 +32,8 @@ shaupaut_hunter = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"stunattack","stunChance=50"}
+		{"blindattack",""},
+		{"stunattack",""}
 	}
 }
 

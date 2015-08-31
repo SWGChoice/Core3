@@ -1,7 +1,6 @@
 hilltop_kima = Creature:new {
 	objectName = "@mob/creature_names:hilltop_kima",
 	socialGroup = "kima",
-	pvpFaction = "",
 	faction = "",
 	level = 22,
 	chanceHit = 0.34,
@@ -11,7 +10,7 @@ hilltop_kima = Creature:new {
 	baseHAM = 7200,
 	baseHAMmax = 8800,
 	armor = 0,
-	resists = {0,0,0,-1,50,-1,-1,-1,-1},
+	resists = {10,10,10,-1,150,-1,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 8,
 	hideType = "hide_bristley",
@@ -33,7 +32,7 @@ hilltop_kima = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"}
+		{"dizzyattack",""}
 	}
 }
 

@@ -1,7 +1,7 @@
 ragtag_maniac = Creature:new {
 	objectName = "@mob/creature_names:ragtag_maniac",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "ragtag",
-	pvpFaction = "thug",
 	faction = "thug",
 	level = 8,
 	chanceHit = 0.270000,
@@ -42,11 +42,11 @@ ragtag_maniac = Creature:new {
 				{group = "loot_kit_parts", chance = 1500000},
 				{group = "crystals_poor", chance = 500000},
 				{group = "tailor_components", chance = 1000000}
-			},
-			lootChance = 3200000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_medium"},
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlernovice,marksmannovice)
 }
 

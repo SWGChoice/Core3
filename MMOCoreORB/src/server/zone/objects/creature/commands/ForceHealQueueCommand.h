@@ -24,22 +24,15 @@ public:
 		forceCost = 0;
 	}
 
-	void doAnimations(CreatureObject* creature, CreatureObject* creatureTarget) {
+	void doAnimations(CreatureObject* creature, CreatureObject* creatureTarget) const {
 
 		if (creature == creatureTarget)
 			creature->playEffect("clienteffect/pl_force_heal_self.cef", "");
 		else
-			creature->doCombatAnimation(creatureTarget,String("force_healing_1").hashCode(),0,0xFF);
+			creature->doCombatAnimation(creatureTarget,STRING_HASHCODE("force_healing_1"),0,0xFF);
 	}
 
-	bool isWarcried(CreatureObject* creature) {
-		if (creature->hasAttackDelay()) {
-			return true;
-		}
-		return false;
-	}
-
-	bool checkForceCost(CreatureObject* creature) {
+	bool checkForceCost(CreatureObject* creature) const {
 		ManagedReference<PlayerObject*> playerObject = creature->getPlayerObject();
 
 		if (playerObject != NULL) {
@@ -51,7 +44,7 @@ public:
 		return false;
 	}
 
-	void sendHealMessage(CreatureObject* object, CreatureObject* target, int healthDamage, int actionDamage, int mindDamage) {
+	void sendHealMessage(CreatureObject* object, CreatureObject* target, int healthDamage, int actionDamage, int mindDamage) const {
 		if (!object->isPlayerCreature())
 			return;
 
@@ -86,19 +79,19 @@ public:
 
 	}
 
-	int healBattleFatigue(CreatureObject* creature, int damage){
+	int healBattleFatigue(CreatureObject* creature, int damage) const {
 
 		int currentValue = creature->getShockWounds();
 
 		int healedValue = MIN(currentValue, damage);
 
-		creature->addShockWounds(-healedValue);
+		creature->addShockWounds(-healedValue, true, false);
 
 		return healedValue;
 
 	}
 
-	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) {
+	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) const {
 
 		return SUCCESS;
 	}
@@ -111,7 +104,7 @@ public:
 		forceCost = fpc;
 	}
 
-	float getCommandDuration(CreatureObject* object, const UnicodeString& arguments) {
+	float getCommandDuration(CreatureObject* object, const UnicodeString& arguments) const {
 		return defaultTime * 3.0;
 	}
 };

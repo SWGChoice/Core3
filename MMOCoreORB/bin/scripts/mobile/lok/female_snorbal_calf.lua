@@ -1,7 +1,6 @@
 female_snorbal_calf = Creature:new {
 	objectName = "@mob/creature_names:female_snorbal_calf",
 	socialGroup = "snorbal",
-	pvpFaction = "",
 	faction = "",
 	level = 19,
 	chanceHit = 0.33,
@@ -11,7 +10,7 @@ female_snorbal_calf = Creature:new {
 	baseHAM = 4500,
 	baseHAMmax = 5500,
 	armor = 0,
-	resists = {20,5,-1,5,5,5,-1,-1,-1},
+	resists = {120,5,-1,5,5,5,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 500,
 	hideType = "hide_leathery",
@@ -33,7 +32,7 @@ female_snorbal_calf = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

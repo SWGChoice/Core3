@@ -1,46 +1,6 @@
 /*
-Copyright (C) 2007 <SWGEmu>
-
-This File is part of Core3.
-
-This program is free software; you can redistribute
-it and/or modify it under the terms of the GNU Lesser
-General Public License as published by the Free Software
-Foundation; either version 2 of the License,
-or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU Lesser General Public License for
-more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this program; if not, write to
-the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-
-Linking Engine3 statically or dynamically with other modules
-is making a combined work based on Engine3.
-Thus, the terms and conditions of the GNU Lesser General Public License
-cover the whole combination.
-
-In addition, as a special exception, the copyright holders of Engine3
-give you permission to combine Engine3 program with free software
-programs or libraries that are released under the GNU LGPL and with
-code included in the standard release of Core3 under the GNU LGPL
-license (or modified versions of such code, with unchanged license).
-You may copy and distribute such a system following the terms of the
-GNU LGPL for Engine3 and the licenses of the other code concerned,
-provided that you include the source code of that other code when
-and as the GNU LGPL requires distribution of source code.
-
-Note that people who make modified versions of Engine3 are not obligated
-to grant this special exception for their modified versions;
-it is their choice whether to do so. The GNU Lesser General Public License
-gives permission to release a modified version without this exception;
-this exception also makes it possible to release a modified version
-which carries forward this exception.
-*/
+				Copyright <SWGEmu>
+		See file COPYING for copying conditions.*/
 
 #ifndef HEALMINDCOMMAND_H_
 #define HEALMINDCOMMAND_H_
@@ -62,7 +22,7 @@ public:
 		range = 5;
 	}
 
-	void doAnimations(CreatureObject* creature, CreatureObject* creatureTarget) {
+	void doAnimations(CreatureObject* creature, CreatureObject* creatureTarget) const {
 		creatureTarget->playEffect("clienteffect/healing_healenhance.cef", "");
 
 		if (creature == creatureTarget)
@@ -71,7 +31,7 @@ public:
 			creature->doAnimation("heal_other");
 	}
 
-	void sendHealMessage(CreatureObject* creature, CreatureObject* creatureTarget, int mindDamage) {
+	void sendHealMessage(CreatureObject* creature, CreatureObject* creatureTarget, int mindDamage) const {
 		if (!creature->isPlayerCreature())
 			return;
 
@@ -99,18 +59,17 @@ public:
 		}
 	}
 
-	int calculateWound(int wound, int poolWounds, int poolMax) {
+	int calculateWound(int wound, int poolWounds, int poolMax) const {
 		int maxWound = poolMax - poolWounds - 1;
 		return (MAX(0,MIN(maxWound,wound)));
 	}
 
-	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) {
+	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) const {
 
-		if (!checkStateMask(creature))
-			return INVALIDSTATE;
+		int result = doCommonMedicalCommandChecks(creature);
 
-		if (!checkInvalidLocomotions(creature))
-			return INVALIDLOCOMOTION;
+		if (result != SUCCESS)
+			return result;
 
 		if (!creature->isPlayerCreature())
 			return GENERALERROR;
@@ -128,8 +87,9 @@ public:
 					return GENERALERROR;
 				}
 			}
-		} else
+		} else {
 			object = creature;
+		}
 
 		CreatureObject* creatureTarget = cast<CreatureObject*>( object.get());
 
@@ -146,17 +106,7 @@ public:
 			creature->sendSystemMessage("@healing:heal_mind_invalid_target"); // Target must be a player or a creature pet in order to heal mind.
 			return GENERALERROR;
 		}
-		
-		if (creature->isProne() || creature->isMeditating()) {
-			creature->sendSystemMessage("@error_message:wrong_state"); //You cannot complete that action while in your current state.
-			return GENERALERROR;
-		}
 
-		if (creature->isRidingMount()) {
-			creature->sendSystemMessage("@error_message:survey_on_mount"); //You cannot perform that action while mounted on a creature or driving a vehicle.
-			return GENERALERROR;
-		}
-	
 		if (!creatureTarget->isHealableBy(creature)) {
 			creature->sendSystemMessage("@healing:pvp_no_help"); //It would be unwise to help such a patient.
 			return GENERALERROR;
@@ -180,7 +130,7 @@ public:
 			return GENERALERROR;
 		}
 
-		if (!creatureTarget->isInRange(creature, range))
+		if (!creatureTarget->isInRange(creature, range + creatureTarget->getTemplateRadius() + creature->getTemplateRadius()))
 			return TOOFAR;
 
 		PlayerManager* playerManager = server->getPlayerManager();
@@ -205,13 +155,15 @@ public:
 		sendHealMessage(creature, creatureTarget, healedMind);
 		int mindWound = (int) healedMind * .05; // 5% of mind healed in wounds
 
-		creature->addWounds(CreatureAttribute::MIND, mindWound);
-		creature->addWounds(CreatureAttribute::FOCUS, mindWound);
-		creature->addWounds(CreatureAttribute::WILLPOWER, mindWound);
+		creature->addWounds(CreatureAttribute::MIND, mindWound, true, false);
+		creature->addWounds(CreatureAttribute::FOCUS, mindWound, true, false);
+		creature->addWounds(CreatureAttribute::WILLPOWER, mindWound, true, false);
 
 		creature->addShockWounds(mindWound); // 5% of mind healed in bf
 
 		doAnimations(creature, creatureTarget);
+
+		checkForTef(creature, creatureTarget);
 
 		return SUCCESS;
 	}

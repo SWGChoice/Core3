@@ -1,46 +1,6 @@
 /*
-Copyright (C) 2010 <SWGEmu>
-
-This File is part of Core3.
-
-This program is free software; you can redistribute
-it and/or modify it under the terms of the GNU Lesser
-General Public License as published by the Free Software
-Foundation; either version 3 of the License,
-or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU Lesser General Public License for
-more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this program; if not, write to
-the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-
-Linking Engine3 statically or dynamically with other modules
-is making a combined work based on Engine3.
-Thus, the terms and conditions of the GNU Lesser General Public License
-cover the whole combination.
-
-In addition, as a special exception, the copyright holders of Engine3
-give you permission to combine Engine3 program with free software
-programs or libraries that are released under the GNU LGPL and with
-code included in the standard release of Core3 under the GNU LGPL
-license (or modified versions of such code, with unchanged license).
-You may copy and distribute such a system following the terms of the
-GNU LGPL for Engine3 and the licenses of the other code concerned,
-provided that you include the source code of that other code when
-and as the GNU LGPL requires distribution of source code.
-
-Note that people who make modified versions of Engine3 are not obligated
-to grant this special exception for their modified versions;
-it is their choice whether to do so. The GNU Lesser General Public License
-gives permission to release a modified version without this exception;
-this exception also makes it possible to release a modified version
-which carries forward this exception.
-*/
+				Copyright <SWGEmu>
+		See file COPYING for copying conditions.*/
 
 #include "engine/engine.h"
 
@@ -202,20 +162,20 @@ void ResourceManagerImplementation::stop() {
 }
 
 void ResourceManagerImplementation::startResourceSpawner() {
-	Locker _locker(_this.get());
+	Locker _locker(_this.getReferenceUnsafeStaticCast());
 
 	resourceSpawner->start();
 
-	Reference<ResourceShiftTask*> resourceShift = new ResourceShiftTask(_this.get().get());
+	Reference<ResourceShiftTask*> resourceShift = new ResourceShiftTask(_this.getReferenceUnsafeStaticCast());
 	resourceShift->schedule(shiftInterval);
 }
 
 void ResourceManagerImplementation::shiftResources() {
-	Locker _locker(_this.get());
+	Locker _locker(_this.getReferenceUnsafeStaticCast());
 
 	resourceSpawner->shiftResources();
 
-	Reference<ResourceShiftTask*> resourceShift = new ResourceShiftTask(_this.get().get());
+	Reference<ResourceShiftTask*> resourceShift = new ResourceShiftTask(_this.getReferenceUnsafeStaticCast());
 	resourceShift->schedule(shiftInterval);
 }
 
@@ -224,24 +184,16 @@ int ResourceManagerImplementation::getResourceRecycleType(ResourceSpawn* resourc
 }
 
 void ResourceManagerImplementation::sendResourceListForSurvey(CreatureObject* playerCreature, const int toolType, const String& surveyType) {
-	rlock();
+	ReadLocker locker(_this.getReferenceUnsafeStaticCast());
 
-	try {
-		resourceSpawner->sendResourceListForSurvey(playerCreature, toolType, surveyType);
-	} catch (...) {
-		runlock();
-
-		throw;
-	}
-
-	runlock();
+	resourceSpawner->sendResourceListForSurvey(playerCreature, toolType, surveyType);
 }
 
 ResourceContainer* ResourceManagerImplementation::harvestResource(CreatureObject* player, const String& type, const int quantity) {
 	return resourceSpawner->harvestResource(player, type, quantity);
 }
-void ResourceManagerImplementation::harvestResourceToPlayer(CreatureObject* player, ResourceSpawn* resourceSpawn, const int quantity) {
-	resourceSpawner->harvestResource(player, resourceSpawn, quantity);
+bool ResourceManagerImplementation::harvestResourceToPlayer(CreatureObject* player, ResourceSpawn* resourceSpawn, const int quantity) {
+	return resourceSpawner->harvestResource(player, resourceSpawn, quantity);
 }
 
 void ResourceManagerImplementation::sendSurvey(CreatureObject* playerCreature, const String& resname) {
@@ -251,11 +203,11 @@ void ResourceManagerImplementation::sendSurvey(CreatureObject* playerCreature, c
 void ResourceManagerImplementation::sendSample(CreatureObject* playerCreature, const String& resname, const String& sampleAnimation) {
 	resourceSpawner->sendSample(playerCreature, resname, sampleAnimation);
 
-	playerCreature->registerObserver(ObserverEventType::POSTURECHANGED, _this.get());
+	playerCreature->registerObserver(ObserverEventType::POSTURECHANGED, _this.getReferenceUnsafeStaticCast());
 }
 
 void ResourceManagerImplementation::createResourceSpawn(CreatureObject* playerCreature, const String& restype) {
-	Locker _locker(_this.get());
+	Locker _locker(_this.getReferenceUnsafeStaticCast());
 
 	ResourceSpawn* resourceSpawn = resourceSpawner->manualCreateResourceSpawn(restype);
 
@@ -273,19 +225,11 @@ void ResourceManagerImplementation::createResourceSpawn(CreatureObject* playerCr
 ResourceSpawn* ResourceManagerImplementation::getResourceSpawn(const String& spawnName) {
 	ResourceSpawn* spawn = NULL;
 
-	rlock();
+	ReadLocker locker(_this.getReferenceUnsafeStaticCast());
 
-	try {
-		ResourceMap* resourceMap = resourceSpawner->getResourceMap();
+	ResourceMap* resourceMap = resourceSpawner->getResourceMap();
 
-		spawn = resourceMap->get(spawnName.toLowerCase());
-	} catch (...) {
-		runlock();
-
-		throw;
-	}
-
-	runlock();
+	spawn = resourceMap->get(spawnName.toLowerCase());
 
 	return spawn;
 }
@@ -297,7 +241,7 @@ ResourceSpawn* ResourceManagerImplementation::getCurrentSpawn(const String& rest
 void ResourceManagerImplementation::getResourceListByType(Vector<ManagedReference<ResourceSpawn*> >& list, int type, const String& zoneName) {
 	list.removeAll();
 
-	rlock();
+	ReadLocker locker(_this.getReferenceUnsafeStaticCast());
 
 	ManagedReference<ResourceSpawn*> resourceSpawn;
 
@@ -328,13 +272,7 @@ void ResourceManagerImplementation::getResourceListByType(Vector<ManagedReferenc
 	} catch (Exception& e) {
 		error(e.getMessage());
 		e.printStackTrace();
-	} catch (...) {
-		runlock();
-
-		throw;
 	}
-
-	runlock();
 }
 
 uint32 ResourceManagerImplementation::getAvailablePowerFromPlayer(CreatureObject* player) {
@@ -379,6 +317,9 @@ void ResourceManagerImplementation::removePowerFromPlayer(CreatureObject* player
 			continue;
 
 		ResourceContainer* rcno = cast<ResourceContainer*>( obj.get());
+
+		Locker locker(rcno);
+
 		ManagedReference<ResourceSpawn*> spawn = rcno->getSpawnObject();
 
 		if (spawn == NULL || !spawn->isEnergy())
@@ -419,13 +360,20 @@ void ResourceManagerImplementation::givePlayerResource(CreatureObject* playerCre
 	ManagedReference<SceneObject*> inventory = playerCreature->getSlottedObject("inventory");
 
 	if(inventory != NULL && !inventory->hasFullContainerObjects()) {
+		Locker locker(spawn);
 
-		ResourceContainer* newResource = spawn->createResource(quantity);
+		Reference<ResourceContainer*> newResource = spawn->createResource(quantity);
 
 		if(newResource != NULL) {
 			spawn->extractResource("", quantity);
-			inventory->broadcastObject(newResource, true);
-			inventory->transferObject(newResource, -1, true);
+
+			Locker rlocker(newResource);
+
+			if (inventory->transferObject(newResource, -1, true)) {
+				inventory->broadcastObject(newResource, true);
+			} else {
+				newResource->destroyObjectFromDatabase(true);
+			}
 		}
 	}
 }
@@ -454,6 +402,8 @@ String ResourceManagerImplementation::addParentNodeToListBox(SuiListBox* sui, co
 }
 
 void ResourceManagerImplementation::listResourcesForPlanetOnScreen(CreatureObject* creature, const String& planet) {
+	Locker locker(_this.getReferenceUnsafeStaticCast());
+
 	resourceSpawner->listResourcesForPlanetOnScreen(creature, planet);
 }
 
@@ -462,7 +412,8 @@ String ResourceManagerImplementation::healthCheck() {
 }
 
 String ResourceManagerImplementation::dumpResources() {
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
+
 	return resourceSpawner->dumpResources();
 }
 

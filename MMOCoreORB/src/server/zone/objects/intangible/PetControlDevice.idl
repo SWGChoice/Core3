@@ -1,46 +1,6 @@
 /*
-Copyright (C) 2007 <SWGEmu>
- 
-This File is part of Core3.
- 
-This program is free software; you can redistribute 
-it and/or modify it under the terms of the GNU Lesser 
-General Public License as published by the Free Software
-Foundation; either version 2 of the License, 
-or (at your option) any later version.
- 
-This program is distributed in the hope that it will be useful, 
-but WITHOUT ANY WARRANTY; without even the implied warranty of 
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
-See the GNU Lesser General Public License for
-more details.
- 
-You should have received a copy of the GNU Lesser General 
-Public License along with this program; if not, write to
-the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
- 
-Linking Engine3 statically or dynamically with other modules 
-is making a combined work based on Engine3. 
-Thus, the terms and conditions of the GNU Lesser General Public License 
-cover the whole combination.
- 
-In addition, as a special exception, the copyright holders of Engine3 
-give you permission to combine Engine3 program with free software 
-programs or libraries that are released under the GNU LGPL and with 
-code included in the standard release of Core3 under the GNU LGPL 
-license (or modified versions of such code, with unchanged license). 
-You may copy and distribute such a system following the terms of the 
-GNU LGPL for Engine3 and the licenses of the other code concerned, 
-provided that you include the source code of that other code when 
-and as the GNU LGPL requires distribution of source code.
- 
-Note that people who make modified versions of Engine3 are not obligated 
-to grant this special exception for their modified versions; 
-it is their choice whether to do so. The GNU Lesser General Public License 
-gives permission to release a modified version without this exception; 
-this exception also makes it possible to release a modified version 
-which carries forward this exception.
-*/
+				Copyright <SWGEmu>
+		See file COPYING for copying conditions.*/
 
 package server.zone.objects.intangible;
 
@@ -57,6 +17,8 @@ import server.zone.Zone;
 import system.lang.System;
 import system.util.VectorMap;
 include server.zone.managers.radial.RadialOptions;
+include server.zone.objects.creature.PatrolPointsVector;
+include server.zone.objects.creature.PatrolPoint;
 import server.zone.objects.intangible.PetControlObserver;
 
 class PetControlDevice extends ControlDevice {
@@ -69,12 +31,12 @@ class PetControlDevice extends ControlDevice {
 	protected int petType;
 
 	// Trained command strings <commandid, chatstring>
-	@dereferenced 
+	@dereferenced
 	protected VectorMap<unsigned int, string> trainedCommands;
-	
+
 	// Command to be trained
 	protected unsigned int trainingCommand;
-	
+
 	// Last command issued
 	protected unsigned int lastCommand;
 	@weakReference
@@ -93,9 +55,12 @@ class PetControlDevice extends ControlDevice {
 	protected Time lastGrowth;
 
 	protected boolean trainedAsMount;
-	
+
 	@dereferenced
 	protected Vector<unsigned int> namingCommands;
+
+	@dereferenced
+	protected PatrolPointsVector patrolPoints;
 
 	public PetControlDevice() {
 		Logger.setLoggingName("PetControlDevice");
@@ -118,18 +83,29 @@ class PetControlDevice extends ControlDevice {
 		trainedCommands.setNullValue("");
 	}
 
+	@preLocked
+	@arg1preLocked
 	public native void storeObject(CreatureObject player, boolean force = false);
-	
+
+	@preLocked
+	@arg1preLocked
 	public native void callObject(CreatureObject player);
 
+	@preLocked
+	@arg1preLocked
 	public native void spawnObject(CreatureObject player);
-	
+
+	@arg1preLocked
 	public native void cancelSpawnObject(CreatureObject player);
 
-	public native boolean growPet(CreatureObject player, boolean force = false);
+	@preLocked
+	@arg1preLocked
+	public native boolean growPet(CreatureObject player, boolean force = false, boolean adult = false);
 
+	@preLocked
 	public native void arrestGrowth();
 
+	@preLocked
 	public native void trainAsMount(CreatureObject player);
 
 	@read
@@ -137,47 +113,17 @@ class PetControlDevice extends ControlDevice {
 		return trainedAsMount;
 	}
 
-	public int handleObjectMenuSelect(CreatureObject player, byte selectedID) {
-		Logger.info("selected call");
+	@preLocked
+	@arg1preLocked
+	public native int handleObjectMenuSelect(CreatureObject player, byte selectedID);
 
-		TangibleObject strongRef = super.controlledObject;
-
-		if (strongRef == null)
-			return 1;
-
-		AiAgent pet = (AiAgent) strongRef;
-		PlayerObject ghost = player.getPlayerObject();
-		
-		if (selectedID == 44) {
-			
-			if (pet == null) {
-				Logger.error("null controlled object in pet control device");
-				return 1;
-			} else {
-				this.callObject(player);
-			}
-		} else if (selectedID == 59) {
-			if (pet == null) {
-				Logger.error("null controlled object in pet control device");
-				return 1;
-			} else {
-				if (super.status == 1 && !ghost.hasActivePet(pet)) {
-					this.callObject(player);
-				} else {
-					this.storeObject(player);
-				}
-			}
-		}
-		
-		return 0;
-	}
-	
 	/**
 	 * Destroys this object from database
 	 * @pre { this is locked }
 	 * @post { this is locked }
 	 * @param destroyContainedObjects if true, will destroy from database all its contained objects
 	 */
+	@preLocked
 	public native void destroyObjectFromDatabase(boolean destroyContainedObjects = false);
 
 	public native void destroyObjectFromWorld(boolean sendSelfDestroy);
@@ -210,14 +156,16 @@ class PetControlDevice extends ControlDevice {
 	 * @post { }
 	 */
 	@local
+	@preLocked
 	public native void setDefaultCommands();	
-	
+
 	/**
 	 * Sets default trained commands and command strings for the pet
 	 * @pre { }
 	 * @post { }
-	 */	
+	 */
 	@local
+	@preLocked
 	public native void setTrainingCommand( unsigned int commandID );
 
 	@read
@@ -253,24 +201,27 @@ class PetControlDevice extends ControlDevice {
 		return trainedCommands.get(command);
 	}
 
+	@preLocked
 	public void addTrainedCommand(unsigned int command, final string message) {
 		trainedCommands.put(command, message);
 	}
-	
+
+	@preLocked
 	public void setLastCommand(unsigned int c) {
 		lastCommand = c;
 	}
-	
+
 	@read
 	public unsigned int getLastCommand() {
 		return lastCommand;
 	}
 
 	@local
+	@preLocked
 	public void setLastCommandTarget(SceneObject target) {
 		lastCommandTarget = target;
 	}
-	
+
 	@dirty
 	@local
 	@weakReference
@@ -283,6 +234,7 @@ class PetControlDevice extends ControlDevice {
 		return futureName;
 	}
 
+	@preLocked
 	public void setFutureName(string name) {
 		futureName = name;
 	}
@@ -292,16 +244,19 @@ class PetControlDevice extends ControlDevice {
 		return namingProgress;
 	}
 
+	@preLocked
 	public void incrementNamingProgress(unsigned int command) {
 		namingProgress++;
 		namingCommands.add(command);
 	}
 
+	@preLocked
 	public void resetNamingProgress() {
 		namingProgress = 0;
 		resetNamingCommands();
 	}
 
+	@preLocked
 	native public void resetNamingCommands();
 
 	@dirty
@@ -319,10 +274,12 @@ class PetControlDevice extends ControlDevice {
 		return maxVitality;
 	}
 
+	@preLocked
 	public void setVitality(int vit) {
 		vitality = vit;
 	}
 
+	@preLocked
 	public void setMaxVitality(int vit) {
 		maxVitality = vit;
 	}
@@ -332,11 +289,34 @@ class PetControlDevice extends ControlDevice {
 		return petType;
 	}
 
+	@preLocked
 	public void setPetType(int type) {
 		petType = type;
 	}
 
+	@preLocked
 	public void setGrowthStage(int stage) {
 		growthStage = stage;
 	}
+
+	@preLocked
+	public void clearPatrolPoints() {
+		patrolPoints.removeAll();
+	}
+
+	@local
+	@preLocked
+	public native void addPatrolPoint(@dereferenced PatrolPoint point);
+
+	@local
+	public int getPatrolPointSize() {
+		return patrolPoints.size();
+	}
+
+	@local
+	@dereferenced
+	public native PatrolPoint getPatrolPoint(int idx);
+
+	@local
+	public native boolean isValidPet(AiAgent pet);
 }

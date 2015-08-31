@@ -1,7 +1,6 @@
 theme_park_rebel_iris = Creature:new {
 	objectName = "",
 	socialGroup = "",
-	pvpFaction = "",
 	faction = "",
 	level = 10,
 	chanceHit = 0.280000,
@@ -36,8 +35,7 @@ theme_park_rebel_iris = Creature:new {
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "color_crystals", chance = 100000},
 				{group = "tailor_components", chance = 1500000}
-			},
-			lootChance = 2100000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_light"},

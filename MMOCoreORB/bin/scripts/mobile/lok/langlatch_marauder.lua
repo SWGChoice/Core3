@@ -1,7 +1,6 @@
 langlatch_marauder = Creature:new {
 	objectName = "@mob/creature_names:langlatch_marauder",
 	socialGroup = "langlatch",
-	pvpFaction = "",
 	faction = "",
 	level = 17,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ langlatch_marauder = Creature:new {
 	baseHAM = 2900,
 	baseHAMmax = 3500,
 	armor = 0,
-	resists = {5,15,5,5,5,5,5,-1,-1},
+	resists = {5,115,5,5,5,5,5,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 12,
 	hideType = "hide_wooly",
@@ -33,7 +32,7 @@ langlatch_marauder = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"}
+		{"blindattack",""}
 	}
 }
 

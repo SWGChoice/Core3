@@ -1,7 +1,6 @@
 foul_desecrator = Creature:new {
 	objectName = "@mob/creature_names:kamurith_foul_desecrator",
 	socialGroup = "kamurith",
-	pvpFaction = "",
 	faction = "",
 	level = 60,
 	chanceHit = 0.55,
@@ -11,7 +10,7 @@ foul_desecrator = Creature:new {
 	baseHAM = 11000,
 	baseHAMmax = 14000,
 	armor = 1,
-	resists = {25,15,15,15,15,15,20,20,-1},
+	resists = {125,15,15,15,15,15,120,120,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 90,
 	hideType = "hide_leathery",
@@ -33,8 +32,8 @@ foul_desecrator = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"creatureareadisease",""},
-		{"strongdisease",""}
+		{"strongdisease",""},
+		{"creatureareadisease",""}
 	}
 }
 

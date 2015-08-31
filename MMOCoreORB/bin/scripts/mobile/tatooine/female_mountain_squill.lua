@@ -1,7 +1,6 @@
 female_mountain_squill = Creature:new {
 	objectName = "@mob/creature_names:female_mountain_squill",
 	socialGroup = "squill",
-	pvpFaction = "",
 	faction = "",
 	level = 34,
 	chanceHit = 0.4,
@@ -11,7 +10,7 @@ female_mountain_squill = Creature:new {
 	baseHAM = 8600,
 	baseHAMmax = 10500,
 	armor = 0,
-	resists = {30,45,20,-1,20,20,20,-1,-1},
+	resists = {130,145,20,-1,20,20,20,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 4,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ female_mountain_squill = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"stunattack","stunChance=50"}
+		{"blindattack",""},
+		{"stunattack",""}
 	}
 }
 

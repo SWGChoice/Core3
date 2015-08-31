@@ -27,10 +27,13 @@ public:
 
 		ManagedReference<SceneObject*> obj = sui->getUsingObject();
 
-		if (obj == NULL || !obj->isDeedObject())
+		if (obj == NULL)
 			return;
 
-		Deed* deed = cast<Deed*>( obj.get());
+		ResourceDeed* deed = cast<ResourceDeed*>( obj.get());
+
+		if (deed == NULL)
+			return;
 
 		ManagedReference<SceneObject*> inventory = creature->getSlottedObject("inventory");
 
@@ -74,8 +77,11 @@ public:
 
 			//They chose the resource, eat the deed and give them what they want...fuck it.
 			if (spawn != NULL) {
-				deed->destroyObjectFromWorld(true);
 				resourceManager->givePlayerResource(creature, nodeName, ResourceManager::RESOURCE_DEED_QUANTITY);
+
+				Locker clocker(deed, creature);
+				deed->destroyDeed();
+
 				return;
 			}
 

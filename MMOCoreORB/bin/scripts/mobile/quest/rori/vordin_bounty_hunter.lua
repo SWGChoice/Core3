@@ -1,7 +1,6 @@
 vordin_bounty_hunter = Creature:new {
 	objectName = "@mob/creature_names:bounty_hunter",
 	socialGroup = "",
-	pvpFaction = "",
 	faction = "",
 	level = 12,
 	chanceHit = 0.27,
@@ -36,8 +35,7 @@ vordin_bounty_hunter = Creature:new {
 		{
 			groups = {
 				{ group = "junk", chance = 10000000},
-			},
-			lootChance = 2200000
+			}
 		},
 	},
 	attacks = merge(brawlermid,marksmanmid)

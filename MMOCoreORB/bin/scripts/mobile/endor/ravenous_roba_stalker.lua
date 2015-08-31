@@ -1,7 +1,6 @@
 ravenous_roba_stalker = Creature:new {
 	objectName = "@mob/creature_names:ravenous_roba_stalker",
 	socialGroup = "roba",
-	pvpFaction = "",
 	faction = "",
 	level = 40,
 	chanceHit = 0.44,
@@ -11,7 +10,7 @@ ravenous_roba_stalker = Creature:new {
 	baseHAM = 9300,
 	baseHAMmax = 11300,
 	armor = 0,
-	resists = {30,30,30,75,-1,30,30,30,-1},
+	resists = {30,30,30,175,-1,30,30,30,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 15,
 	hideType = "hide_leathery",
@@ -33,7 +32,8 @@ ravenous_roba_stalker = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"knockdownattack","knockdownChance=50"}
+		{"",""},
+		{"knockdownattack",""}
 	}
 }
 

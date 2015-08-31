@@ -1,7 +1,6 @@
 mutant_bark_mite_worker = Creature:new {
 	objectName = "@mob/creature_names:mutant_bark_mite_worker",
 	socialGroup = "mite",
-	pvpFaction = "",
 	faction = "",
 	level = 12,
 	chanceHit = 0.28,
@@ -11,7 +10,7 @@ mutant_bark_mite_worker = Creature:new {
 	baseHAM = 2000,
 	baseHAMmax = 2400,
 	armor = 0,
-	resists = {5,5,0,0,0,0,0,-1,-1},
+	resists = {105,105,0,0,0,0,0,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 15,
 	hideType = "hide_scaley",
@@ -32,7 +31,7 @@ mutant_bark_mite_worker = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

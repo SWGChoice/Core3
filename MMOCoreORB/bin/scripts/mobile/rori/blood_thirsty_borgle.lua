@@ -1,7 +1,6 @@
 blood_thirsty_borgle = Creature:new {
 	objectName = "@mob/creature_names:blood_thirsty_borgle",
 	socialGroup = "borgle",
-	pvpFaction = "",
 	faction = "",
 	level = 14,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ blood_thirsty_borgle = Creature:new {
 	baseHAM = 1200,
 	baseHAMmax = 1400,
 	armor = 0,
-	resists = {10,10,0,0,0,0,0,-1,-1},
+	resists = {110,110,0,0,0,0,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 5,
 	hideType = "hide_leathery",
@@ -33,7 +32,8 @@ blood_thirsty_borgle = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"",""},
+		{"posturedownattack",""}
 	}
 }
 

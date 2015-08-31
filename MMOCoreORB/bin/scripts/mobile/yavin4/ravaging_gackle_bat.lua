@@ -1,7 +1,6 @@
 ravaging_gackle_bat = Creature:new {
 	objectName = "@mob/creature_names:ravaging_gackle_bat",
 	socialGroup = "gacklebat",
-	pvpFaction = "",
 	faction = "",
 	level = 18,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ ravaging_gackle_bat = Creature:new {
 	baseHAM = 3500,
 	baseHAMmax = 4300,
 	armor = 0,
-	resists = {5,15,-1,20,-1,-1,-1,-1,-1},
+	resists = {5,115,-1,120,-1,-1,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 5,
 	hideType = "hide_bristley",
@@ -33,7 +32,7 @@ ravaging_gackle_bat = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

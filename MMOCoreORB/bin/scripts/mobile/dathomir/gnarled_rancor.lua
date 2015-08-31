@@ -1,7 +1,6 @@
 gnarled_rancor = Creature:new {
 	objectName = "@mob/creature_names:gnarled_rancor",
 	socialGroup = "rancor",
-	pvpFaction = "",
 	faction = "",
 	level = 46,
 	chanceHit = 0.47,
@@ -11,7 +10,7 @@ gnarled_rancor = Creature:new {
 	baseHAM = 9700,
 	baseHAMmax = 11900,
 	armor = 1,
-	resists = {0,30,-1,50,50,50,-1,-1,-1},
+	resists = {0,130,-1,150,150,150,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 950,
 	hideType = "hide_leathery",
@@ -33,23 +32,17 @@ gnarled_rancor = Creature:new {
 		{
 			groups = {
 				{group = "rancor_common", chance = 4000000},
-				{group = "pistols", chance = 750000},
-				{group = "heavy_weapons", chance = 500000},
-				{group = "rifles", chance = 750000},
-				{group = "carbines", chance = 500000},
-				{group = "grenades_looted", chance = 500000},
-				{group = "armor_all", chance = 1000000},
-				{group = "melee_unarmed", chance = 1000000},
-				{group = "wearables_common", chance = 500000},
-				{group = "wearables_uncommon", chance = 500000}
+				{group = "armor_all", chance = 2000000},
+				{group = "weapons_all", chance = 2500000},
+				{group = "wearables_all", chance = 1500000}
 			},
-			lootChance = 2400000
+			lootChance = 1920000
 		}
 	},
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"knockdownattack","knockdownChance=50"}
+		{"knockdownattack",""}
 	}
 }
 

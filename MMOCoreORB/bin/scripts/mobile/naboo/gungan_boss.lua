@@ -1,7 +1,7 @@
 gungan_boss = Creature:new {
 	objectName = "@mob/creature_names:gungan_boss",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "gungan",
-	pvpFaction = "gungan",
 	faction = "gungan",
 	level = 19,
 	chanceHit = 0.32,
@@ -34,8 +34,7 @@ gungan_boss = Creature:new {
 				{group = "gungan_common", chance = 2000000},
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000}
-			},
-			lootChance = 3200000
+			}
 		}
 	},
 	weapons = {"rebel_weapons_medium"},

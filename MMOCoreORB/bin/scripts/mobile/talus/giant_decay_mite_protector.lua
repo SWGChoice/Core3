@@ -1,7 +1,6 @@
 giant_decay_mite_protector = Creature:new {
 	objectName = "@mob/creature_names:giant_decay_mite_protector",
 	socialGroup = "mite",
-	pvpFaction = "",
 	faction = "",
 	level = 14,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ giant_decay_mite_protector = Creature:new {
 	baseHAM = 2000,
 	baseHAMmax = 2400,
 	armor = 0,
-	resists = {20,20,0,0,0,0,0,-1,-1},
+	resists = {120,120,0,0,0,0,0,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 16,
 	hideType = "hide_scaley",
@@ -32,7 +31,7 @@ giant_decay_mite_protector = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

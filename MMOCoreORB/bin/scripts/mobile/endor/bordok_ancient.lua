@@ -1,7 +1,6 @@
 bordok_ancient = Creature:new {
 	objectName = "@mob/creature_names:bordok_ancient",
 	socialGroup = "bordok",
-	pvpFaction = "",
 	faction = "",
 	level = 45,
 	chanceHit = 0.45,
@@ -11,7 +10,7 @@ bordok_ancient = Creature:new {
 	baseHAM = 10000,
 	baseHAMmax = 12000,
 	armor = 0,
-	resists = {45,30,30,100,100,-1,-1,-1,-1},
+	resists = {145,30,30,170,170,-1,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 250,
 	hideType = "hide_leathery",
@@ -33,8 +32,8 @@ bordok_ancient = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"stunattack","stunChance=50"}
+		{"blindattack",""},
+		{"stunattack",""}
 	}
 }
 

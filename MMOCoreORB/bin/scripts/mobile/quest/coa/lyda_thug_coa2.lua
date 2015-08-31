@@ -1,7 +1,7 @@
 lyda_thug_coa2 = Creature:new {
 	objectName = "@mob/creature_names:thug",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "thug",
-	pvpFaction = "thug",
 	faction = "thug",
 	level = 11,
 	chanceHit = 0.29,
@@ -28,14 +28,13 @@ lyda_thug_coa2 = Creature:new {
 
 	templates = {"object/mobile/dressed_lyda_skims.iff"},
 	lootGroups = {
-      	{
+		{
 			groups = {
 				{group = "junk", chance = 4000000},
 				{group = "wearables_common", chance = 3000000},
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "tailor_components", chance = 1000000},
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_medium"},

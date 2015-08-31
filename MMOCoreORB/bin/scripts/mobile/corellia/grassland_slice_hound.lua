@@ -1,7 +1,6 @@
 grassland_slice_hound = Creature:new {
 	objectName = "@mob/creature_names:grassland_slice_hound",
 	socialGroup = "slice_hound",
-	pvpFaction = "",
 	faction = "",
 	level = 14,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ grassland_slice_hound = Creature:new {
 	baseHAM = 1500,
 	baseHAMmax = 1900,
 	armor = 0,
-	resists = {5,15,0,0,0,0,0,-1,-1},
+	resists = {105,115,0,0,0,0,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 65,
 	hideType = "hide_bristley",
@@ -33,7 +32,8 @@ grassland_slice_hound = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"",""},
+		{"posturedownattack",""}
 	}
 }
 

@@ -1,7 +1,6 @@
 voritor_lizard = Creature:new {
 	objectName = "@mob/creature_names:voritor_lizard",
 	socialGroup = "voritor",
-	pvpFaction = "",
 	faction = "",
 	level = 22,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ voritor_lizard = Creature:new {
 	baseHAM = 5900,
 	baseHAMmax = 7200,
 	armor = 0,
-	resists = {0,0,0,0,0,0,0,0,0},
+	resists = {10,10,10,10,10,10,10,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 35,
 	hideType = "hide_leathery",
@@ -33,13 +32,13 @@ voritor_lizard = Creature:new {
 			groups = {
 				{group = "voritor_lizard_common", chance = 10000000}
 			},
-			lootChance = 1900000
+			lootChance = 1440000
 		}
 	},
-	weapons = {},
+	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

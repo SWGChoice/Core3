@@ -1,7 +1,6 @@
 kwi = Creature:new {
 	objectName = "@mob/creature_names:kwi",
 	socialGroup = "kwi",
-	pvpFaction = "",
 	faction = "",
 	level = 10,
 	chanceHit = 0.27,
@@ -11,7 +10,7 @@ kwi = Creature:new {
 	baseHAM = 270,
 	baseHAMmax = 330,
 	armor = 0,
-	resists = {10,10,0,0,0,0,0,-1,-1},
+	resists = {110,110,0,0,0,0,0,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 100,
 	hideType = "hide_leathery",
@@ -32,7 +31,8 @@ kwi = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"",""},
+		{"intimidationattack",""}
 	}
 }
 

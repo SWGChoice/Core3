@@ -1,7 +1,6 @@
 canoid_hunter = Creature:new {
 	objectName = "@mob/creature_names:canoid_hunter",
 	socialGroup = "canoid",
-	pvpFaction = "",
 	faction = "",
 	level = 15,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ canoid_hunter = Creature:new {
 	baseHAM = 2000,
 	baseHAMmax = 2400,
 	armor = 0,
-	resists = {15,15,15,0,0,0,0,-1,-1},
+	resists = {115,115,115,0,0,0,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 65,
 	hideType = "hide_bristley",
@@ -33,7 +32,7 @@ canoid_hunter = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

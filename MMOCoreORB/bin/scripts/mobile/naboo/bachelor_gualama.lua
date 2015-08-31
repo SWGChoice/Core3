@@ -1,7 +1,6 @@
 bachelor_gualama = Creature:new {
 	objectName = "@mob/creature_names:bachelor_gualama",
 	socialGroup = "gualama",
-	pvpFaction = "",
 	faction = "",
 	level = 13,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ bachelor_gualama = Creature:new {
 	baseHAM = 1500,
 	baseHAMmax = 1900,
 	armor = 0,
-	resists = {15,25,-1,-1,15,15,-1,-1,-1},
+	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 200,
 	hideType = "hide_wooly",
@@ -33,7 +32,7 @@ bachelor_gualama = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

@@ -1,7 +1,6 @@
 puss_covered_decay_mite_soldier = Creature:new {
 	objectName = "@mob/creature_names:puss_covered_decay_mite_soldier",
 	socialGroup = "mite",
-	pvpFaction = "",
 	faction = "",
 	level = 15,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ puss_covered_decay_mite_soldier = Creature:new {
 	baseHAM = 2000,
 	baseHAMmax = 2400,
 	armor = 0,
-	resists = {15,15,0,0,0,0,0,-1,-1},
+	resists = {115,115,0,0,0,0,0,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 10,
 	hideType = "",
@@ -30,10 +29,10 @@ puss_covered_decay_mite_soldier = Creature:new {
 	controlDeviceTemplate = "object/intangible/pet/bark_mite_hue.iff",
 	scale = 1.1,
 	lootGroups = {},
-	weapons = {},
+	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
+		{"blindattack",""},
 		{"milddisease",""}
 	}
 }

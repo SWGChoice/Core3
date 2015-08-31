@@ -1,7 +1,6 @@
 bearded_jax = Creature:new {
 	objectName = "@mob/creature_names:bearded_jax",
 	socialGroup = "jax",
-	pvpFaction = "",
 	faction = "",
 	level = 11,
 	chanceHit = 0.28,
@@ -11,7 +10,7 @@ bearded_jax = Creature:new {
 	baseHAM = 810,
 	baseHAMmax = 990,
 	armor = 0,
-	resists = {0,5,30,0,0,0,0,-1,-1},
+	resists = {0,105,130,0,0,0,0,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 15,
 	hideType = "hide_bristley",
@@ -32,7 +31,8 @@ bearded_jax = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"",""},
+		{"intimidationattack",""}
 	}
 }
 

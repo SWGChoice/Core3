@@ -1,7 +1,6 @@
 kliknik_shredder_guardian = Creature:new {
 	objectName = "@mob/creature_names:kliknik_shredder_guardian",
 	socialGroup = "kliknik",
-	pvpFaction = "",
 	faction = "",
 	level = 30,
 	chanceHit = 0.39,
@@ -11,7 +10,7 @@ kliknik_shredder_guardian = Creature:new {
 	baseHAM = 8100,
 	baseHAMmax = 9900,
 	armor = 0,
-	resists = {40,20,20,20,20,-1,-1,-1,-1},
+	resists = {140,20,20,20,20,-1,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 15,
 	hideType = "hide_scaley",
@@ -34,14 +33,14 @@ kliknik_shredder_guardian = Creature:new {
 	        groups = {
 				{group = "kliknik_common", chance = 10000000}
 			},
-			lootChance = 2000000
+			lootChance = 1600000
 		}
 	},
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"knockdownattack","knockdownChance=50"},
-		{"stunattack","stunChance=50"}
+		{"knockdownattack",""},
+		{"stunattack",""}
 	}
 }
 

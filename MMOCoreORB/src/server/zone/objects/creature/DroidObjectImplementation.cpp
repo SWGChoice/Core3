@@ -1,46 +1,6 @@
 /*
-Copyright (C) 2013 <SWGEmu>
-
-This File is part of Core3.
-
-This program is free software; you can redistribute
-it and/or modify it under the terms of the GNU Lesser
-General Public License as published by the Free Software
-Foundation; either version 2 of the License,
-or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU Lesser General Public License for
-more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this program; if not, write to
-the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-
-Linking Engine3 statically or dynamically with other modules
-is making a combined work based on Engine3.
-Thus, the terms and conditions of the GNU Lesser General Public License
-cover the whole combination.
-
-In addition, as a special exception, the copyright holders of Engine3
-give you permission to combine Engine3 program with free software
-programs or libraries that are released under the GNU LGPL and with
-code included in the standard release of Core3 under the GNU LGPL
-license (or modified versions of such code, with unchanged license).
-You may copy and distribute such a system following the terms of the
-GNU LGPL for Engine3 and the licenses of the other code concerned,
-provided that you include the source code of that other code when
-and as the GNU LGPL requires distribution of source code.
-
-Note that people who make modified versions of Engine3 are not obligated
-to grant this special exception for their modified versions;
-it is their choice whether to do so. The GNU Lesser General Public License
-gives permission to release a modified version without this exception;
-this exception also makes it possible to release a modified version
-which carries forward this exception.
- */
+				Copyright <SWGEmu>
+		See file COPYING for copying conditions. */
 
 #include "server/zone/objects/creature/DroidObject.h"
 #include "server/zone/objects/intangible/PetControlDevice.h"
@@ -51,30 +11,69 @@ which carries forward this exception.
 #include "server/zone/managers/collision/CollisionManager.h"
 #include "server/zone/managers/components/ComponentManager.h"
 #include "server/zone/templates/customization/AssetCustomizationManagerTemplate.h"
-
-void DroidObjectImplementation::initializeTransientMembers() {
-	AiAgentImplementation::initializeTransientMembers();
-}
+#include "server/zone/objects/tangible/tool/CraftingTool.h"
+#include "server/zone/objects/tangible/components/droid/BaseDroidModuleComponent.h"
+#include "server/zone/objects/tangible/components/droid/DroidCraftingModuleDataComponent.h"
+#include "server/zone/objects/tangible/components/droid/DroidArmorModuleDataComponent.h"
+#include "server/zone/objects/tangible/components/droid/DroidPersonalityModuleDataComponent.h"
+#include "server/zone/objects/tangible/components/droid/DroidMaintenanceModuleDataComponent.h"
+#include "server/zone/objects/tangible/components/droid/DroidPersonalityModuleDataComponent.h"
+#include "server/zone/managers/crafting/labratories/DroidMechanics.h"
+#include "server/zone/objects/structure/StructureObject.h"
+#include "server/zone/objects/creature/conversation/ConversationObserver.h"
 
 void DroidObjectImplementation::fillAttributeList(AttributeListMessage* msg, CreatureObject* object){
 
-	float percentPower = ((float)power/(float)MAX_POWER)*100.0;
-	msg->insertAttribute("@obj_attr_n:battery_power", String::valueOf((int)percentPower) + "%");
+	AiAgentImplementation::fillAttributeList( msg, object );
 
-	if (paintCount > 0){
-		msg->insertAttribute("customization_cnt", paintCount);
+	ManagedReference<ControlDevice*> device = getControlDevice().get();
+
+	if (device != NULL && device->isASubChildOf(object)) {
+		float percentPower = ((float)power/(float)MAX_POWER)*100.0;
+		msg->insertAttribute("@obj_attr_n:battery_power", String::valueOf((int)percentPower) + "%");
+
+		if (paintCount > 0){
+			msg->insertAttribute("customization_cnt", paintCount);
+		}
+
+		for( int i=0; i<modules.size(); i++){
+			BaseDroidModuleComponent* module = modules.get(i);
+			if( module != NULL ){
+				module->fillAttributeList(msg, object);
+			}
+		}
+	}
+}
+
+int DroidObjectImplementation::handleObjectMenuSelect(CreatureObject* player, byte selectedID){
+
+	if (getLinkedCreature().get() == player) {
+		// Allow modules to handle radials if desired
+		PetControlDevice* pcd = getControlDevice().get().castTo<PetControlDevice*>();
+		for( int i=0; i<modules.size(); i++){
+			BaseDroidModuleComponent* module = modules.get(i);
+			module->handleObjectMenuSelect(player, selectedID, pcd);
+		}
 	}
 
-	ManagedReference<CreatureObject* > linkedCreature = this->linkedCreature.get();
-	if( linkedCreature == NULL )
+	return SceneObjectImplementation::handleObjectMenuSelect(player, selectedID); // PetMenuComponent
+
+}
+
+void DroidObjectImplementation::fillObjectMenuResponse(ObjectMenuResponse* menuResponse, CreatureObject* player){
+
+	SceneObjectImplementation::fillObjectMenuResponse( menuResponse, player ); // PetMenuComponent
+
+	if (getLinkedCreature().get() != player) {
 		return;
+	}
 
-	StringBuffer fullName;
-	fullName << linkedCreature->getFirstName();
-	if(!linkedCreature->getLastName().isEmpty())
-		fullName << " " << linkedCreature->getLastName();
-
-	msg->insertAttribute("@obj_attr_n:owner", fullName.toString());
+	// Allow modules to add radials
+	PetControlDevice* pcd = getControlDevice().get().castTo<PetControlDevice*>();
+	for( int i=0; i<modules.size(); i++){
+		BaseDroidModuleComponent* module = modules.get(i);
+		module->fillObjectMenuResponse( _this.getReferenceUnsafeStaticCast(), menuResponse, player );
+	}
 
 }
 
@@ -152,6 +151,8 @@ int DroidObjectImplementation::rechargeFromBattery(CreatureObject* player){
 	power = MAX_POWER;
 
 	// Consume battery
+	Locker locker(batteryTano);
+
 	batteryTano->decreaseUseCount();
 
 	showFlyText("npc_reaction/flytext","recharged", 0, 153, 0);  // "*Recharged*"
@@ -186,11 +187,256 @@ void DroidObjectImplementation::handleLowPower(){
 
 	// Stop following
 	setOblivious();
+
+	// Deactivate all modules
+	for( int i=0; i<modules.size(); i++){
+		BaseDroidModuleComponent* module = modules.get(i);
+		module->deactivate();
+	}
+
 	return;
 }
 
 bool DroidObjectImplementation::isPowerDroid(){
+	if(getSpecies() == 0)
+		return getObjectTemplate()->getFullTemplateString().contains( "eg_6_power_droid" );
+	else
+		return POWER_DROID == getSpecies();
+}
 
-	return getObjectTemplate()->getFullTemplateString().contains( "eg_6_power_droid" );
+void DroidObjectImplementation::initDroidModules(){
+	modules.removeAll();
+	ManagedReference<SceneObject*> container = getSlottedObject("crafted_components");
+	if(container != NULL && container->getContainerObjectsSize() > 0) {
+		SceneObject* satchel = container->getContainerObject(0);
+		if(satchel != NULL && satchel->getContainerObjectsSize() > 0) {
+			for (int i = 0; i < satchel->getContainerObjectsSize(); ++i) {
+				ManagedReference<SceneObject*> sceno = satchel->getContainerObject(i);
+				if( sceno == NULL ){
+					continue;
+				}
+				DataObjectComponentReference* data = sceno->getDataObjectComponent();
+				if(data == NULL || data->get() == NULL || !data->get()->isDroidModuleData() ){
+					continue;
+				}
+				BaseDroidModuleComponent* module = cast<BaseDroidModuleComponent*>(data->get());
+				if( module != NULL ){
+					modules.add(module);
+				}
+			}
+		}
+	}
+}
+
+CraftingStation* DroidObjectImplementation::getCraftingStation(int type){
+	for( int i=0; i<modules.size(); i++){
+		BaseDroidModuleComponent* module = modules.get(i);
+		if( module != NULL && module->actsAsCraftingStation()){
+			DroidCraftingModuleDataComponent* craftingModule = dynamic_cast<DroidCraftingModuleDataComponent*>(module);
+			if( craftingModule != NULL ){
+				CraftingStation* craftingStation = craftingModule->getCraftingStation();
+				if (craftingStation != NULL) {
+					// case here to check each type
+					if (craftingModule->validCraftingType(type) || (type == CraftingTool::JEDI && craftingModule->isWeaponDroidGeneric()) || (type == CraftingTool::GENERIC && craftingModule->isWeaponDroidGeneric()))
+					{
+						return craftingStation;
+					}
+				}
+			}
+		}
+	}
+	return NULL;
+}
+
+String DroidObjectImplementation::getPersonalityBase() {
+	for( int i=0; i<modules.size(); i++){
+		DroidPersonalityModuleDataComponent* module = cast<DroidPersonalityModuleDataComponent*>(modules.get(i));
+		if( module != NULL){
+			return module->getPersonalityBase();
+		}
+	}
+	return "";
+}
+
+void DroidObjectImplementation::onStore() {
+	for( int i=0; i<modules.size(); i++){
+		BaseDroidModuleComponent* module = modules.get(i);
+		module->onStore();
+	}
+}
+void DroidObjectImplementation::onCall() {
+	for( int i=0; i<modules.size(); i++){
+		BaseDroidModuleComponent* module = modules.get(i);
+		module->onCall();
+	}
+}
+void DroidObjectImplementation::loadSkillMods(CreatureObject* player) {
+	for( int i=0; i<modules.size(); i++){
+		BaseDroidModuleComponent* module = modules.get(i);
+		module->loadSkillMods(player);
+	}
+}
+void DroidObjectImplementation::unloadSkillMods(CreatureObject* player) {
+	for( int i=0; i<modules.size(); i++){
+		BaseDroidModuleComponent* module = modules.get(i);
+		module->unloadSkillMods(player);
+	}
+}
+
+void DroidObjectImplementation::handleChat(CreatureObject* speaker, const String& message){
+	for( int i=0; i<modules.size(); i++){
+		BaseDroidModuleComponent* module = modules.get(i);
+		module->handlePetCommand( message, speaker );
+	}
+}
+BaseDroidModuleComponent* DroidObjectImplementation::getModule(const String& name) {
+	for(int i=0;i<modules.size();i++) {
+		BaseDroidModuleComponent* module = modules.get(i);
+		if(module->getModuleName() == name) {
+			return module;
+		}
+	}
+	return NULL;
+}
+bool DroidObjectImplementation::isAdvancedModel() {
+	return getCreatureTemplate()->getObjectName().contains("advanced");
+}
+void DroidObjectImplementation::runModulePowerDrain() {
+	for( int i=0; i<modules.size(); i++){
+		BaseDroidModuleComponent* module = modules.get(i);
+		int drain = module->getBatteryDrain();
+		if(drain > 0)
+			usePower(drain);
+	}
+}
+bool DroidObjectImplementation::isCombatDroid() {
+	for( int i=0; i<modules.size(); i++){
+		BaseDroidModuleComponent* module = modules.get(i);
+		if(module->isCombatModule()) {
+			return true;
+		}
+	}
+	// inante comabt ability, regardless of module installed
+	if (getSpecies() == PROBOT || getSpecies() == DZ70)
+		return true;
+
+	return false;
+}
+bool DroidObjectImplementation::isTrapDroid() {
+	for( int i=0; i<modules.size(); i++){
+		BaseDroidModuleComponent* module = modules.get(i);
+		if(module->getModuleName() == "trap_module") {
+			return true;
+		}
+	}
+	return false;
+}
+bool DroidObjectImplementation::hasStorage() {
+	for( int i=0; i<modules.size(); i++){
+		BaseDroidModuleComponent* module = modules.get(i);
+		if(module->getModuleName() == "item_storage_module") {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool DroidObjectImplementation::isMaintenanceDroid() {
+	for( int i=0; i<modules.size(); i++){
+		BaseDroidModuleComponent* module = modules.get(i);
+		if(module->getModuleName() == "maintenance_module") {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool DroidObjectImplementation::assignStructure( StructureObject* structure ){
+	for( int i=0; i<modules.size(); i++){
+		BaseDroidModuleComponent* module = modules.get(i);
+		if(module->getModuleName() == "maintenance_module") {
+			DroidMaintenanceModuleDataComponent* maintModule = dynamic_cast<DroidMaintenanceModuleDataComponent*>(module);
+			if( maintModule != NULL ){
+				return maintModule->assignStructure( structure->getObjectID() );
+			}
+		}
+	}
+	return false;
+}
+bool DroidObjectImplementation::isStructureAssigned( StructureObject* structure ){
+	for( int i=0; i<modules.size(); i++){
+		BaseDroidModuleComponent* module = modules.get(i);
+		if(module->getModuleName() == "maintenance_module") {
+			DroidMaintenanceModuleDataComponent* maintModule = dynamic_cast<DroidMaintenanceModuleDataComponent*>(module);
+			if( maintModule != NULL ){
+				return maintModule->isAssignedTo( structure->getObjectID() );
+			}
+		}
+	}
+	return false;
+}
+bool DroidObjectImplementation::sendConversationStartTo(SceneObject* player) {
+	if (!player->isPlayerCreature() || isDead())
+		return false;
+
+	if (player != getLinkedCreature().get())
+		return false;
+
+	BaseDroidModuleComponent* m = getModule("personality_chip");
+	if (m == NULL) {
+		return false;
+	}
+
+	DroidPersonalityModuleDataComponent* personality = dynamic_cast<DroidPersonalityModuleDataComponent*>(m);
+	if (personality == NULL) {
+		return false;
+	}
+
+	if (personality->getPersonalityConversationTemplate() == 0) {
+		return false;
+	}
+
+	//Face player.
+	faceObject(player);
+
+	PatrolPoint current(coordinates.getPosition(), getParent().get());
+
+	broadcastNextPositionUpdate(&current);
+
+	CreatureObject* playerCreature = cast<CreatureObject*>( player);
+	StartNpcConversation* conv = new StartNpcConversation(playerCreature, getObjectID(), "");
+	player->sendMessage(conv);
+
+	SortedVector<ManagedReference<Observer*> > observers = getObservers(ObserverEventType::STARTCONVERSATION);
+
+	for (int i = 0;  i < observers.size(); ++i) {
+		if (dynamic_cast<ConversationObserver*>(observers.get(i).get()) != NULL) {
+			return true;
+		}
+	}
+	//Create conversation observer.
+	ConversationObserver* conversationObserver = ConversationManager::instance()->getConversationObserver(personality->getPersonalityConversationTemplate());
+
+	if (conversationObserver != NULL) {
+		//Register observers.
+		registerObserver(ObserverEventType::CONVERSE, conversationObserver);
+		registerObserver(ObserverEventType::STARTCONVERSATION, conversationObserver);
+		registerObserver(ObserverEventType::SELECTCONVERSATION, conversationObserver);
+		registerObserver(ObserverEventType::STOPCONVERSATION, conversationObserver);
+	} else {
+		error("Could not create conversation observer.");
+		return false;
+	}
+
+	return true;
+}
+String DroidObjectImplementation::getPersonalityStf() {
+	for( int i=0; i<modules.size(); i++){
+		DroidPersonalityModuleDataComponent* module = cast<DroidPersonalityModuleDataComponent*>(modules.get(i));
+		if( module != NULL){
+			return module->getPersonalityStf();
+		}
+	}
+	return "";
 
 }

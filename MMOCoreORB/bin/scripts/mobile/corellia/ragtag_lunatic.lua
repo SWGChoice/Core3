@@ -1,7 +1,7 @@
 ragtag_lunatic = Creature:new {
 	objectName = "@mob/creature_names:ragtag_lunatic",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "ragtag",
-	pvpFaction = "thug",
 	faction = "thug",
 	level = 7,
 	chanceHit = 0.260000,
@@ -36,7 +36,7 @@ ragtag_lunatic = Creature:new {
 		"object/mobile/dressed_villain_trandoshan_male_01.iff",
 		"object/mobile/dressed_commoner_tatooine_rodian_female_02.iff",
 		"object/mobile/dressed_commoner_tatooine_trandoshan_male_01.iff"
-		},
+	},
 	lootGroups = {
 		{
 			groups = {
@@ -45,11 +45,11 @@ ragtag_lunatic = Creature:new {
 				{group = "loot_kit_parts", chance = 1500000},
 				{group = "crystals_poor", chance = 500000},
 				{group = "tailor_components", chance = 1000000}
-			},
-			lootChance = 3200000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_medium"},
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlernovice,marksmannovice)
 }
 

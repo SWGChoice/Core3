@@ -1,7 +1,6 @@
 swarming_kliknik = Creature:new {
 	objectName = "@mob/creature_names:kliknik_swarming",
 	socialGroup = "kliknik",
-	pvpFaction = "",
 	faction = "",
 	level = 10,
 	chanceHit = 0.27,
@@ -11,7 +10,7 @@ swarming_kliknik = Creature:new {
 	baseHAM = 675,
 	baseHAMmax = 825,
 	armor = 0,
-	resists = {20,0,0,-1,0,-1,0,-1,-1},
+	resists = {120,0,0,-1,0,-1,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 5,
 	hideType = "hide_scaley",
@@ -34,13 +33,13 @@ swarming_kliknik = Creature:new {
 	        groups = {
 				{group = "kliknik_common", chance = 10000000}
 			},
-			lootChance = 1500000
+			lootChance = 1200000
 		}
 	},
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""}
 	}
 }
 

@@ -1,7 +1,7 @@
 imprisoned_imperial_officer = Creature:new {
 	objectName = "@mob/creature_names:imprisoned_imperial",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "imperial",
-	pvpFaction = "imperial",
 	faction = "imperial",
 	level = 12,
 	chanceHit = 0.29,
@@ -46,12 +46,13 @@ imprisoned_imperial_officer = Creature:new {
 				{group = "clothing_attachments", chance = 100000},
 				{group = "armor_attachments", chance = 100000},
 				{group = "wearables_common", chance = 1000000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/military",
+	personalityStf = "@hireling/hireling_military",
 	attacks = brawlermid
 }
 

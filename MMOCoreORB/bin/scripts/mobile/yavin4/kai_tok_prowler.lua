@@ -1,7 +1,6 @@
 kai_tok_prowler = Creature:new {
 	objectName = "@mob/creature_names:kai_tok_prowler",
 	socialGroup = "kai_tok",
-	pvpFaction = "",
 	faction = "",
 	level = 26,
 	chanceHit = 0.36,
@@ -11,7 +10,7 @@ kai_tok_prowler = Creature:new {
 	baseHAM = 8100,
 	baseHAMmax = 9900,
 	armor = 0,
-	resists = {30,20,0,0,-1,0,-1,-1,-1},
+	resists = {130,120,0,0,-1,0,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 55,
 	hideType = "hide_leathery",
@@ -33,8 +32,8 @@ kai_tok_prowler = Creature:new {
 	weapons = {"creature_spit_small_red"},
 	conversationTemplate = "",
 	attacks = {
-		{"mediumpoison",""},
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""},
+		{"mediumpoison",""}
 	}
 }
 

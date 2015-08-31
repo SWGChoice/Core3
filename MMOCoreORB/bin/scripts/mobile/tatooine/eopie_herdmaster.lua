@@ -1,7 +1,6 @@
 eopie_herdmaster = Creature:new {
 	objectName = "@mob/creature_names:eopie_herdmaster",
 	socialGroup = "eopie",
-	pvpFaction = "",
 	faction = "",
 	level = 9,
 	chanceHit = 0.27,
@@ -11,7 +10,7 @@ eopie_herdmaster = Creature:new {
 	baseHAM = 810,
 	baseHAMmax = 990,
 	armor = 0,
-	resists = {0,0,0,10,10,0,0,-1,-1},
+	resists = {0,0,0,110,110,0,0,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 315,
 	hideType = "hide_leathery",

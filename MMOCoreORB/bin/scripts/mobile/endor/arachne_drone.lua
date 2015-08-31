@@ -1,7 +1,6 @@
 arachne_drone = Creature:new {
 	objectName = "@mob/creature_names:arachne_drone",
 	socialGroup = "arachne",
-	pvpFaction = "",
 	faction = "",
 	level = 27,
 	chanceHit = 0.36,
@@ -11,7 +10,7 @@ arachne_drone = Creature:new {
 	baseHAM = 5900,
 	baseHAMmax = 7200,
 	armor = 0,
-	resists = {35,25,15,40,40,-1,40,-1,-1},
+	resists = {135,125,15,140,140,-1,140,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 35,
 	hideType = "",
@@ -33,7 +32,7 @@ arachne_drone = Creature:new {
 	conversationTemplate = "",
 	attacks = {
 		{"strongpoison",""},
-		{"dizzyattack","dizzyChance=50"}
+		{"dizzyattack",""}
 	}
 }
 

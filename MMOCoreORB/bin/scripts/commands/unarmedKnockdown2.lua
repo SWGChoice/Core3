@@ -58,7 +58,7 @@ UnarmedKnockdown2Command = {
 		{ "dizzy_defense", "resistance_states" }, 
 		{ "jedi_state_defense" }, 
 		75, 
-		100, 
+		0, 
 		40 
 	  ),
 	  StateEffect( 
@@ -66,8 +66,8 @@ UnarmedKnockdown2Command = {
 		{ "knockdownRecovery", "lastKnockdown" }, 
 		{ "knockdown_defense" }, 
 		{}, 
-		40, 
 		100, 
+		0, 
 		0 
 	  )
 	},
@@ -75,6 +75,8 @@ UnarmedKnockdown2Command = {
 	animationCRC = hashCode("attack_special_hammerfist_light"),
 
 	combatSpam = "chargingwampa",
+	
+	weaponType = UNARMEDWEAPON,
 
 	range = -1
 }

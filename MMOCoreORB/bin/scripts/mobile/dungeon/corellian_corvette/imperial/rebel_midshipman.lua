@@ -1,7 +1,7 @@
 rebel_midshipman = Creature:new {
 	objectName = "@mob/creature_names:corvet_rebel_midshipman",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "rebel",
-	pvpFaction = "rebel",
 	faction = "rebel",
 	level = 136,
 	chanceHit = 6.25,
@@ -34,9 +34,25 @@ rebel_midshipman = Creature:new {
 		"object/mobile/dressed_rebel_crewman_human_male_03.iff",
 		"object/mobile/dressed_rebel_crewman_human_male_04.iff"
 	},
-	lootGroups = {},
+	lootGroups = {
+		{
+			groups = {
+				{group = "color_crystals", chance = 100000},
+				{group = "junk", chance = 4700000},
+				{group = "rifles", chance = 1000000},
+				{group = "pistols", chance = 1000000},
+				{group = "melee_weapons", chance = 1000000},
+				{group = "carbines", chance = 1000000},
+				{group = "clothing_attachments", chance = 100000},
+				{group = "armor_attachments", chance = 100000},
+				{group = "wearables_common", chance = 500000},
+				{group = "wearables_uncommon", chance = 500000}
+			}
+		}
+	},
 	weapons = {"rebel_weapons_medium"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/military",
 	attacks = merge(riflemanmaster,carbineermaster,marksmanmaster,brawlermaster)
 }
 

@@ -1,7 +1,6 @@
 bordok_mare = Creature:new {
 	objectName = "@mob/creature_names:bordok_mare",
 	socialGroup = "bordok",
-	pvpFaction = "",
 	faction = "",
 	level = 34,
 	chanceHit = 0.41,
@@ -11,7 +10,7 @@ bordok_mare = Creature:new {
 	baseHAM = 8700,
 	baseHAMmax = 10700,
 	armor = 0,
-	resists = {30,-1,20,100,100,20,-1,-1,-1},
+	resists = {130,-1,20,200,200,20,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 275,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ bordok_mare = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"creatureareaknockdown","knockdownChance=30"},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"creatureareaknockdown",""}
 	}
 }
 

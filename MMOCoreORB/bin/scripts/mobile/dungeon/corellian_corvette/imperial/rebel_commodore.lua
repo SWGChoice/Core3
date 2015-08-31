@@ -1,7 +1,7 @@
 rebel_commodore = Creature:new {
 	objectName = "@mob/creature_names:corvette_rebel_commodore",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "rebel",
-	pvpFaction = "rebel",
 	faction = "rebel",
 	level = 181,
 	chanceHit = 13,
@@ -29,7 +29,7 @@ rebel_commodore = Creature:new {
 	templates = {"object/mobile/dressed_rebel_commando_zabrak_female_01.iff"},
 	lootGroups = {
 		{
-	        groups = {
+			groups = {
 				{group = "color_crystals", chance = 500000},
 				{group = "junk", chance = 3550000},
 				{group = "rifles", chance = 1000000},
@@ -40,12 +40,12 @@ rebel_commodore = Creature:new {
 				{group = "armor_attachments", chance = 500000},
 				{group = "rebel_officer_common", chance = 450000},
 				{group = "wearables_rare", chance = 500000}
-			},
-			lootChance = 6000000
-		}	
+			}
+		}
 	},
 	weapons = {"rebel_weapons_heavy"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/military",
 	attacks = merge(commandomaster,marksmanmaster,brawlermaster)
 }
 

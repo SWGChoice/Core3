@@ -1,7 +1,6 @@
 hermit_spider = Creature:new {
 	objectName = "@mob/creature_names:hermit_spider",
 	socialGroup = "spider",
-	pvpFaction = "",
 	faction = "",
 	level = 7,
 	chanceHit = 0.26,
@@ -11,7 +10,7 @@ hermit_spider = Creature:new {
 	baseHAM = 270,
 	baseHAMmax = 330,
 	armor = 0,
-	resists = {5,5,10,0,0,0,0,-1,-1},
+	resists = {0,0,110,0,0,0,0,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 60,
 	hideType = "",

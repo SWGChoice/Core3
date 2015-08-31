@@ -50,8 +50,8 @@ PostureUpAttackCommand = {
 		{ "postureUpRecovery" }, 
 		{ "posture_change_up_defense" }, 
 		{}, 
-		50, 
-		100, 
+		85, 
+		0, 
 		0 
 	  )
 	}

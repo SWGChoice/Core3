@@ -1,7 +1,7 @@
 force_crystal_hunter = Creature:new {
 	objectName = "@mob/creature_names:dark_force_crystal_hunter",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "kun",
-	pvpFaction = "",
 	faction = "",
 	level = 115,
 	chanceHit = 1,
@@ -39,8 +39,7 @@ force_crystal_hunter = Creature:new {
 				{group = "armor_attachments", chance = 1000000},
 				{group = "clothing_attachments", chance = 1000000},
 				{group = "wearables_all", chance = 1500000}
-			},
-			lootChance = 4500000
+			}
 		}
 	},
 	weapons = {"mixed_force_weapons"},

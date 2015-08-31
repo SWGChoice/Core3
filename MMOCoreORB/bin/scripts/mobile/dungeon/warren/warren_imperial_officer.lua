@@ -1,7 +1,7 @@
 warren_imperial_officer = Creature:new {
 	objectName = "@mob/creature_names:warren_imperial_officer",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "warren_imperial",
-	pvpFaction = "",
 	faction = "",
 	level = 27,
 	chanceHit = 0.37,
@@ -30,7 +30,22 @@ warren_imperial_officer = Creature:new {
 		"object/mobile/warren_imperial_officer_s01.iff",
 		"object/mobile/warren_imperial_officer_s02.iff",
 		"object/mobile/warren_imperial_officer_s03.iff"},
-	lootGroups = {},
+	lootGroups = {
+		{
+			groups = {
+				{group = "color_crystals", chance = 100000},
+				{group = "junk", chance = 6200000},
+				{group = "rifles", chance = 550000},
+				{group = "pistols", chance = 550000},
+				{group = "melee_weapons", chance = 550000},
+				{group = "carbines", chance = 550000},
+				{group = "clothing_attachments", chance = 25000},
+				{group = "armor_attachments", chance = 25000},
+				{group = "imperial_officer_common", chance = 450000},
+				{group = "wearables_common", chance = 1000000}
+			}
+		}
+	},
 	weapons = {"imperial_weapons_medium"},
 	conversationTemplate = "",
 	attacks = merge(brawlermaster,marksmanmaster,carbineermaster,riflemanmaster)

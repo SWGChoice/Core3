@@ -17,13 +17,18 @@ void GarageInstallationImplementation::createChildObjects() {
 	float positionY = coordinates.getPositionY();
 	float positionZ = coordinates.getPositionZ();
 
-	uint32 garageAreaTemplateCRC = String("object/garage_area.iff").hashCode();
+	uint32 garageAreaTemplateCRC = STRING_HASHCODE("object/garage_area.iff");
 	ManagedReference<SceneObject*> obj = server->getZoneServer()->createObject(garageAreaTemplateCRC, 1);
 
 	if (obj == NULL)
 		return;
 
 	ActiveArea* activeArea = cast<ActiveArea*>( obj.get());
+
+	if (activeArea == NULL)
+		return;
+
+	Locker clocker(activeArea, _this.getReferenceUnsafeStaticCast());
 
 	activeArea->setRadius(64);
 	activeArea->initializePosition(getPositionX(), getPositionZ(), getPositionY());
@@ -38,8 +43,14 @@ void GarageInstallationImplementation::createChildObjects() {
 void GarageInstallationImplementation::notifyRemoveFromZone() {
 	InstallationObjectImplementation::notifyRemoveFromZone();
 
+	Reference<ActiveArea* > garageArea = this->garageArea;
+
 	if (garageArea != NULL) {
-		garageArea->destroyObjectFromWorld(false);
+		EXECUTE_TASK_1(garageArea, {
+				Locker locker(garageArea_p);
+
+				garageArea_p->destroyObjectFromWorld(false);
+		});
 	}
 }
 

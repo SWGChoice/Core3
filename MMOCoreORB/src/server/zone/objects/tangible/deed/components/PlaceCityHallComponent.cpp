@@ -32,7 +32,7 @@ int PlaceCityHallComponent::placeStructure(StructureDeed* deed, CreatureObject* 
 	CityManager* cityManager = zone->getZoneServer()->getCityManager();
 
 	if (cityManager->isCityRankCapped(zone->getZoneName(), CityManager::OUTPOST)) {
-		creature->sendSystemMessage("This planet cannot support anymore cities. You will have to find another planet.");
+		creature->sendSystemMessage("@player_structure:max_cities"); // This planet has already reached its max allowed number of player cities.
 		return 1;
 	}
 
@@ -71,8 +71,13 @@ int PlaceCityHallComponent::notifyStructurePlaced(StructureDeed* deed, CreatureO
 		ManagedReference<CityRegion*> city = structure->getCityRegion();
 
 		if (city != NULL && city->isMayor(creature->getObjectID())) {
+			Locker locker(city);
+
 			city->setCityHall(structure);
 			city->setLoaded();
+
+			locker.release();
+
 			StructureManager::instance()->declareResidence(creature, structure);
 		}
 	}

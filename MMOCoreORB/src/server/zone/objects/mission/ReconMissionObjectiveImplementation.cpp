@@ -30,14 +30,17 @@ void ReconMissionObjectiveImplementation::activate() {
 	ManagedReference<ZoneServer*> zoneServer = Core::lookupObject<ZoneServer>("ZoneServer");
 
 	if (locationActiveArea == NULL) {
-		locationActiveArea = ( zoneServer->createObject(String("object/mission_recon_area.iff").hashCode(), 1)).castTo<MissionReconActiveArea*>();
-		locationActiveArea->setMissionObjective(_this.get());
+		locationActiveArea = ( zoneServer->createObject(STRING_HASHCODE("object/mission_recon_area.iff"), 1)).castTo<MissionReconActiveArea*>();
+		Locker locker(locationActiveArea);
+		locationActiveArea->setMissionObjective(_this.getReferenceUnsafeStaticCast());
 	}
 
 	if (!locationActiveArea->isInQuadTree()) {
 		String planetName = mission->getStartPlanet();
 
 		Zone* zone = zoneServer->getZone(planetName);
+
+		Locker locker(locationActiveArea);
 
 		locationActiveArea->initializePosition(mission->getStartPositionX(), 0, mission->getStartPositionY());
 		locationActiveArea->setRadius(32.f);
@@ -46,14 +49,19 @@ void ReconMissionObjectiveImplementation::activate() {
 			zone->transferObject(locationActiveArea, -1, true);
 		} else {
 			error("Failed to insert recon location to zone.");
+			abort();
 			return;
 		}
 	}
 
 	ManagedReference<WaypointObject*> waypoint = mission->getWaypointToMission();
 
-	if (waypoint == NULL)
+	if (waypoint == NULL) {
+		Locker mlocker(mission);
 		waypoint = mission->createWaypoint();
+	}
+
+	Locker locker(waypoint);
 
 	waypoint->setPlanetCRC(mission->getStartPlanetCRC());
 	waypoint->setPosition(mission->getStartPositionX(), 0, mission->getStartPositionY());
@@ -65,12 +73,27 @@ void ReconMissionObjectiveImplementation::activate() {
 void ReconMissionObjectiveImplementation::abort() {
 	MissionObjectiveImplementation::abort();
 
-	if (locationActiveArea != NULL)
-		locationActiveArea->destroyObjectFromWorld(true);
+	if (locationActiveArea != NULL) {
+		Reference<MissionReconActiveArea* > area = locationActiveArea;
+
+		EXECUTE_TASK_1(area, {
+				Locker locker(area_p);
+
+				area_p->destroyObjectFromWorld(true);
+				area_p->destroyObjectFromDatabase(true);
+		});
+	}
 }
 
 void ReconMissionObjectiveImplementation::complete() {
-	locationActiveArea->destroyObjectFromWorld(true);
+	Reference<MissionReconActiveArea* > area = locationActiveArea;
+
+	EXECUTE_TASK_1(area, {
+			Locker locker(area_p);
+
+			area_p->destroyObjectFromWorld(true);
+			area_p->destroyObjectFromDatabase(true);
+	});
 
 	MissionObjectiveImplementation::complete();
 }

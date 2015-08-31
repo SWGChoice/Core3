@@ -1,7 +1,6 @@
 shimmering_lantern_bird = Creature:new {
 	objectName = "@mob/creature_names:shimmering_lantern_bird",
 	socialGroup = "lantern",
-	pvpFaction = "",
 	faction = "",
 	level = 30,
 	chanceHit = 0.37,
@@ -11,7 +10,7 @@ shimmering_lantern_bird = Creature:new {
 	baseHAM = 8200,
 	baseHAMmax = 10000,
 	armor = 0,
-	resists = {30,45,15,-1,15,-1,-1,15,-1},
+	resists = {130,145,15,-1,15,-1,-1,15,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 75,
 	hideType = "hide_leathery",

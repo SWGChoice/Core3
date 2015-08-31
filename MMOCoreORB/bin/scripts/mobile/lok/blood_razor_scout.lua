@@ -1,7 +1,7 @@
 blood_razor_scout = Creature:new {
 	objectName = "@mob/creature_names:blood_razor_scout",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "bloodrazor",
-	pvpFaction = "bloodrazor",
 	faction = "bloodrazor",
 	level = 32,
 	chanceHit = 0.39,
@@ -31,7 +31,7 @@ blood_razor_scout = Creature:new {
 		"object/mobile/dressed_blood_razor_pirate_scout_hum_m.iff",
 		"object/mobile/dressed_blood_razor_pirate_scout_rod_m.iff",
 		"object/mobile/dressed_blood_razor_pirate_scout_tran_m.iff"
-		},
+	},
 
 	lootGroups = {
 		{
@@ -46,12 +46,12 @@ blood_razor_scout = Creature:new {
 				{group = "clothing_attachments", chance = 300000},
 				{group = "armor_attachments", chance = 300000},
 				{group = "bloodrazor_common", chance = 2000000}
-			},
-			lootChance = 3500000
+			}
 		}
 	},
 	weapons = {"blood_razer_weapons"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(pistoleermaster,pikemanmaster,tkamaster,brawlermaster,marksmanmaster)
 }
 

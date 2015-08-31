@@ -1,7 +1,6 @@
 sunstained_dune_lizard = Creature:new {
 	objectName = "@mob/creature_names:dune_lizard_sunstained",
 	socialGroup = "lizard",
-	pvpFaction = "",
 	faction = "",
 	level = 20,
 	chanceHit = 0.33,
@@ -11,7 +10,7 @@ sunstained_dune_lizard = Creature:new {
 	baseHAM = 5000,
 	baseHAMmax = 6100,
 	armor = 0,
-	resists = {0,15,0,45,-1,-1,-1,-1,-1},
+	resists = {0,115,0,145,-1,-1,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 85,
 	hideType = "hide_bristley",
@@ -33,7 +32,7 @@ sunstained_dune_lizard = Creature:new {
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"}
+		{"dizzyattack",""}
 	}
 }
 

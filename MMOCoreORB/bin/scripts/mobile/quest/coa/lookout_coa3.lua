@@ -2,7 +2,6 @@ lookout_coa3 = Creature:new {
 	objectName = "",
 	customName = "a Lookout",
 	socialGroup = "self",
-	pvpFaction = "jabba",
 	faction = "jabba",
 	level = 12,
 	chanceHit = 0.29,
@@ -28,7 +27,18 @@ lookout_coa3 = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_tatooine_jabba_henchman.iff"},
-	lootGroups = {},
+	lootGroups = {
+		{
+			groups = {
+				{group = "junk", chance = 5000000},
+				{group = "rifles", chance = 1000000},
+				{group = "pistols", chance = 1000000},
+				{group = "melee_weapons", chance = 1000000},
+				{group = "carbines", chance = 1000000},
+				{group = "wearables_common", chance = 1000000}
+			}
+		}
+	},
 	weapons = {"pirate_weapons_heavy"},
 	conversationTemplate = "",
 	attacks = merge(brawlermid,marksmanmid)

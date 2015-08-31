@@ -29,7 +29,6 @@ public:
 	int isOvert(lua_State* L);
 	int isCovert(lua_State* L);
 	int setFactionStatus(lua_State* L);
-	int isChangingFactionStatus(lua_State* L);
 	int increaseFactionStanding(lua_State* L);
 	int decreaseFactionStanding(lua_State* L);
 	int addWaypoint(lua_State* L);
@@ -65,6 +64,8 @@ public:
 	int getEventPerkCount(lua_State* L);
 	int getCharacterAgeInDays(lua_State* L);
 	int isPrivileged(lua_State* L);
+	int getExperienceRatio(lua_State* L);
+	int closeSuiWindowType(lua_State* L);
 
 private:
 	// The pointer to the 'real object' defined in object.cc

@@ -1,7 +1,6 @@
 piket_plains_walker = Creature:new {
 	objectName = "@mob/creature_names:piket_plains_walker",
 	socialGroup = "piket",
-	pvpFaction = "",
 	faction = "",
 	level = 32,
 	chanceHit = 0.4,
@@ -11,7 +10,7 @@ piket_plains_walker = Creature:new {
 	baseHAM = 8700,
 	baseHAMmax = 10700,
 	armor = 0,
-	resists = {40,20,20,20,20,-1,-1,-1,-1},
+	resists = {140,20,20,20,20,-1,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 450,
 	hideType = "hide_scaley",
@@ -34,7 +33,7 @@ piket_plains_walker = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"}
+		{"dizzyattack",""}
 	}
 }
 

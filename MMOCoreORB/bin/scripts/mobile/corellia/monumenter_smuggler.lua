@@ -1,7 +1,7 @@
 monumenter_smuggler = Creature:new {
 	objectName = "@mob/creature_names:monumenter_smuggler",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "monumenter",
-	pvpFaction = "monumenter",
 	faction = "monumenter",
 	level = 12,
 	chanceHit = 0.29,
@@ -39,8 +39,20 @@ monumenter_smuggler = Creature:new {
 		"object/mobile/dressed_crook_zabrak_male_01.iff",
 		"object/mobile/dressed_desperado_bith_female_01.iff",
 		"object/mobile/dressed_desperado_bith_male_01.iff"},
-	lootGroups = {},
+	lootGroups = {
+		{
+			groups = {
+				{group = "junk", chance = 4000000},
+				{group = "wearables_common", chance = 2000000},
+				{group = "rifles", chance = 1000000},
+				{group = "pistols", chance = 1000000},
+				{group = "melee_weapons", chance = 1000000},
+				{group = "carbines", chance = 1000000},
+			}
+		}
+	},
 	weapons = {"ranged_weapons"},
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlermid,marksmanmid)
 }
 

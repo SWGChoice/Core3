@@ -1,7 +1,6 @@
 swarming_lesser_dewback = Creature:new {
 	objectName = "@mob/creature_names:swarming_lesser_dewback",
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 15,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ swarming_lesser_dewback = Creature:new {
 	baseHAM = 3500,
 	baseHAMmax = 4300,
 	armor = 0,
-	resists = {15,5,10,5,-1,-1,-1,-1,-1},
+	resists = {115,5,110,5,-1,-1,-1,-1,-1},
 	meatType = "meat_reptilian",
 	meatAmount = 175,
 	hideType = "hide_leathery",
@@ -32,7 +31,7 @@ swarming_lesser_dewback = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

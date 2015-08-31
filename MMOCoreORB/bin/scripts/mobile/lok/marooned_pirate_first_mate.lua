@@ -1,7 +1,7 @@
 marooned_pirate_first_mate = Creature:new {
 	objectName = "@mob/creature_names:marooned_pirate_first_mate",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "pirate",
-	pvpFaction = "pirate",
 	faction = "pirate",
 	level = 22,
 	chanceHit = 0.33,
@@ -32,7 +32,7 @@ marooned_pirate_first_mate = Creature:new {
 		"object/mobile/dressed_marooned_pirate_first_mate_nikto_m.iff",
 		"object/mobile/dressed_marooned_pirate_first_mate_rod_m.iff",
 		"object/mobile/dressed_marooned_pirate_first_mate_tran_m.iff"
-		},
+	},
 	lootGroups = {
 		{
 			groups = {
@@ -41,12 +41,12 @@ marooned_pirate_first_mate = Creature:new {
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "tailor_components", chance = 1000000},
 				{group = "pistols", chance = 2000000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_medium"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 

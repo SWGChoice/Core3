@@ -1,7 +1,6 @@
 bloodstained_prowler = Creature:new {
 	objectName = "@mob/creature_names:wrix_bloodstained_prowler",
 	socialGroup = "wrix",
-	pvpFaction = "",
 	faction = "",
 	level = 29,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ bloodstained_prowler = Creature:new {
 	baseHAM = 8400,
 	baseHAMmax = 10200,
 	armor = 0,
-	resists = {35,30,10,50,10,35,-1,10,-1},
+	resists = {135,130,10,150,10,135,-1,10,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 70,
 	hideType = "hide_bristley",
@@ -33,8 +32,8 @@ bloodstained_prowler = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"knockdownattack","knockdownChance=50"},
-		{"stunattack","stunChance=50"}
+		{"knockdownattack",""},
+		{"stunattack",""}
 	}
 }
 

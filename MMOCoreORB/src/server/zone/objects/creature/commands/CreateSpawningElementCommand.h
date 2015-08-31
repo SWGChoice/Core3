@@ -1,46 +1,6 @@
 /*
-Copyright (C) 2007 <SWGEmu>
-
-This File is part of Core3.
-
-This program is free software; you can redistribute
-it and/or modify it under the terms of the GNU Lesser
-General Public License as published by the Free Software
-Foundation; either version 2 of the License,
-or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU Lesser General Public License for
-more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this program; if not, write to
-the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-
-Linking Engine3 statically or dynamically with other modules
-is making a combined work based on Engine3.
-Thus, the terms and conditions of the GNU Lesser General Public License
-cover the whole combination.
-
-In addition, as a special exception, the copyright holders of Engine3
-give you permission to combine Engine3 program with free software
-programs or libraries that are released under the GNU LGPL and with
-code included in the standard release of Core3 under the GNU LGPL
-license (or modified versions of such code, with unchanged license).
-You may copy and distribute such a system following the terms of the
-GNU LGPL for Engine3 and the licenses of the other code concerned,
-provided that you include the source code of that other code when
-and as the GNU LGPL requires distribution of source code.
-
-Note that people who make modified versions of Engine3 are not obligated
-to grant this special exception for their modified versions;
-it is their choice whether to do so. The GNU Lesser General Public License
-gives permission to release a modified version without this exception;
-this exception also makes it possible to release a modified version
-which carries forward this exception.
- */
+				Copyright <SWGEmu>
+		See file COPYING for copying conditions. */
 
 #ifndef CREATESPAWNINGELEMENTCOMMAND_H_
 #define CREATESPAWNINGELEMENTCOMMAND_H_
@@ -64,7 +24,7 @@ public:
 
 	}
 
-	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments)
+	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) const
 	{
 
 		if (!checkStateMask(creature))
@@ -133,7 +93,7 @@ public:
 
 					SceneObject* sceno = creatureManager->spawn(objectTemplate.hashCode(), level, 2, x, z, y, 25);
 
-						if (sceno != NULL) {
+					if (sceno != NULL) {
 						creature->sendSystemMessage("lair spawned");
 						return SUCCESS;
 					} else {
@@ -169,6 +129,8 @@ public:
 
 				ManagedReference<SceneObject*> parent = creature->getParent();
 
+				Locker clocker(object, creature);
+
 				object->initializePosition(x, z, y);
 				object->setDirection(creature->getDirectionW(), creature->getDirectionX(), creature->getDirectionY(), creature->getDirectionZ());
 
@@ -190,17 +152,16 @@ public:
 
 				ManagedReference<SceneObject*> object = zserv->getObject(oid);
 
-				if (object == NULL)
-				{
+				if (object == NULL) {
 					creature->sendSystemMessage("Error: Trying to delete invalid oid.");
 					return GENERALERROR;
 				}
 
 				for (int i = 0; i < object->getArrangementDescriptorSize(); ++i) {
-					Vector<String> descriptors = object->getArrangementDescriptor(i);
+					const Vector<String>* descriptors = object->getArrangementDescriptor(i);
 
-					for (int j = 0; j < descriptors.size(); ++j) {
-						String descriptor = descriptors.get(j);
+					for (int j = 0; j < descriptors->size(); ++j) {
+						const String& descriptor = descriptors->get(j);
 
 						if (descriptor == "inventory" || descriptor == "datapad" || descriptor == "default_weapon"
 							|| descriptor == "mission_bag" || descriptor == "ghost" || descriptor == "bank" || descriptor == "hair")
@@ -208,7 +169,13 @@ public:
 					}
 				}
 
+				Locker clocker(object, creature);
+
 				object->destroyObjectFromWorld(true);
+
+				if (object->isPersistent()) {
+					object->destroyObjectFromDatabase(true);
+				}
 
 				creature->sendSystemMessage("Object " + chatObjectID + " deleted.");
 

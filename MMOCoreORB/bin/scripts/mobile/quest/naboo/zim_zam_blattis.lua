@@ -2,7 +2,6 @@ zim_zam_blattis = Creature:new {
 	objectName = "",
 	customName = "Zim Zam Blattis",
 	socialGroup = "gungan",
-	pvpFaction = "gungan",
 	faction = "gungan",
 	level = 14,
 	chanceHit = 0.3,
@@ -35,9 +34,8 @@ zim_zam_blattis = Creature:new {
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "wearables_common", chance = 1000000}
-			},
-			lootChance = 3200000
-		}					
+			}
+		}
 	},
 	weapons = {"pirate_weapons_medium"},
 	conversationTemplate = "",

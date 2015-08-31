@@ -1,7 +1,7 @@
 narmle_militia_ensign = Creature:new {
 	objectName = "@mob/creature_names:narmle_ensign",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "narmle",
-	pvpFaction = "narmle",
 	faction = "narmle",
 	level = 5,
 	chanceHit = 0.25,
@@ -30,19 +30,19 @@ narmle_militia_ensign = Creature:new {
 		"object/mobile/dressed_narmle_ensign_human_male_01.iff",
 		"object/mobile/dressed_narmle_ensign_human_female_01.iff"},
 	lootGroups = {
-	    {
+		{
 			groups = {
 				{group = "junk", chance = 2000000},
 				{group = "wearables_common", chance = 2000000},
 				{group = "pistols", chance = 2000000},
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000}
-			},
-			lootChance = 3200000
-		}				
+			}
+		}
 	},
 	weapons = {"rebel_weapons_medium"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/townperson",
 	attacks = merge(brawlernovice,marksmannovice)
 }
 

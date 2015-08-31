@@ -1,7 +1,6 @@
 verne_calf = Creature:new {
 	objectName = "@mob/creature_names:verne_calf",
 	socialGroup = "verne",
-	pvpFaction = "",
 	faction = "",
 	level = 14,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ verne_calf = Creature:new {
 	baseHAM = 2400,
 	baseHAMmax = 3000,
 	armor = 0,
-	resists = {0,0,0,0,0,0,0,0,0},
+	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 18,
 	hideType = "hide_leathery",

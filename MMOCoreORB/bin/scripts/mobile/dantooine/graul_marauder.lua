@@ -1,7 +1,6 @@
 graul_marauder = Creature:new {
 	objectName = "@mob/creature_names:graul_marauder",
 	socialGroup = "graul",
-	pvpFaction = "",
 	faction = "",
 	level = 173,
 	chanceHit = 10.75,
@@ -11,7 +10,7 @@ graul_marauder = Creature:new {
 	baseHAM = 120000,
 	baseHAMmax = 125000,
 	armor = 2,
-	resists = {75,55,90,90,90,55,55,55,-1},
+	resists = {175,155,190,190,190,155,155,155,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 1000,
 	hideType = "hide_leathery",
@@ -33,7 +32,7 @@ graul_marauder = Creature:new {
 	conversationTemplate = "",
 	attacks = {
 		{"creatureareableeding",""},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

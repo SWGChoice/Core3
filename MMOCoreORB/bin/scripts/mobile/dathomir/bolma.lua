@@ -1,7 +1,6 @@
 bolma = Creature:new {
 	objectName = "@mob/creature_names:bolma",
 	socialGroup = "bolma",
-	pvpFaction = "",
 	faction = "",
 	level = 19,
 	chanceHit = 0.33,
@@ -11,7 +10,7 @@ bolma = Creature:new {
 	baseHAM = 4500,
 	baseHAMmax = 5500,
 	armor = 0,
-	resists = {10,60,10,-1,-1,-1,-1,-1,-1},
+	resists = {10,160,10,-1,-1,-1,-1,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 150,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ bolma = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"posturedownattack","postureDownChance=50"}
+		{"dizzyattack",""},
+		{"posturedownattack",""}
 	}
 }
 

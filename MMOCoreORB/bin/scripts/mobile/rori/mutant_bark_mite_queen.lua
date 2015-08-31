@@ -1,7 +1,6 @@
 mutant_bark_mite_queen = Creature:new {
 	objectName = "@mob/creature_names:mutant_bark_mite_queen",
 	socialGroup = "mite",
-	pvpFaction = "",
 	faction = "",
 	level = 38,
 	chanceHit = 0.39,
@@ -11,7 +10,7 @@ mutant_bark_mite_queen = Creature:new {
 	baseHAM = 8500,
 	baseHAMmax = 10300,
 	armor = 0,
-	resists = {65,65,20,55,55,-1,-1,-1,-1},
+	resists = {165,165,20,155,155,-1,-1,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 35,
 	hideType = "hide_scaley",
@@ -32,8 +31,8 @@ mutant_bark_mite_queen = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"creatureareableeding",""},
-		{"strongpoison",""}
+		{"strongpoison",""},
+		{"creatureareableeding",""}
 	}
 }
 
