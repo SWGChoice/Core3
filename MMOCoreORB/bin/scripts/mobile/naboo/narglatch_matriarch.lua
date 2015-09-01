@@ -1,7 +1,6 @@
 narglatch_matriarch = Creature:new {
 	objectName = "@mob/creature_names:narglatch_matriarch",
 	socialGroup = "narglatch",
-	pvpFaction = "",
 	faction = "",
 	level = 27,
 	chanceHit = 0.36,
@@ -11,7 +10,7 @@ narglatch_matriarch = Creature:new {
 	baseHAM = 7700,
 	baseHAMmax = 9400,
 	armor = 0,
-	resists = {30,25,15,-1,15,65,-1,-1,-1},
+	resists = {130,125,15,-1,15,165,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 65,
 	hideType = "hide_bristley",
@@ -32,8 +31,8 @@ narglatch_matriarch = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
-		{"stunattack","stunChance=50"}
+		{"intimidationattack",""},
+		{"stunattack",""}
 	}
 }
 

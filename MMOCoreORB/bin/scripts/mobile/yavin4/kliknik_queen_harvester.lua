@@ -1,7 +1,6 @@
 kliknik_queen_harvester = Creature:new {
 	objectName = "@mob/creature_names:kliknik_queen_harvester",
 	socialGroup = "kliknik",
-	pvpFaction = "",
 	faction = "",
 	level = 30,
 	chanceHit = 0.37,
@@ -10,8 +9,8 @@ kliknik_queen_harvester = Creature:new {
 	baseXp = 3005,
 	baseHAM = 8200,
 	baseHAMmax = 10000,
-	armor = 1,
-	resists = {40,40,-1,20,20,-1,-1,-1,-1},
+	armor = 0,
+	resists = {140,140,-1,15,15,-1,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 15,
 	hideType = "hide_scaley",
@@ -33,14 +32,14 @@ kliknik_queen_harvester = Creature:new {
 	        groups = {
 				{group = "kliknik_common", chance = 10000000}
 			},
-			lootChance = 2000000
+			lootChance = 1600000
 		}
 	},
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"mildpoison",""},
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""},
+		{"mildpoison",""}
 	}
 }
 

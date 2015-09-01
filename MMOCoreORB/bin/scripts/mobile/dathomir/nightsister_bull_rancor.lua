@@ -1,7 +1,6 @@
 nightsister_bull_rancor = Creature:new {
 	objectName = "@mob/creature_names:nightsister_bull_rancor",
 	socialGroup = "nightsister",
-	pvpFaction = "",
 	faction = "nightsister",
 	level = 65,
 	chanceHit = 0.6,
@@ -11,7 +10,7 @@ nightsister_bull_rancor = Creature:new {
 	baseHAM = 11000,
 	baseHAMmax = 14000,
 	armor = 1,
-	resists = {15,60,15,100,100,100,15,15,-1},
+	resists = {15,160,15,200,200,200,15,15,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 1000,
 	hideType = "hide_leathery",
@@ -32,24 +31,18 @@ nightsister_bull_rancor = Creature:new {
 		{
 			groups = {
 				{group = "rancor_common", chance = 4000000},
-				{group = "pistols", chance = 750000},
-				{group = "heavy_weapons", chance = 500000},
-				{group = "rifles", chance = 750000},
-				{group = "carbines", chance = 500000},
-				{group = "grenades_looted", chance = 500000},
-				{group = "armor_all", chance = 1000000},
-				{group = "melee_unarmed", chance = 1000000},
-				{group = "wearables_common", chance = 500000},
-				{group = "wearables_uncommon", chance = 500000}
+				{group = "armor_all", chance = 2000000},
+				{group = "weapons_all", chance = 2500000},
+				{group = "wearables_all", chance = 1500000}
 			},
-			lootChance = 2600000
+			lootChance = 2300000
 		}
 	},
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
 		{"creatureareadisease",""},
-		{"dizzyattack","dizzyChance=50"}
+		{"dizzyattack",""}
 	}
 }
 

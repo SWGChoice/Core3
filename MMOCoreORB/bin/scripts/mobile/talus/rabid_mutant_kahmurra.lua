@@ -1,7 +1,6 @@
 rabid_mutant_kahmurra = Creature:new {
 	objectName = "@mob/creature_names:rabid_mutant_kahmurra",
 	socialGroup = "kahmurra",
-	pvpFaction = "",
 	faction = "",
 	level = 41,
 	chanceHit = 0.44,
@@ -11,7 +10,7 @@ rabid_mutant_kahmurra = Creature:new {
 	baseHAM = 9300,
 	baseHAMmax = 11300,
 	armor = 0,
-	resists = {30,30,30,45,45,45,45,35,-1},
+	resists = {30,30,30,145,145,145,145,135,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 50,
 	hideType = "hide_bristley",
@@ -34,7 +33,7 @@ rabid_mutant_kahmurra = Creature:new {
 	conversationTemplate = "",
 	attacks = {
 		{"strongdisease",""},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

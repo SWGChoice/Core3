@@ -1,7 +1,6 @@
 insane_mantigrue_berserker = Creature:new {
 	objectName = "@mob/creature_names:mantigrue_insane_berserker",
 	socialGroup = "mantigrue",
-	pvpFaction = "",
 	faction = "",
 	level = 50,
 	chanceHit = 0.43,
@@ -11,7 +10,7 @@ insane_mantigrue_berserker = Creature:new {
 	baseHAM = 9200,
 	baseHAMmax = 11200,
 	armor = 1,
-	resists = {50,50,100,50,-1,20,20,100,-1},
+	resists = {150,150,200,150,-1,120,120,200,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 85,
 	hideType = "hide_wooly",
@@ -33,7 +32,8 @@ insane_mantigrue_berserker = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"}
+		{"blindattack",""},
+		{"stunattack",""}
 	}
 }
 

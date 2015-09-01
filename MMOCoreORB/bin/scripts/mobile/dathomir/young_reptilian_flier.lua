@@ -1,7 +1,6 @@
 young_reptilian_flier = Creature:new {
 	objectName = "@mob/creature_names:young_reptilian_flier",
 	socialGroup = "reptilian_flier",
-	pvpFaction = "",
 	faction = "",
 	level = 10,
 	chanceHit = 0.28,
@@ -11,7 +10,7 @@ young_reptilian_flier = Creature:new {
 	baseHAM = 1000,
 	baseHAMmax = 1200,
 	armor = 0,
-	resists = {0,0,0,0,0,0,0,0,0},
+	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_avian",
 	meatAmount = 120,
 	hideType = "hide_leathery",
@@ -24,7 +23,7 @@ young_reptilian_flier = Creature:new {
 	pvpBitmask = AGGRESSIVE + ATTACKABLE + ENEMY,
 	creatureBitmask = PACK,
 	optionsBitmask = 0,
-	diet = NONE,
+	diet = CARNIVORE,
 
 	templates = {"object/mobile/young_reptilian_flier.iff"},
 	scale = 0.8,
@@ -32,7 +31,7 @@ young_reptilian_flier = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

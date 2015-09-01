@@ -1,7 +1,7 @@
 crafting_contractor = Creature:new {
 	objectName = "@mob/creature_names:crafting_contractor",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "townsperson",
-	pvpFaction = "townsperson",
 	faction = "townsperson",
 	level = 100,
 	chanceHit = 1,

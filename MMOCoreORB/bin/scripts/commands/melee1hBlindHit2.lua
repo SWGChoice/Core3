@@ -51,7 +51,7 @@ Melee1hBlindHit2Command = {
 	mindCostMultiplier = 1.25,
         accuracyBonus = 25,
 
-	areaRange = 7,
+	areaRange = 16,
 	areaAction = true,
 
 	stateEffects = {
@@ -61,12 +61,13 @@ Melee1hBlindHit2Command = {
 		{ "blind_defense", "resistance_states" }, 
 		{ "jedi_state_defense" }, 
 		100, 
-		100, 
+		0, 
 		50 
 	  )
 	},
 
 	poolsToDamage = RANDOM_ATTRIBUTE,
+	weaponType = ONEHANDMELEEWEAPON,
 
 	animationCRC = hashCode("combo_2b_medium"),
 

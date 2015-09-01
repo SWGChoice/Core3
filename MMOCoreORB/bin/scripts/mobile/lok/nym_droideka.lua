@@ -1,7 +1,6 @@
 nym_droideka = Creature:new {
 	objectName = "@mob/creature_names:nym_droideka_strong",
 	socialGroup = "nym",
-	pvpFaction = "nym",
 	faction = "nym",
 	level = 45,
 	chanceHit = 0.47,
@@ -28,7 +27,7 @@ nym_droideka = Creature:new {
 
 	templates = {"object/mobile/droideka.iff"},
 	lootGroups = {
-	    {
+		{
 			groups = {
 				{group = "junk", chance = 4500000},
 				{group = "wearables_uncommon", chance = 2000000},
@@ -36,8 +35,7 @@ nym_droideka = Creature:new {
 				{group = "pistols", chance = 1000000},
 				{group = "carbines", chance = 1000000},
 				{group = "tailor_components", chance = 500000}
-			},
-			lootChance = 3500000
+			}
 		}
 	},
 	defaultAttack = "creaturerangedattack",

@@ -1,7 +1,7 @@
 grungy_donkuwah_laborer = Creature:new {
 	objectName = "@mob/creature_names:grungy_donkuwah_laborer",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "donkuwah_tribe",
-	pvpFaction = "donkuwah_tribe",
 	faction = "donkuwah_tribe",
 	level = 28,
 	chanceHit = 0.37,
@@ -27,14 +27,14 @@ grungy_donkuwah_laborer = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {
-			"object/mobile/dulok_male.iff",
-			"object/mobile/dulok_female.iff"},
+		"object/mobile/dulok_male.iff",
+		"object/mobile/dulok_female.iff"},
 	lootGroups = {
-		 {
-	        groups = {
+		{
+			groups = {
 				{group = "donkuwah_common", chance = 10000000}
 			},
-			lootChance = 2300000
+			lootChance = 1560000
 		}
 	},
 	weapons = {"donkuwah_weapons"},

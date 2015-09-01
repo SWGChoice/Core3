@@ -1,7 +1,6 @@
 vicious_squall = Creature:new {
 	objectName = "@mob/creature_names:vicious_squall",
 	socialGroup = "squall",
-	pvpFaction = "",
 	faction = "",
 	level = 12,
 	chanceHit = 0.29,
@@ -11,7 +10,7 @@ vicious_squall = Creature:new {
 	baseHAM = 1200,
 	baseHAMmax = 1400,
 	armor = 0,
-	resists = {0,0,0,0,0,0,0,0,0},
+	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 12,
 	hideType = "hide_bristley",

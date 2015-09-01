@@ -1,7 +1,6 @@
 angler_hatchling = Creature:new {
 	objectName = "@mob/creature_names:angler_hatchling",
 	socialGroup = "angler",
-	pvpFaction = "",
 	faction = "",
 	level = 8,
 	chanceHit = 0.27,
@@ -11,7 +10,7 @@ angler_hatchling = Creature:new {
 	baseHAM = 405,
 	baseHAMmax = 495,
 	armor = 0,
-	resists = {0,0,0,0,0,0,0,-1,-1},
+	resists = {0,0,0,-1,0,0,0,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 2,
 	hideType = "",
@@ -33,7 +32,7 @@ angler_hatchling = Creature:new {
 	conversationTemplate = "",
 	attacks = {
 		{"mildpoison",""},
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""}
 	}
 }
 

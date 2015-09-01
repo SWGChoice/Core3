@@ -51,11 +51,13 @@ Melee1hLunge2Command = {
 	mindCostMultiplier = 1.5,
         accuracyBonus = 25,
 
-	animationCRC = hashCode("melee1hlunge2"),
+	animationCRC = hashCode("lower_posture_1hmelee_1"),
 
 	combatSpam = "lungestab",
 
 	range = 20,
+	
+	weaponType = ONEHANDMELEEWEAPON,
 
 	stateEffects = {
 	  StateEffect( 
@@ -64,7 +66,7 @@ Melee1hLunge2Command = {
 		{ "knockdown_defense" }, 
 		{}, 
 		100, 
-		100, 
+		0, 
 		10 
 	  )
 	}

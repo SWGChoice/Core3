@@ -1,7 +1,6 @@
 kliknik_scout = Creature:new {
 	objectName = "@mob/creature_names:kliknik_scout",
 	socialGroup = "kliknik",
-	pvpFaction = "",
 	faction = "",
 	level = 27,
 	chanceHit = 0.36,
@@ -10,8 +9,8 @@ kliknik_scout = Creature:new {
 	baseXp = 2730,
 	baseHAM = 7200,
 	baseHAMmax = 8800,
-	armor = 1,
-	resists = {35,20,15,30,15,15,15,-1,-1},
+	armor = 0,
+	resists = {135,120,15,130,15,15,15,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 6,
 	hideType = "hide_scaley",
@@ -34,13 +33,13 @@ kliknik_scout = Creature:new {
 	        groups = {
 				{group = "kliknik_common", chance = 10000000}
 			},
-			lootChance = 2000000
+			lootChance = 1540000
 		}
 	},
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
+		{"intimidationattack",""},
 		{"mildpoison",""}
 	}
 }

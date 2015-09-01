@@ -1,7 +1,6 @@
 blood_frenzied_boar_wolf = Creature:new {
 	objectName = "@mob/creature_names:blood_frenzied_boar_wolf",
 	socialGroup = "boar",
-	pvpFaction = "",
 	faction = "",
 	level = 45,
 	chanceHit = 0.44,
@@ -11,7 +10,7 @@ blood_frenzied_boar_wolf = Creature:new {
 	baseHAM = 10000,
 	baseHAMmax = 12000,
 	armor = 0,
-	resists = {30,30,30,75,75,-1,30,-1,-1},
+	resists = {30,30,30,175,175,-1,30,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 65,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ blood_frenzied_boar_wolf = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"creatureareableeding",""}
+		{"creatureareableeding",""},
+		{"blindattack",""}
 	}
 }
 

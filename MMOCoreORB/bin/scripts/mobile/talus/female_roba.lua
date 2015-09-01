@@ -1,7 +1,6 @@
 female_roba = Creature:new {
 	objectName = "@mob/creature_names:roba_female",
 	socialGroup = "roba",
-	pvpFaction = "",
 	faction = "",
 	level = 16,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ female_roba = Creature:new {
 	baseHAM = 2900,
 	baseHAMmax = 3500,
 	armor = 0,
-	resists = {5,5,5,40,-1,-1,-1,-1,-1},
+	resists = {5,5,5,140,-1,-1,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 10,
 	hideType = "hide_leathery",
@@ -33,7 +32,7 @@ female_roba = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"}
+		{"dizzyattack",""}
 	}
 }
 

@@ -1,7 +1,7 @@
 borvos_mercenary = Creature:new {
 	objectName = "@mob/creature_names:borvos_mercenary",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "borvo",
-	pvpFaction = "borvo",
 	faction = "borvo",
 	level = 12,
 	chanceHit = 0.29,
@@ -37,12 +37,12 @@ borvos_mercenary = Creature:new {
 				{group = "rifles", chance = 500000},
 				{group = "carbines", chance = 500000},
 				{group = "borvos_common", chance = 2800000}
-			},
-			lootChance = 2400000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_medium"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlermid,marksmanmid)
 }
 

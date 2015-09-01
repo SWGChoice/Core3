@@ -1,7 +1,6 @@
 mature_hanadak_rock_smasher = Creature:new {
 	objectName = "@mob/creature_names:mature_hanadak_rock_smasher",
 	socialGroup = "hanadak",
-	pvpFaction = "",
 	faction = "",
 	level = 35,
 	chanceHit = 0.41,
@@ -11,7 +10,7 @@ mature_hanadak_rock_smasher = Creature:new {
 	baseHAM = 8700,
 	baseHAMmax = 10700,
 	armor = 0,
-	resists = {20,60,20,-1,-1,-1,-1,-1,-1},
+	resists = {20,160,20,-1,-1,-1,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 35,
 	hideType = "hide_bristley",
@@ -33,8 +32,8 @@ mature_hanadak_rock_smasher = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"dizzyattack",""}
 	}
 }
 

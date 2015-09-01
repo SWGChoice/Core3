@@ -1,7 +1,6 @@
 borgle_harvester = Creature:new {
 	objectName = "@mob/creature_names:borgle_harvester",
 	socialGroup = "borgle",
-	pvpFaction = "",
 	faction = "",
 	level = 13,
 	chanceHit = 0.29,
@@ -11,7 +10,7 @@ borgle_harvester = Creature:new {
 	baseHAM = 1200,
 	baseHAMmax = 1400,
 	armor = 0,
-	resists = {10,10,0,0,0,0,0,-1,-1},
+	resists = {110,110,0,0,0,0,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 5,
 	hideType = "hide_leathery",
@@ -33,7 +32,8 @@ borgle_harvester = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"",""},
+		{"posturedownattack",""}
 	}
 }
 

@@ -2,7 +2,6 @@ mand_bunker_foreman = Creature:new {
 	objectName = "",
 	customName = "Japer Witter (a mine Foreman)",
 	socialGroup = "death_watch",
-	pvpFaction = "",
 	faction = "",
 	level = 100,
 	chanceHit = 1,
@@ -30,7 +29,7 @@ mand_bunker_foreman = Creature:new {
 	templates = {"object/mobile/dressed_mand_bunker_foreman.iff"},
 	lootGroups = {},
 	weapons = {},
-	conversationTemplate = "foreman_convotemplate",
+	conversationTemplate = "deathWatchForemanConvoTemplate",
 	attacks = {
 	}
 }

@@ -1,7 +1,6 @@
 rogue_bantha = Creature:new {
 	objectName = "@mob/creature_names:rogue_bantha",
 	socialGroup = "bantha",
-	pvpFaction = "",
 	faction = "",
 	level = 15,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ rogue_bantha = Creature:new {
 	baseHAM = 1500,
 	baseHAMmax = 1900,
 	armor = 0,
-	resists = {0,0,0,20,0,0,0,-1,-1},
+	resists = {0,0,0,120,0,0,0,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 400,
 	hideType = "hide_wooly",
@@ -33,7 +32,7 @@ rogue_bantha = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

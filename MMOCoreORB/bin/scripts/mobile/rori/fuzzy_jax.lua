@@ -1,7 +1,6 @@
 fuzzy_jax = Creature:new {
 	objectName = "@mob/creature_names:fuzzy_jax",
 	socialGroup = "jax",
-	pvpFaction = "",
 	faction = "",
 	level = 13,
 	chanceHit = 0.29,
@@ -11,7 +10,7 @@ fuzzy_jax = Creature:new {
 	baseHAM = 1000,
 	baseHAMmax = 1200,
 	armor = 0,
-	resists = {10,25,10,-1,0,-1,-1,-1,-1},
+	resists = {110,125,110,-1,0,-1,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 11,
 	hideType = "hide_bristley",
@@ -33,7 +32,8 @@ fuzzy_jax = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"",""},
+		{"stunattack",""}
 	}
 }
 

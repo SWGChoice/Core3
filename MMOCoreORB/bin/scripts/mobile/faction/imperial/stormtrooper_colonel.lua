@@ -1,7 +1,7 @@
 stormtrooper_colonel = Creature:new {
 	objectName = "@mob/creature_names:fbase_stormtrooper_squad_leader_hard",
+	randomNameType = NAME_STORMTROOPER_TAG,
 	socialGroup = "imperial",
-	pvpFaction = "imperial",
 	faction = "imperial",
 	level = 27,
 	chanceHit = 0.37,
@@ -41,12 +41,13 @@ stormtrooper_colonel = Creature:new {
 				{group = "imperial_officer_common", chance = 450000},
 				{group = "stormtrooper_common", chance = 700000},
 				{group = "wearables_common", chance = 1000000}
-			},
-			lootChance = 2800000
+			}
 		}
 	},
 	weapons = {"stormtrooper_weapons"},
 	conversationTemplate = "imperialRecruiterConvoTemplate",
+	reactionStf = "@npc_reaction/stormtrooper",
+	personalityStf = "@hireling/hireling_stormtrooper",		
 	attacks = merge(riflemanmaster,carbineermaster,brawlermaster)
 }
 

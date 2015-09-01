@@ -1,7 +1,6 @@
 bolle_bol_male = Creature:new {
 	objectName = "@mob/creature_names:bolle_bol_male",
 	socialGroup = "bol",
-	pvpFaction = "",
 	faction = "",
 	level = 30,
 	chanceHit = 0.39,
@@ -11,7 +10,7 @@ bolle_bol_male = Creature:new {
 	baseHAM = 8400,
 	baseHAMmax = 10200,
 	armor = 0,
-	resists = {20,20,20,20,50,20,50,-1,-1},
+	resists = {20,20,20,20,150,20,150,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 450,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ bolle_bol_male = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""},
+		{"blindattack",""}
 	}
 }
 

@@ -1,7 +1,7 @@
 rebel_admiral = Creature:new {
 	objectName = "@mob/creature_names:corvette_rebel_admiral",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "rebel",
-	pvpFaction = "rebel",
 	faction = "rebel",
 	level = 226,
 	chanceHit = 19.75,
@@ -29,7 +29,7 @@ rebel_admiral = Creature:new {
 	templates = {"object/mobile/dressed_rebel_major_zabrak_male_01.iff"},
 	lootGroups = {
 		{
-	        groups = {
+			groups = {
 				{group = "color_crystals", chance = 100000},
 				{group = "junk", chance = 4250000},
 				{group = "rifles", chance = 1000000},
@@ -40,12 +40,12 @@ rebel_admiral = Creature:new {
 				{group = "armor_attachments", chance = 100000},
 				{group = "rebel_officer_common", chance = 450000},
 				{group = "wearables_scarce", chance = 1000000}
-			},
-			lootChance = 3000000
-		}	
+			}
+		}
 	},
 	weapons = {"rebel_weapons_heavy"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/military",
 	attacks = merge(commandomaster,marksmanmaster,brawlermaster)
 }
 

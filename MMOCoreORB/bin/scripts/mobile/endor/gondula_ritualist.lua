@@ -1,7 +1,7 @@
 gondula_ritualist = Creature:new {
 	objectName = "@mob/creature_names:gundula_ritualist",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "gondula_tribe",
-	pvpFaction = "gondula_tribe",
 	faction = "gondula_tribe",
 	level = 22,
 	chanceHit = 0.35,
@@ -32,11 +32,11 @@ gondula_ritualist = Creature:new {
 		"object/mobile/dressed_ewok_f_11.iff",
 		"object/mobile/dressed_ewok_m_02.iff"},
 	lootGroups = {
-		 {
-	        groups = {
+		{
+			groups = {
 				{group = "ewok", chance = 10000000}
 			},
-			lootChance = 3000000
+			lootChance = 1440000
 		}
 	},
 	weapons = {"ewok_weapons"},

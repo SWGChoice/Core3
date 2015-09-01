@@ -1,8 +1,8 @@
 borvos_soldier = Creature:new {
 	objectName = "",
+	randomNameType = NAME_GENERIC_TAG,
 	customName = "Borvo's Soldier",
 	socialGroup = "borvo",
-	pvpFaction = "borvo",
 	faction = "borvo",
 	level = 10,
 	chanceHit = 0.28,
@@ -38,12 +38,12 @@ borvos_soldier = Creature:new {
 				{group = "rifles", chance = 500000},
 				{group = "carbines", chance = 500000},
 				{group = "borvos_common", chance = 2800000}
-			},
-			lootChance = 2400000
+			}
 		}
 	},
 	weapons = {"ranged_weapons"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlernovice,marksmannovice)
 }
 

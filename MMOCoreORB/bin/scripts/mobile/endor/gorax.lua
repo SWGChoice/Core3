@@ -1,7 +1,6 @@
 gorax = Creature:new {
 	objectName = "@mob/creature_names:gorax",
 	socialGroup = "gorax",
-	pvpFaction = "",
 	faction = "",
 	level = 300,
 	chanceHit = 30,
@@ -11,7 +10,7 @@ gorax = Creature:new {
 	baseHAM = 385000,
 	baseHAMmax = 471000,
 	armor = 3,
-	resists = {65,65,65,65,65,65,65,65,1},
+	resists = {165,145,35,35,35,35,35,35,-1},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "",
@@ -30,18 +29,18 @@ gorax = Creature:new {
 	lootGroups = {
 	 {
 	        groups = {
-				{group = "gorax_common", chance = 5000000},
-				{group = "armor_attachments", chance = 2500000},
-				{group = "clothing_attachments", chance = 2500000}
+				{group = "gorax_common", chance = 6000000},
+				{group = "armor_attachments", chance = 2000000},
+				{group = "clothing_attachments", chance = 2000000}
 			},
-			lootChance = 4000000
+			lootChance = 7000000
 		}
 	},
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
 		{"creatureareaattack",""},
-		{"creatureareaknockdown","knockdownChance=50"}
+		{"creatureareaknockdown",""}
 	}
 }
 

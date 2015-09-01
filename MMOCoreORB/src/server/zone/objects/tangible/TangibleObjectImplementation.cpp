@@ -1,46 +1,6 @@
 /*
-Copyright (C) 2007 <SWGEmu>
-
-This File is part of Core3.
-
-This program is free software; you can redistribute
-it and/or modify it under the terms of the GNU Lesser
-General Public License as published by the Free Software
-Foundation; either version 2 of the License,
-or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU Lesser General Public License for
-more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this program; if not, write to
-the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-
-Linking Engine3 statically or dynamically with other modules
-is making a combined work based on Engine3.
-Thus, the terms and conditions of the GNU Lesser General Public License
-cover the whole combination.
-
-In addition, as a special exception, the copyright holders of Engine3
-give you permission to combine Engine3 program with free software
-programs or libraries that are released under the GNU LGPL and with
-code included in the standard release of Core3 under the GNU LGPL
-license (or modified versions of such code, with unchanged license).
-You may copy and distribute such a system following the terms of the
-GNU LGPL for Engine3 and the licenses of the other code concerned,
-provided that you include the source code of that other code when
-and as the GNU LGPL requires distribution of source code.
-
-Note that people who make modified versions of Engine3 are not obligated
-to grant this special exception for their modified versions;
-it is their choice whether to do so. The GNU Lesser General Public License
-gives permission to release a modified version without this exception;
-this exception also makes it possible to release a modified version
-which carries forward this exception.
- */
+				Copyright <SWGEmu>
+		See file COPYING for copying conditions. */
 
 #include "server/zone/objects/tangible/TangibleObject.h"
 #include "variables/SkillModMap.h"
@@ -73,7 +33,10 @@ which carries forward this exception.
 #include "server/zone/templates/tangible/tool/RepairToolTemplate.h"
 #include "server/zone/objects/tangible/tool/repair/RepairTool.h"
 #include "server/zone/managers/player/PlayerManager.h"
+#include "server/zone/managers/creature/PetManager.h"
 #include "server/zone/objects/tangible/wearables/WearableObject.h"
+#include "server/zone/objects/intangible/PetControlDevice.h"
+#include "server/zone/objects/tangible/tool/antidecay/AntiDecayKit.h"
 #include "engine/engine.h"
 
 
@@ -117,16 +80,26 @@ void TangibleObjectImplementation::notifyLoadFromDatabase() {
 	SceneObjectImplementation::notifyLoadFromDatabase();
 
 	for (int i = 0; i < activeAreas.size(); ++i) {
-		activeAreas.get(i)->notifyExit(_this.get());
+		activeAreas.get(i)->notifyExit(asTangibleObject());
 	}
 
 	activeAreas.removeAll();
+
+	if (hasAntiDecayKit()) {
+		AntiDecayKit* adk = antiDecayKitObject.castTo<AntiDecayKit*>();
+
+		if (adk != NULL && !adk->isUsed()) {
+			Locker locker(adk);
+
+			adk->setUsed(true);
+		}
+	}
 }
 
 void TangibleObjectImplementation::sendBaselinesTo(SceneObject* player) {
 	info("sending tano baselines");
 
-	Reference<TangibleObject*> thisPointer = _this.get();
+	Reference<TangibleObject*> thisPointer = asTangibleObject();
 
 	BaseMessage* tano3 = new TangibleObjectMessage3(thisPointer);
 	player->sendMessage(tano3);
@@ -135,7 +108,7 @@ void TangibleObjectImplementation::sendBaselinesTo(SceneObject* player) {
 	player->sendMessage(tano6);
 
 	if (player->isPlayerCreature())
-		sendPvpStatusTo(cast<CreatureObject*>(player));
+		sendPvpStatusTo(player->asCreatureObject());
 }
 
 void TangibleObjectImplementation::sendPvpStatusTo(CreatureObject* player) {
@@ -153,20 +126,23 @@ void TangibleObjectImplementation::sendPvpStatusTo(CreatureObject* player) {
 	} else if (!isAggressiveTo(player))
 		newPvpStatusBitmask -= CreatureFlag::AGGRESSIVE;
 
-	BaseMessage* pvp = new UpdatePVPStatusMessage(_this.get(), newPvpStatusBitmask);
+	if (newPvpStatusBitmask & CreatureFlag::TEF) {
+		if (player != asTangibleObject())
+			newPvpStatusBitmask -= CreatureFlag::TEF;
+	}
+
+	BaseMessage* pvp = new UpdatePVPStatusMessage(asTangibleObject(), newPvpStatusBitmask);
 	player->sendMessage(pvp);
 }
 
-void TangibleObjectImplementation::broadcastPvpStatusBitmask(){
+void TangibleObjectImplementation::broadcastPvpStatusBitmask() {
 	if (getZone() == NULL)
 			return;
 
 	if (closeobjects != NULL) {
 		Zone* zone = getZone();
 
-		//Locker locker(zone);
-
-		CreatureObject* thisCreo = cast<CreatureObject*>(_this.get().get());
+		CreatureObject* thisCreo = asCreatureObject();
 
 		SortedVector<ManagedReference<QuadTreeEntry*> > closeObjects(closeobjects->size(), 10);
 
@@ -176,7 +152,7 @@ void TangibleObjectImplementation::broadcastPvpStatusBitmask(){
 			SceneObject* obj = cast<SceneObject*>(closeObjects.get(i).get());
 
 			if (obj != NULL && obj->isCreatureObject()) {
-				CreatureObject* creo = cast<CreatureObject*>(obj);
+				CreatureObject* creo = obj->asCreatureObject();
 
 				sendPvpStatusTo(creo);
 
@@ -188,11 +164,10 @@ void TangibleObjectImplementation::broadcastPvpStatusBitmask(){
 	}
 }
 
-void TangibleObjectImplementation::setPvpStatusBitmask(int bitmask, bool notifyClient) {
+void TangibleObjectImplementation::setPvpStatusBitmask(uint32 bitmask, bool notifyClient) {
 	pvpStatusBitmask = bitmask;
 
 	broadcastPvpStatusBitmask();
-
 }
 
 void TangibleObjectImplementation::setPvpStatusBit(uint32 pvpStatus, bool notifyClient) {
@@ -209,7 +184,7 @@ void TangibleObjectImplementation::clearPvpStatusBit(uint32 pvpStatus, bool noti
 
 void TangibleObjectImplementation::synchronizedUIListen(SceneObject* player, int value) {
 	// Send TANO7 Baseline
-	TangibleObjectMessage7* tano7 = new TangibleObjectMessage7(_this.get());
+	TangibleObjectMessage7* tano7 = new TangibleObjectMessage7(asTangibleObject());
 	player->sendMessage(tano7);
 }
 
@@ -224,9 +199,62 @@ void TangibleObjectImplementation::setSerialNumber(const String& serial) {
 	objectSerial = serial;
 }
 
-void TangibleObjectImplementation::setDefender(SceneObject* defender) {
-	if (defender == _this.get())
+void TangibleObjectImplementation::addVisibleComponent(int value, bool notifyClient) {
+	if (visibleComponents.contains(value))
 		return;
+
+	if (notifyClient) {
+		TangibleObjectDeltaMessage3* dtano3 = new TangibleObjectDeltaMessage3(asTangibleObject());
+		dtano3->startUpdate(0x05);
+
+		visibleComponents.add(value, dtano3);
+
+		dtano3->close();
+
+		broadcastMessage(dtano3, true);
+	} else {
+		visibleComponents.add(value);
+	}
+}
+
+void TangibleObjectImplementation::removeAllVisibleComponents(bool notifyClient) {
+	if (notifyClient) {
+		TangibleObjectDeltaMessage3* dtano3 = new TangibleObjectDeltaMessage3(asTangibleObject());
+		dtano3->startUpdate(0x05);
+
+		visibleComponents.removeAll(dtano3);
+
+		dtano3->close();
+
+		broadcastMessage(dtano3, true);
+	} else {
+		visibleComponents.removeAll();
+	}
+}
+
+void TangibleObjectImplementation::removeVisibleComponent(int value, bool notifyClient) {
+	if (!visibleComponents.contains(value))
+		return;
+
+	if (notifyClient) {
+		TangibleObjectDeltaMessage3* dtano3 = new TangibleObjectDeltaMessage3(asTangibleObject());
+		dtano3->startUpdate(0x05);
+
+		visibleComponents.drop(value, dtano3);
+
+		dtano3->close();
+
+		broadcastMessage(dtano3, true);
+	} else {
+		visibleComponents.drop(value);
+	}
+}
+
+void TangibleObjectImplementation::setDefender(SceneObject* defender) {
+	if (defender == asTangibleObject())
+		return;
+
+	assert(defender);
 
 	if (defenderList.size() == 0) {
 		addDefender(defender);
@@ -243,7 +271,7 @@ void TangibleObjectImplementation::setDefender(SceneObject* defender) {
 
 			temp = defenderList.get(0);
 
-			TangibleObjectDeltaMessage6* dtano6 = new TangibleObjectDeltaMessage6(_this.get());
+			TangibleObjectDeltaMessage6* dtano6 = new TangibleObjectDeltaMessage6(asTangibleObject());
 			dtano6->startUpdate(0x01);
 
 			defenderList.set(0, defender, dtano6, 2);
@@ -264,8 +292,10 @@ void TangibleObjectImplementation::setDefender(SceneObject* defender) {
 }
 
 void TangibleObjectImplementation::addDefender(SceneObject* defender) {
-	if (defender == _this.get())
+	if (defender == asTangibleObject())
 		return;
+
+	assert(defender);
 
 	for (int i = 0; i < defenderList.size(); ++i) {
 		if (defender == defenderList.get(i))
@@ -274,7 +304,7 @@ void TangibleObjectImplementation::addDefender(SceneObject* defender) {
 
 	//info("adding defender");
 
-	TangibleObjectDeltaMessage6* dtano6 = new TangibleObjectDeltaMessage6(_this.get());
+	TangibleObjectDeltaMessage6* dtano6 = new TangibleObjectDeltaMessage6(asTangibleObject());
 	dtano6->startUpdate(0x01);
 
 	defenderList.add(defender, dtano6);
@@ -298,7 +328,7 @@ void TangibleObjectImplementation::removeDefenders() {
 	for (int i = 0; i < defenderList.size(); i++)
 		notifyObservers(ObserverEventType::DEFENDERDROPPED, defenderList.get(i));
 
-	TangibleObjectDeltaMessage6* dtano6 = new TangibleObjectDeltaMessage6(_this.get());
+	TangibleObjectDeltaMessage6* dtano6 = new TangibleObjectDeltaMessage6(asTangibleObject());
 	dtano6->startUpdate(0x01);
 
 	defenderList.removeAll(dtano6);
@@ -316,7 +346,9 @@ void TangibleObjectImplementation::removeDefender(SceneObject* defender) {
 		if (defenderList.get(i) == defender) {
 			info("removing defender");
 
-			TangibleObjectDeltaMessage6* dtano6 = new TangibleObjectDeltaMessage6(_this.get());
+			notifyObservers(ObserverEventType::DEFENDERDROPPED, defender);
+
+			TangibleObjectDeltaMessage6* dtano6 = new TangibleObjectDeltaMessage6(asTangibleObject());
 
 			dtano6->startUpdate(0x01);
 
@@ -328,8 +360,6 @@ void TangibleObjectImplementation::removeDefender(SceneObject* defender) {
 			dtano6->close();
 
 			broadcastMessage(dtano6, true);
-
-			notifyObservers(ObserverEventType::DEFENDERDROPPED, defender);
 
 			//info("defender found and removed");
 			break;
@@ -382,7 +412,7 @@ void TangibleObjectImplementation::setCustomizationVariable(byte type, int16 val
 	if (!notifyClient)
 		return;
 
-	TangibleObjectDeltaMessage3* dtano3 = new TangibleObjectDeltaMessage3(_this.get());
+	TangibleObjectDeltaMessage3* dtano3 = new TangibleObjectDeltaMessage3(asTangibleObject());
 	dtano3->updateCustomizationString();
 	dtano3->close();
 
@@ -395,7 +425,7 @@ void TangibleObjectImplementation::setCustomizationVariable(const String& type, 
 	if(!notifyClient)
 		return;
 
-	TangibleObjectDeltaMessage3* dtano3 = new TangibleObjectDeltaMessage3(_this.get());
+	TangibleObjectDeltaMessage3* dtano3 = new TangibleObjectDeltaMessage3(asTangibleObject());
 	dtano3->updateCustomizationString();
 	dtano3->close();
 
@@ -412,7 +442,7 @@ void TangibleObjectImplementation::setCountdownTimer(unsigned int newUseCount, b
 	if (!notifyClient)
 		return;
 
-	TangibleObjectDeltaMessage3* dtano3 = new TangibleObjectDeltaMessage3(_this.get());
+	TangibleObjectDeltaMessage3* dtano3 = new TangibleObjectDeltaMessage3(asTangibleObject());
 	dtano3->updateCountdownTimer();
 	dtano3->close();
 
@@ -447,7 +477,7 @@ void TangibleObjectImplementation::setMaxCondition(int maxCond, bool notifyClien
 	if (!notifyClient)
 		return;
 
-	TangibleObjectDeltaMessage3* dtano3 = new TangibleObjectDeltaMessage3(_this.get());
+	TangibleObjectDeltaMessage3* dtano3 = new TangibleObjectDeltaMessage3(asTangibleObject());
 	dtano3->updateMaxCondition();
 	dtano3->close();
 
@@ -463,7 +493,7 @@ void TangibleObjectImplementation::setConditionDamage(float condDamage, bool not
 	if (!notifyClient)
 		return;
 
-	TangibleObjectDeltaMessage3* dtano3 = new TangibleObjectDeltaMessage3(_this.get());
+	TangibleObjectDeltaMessage3* dtano3 = new TangibleObjectDeltaMessage3(asTangibleObject());
 	dtano3->updateConditionDamage();
 	dtano3->close();
 
@@ -471,6 +501,9 @@ void TangibleObjectImplementation::setConditionDamage(float condDamage, bool not
 }
 
 int TangibleObjectImplementation::inflictDamage(TangibleObject* attacker, int damageType, float damage, bool destroy, bool notifyClient) {
+	if(hasAntiDecayKit())
+		return 0;
+
 	float newConditionDamage = conditionDamage + damage;
 
 	if (!destroy && newConditionDamage >= maxCondition)
@@ -481,9 +514,9 @@ int TangibleObjectImplementation::inflictDamage(TangibleObject* attacker, int da
 	setConditionDamage(newConditionDamage, notifyClient);
 
 	if (attacker->isCreatureObject()) {
-		CreatureObject* creature = cast<CreatureObject*>( attacker);
+		CreatureObject* creature = attacker->asCreatureObject();
 
-		if (damage > 0 && attacker != _this.get())
+		if (damage > 0 && attacker != asTangibleObject())
 			getThreatMap()->addDamage(creature, (uint32)damage);
 	}
 
@@ -494,6 +527,9 @@ int TangibleObjectImplementation::inflictDamage(TangibleObject* attacker, int da
 }
 
 int TangibleObjectImplementation::inflictDamage(TangibleObject* attacker, int damageType, float damage, bool destroy, const String& xp, bool notifyClient) {
+	if(hasAntiDecayKit())
+		return 0;
+
 	float newConditionDamage = conditionDamage + damage;
 
 	if (!destroy && newConditionDamage >= maxCondition)
@@ -502,9 +538,9 @@ int TangibleObjectImplementation::inflictDamage(TangibleObject* attacker, int da
 	setConditionDamage(newConditionDamage, notifyClient);
 
 	if (attacker->isCreatureObject()) {
-		CreatureObject* creature = cast<CreatureObject*>( attacker);
+		CreatureObject* creature = attacker->asCreatureObject();
 
-		if (damage > 0 && attacker != _this.get())
+		if (damage > 0 && attacker != asTangibleObject())
 			getThreatMap()->addDamage(creature, (uint32)damage, xp);
 	}
 
@@ -529,7 +565,7 @@ void TangibleObjectImplementation::dropFromDefenderLists(TangibleObject* destruc
 	if (defenderList.size() == 0)
 		return;
 
-	Reference<ClearDefenderListsTask*> task = new ClearDefenderListsTask(defenderList, _this.get());
+	Reference<ClearDefenderListsTask*> task = new ClearDefenderListsTask(defenderList, asTangibleObject());
 	Core::getTaskManager()->executeTask(task);
 
 	clearCombatState(false);
@@ -557,7 +593,7 @@ void TangibleObjectImplementation::setCustomObjectName(const UnicodeString& name
 	if (!notifyClient)
 		return;
 
-	TangibleObjectDeltaMessage3* dtano3 = new TangibleObjectDeltaMessage3(_this.get());
+	TangibleObjectDeltaMessage3* dtano3 = new TangibleObjectDeltaMessage3(asTangibleObject());
 	dtano3->updateName(name);
 	dtano3->close();
 
@@ -573,7 +609,7 @@ void TangibleObjectImplementation::setOptionsBitmask(uint32 bitmask, bool notify
 	if (!notifyClient)
 		return;
 
-	TangibleObjectDeltaMessage3* dtano3 = new TangibleObjectDeltaMessage3(_this.get());
+	TangibleObjectDeltaMessage3* dtano3 = new TangibleObjectDeltaMessage3(asTangibleObject());
 	dtano3->updateOptionsBitmask();
 	dtano3->close();
 
@@ -632,6 +668,11 @@ Reference<FactoryCrate*> TangibleObjectImplementation::createFactoryCrate(bool i
 	else
 		file = "object/factory/factory_crate_generic_items.iff";
 
+	SharedTangibleObjectTemplate* tanoData = dynamic_cast<SharedTangibleObjectTemplate*>(templateObject.get());
+
+	if (tanoData == NULL)
+		return NULL;
+
 	ObjectManager* objectManager = ObjectManager::instance();
 
 	Reference<FactoryCrate*> crate = (getZoneServer()->createObject(file.hashCode(), 2)).castTo<FactoryCrate*>();
@@ -639,24 +680,30 @@ Reference<FactoryCrate*> TangibleObjectImplementation::createFactoryCrate(bool i
 	if (crate == NULL)
 		return NULL;
 
-	SharedTangibleObjectTemplate* tanoData = dynamic_cast<SharedTangibleObjectTemplate*>(templateObject.get());
-
-	if (tanoData == NULL)
-		return NULL;
+	Locker locker(crate);
 
 	crate->setMaxCapacity(tanoData->getFactoryCrateSize());
 
 	if (insertSelf) {
-		crate->transferObject(_this.get(), -1, false);
+		if (!crate->transferObject(asTangibleObject(), -1, false)) {
+			crate->destroyObjectFromDatabase(true);
+			return NULL;
+		}
 	} else {
 
-		ManagedReference<TangibleObject*> protoclone = cast<TangibleObject*>( objectManager->cloneObject(_this.get()));
+		ManagedReference<TangibleObject*> protoclone = cast<TangibleObject*>( objectManager->cloneObject(asTangibleObject()));
 
-		if (protoclone == NULL)
+		if (protoclone == NULL) {
+			crate->destroyObjectFromDatabase(true);
 			return NULL;
+		}
 
 		protoclone->setParent(NULL);
-		crate->transferObject(protoclone, -1, false);
+		if (!crate->transferObject(protoclone, -1, false)) {
+			protoclone->destroyObjectFromDatabase(true);
+			crate->destroyObjectFromDatabase(true);
+			return NULL;
+		}
 	}
 
 	crate->setCustomObjectName(getCustomObjectName(), false);
@@ -824,14 +871,18 @@ void TangibleObjectImplementation::repair(CreatureObject* player) {
 		repairChance = 100;
 
 	String result = repairAttempt(repairChance);
+
+	Locker locker(repairTool);
+
 	repairTool->destroyObjectFromWorld(true);
+	repairTool->destroyObjectFromDatabase(true);
 
 	player->sendSystemMessage(result);
 }
 
 ThreatMap* TangibleObjectImplementation::getThreatMap() {
 	if (threatMap == NULL) {
-		Reference<ThreatMap*> newMap = new ThreatMap(_this.get());
+		Reference<ThreatMap*> newMap = new ThreatMap(asTangibleObject());
 
 		threatMap.compareAndSet(NULL, newMap.get());
 	}
@@ -854,10 +905,17 @@ bool TangibleObjectImplementation::isAttackableBy(CreatureObject* object) {
 		}
 
 	} else if (object->isAiAgent()) {
-		AiAgent* ai = cast<AiAgent*>(object);
+		AiAgent* ai = object->asAiAgent();
 
-		if (ai->getHomeObject() == _this.get()) {
+		if (ai->getHomeObject().get() == asTangibleObject()) {
 			return false;
+		}
+
+		if (ai->isPet()) {
+			ManagedReference<PetControlDevice*> pcd = ai->getControlDevice().get().castTo<PetControlDevice*>();
+			if (pcd != NULL && pcd->getPetType() == PetManager::FACTIONPET && isNeutral()) {
+				return false;
+			}
 		}
 	}
 
@@ -869,4 +927,24 @@ void TangibleObjectImplementation::addActiveArea(ActiveArea* area) {
 		area->deploy();
 
 	activeAreas.put(area);
+}
+
+bool TangibleObjectImplementation::isCityStreetLamp(){
+	return (templateObject != NULL && templateObject->getFullTemplateString().contains("object/tangible/furniture/city/streetlamp"));
+}
+
+bool TangibleObjectImplementation::isCityStatue(){
+	return (templateObject != NULL && templateObject->getFullTemplateString().contains("object/tangible/furniture/city/statue"));
+}
+
+bool TangibleObjectImplementation::isCityFountain(){
+	return (templateObject != NULL && templateObject->getFullTemplateString().contains("object/tangible/furniture/city/fountain"));
+}
+
+TangibleObject* TangibleObject::asTangibleObject() {
+	return this;
+}
+
+TangibleObject* TangibleObjectImplementation::asTangibleObject() {
+	return _this.getReferenceUnsafeStaticCast();
 }

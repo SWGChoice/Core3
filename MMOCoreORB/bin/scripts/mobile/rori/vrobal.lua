@@ -1,7 +1,6 @@
 vrobal = Creature:new {
 	objectName = "@mob/creature_names:vrobal",
 	socialGroup = "vrobal",
-	pvpFaction = "",
 	faction = "",
 	level = 14,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ vrobal = Creature:new {
 	baseHAM = 2000,
 	baseHAMmax = 2400,
 	armor = 0,
-	resists = {0,0,0,0,0,0,0,0,0},
+	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 13,
 	hideType = "hide_leathery",
@@ -32,7 +31,7 @@ vrobal = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""}
 	}
 }
 

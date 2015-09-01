@@ -1,46 +1,6 @@
 /*
-Copyright (C) 2007 <SWGEmu>
-
-This File is part of Core3.
-
-This program is free software; you can redistribute
-it and/or modify it under the terms of the GNU Lesser
-General Public License as published by the Free Software
-Foundation; either version 2 of the License,
-or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU Lesser General Public License for
-more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this program; if not, write to
-the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-
-Linking Engine3 statically or dynamically with other modules
-is making a combined work based on Engine3.
-Thus, the terms and conditions of the GNU Lesser General Public License
-cover the whole combination.
-
-In addition, as a special exception, the copyright holders of Engine3
-give you permission to combine Engine3 program with free software
-programs or libraries that are released under the GNU LGPL and with
-code included in the standard release of Core3 under the GNU LGPL
-license (or modified versions of such code, with unchanged license).
-You may copy and distribute such a system following the terms of the
-GNU LGPL for Engine3 and the licenses of the other code concerned,
-provided that you include the source code of that other code when
-and as the GNU LGPL requires distribution of source code.
-
-Note that people who make modified versions of Engine3 are not obligated
-to grant this special exception for their modified versions;
-it is their choice whether to do so. The GNU Lesser General Public License
-gives permission to release a modified version without this exception;
-this exception also makes it possible to release a modified version
-which carries forward this exception.
-*/
+				Copyright <SWGEmu>
+		See file COPYING for copying conditions.*/
 
 package server.zone.objects.tangible;
 
@@ -67,6 +27,7 @@ include server.zone.templates.SharedObjectTemplate;
 import server.zone.packets.object.ObjectMenuResponse;
 import server.zone.objects.tangible.threat.ThreatMap;
 import server.zone.objects.tangible.weapon.WeaponObject;
+include server.zone.objects.scene.variables.AutoDeltaSet;
 
 class TangibleObject extends SceneObject {
 	protected boolean targetable;
@@ -86,9 +47,15 @@ class TangibleObject extends SceneObject {
 	protected short level;
 	
 	protected unsigned int optionsBitmask;
+	@dereferenced
+	protected AtomicInteger magicBits;
+	
+	@dereferenced
+	protected AutoDeltaSet<int> visibleComponents;
+	
 	protected unsigned int pvpStatusBitmask;
 	
-	protected byte unknownByte;
+	protected byte objectVisible;
 	protected string craftersName;
 
 	protected int junkDealerNeeded;
@@ -108,6 +75,8 @@ class TangibleObject extends SceneObject {
 	@dereferenced
 	protected SortedVector<ActiveArea> activeAreas;
 
+	protected SceneObject antiDecayKitObject;
+
 	/**
 	 * TangibleObject constructor, used to initialized the object
 	 * @pre { templateData is a valid SharedTangibleObjectTemplate LuaObject that contains the necessary values to initialize CreatureObject }
@@ -118,6 +87,8 @@ class TangibleObject extends SceneObject {
 		Logger.setLoggingName("TangibleObject");
 		
 		initializeMembers();
+
+		antiDecayKitObject = null;
 	}
 	
 	public void initializeMembers() {
@@ -129,7 +100,7 @@ class TangibleObject extends SceneObject {
 
 		volume = 1;
 
-		unknownByte = 1;
+		objectVisible = 1;
 
 		useCount = 1;
 
@@ -243,6 +214,7 @@ class TangibleObject extends SceneObject {
 	 * @post { this object is locked, defender is active }
 	 * @param defender SceneObject to set as the active defender
 	 */
+	@preLocked
 	public native abstract void setDefender(SceneObject defender);
 	
 	/**
@@ -251,6 +223,7 @@ class TangibleObject extends SceneObject {
 	 * @post { this object is locked, defender is in the defender vector }
 	 * @param defender SceneObject to add to the defender vector
 	 */
+	@preLocked
 	public native abstract void addDefender(SceneObject defender);
 	
 	/**
@@ -259,6 +232,7 @@ class TangibleObject extends SceneObject {
 	 * @post { this object is locked, defender is not in the defender vector }
 	 * @param defender SceneObject to remove from the defender vector
 	 */
+	@preLocked
 	public native abstract void removeDefender(SceneObject defender);
 	
 	/**
@@ -266,6 +240,7 @@ class TangibleObject extends SceneObject {
 	 * @pre { this object is locked }
 	 * @post { this object is locked, defender vector is empty }
 	 */
+	@preLocked
 	public native abstract void removeDefenders();
 	
 	/**
@@ -283,13 +258,16 @@ class TangibleObject extends SceneObject {
 	 * @post { this object is locked }
 	 * @param newUseCount new value to update
 	 */
+	@preLocked
 	public native abstract void setUseCount(unsigned int newUseCount, boolean notifyClient = true);
 	
+	@preLocked
 	public native void setCountdownTimer(unsigned int newCount, boolean notifyClient = true);
 	
 	/**
 	 * Decreases use count, when reaches 0 destroys itself
 	 */
+	@preLocked
 	public native void decreaseUseCount();
 	
 	/**
@@ -309,6 +287,7 @@ class TangibleObject extends SceneObject {
 	 * @post { this object is locked, this object is not in a combat state }
 	 * @param clearDefenders if true the defender vector willl be emptied
 	 */
+	@preLocked
 	public abstract void clearCombatState(boolean clearDefenders = true) {
 		if (clearDefenders)
 			removeDefenders();
@@ -320,6 +299,7 @@ class TangibleObject extends SceneObject {
 	 * @post { this object is locked }
 	 * @return returns true if SceneObject defender exists in the defender vector
 	 */
+	@preLocked
 	@dirty
 	public boolean hasDefender(SceneObject defender) {
 		for (int i = 0; i < defenderList.size(); ++i) {
@@ -369,7 +349,12 @@ class TangibleObject extends SceneObject {
 	 * @post { attacker, this object is locked }
 	 * @return unused for now
 	 */
+	@preLocked
+	@arg1preLocked
 	public native abstract int inflictDamage(TangibleObject attacker, int damageType, float damage, boolean destroy, boolean notifyClient = true);
+	
+	@preLocked
+	@arg1preLocked
 	public native abstract int inflictDamage(TangibleObject attacker, int damageType, float damage, boolean destroy, final string xp, boolean notifyClient = true);
 	
 	/**
@@ -378,6 +363,7 @@ class TangibleObject extends SceneObject {
 	 * @post { this, healer locked }
 	 * @return returns total health healed
 	 */
+	@preLocked
 	public native abstract int healDamage(TangibleObject healer, int damageType, float damageToHeal, boolean notifyClient = true);
 	
 	
@@ -387,15 +373,35 @@ class TangibleObject extends SceneObject {
 	 * @post { this object is locked }
 	 * @param condDamage new condition damage
 	 */
+	@preLocked
 	public native void setConditionDamage(float condDamage, boolean notifyClient = true);
+	
+
+	@preLocked
+	public native void addVisibleComponent(int value, boolean notifyClient = true);
+	
+	@preLocked
+	public native void removeVisibleComponent(int value, boolean notifyClient = true);
+	
+	@preLocked
+	public native void removeAllVisibleComponents(boolean notifyClient = true);
+	
+	@preLocked
+	@dirty
+	public boolean hasVisibleComponent(int value) {
+		return visibleComponents.contains(value);
+	}
 	
 	/**
 	 * Updates a customization variable
 	 */
+	@preLocked
 	public native void setCustomizationVariable(byte type, short value, boolean notifyClient = true);
 
+	@preLocked
 	public native void setCustomizationVariable(final string type, short value, boolean notifyClient = true);
 	
+	@preLocked
 	public native void setOptionsBitmask(unsigned int bitmask, boolean notifyClient = true);
 	
 	public native void setOptionBit(unsigned int option, boolean notifyClient = true);
@@ -406,11 +412,12 @@ class TangibleObject extends SceneObject {
 	
 	public abstract native int notifyObjectDestructionObservers(TangibleObject attacker, int condition);
 	
+	@preLocked
 	public native void dropFromDefenderLists(TangibleObject destructor);
 	
 	@dirty
-	public byte getUnknownByte() {
-		return unknownByte;
+	public byte getObjectVisible() {
+		return objectVisible;
 	}
 	
 	@dirty
@@ -478,6 +485,16 @@ class TangibleObject extends SceneObject {
 		return optionsBitmask;
 	}
 	
+	public void addMagicBit(boolean notifyClient = true) {
+		if (magicBits.increment() == 1)
+			setOptionBit(OptionBitmask.YELLOW, notifyClient);
+	}
+	
+	public void removeMagicBit(boolean notifyClient = true) {
+		if (magicBits.decrement() == 0)
+			clearOptionBit(OptionBitmask.YELLOW, notifyClient);
+	}
+	
 	@dirty
 	public int getLevel() {
 		return level;
@@ -500,8 +517,14 @@ class TangibleObject extends SceneObject {
 	
 	@local
 	@dirty
+	@preLocked
 	public DeltaVector<SceneObject> getDefenderList() {
 		return defenderList;
+	}
+	
+	@local
+	public AutoDeltaSet<int> getVisibleComponents() {
+		return visibleComponents;
 	}
 	
 	@dirty
@@ -540,6 +563,11 @@ class TangibleObject extends SceneObject {
 	public boolean isNeutral() {
 		return faction == 0;
 	}
+	
+	@dirty
+	@local
+	@nativeStub
+	public native TangibleObject asTangibleObject();
 	
 	@dirty
 	public boolean isSliceable() {
@@ -583,7 +611,7 @@ class TangibleObject extends SceneObject {
 		customizationVariables.parseFromClientString(vars);
 	}
 	
-	public native void setPvpStatusBitmask(int bitmask, boolean notifyClient = true);
+	public native void setPvpStatusBitmask(unsigned int bitmask, boolean notifyClient = true);
 
 	public native void setPvpStatusBit(unsigned int pvpStatus, boolean notifyClient = true);
 	public native void clearPvpStatusBit(unsigned int pvpStatus, boolean notifyClient = true);
@@ -627,6 +655,7 @@ class TangibleObject extends SceneObject {
 	}
 
 	@local
+	@preLocked
 	public native ThreatMap getThreatMap();
 	
 	/*
@@ -726,5 +755,35 @@ class TangibleObject extends SceneObject {
 
 		return null;
 	}
+
+	public boolean hasAntiDecayKit() {
+		return antiDecayKitObject != null;
+	}
+
+	@preLocked
+	public void applyAntiDecayKit(CreatureObject player, SceneObject adk) {
+		if(!hasAntiDecayKit()) {
+			antiDecayKitObject = adk;
+
+			if(adk.getParent() != null)
+				adk.destroyObjectFromWorld(true);
+
+			sendAttributeListTo(player);
+		}
+	}
+
+	@preLocked
+	public SceneObject removeAntiDecayKit() {
+		if(hasAntiDecayKit()) {
+			SceneObject adk = antiDecayKitObject;
+			antiDecayKitObject = null;
+			return adk;
+		}
+		return null;
+	}
+
+	public native boolean isCityStreetLamp();
+	public native boolean isCityStatue();
+	public native boolean isCityFountain();
 }
 

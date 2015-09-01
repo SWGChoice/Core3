@@ -12,10 +12,11 @@
 #include "server/zone/ZoneClientSession.h"
 #include "server/chat/room/ChatRoom.h"
 #include "server/chat/ChatManager.h"
+#include "server/zone/managers/group/GroupManager.h"
+#include "server/zone/objects/creature/buffs/SquadLeaderBuff.h"
 #include "server/zone/objects/creature/CreatureObject.h"
 #include "server/zone/ZoneProcessServer.h"
 #include "server/zone/ZoneServer.h"
-#include "server/zone/objects/player/events/SquadLeaderBonusTask.h"
 #include "server/zone/managers/objectcontroller/ObjectController.h"
 #include "server/zone/objects/group/RemovePetsFromGroupTask.h"
 #include "server/zone/objects/group/tasks/UpdateNearestMissionForGroupTask.h"
@@ -27,10 +28,10 @@ void GroupObjectImplementation::sendBaselinesTo(SceneObject* player) {
 	if (client == NULL)
 		return;
 
-	BaseMessage* grup3 = new GroupObjectMessage3(_this.get());
+	BaseMessage* grup3 = new GroupObjectMessage3(_this.getReferenceUnsafeStaticCast());
 	client->sendMessage(grup3);
 
-	BaseMessage* grup6 = new GroupObjectMessage6(_this.get());
+	BaseMessage* grup6 = new GroupObjectMessage6(_this.getReferenceUnsafeStaticCast());
 	client->sendMessage(grup6);
 
 	if (player->isPlayerCreature() && chatRoom != NULL)
@@ -85,9 +86,9 @@ void GroupObjectImplementation::broadcastMessage(CreatureObject* player, BaseMes
 }
 
 void GroupObjectImplementation::addMember(SceneObject* newMember) {
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
-	GroupObjectDeltaMessage6* grp = new GroupObjectDeltaMessage6(_this.get());
+	GroupObjectDeltaMessage6* grp = new GroupObjectDeltaMessage6(_this.getReferenceUnsafeStaticCast());
 	grp->startUpdate(1);
 	groupMembers.add(newMember, grp);
 	grp->close();
@@ -117,7 +118,7 @@ void GroupObjectImplementation::removeMember(SceneObject* member) {
 		SceneObject* scno = groupMembers.get(i).get().get();
 
 		if (scno == member) {
-			GroupObjectDeltaMessage6* grp = new GroupObjectDeltaMessage6(_this.get());
+			GroupObjectDeltaMessage6* grp = new GroupObjectDeltaMessage6(_this.getReferenceUnsafeStaticCast());
 			grp->startUpdate(1);
 			groupMembers.remove(i, grp);
 			grp->close();
@@ -129,8 +130,22 @@ void GroupObjectImplementation::removeMember(SceneObject* member) {
 	if (member->isPlayerCreature()) {
 		// Remove member's pets
 		CreatureObject* playerCreature = cast<CreatureObject*>(member);
-		RemovePetsFromGroupTask* task = new RemovePetsFromGroupTask(playerCreature, _this.get());
+		RemovePetsFromGroupTask* task = new RemovePetsFromGroupTask(playerCreature, _this.getReferenceUnsafeStaticCast());
 		task->execute();
+
+		//Close any open Group SUIs.
+		ManagedReference<PlayerObject*> ghost = playerCreature->getPlayerObject();
+		if (ghost != NULL) {
+			ghost->closeSuiWindowType(SuiWindowType::GROUP_LOOT_RULE);
+			ghost->closeSuiWindowType(SuiWindowType::GROUP_LOOT_CHANGED);
+			ghost->closeSuiWindowType(SuiWindowType::GROUP_LOOT_PICK_LOOTER);
+		}
+
+		//Reset Master Looter if needed.
+		if (getMasterLooterID() == playerCreature->getObjectID()) {
+			ManagedReference<CreatureObject*> groupLeader = (getLeader()).castTo<CreatureObject*>();
+			GroupManager::instance()->changeMasterLooter(_this.getReferenceUnsafeStaticCast(), groupLeader, false);
+		}
 
 		if (hasSquadLeader()) {
 			removeGroupModifiers(playerCreature);
@@ -178,7 +193,7 @@ void GroupObjectImplementation::makeLeader(SceneObject* player) {
 
 	for (int i = 0; i < groupMembers.size(); ++i) {
 		if (groupMembers.get(i) == player) {
-			GroupObjectDeltaMessage6* grp = new GroupObjectDeltaMessage6(_this.get());
+			GroupObjectDeltaMessage6* grp = new GroupObjectDeltaMessage6(_this.getReferenceUnsafeStaticCast());
 			grp->startUpdate(1);
 
 			if (hasSquadLeader())
@@ -211,7 +226,7 @@ void GroupObjectImplementation::disband() {
 		Reference<CreatureObject*> groupMember = getGroupMember(i).castTo<CreatureObject*>();
 
 		try {
-			Locker clocker(groupMember, _this.get());
+			Locker clocker(groupMember, _this.getReferenceUnsafeStaticCast());
 
 			if (groupMember->isPlayerCreature()) {
 				if (chat != NULL) {
@@ -255,7 +270,6 @@ bool GroupObjectImplementation::hasSquadLeader() {
 		return false;
 
 	if (getLeader()->isPlayerCreature()) {
-
 		Reference<CreatureObject*> leader = getLeader().castTo<CreatureObject*>();
 
 		if (leader->hasSkill("outdoors_squadleader_novice"))
@@ -266,7 +280,7 @@ bool GroupObjectImplementation::hasSquadLeader() {
 }
 
 void GroupObjectImplementation::addGroupModifiers() {
-	ManagedReference<GroupObject*> thisGroup = _this.get();
+	ManagedReference<GroupObject*> thisGroup = _this.getReferenceUnsafeStaticCast();
 
 	Locker glocker(thisGroup);
 
@@ -284,16 +298,6 @@ void GroupObjectImplementation::addGroupModifiers() {
 		Locker clocker(player, thisGroup);
 
 		addGroupModifiers(player);
-	}
-
-	if (getLeader().get() != NULL) {
-		if (getLeader()->isPlayerCreature()) {
-			CreatureObject* leader = getLeader().castTo<CreatureObject*>();
-
-			Reference<SquadLeaderBonusTask*> bonusTask = new SquadLeaderBonusTask(leader);
-
-			bonusTask->schedule(300 * 1000);
-		}
 	}
 }
 
@@ -327,8 +331,6 @@ void GroupObjectImplementation::addGroupModifiers(CreatureObject* player) {
 	if (leader == player)
 		return;
 
-	Locker locker(player);
-
 	int duration = 300;
 
 	String action = "squadleader";
@@ -336,12 +338,14 @@ void GroupObjectImplementation::addGroupModifiers(CreatureObject* player) {
 	if (player->hasBuff(action.hashCode()))
 		player->removeBuff(action.hashCode());
 
-	ManagedReference<Buff*> buff = new Buff(player, action.hashCode(), duration, BuffType::SKILL);
-	buff->setSkillModifier("slope_move", leader->getSkillMod("group_slope_move"));
-	buff->setSkillModifier("ranged_defense", leader->getSkillMod("group_ranged_defense"));
-	buff->setSkillModifier("melee_defense", leader->getSkillMod("group_melee_defense"));
-	buff->setSkillModifier("burst_run", leader->getSkillMod("group_burst_run"));
+	ManagedReference<SquadLeaderBuff*> buff = new SquadLeaderBuff(player, leader, action.hashCode(), duration);
 
+	Locker locker(buff);
+
+	buff->setSkillModifier("slope_move", leader->getSkillMod("group_slope_move"));
+	buff->setSkillModifier("private_group_ranged_defense", leader->getSkillMod("group_ranged_defense"));
+	buff->setSkillModifier("private_group_melee_defense", leader->getSkillMod("group_melee_defense"));
+	buff->setSkillModifier("burst_run", leader->getSkillMod("group_burst_run"));
 	player->addBuff(buff);
 }
 
@@ -360,11 +364,13 @@ void GroupObjectImplementation::removeGroupModifiers(CreatureObject* player) {
 	if (leader == player)
 		return;
 
-	Locker locker(player);
+	Locker clocker(player, _this.getReferenceUnsafeStaticCast());
 	String action = "squadleader";
 
 	if (player->hasBuff(action.hashCode()))
 		player->removeBuff(action.hashCode());
+
+	player->updateTerrainNegotiation();
 }
 
 float GroupObjectImplementation::getGroupHarvestModifier(CreatureObject* player) {
@@ -396,6 +402,7 @@ float GroupObjectImplementation::getGroupHarvestModifier(CreatureObject* player)
 			}
 		}
 	}
+
 	return modifier;
 }
 
@@ -416,7 +423,7 @@ void GroupObjectImplementation::calcGroupLevel() {
 		}
 	}
 
-	GroupObjectDeltaMessage6* msg = new GroupObjectDeltaMessage6(_this.get());
+	GroupObjectDeltaMessage6* msg = new GroupObjectDeltaMessage6(_this.getReferenceUnsafeStaticCast());
 
 	msg->updateLevel(this->groupLevel);
 	msg->close();
@@ -424,15 +431,15 @@ void GroupObjectImplementation::calcGroupLevel() {
 	broadcastMessage(msg);
 }
 
-void GroupObjectImplementation::sendSystemMessage(StringIdChatParameter& param) {
-	Locker lock(_this.get());
+void GroupObjectImplementation::sendSystemMessage(StringIdChatParameter& param, bool sendLeader) {
+	Locker lock(_this.getReferenceUnsafeStaticCast());
 
 	for (int i = 0; i < groupMembers.size(); ++i) {
 		GroupMember* member = &groupMembers.get(i);
 
 		ManagedReference<SceneObject*> obj = member->get();
 
-		if (obj == NULL || !obj->isPlayerCreature())
+		if (obj == NULL || !obj->isPlayerCreature() || (!sendLeader && obj == getLeader()))
 			continue;
 
 		CreatureObject* creature = cast<CreatureObject*>(obj.get());
@@ -440,15 +447,15 @@ void GroupObjectImplementation::sendSystemMessage(StringIdChatParameter& param) 
 	}
 }
 
-void GroupObjectImplementation::sendSystemMessage(const String& fullPath) {
-	Locker lock(_this.get());
+void GroupObjectImplementation::sendSystemMessage(const String& fullPath, bool sendLeader) {
+	Locker lock(_this.getReferenceUnsafeStaticCast());
 
 	for (int i = 0; i < groupMembers.size(); ++i) {
 		GroupMember* member = &groupMembers.get(i);
 
 		ManagedReference<SceneObject*> obj = member->get();
 
-		if (obj == NULL || !obj->isPlayerCreature())
+		if (obj == NULL || !obj->isPlayerCreature() || (!sendLeader && obj == getLeader()))
 			continue;
 
 		CreatureObject* creature = cast<CreatureObject*>(obj.get());
@@ -482,7 +489,7 @@ void GroupObjectImplementation::scheduleUpdateNearestMissionForGroup(unsigned in
 	}
 
 	if (task == NULL) {
-		task = new UpdateNearestMissionForGroupTask(_this.get(), planetCRC);
+		task = new UpdateNearestMissionForGroupTask(_this.getReferenceUnsafeStaticCast(), planetCRC);
 		updateNearestMissionForGroupTasks.put(planetCRC, task);
 	}
 
@@ -494,3 +501,9 @@ void GroupObjectImplementation::scheduleUpdateNearestMissionForGroup(unsigned in
 	}
 }
 
+void GroupObjectImplementation::updateLootRules() {
+	GroupObjectDeltaMessage6* msg = new GroupObjectDeltaMessage6(_this.getReferenceUnsafeStaticCast());
+	msg->updateLootRules(this->masterLooterID, this->lootRule);
+	msg->close();
+	broadcastMessage(msg);
+}

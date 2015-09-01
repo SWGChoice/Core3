@@ -1,7 +1,6 @@
 infuriated_roba_protector = Creature:new {
 	objectName = "@mob/creature_names:roba_infuriated_protectorate",
 	socialGroup = "roba",
-	pvpFaction = "",
 	faction = "",
 	level = 57,
 	chanceHit = 0.55,
@@ -11,7 +10,7 @@ infuriated_roba_protector = Creature:new {
 	baseHAM = 11000,
 	baseHAMmax = 14000,
 	armor = 0,
-	resists = {35,35,15,20,15,20,15,-1,-1},
+	resists = {135,135,15,120,15,120,15,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 120,
 	hideType = "hide_leathery",
@@ -33,8 +32,8 @@ infuriated_roba_protector = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"},
-		{"stunattack","stunChance=50"}
+		{"posturedownattack",""},
+		{"stunattack",""}
 	}
 }
 

@@ -1,7 +1,6 @@
 thune = Creature:new {
 	objectName = "@mob/creature_names:thune",
 	socialGroup = "thune",
-	pvpFaction = "",
 	faction = "",
 	level = 26,
 	chanceHit = 0.36,
@@ -11,7 +10,7 @@ thune = Creature:new {
 	baseHAM = 7700,
 	baseHAMmax = 10000,
 	armor = 0,
-	resists = {20,15,15,15,15,15,15,-1,-1},
+	resists = {120,15,15,15,15,15,15,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 115,
 	hideType = "hide_wooly",
@@ -32,7 +31,8 @@ thune = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"",""},
+		{"intimidationattack",""}
 	}
 }
 

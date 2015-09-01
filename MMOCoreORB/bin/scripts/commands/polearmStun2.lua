@@ -51,7 +51,7 @@ PolearmStun2Command = {
 	mindCostMultiplier = 1.0,
 	accuracyBonus = 10,
 
-	areaRange = 7,
+	areaRange = 16,
 	areaAction = true,
 
 	stateEffects = {
@@ -61,7 +61,7 @@ PolearmStun2Command = {
 		{ "stun_defense", "resistance_states" }, 
 		{ "jedi_state_defense" }, 
 		60, 
-		100, 
+		0, 
 		30 
 	  )
 	},
@@ -69,6 +69,8 @@ PolearmStun2Command = {
 	animationCRC = hashCode("lower_posture_2hmelee_5"),
 
 	combatSpam = "breathstealer",
+	
+	weaponType = POLEARMWEAPON,
 
 	range = -1
 }

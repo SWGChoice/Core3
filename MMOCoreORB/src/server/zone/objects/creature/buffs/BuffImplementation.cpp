@@ -1,46 +1,6 @@
 /*
-Copyright (C) 2007 <SWGEmu>
-
-This File is part of Core3.
-
-This program is free software; you can redistribute
-it and/or modify it under the terms of the GNU Lesser
-General Public License as published by the Free Software
-Foundation; either version 2 of the License,
-or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU Lesser General Public License for
-more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this program; if not, write to
-the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-
-Linking Engine3 statically or dynamically with other modules
-is making a combined work based on Engine3.
-Thus, the terms and conditions of the GNU Lesser General Public License
-cover the whole combination.
-
-In addition, as a special exception, the copyright holders of Engine3
-give you permission to combine Engine3 program with free software
-programs or libraries that are released under the GNU LGPL and with
-code included in the standard release of Core3 under the GNU LGPL
-license (or modified versions of such code, with unchanged license).
-You may copy and distribute such a system following the terms of the
-GNU LGPL for Engine3 and the licenses of the other code concerned,
-provided that you include the source code of that other code when
-and as the GNU LGPL requires distribution of source code.
-
-Note that people who make modified versions of Engine3 are not obligated
-to grant this special exception for their modified versions;
-it is their choice whether to do so. The GNU Lesser General Public License
-gives permission to release a modified version without this exception;
-this exception also makes it possible to release a modified version
-which carries forward this exception.
-*/
+				Copyright <SWGEmu>
+		See file COPYING for copying conditions.*/
 
 #include "engine/engine.h"
 
@@ -54,6 +14,15 @@ which carries forward this exception.
 #include "server/zone/packets/object/Buffs.h"
 #include "server/zone/packets/object/ShowFlyText.h"
 #include "server/zone/managers/skill/SkillModManager.h"
+
+void BuffImplementation::init() {
+	attributeModifiers.setNoDuplicateInsertPlan();
+	attributeModifiers.setNullValue(0);
+	skillModifiers.setNoDuplicateInsertPlan();
+	skillModifiers.setNullValue(0);
+
+	assert(buffDuration >= 0);
+}
 
 void BuffImplementation::initializeTransientMembers() {
 	ManagedObjectImplementation::initializeTransientMembers();
@@ -69,11 +38,11 @@ void BuffImplementation::loadBuffDurationEvent(CreatureObject* creo) {
 	}
 
 	if (nextExecutionTime.isPast()) {
-		buffEvent = new BuffDurationEvent(creo, _this.get());
+		buffEvent = new BuffDurationEvent(creo, _this.getReferenceUnsafeStaticCast());
 		buffEvent->execute();
 		//info("nextExeutionTime.isPast()", true);
 	} else {
-		buffEvent = new BuffDurationEvent(creo, _this.get());
+		buffEvent = new BuffDurationEvent(creo, _this.getReferenceUnsafeStaticCast());
 		buffEvent->schedule(nextExecutionTime);
 
 		//info("scheduling buffEvent with nextExecutionTime difference from now" + String::valueOf(nextExecutionTime.miliDifference()), true);
@@ -113,16 +82,14 @@ void BuffImplementation::sendDestroyTo(CreatureObject* player) {
 void BuffImplementation::activate(bool applyModifiers) {
 	//info("activating buff with crc " + String::hexvalueOf((int)buffCRC), true);
 	try {
-		if (applyModifiers) {
+		if (applyModifiers && !modsApplied) {
 			applyAttributeModifiers();
 			applySkillModifiers();
 			applyStates();
+			modsApplied = true;
 		}
 
-		buffEvent = new BuffDurationEvent(creature.get(), _this.get());
-		buffEvent->schedule((int) (buffDuration * 1000));
-		//nextExecutionTime = buffEvent->getNextExecutionTime();
-		Core::getTaskManager()->getNextExecutionTime(buffEvent, nextExecutionTime);
+		scheduleBuffEvent();
 
 		//info("nextExecutionTime miliDifference:" + String::valueOf(nextExecutionTime.miliDifference()), true);
 
@@ -134,6 +101,10 @@ void BuffImplementation::activate(bool applyModifiers) {
 
 		if (!startFlyFile.isEmpty())
 			creature.get()->showFlyText(startFlyFile, startFlyAux, startFlyRed, startFlyGreen, startFlyBlue);
+
+		if (!startSpam.isEmpty()) {
+			creature.get()->sendStateCombatSpam(startSpam.getFile(), startSpam.getStringID(), spamColor, 0, broadcastSpam);
+		}
 
 	} catch (Exception& e) {
 		error(e.getMessage());
@@ -148,10 +119,11 @@ void BuffImplementation::deactivate(bool removeModifiers) {
 		return;
 
 	try {
-		if (removeModifiers) {
+		if (removeModifiers && modsApplied) {
 			removeAttributeModifiers();
 			removeSkillModifiers();
 			removeStates();
+			modsApplied = false;
 		}
 
 		if (creature.get()->isPlayerCreature())
@@ -162,6 +134,10 @@ void BuffImplementation::deactivate(bool removeModifiers) {
 
 		if (!endFlyFile.isEmpty())
 			creature.get()->showFlyText(endFlyFile, endFlyAux, endFlyRed, endFlyGreen, endFlyBlue);
+
+		if (!endSpam.isEmpty()) {
+			creature.get()->sendStateCombatSpam(endSpam.getFile(), endSpam.getStringID(), spamColor, 0, broadcastSpam);
+		}
 
 		clearBuffEvent();
 
@@ -212,15 +188,37 @@ void BuffImplementation::parseSkillModifierString(const String& modifierstring) 
 }
 
 String BuffImplementation::getAttributeModifierString() {
-	return String("");
+	if (attributeModifiers.size() == 0)
+		return String("none");
+
+	String retString = "";
+
+	for (int i = 0; i < attributeModifiers.size(); i++) {
+		VectorMapEntry<byte, int> entry = attributeModifiers.elementAt(i);
+		retString += CreatureAttribute::getName(entry.getKey()) + " +" + String::valueOf(entry.getValue()) + ";";
+	}
+
+	return retString;
 }
 
 String BuffImplementation::getSkillModifierString() {
-	return String("");
+	if (skillModifiers.size() == 0)
+		return String("none");
+
+	String retString = "";
+
+	for (int i = 0; i < skillModifiers.size(); i++) {
+		VectorMapEntry<String, int> entry = skillModifiers.elementAt(i);
+		retString += entry.getKey() + " +" + String::valueOf(entry.getValue()) + "; ";
+	}
+
+	return retString;
 }
 
 void BuffImplementation::scheduleBuffEvent() {
-	//buffEvent = new BuffDurationEvent(creature.get(), _this.get());
+	buffEvent = new BuffDurationEvent(creature.get(), _this.getReferenceUnsafeStaticCast());
+	buffEvent->schedule((int) (buffDuration * 1000));
+	Core::getTaskManager()->getNextExecutionTime(buffEvent, nextExecutionTime);
 }
 
 float BuffImplementation::getTimeLeft() {
@@ -298,6 +296,7 @@ void BuffImplementation::applySkillModifiers() {
 	// if there was a speed or acceleration mod change, this will take care of immediately setting them.
 	// the checks for if they haven't changed are in these methods
 	creature.get()->updateSpeedAndAccelerationMods();
+	creature.get()->updateTerrainNegotiation();
 }
 
 void BuffImplementation::applyStates() {
@@ -378,6 +377,7 @@ void BuffImplementation::removeSkillModifiers() {
 	// if there was a speed or acceleration mod change, this will take care of immediately setting them.
 	// the checks for if they haven't changed are in these methods
 	creature.get()->updateSpeedAndAccelerationMods();
+	creature.get()->updateTerrainNegotiation();
 }
 
 void BuffImplementation::removeStates() {
@@ -412,6 +412,22 @@ void BuffImplementation::setStartMessage(StringIdChatParameter& start) {
 
 void BuffImplementation::setEndMessage(StringIdChatParameter& end) {
 	endMessage = end;
+}
+
+void BuffImplementation::setStartSpam(StringIdChatParameter& start) {
+	startSpam = start;
+}
+
+void BuffImplementation::setEndSpam(StringIdChatParameter& end) {
+	endSpam = end;
+}
+
+void BuffImplementation::setSpamColor(uint8 color) {
+	spamColor = color;
+}
+
+void BuffImplementation::setBroadcastSpam(bool value) {
+	broadcastSpam = value;
 }
 
 void BuffImplementation::setStartFlyText(const String& file, const String& aux, uint8 red, uint8 green, uint8 blue) {

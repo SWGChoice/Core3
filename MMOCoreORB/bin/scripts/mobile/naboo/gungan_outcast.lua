@@ -1,7 +1,7 @@
 gungan_outcast = Creature:new {
 	objectName = "@mob/creature_names:gungan_outcast",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 9,
 	chanceHit = 0.27,
@@ -28,15 +28,14 @@ gungan_outcast = Creature:new {
 
 	templates = {"object/mobile/gungan_outcast.iff"},
 	lootGroups = {
-	    {
+		{
 			groups = {
 				{group = "junk", chance = 4000000},
 				{group = "gungan_common", chance = 2000000},
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000}
-			},
-			lootChance = 3200000
-		}					
+			}
+		}
 	},
 	weapons = {"rebel_weapons_medium"},
 	conversationTemplate = "",

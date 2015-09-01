@@ -1,7 +1,7 @@
 death_watch_miner = Creature:new {
 	objectName = "@mob/creature_names:miner",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "townsperson",
-	pvpFaction = "townsperson",
 	faction = "townsperson",
 	level = 5,
 	chanceHit = 0.25,
@@ -27,7 +27,7 @@ death_watch_miner = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {
-		"object/mobile/dressed_mand_miner_bith.iff", 
+		"object/mobile/dressed_mand_miner_bith.iff",
 		"object/mobile/dressed_mand_miner_aqualish.iff",
 		"object/mobile/dressed_mand_miner_hum_01.iff",
 		"object/mobile/dressed_mand_miner_hum_02.iff",

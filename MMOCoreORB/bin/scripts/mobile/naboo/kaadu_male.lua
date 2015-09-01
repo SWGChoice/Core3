@@ -1,7 +1,6 @@
 kaadu_male = Creature:new {
 	objectName = "@mob/creature_names:kaadu_male",
 	socialGroup = "kaadu",
-	pvpFaction = "",
 	faction = "",
 	level = 14,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ kaadu_male = Creature:new {
 	baseHAM = 2000,
 	baseHAMmax = 2400,
 	armor = 0,
-	resists = {5,5,5,0,0,0,0,-1,-1},
+	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_avian",
 	meatAmount = 120,
 	hideType = "hide_leathery",

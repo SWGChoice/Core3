@@ -32,8 +32,8 @@ using namespace engine::db;
 
 // http://tinyurl.com/2g9mqh
 
-uint32 ObjectManager::serverObjectCrcHashCode = String("SceneObject.serverObjectCRC").hashCode();
-uint32 ObjectManager::_classNameHashCode = String("_className").hashCode();
+uint32 ObjectManager::serverObjectCrcHashCode = STRING_HASHCODE("SceneObject.serverObjectCRC");
+uint32 ObjectManager::_classNameHashCode = STRING_HASHCODE("_className");
 
 ObjectManager::ObjectManager() : DOBObjectManager() {
 	server = NULL;
@@ -109,6 +109,7 @@ void ObjectManager::registerObjectTypes() {
 
 	objectFactory.registerObject<IntangibleObject>(SceneObjectType::INTANGIBLE);
 	objectFactory.registerObject<IntangibleObject>(SceneObjectType::DATA2);
+	objectFactory.registerObject<TheaterObject>(SceneObjectType::THEATEROBJECT);
 
 	objectFactory.registerObject<ArmorObject>(SceneObjectType::ARMOR);
 	objectFactory.registerObject<ArmorObject>(SceneObjectType::BODYARMOR); //chest plates
@@ -125,6 +126,7 @@ void ObjectManager::registerObjectTypes() {
 	objectFactory.registerObject<CraftingTool>(SceneObjectType::CRAFTINGTOOL);
 	objectFactory.registerObject<SurveyTool>(SceneObjectType::SURVEYTOOL);
 	objectFactory.registerObject<RecycleTool>(SceneObjectType::RECYCLETOOL);
+	objectFactory.registerObject<AntiDecayKit>(SceneObjectType::ANTIDECAYKIT);
 
 	objectFactory.registerObject<CraftingStation>(SceneObjectType::CRAFTINGSTATION);
 
@@ -181,6 +183,7 @@ void ObjectManager::registerObjectTypes() {
 	objectFactory.registerObject<BuildingObject>(SceneObjectType::UNIVERSITYBUILDING);
 	objectFactory.registerObject<BuildingObject>(SceneObjectType::GARAGEBUILDING);
 	objectFactory.registerObject<BuildingObject>(SceneObjectType::SALONBUILDING);
+	objectFactory.registerObject<PoiBuilding>(SceneObjectType::POIBUILDING);
 
 
 	objectFactory.registerObject<InstallationObject>(SceneObjectType::INSTALLATION);

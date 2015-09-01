@@ -1,7 +1,7 @@
 rodian_clan_captain = Creature:new {
 	objectName = "@mob/creature_names:rodian_clan_captain",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "rodian",
-	pvpFaction = "",
 	faction = "",
 	level = 11,
 	chanceHit = 0.29,
@@ -28,19 +28,19 @@ rodian_clan_captain = Creature:new {
 
 	templates = {"object/mobile/dressed_tatooine_rodian_clan_captain.iff"},
 	lootGroups = {
-      	{
+		{
 			groups = {
 				{group = "junk", chance = 3000000},
 				{group = "wearables_common", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "tailor_components", chance = 1000000},
 				{group = "heavy_weapons", chance = 2000000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"rebel_weapons_heavy"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/military",
 	attacks = merge(brawlermid,marksmanmid)
 }
 

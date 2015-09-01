@@ -1,7 +1,6 @@
 wood_mite = Creature:new {
 	objectName = "@mob/creature_names:wood_mite",
 	socialGroup = "mite",
-	pvpFaction = "",
 	faction = "",
 	level = 14,
 	chanceHit = 0.29,
@@ -11,7 +10,7 @@ wood_mite = Creature:new {
 	baseHAM = 1200,
 	baseHAMmax = 1400,
 	armor = 0,
-	resists = {0,0,0,0,0,0,0,0,0},
+	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 5,
 	hideType = "hide_scaley",
@@ -32,7 +31,7 @@ wood_mite = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"}
+		{"blindattack",""}
 	}
 }
 

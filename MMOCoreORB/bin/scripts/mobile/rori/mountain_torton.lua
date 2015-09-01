@@ -1,7 +1,6 @@
 mountain_torton = Creature:new {
 	objectName = "@mob/creature_names:mountain_torton",
 	socialGroup = "torton",
-	pvpFaction = "",
 	faction = "",
 	level = 34,
 	chanceHit = 0.37,
@@ -11,7 +10,7 @@ mountain_torton = Creature:new {
 	baseHAM = 8200,
 	baseHAMmax = 10000,
 	armor = 0,
-	resists = {40,40,70,-1,-1,60,60,60,-1},
+	resists = {140,140,170,-1,-1,160,160,160,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 1000,
 	hideType = "hide_wooly",
@@ -32,8 +31,8 @@ mountain_torton = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"stunattack","stunChance=50"}
+		{"dizzyattack",""},
+		{"stunattack",""}
 	}
 }
 

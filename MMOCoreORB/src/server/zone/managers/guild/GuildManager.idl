@@ -1,50 +1,11 @@
 /*
-Copyright (C) 2007 <SWGEmu>
-
-This File is part of Core3.
-
-This program is free software; you can redistribute
-it and/or modify it under the terms of the GNU Lesser
-General Public License as published by the Free Software
-Foundation; either version 2 of the License,
-or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU Lesser General Public License for
-more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this program; if not, write to
-the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-
-Linking Engine3 statically or dynamically with other modules
-is making a combined work based on Engine3.
-Thus, the terms and conditions of the GNU Lesser General Public License
-cover the whole combination.
-
-In addition, as a special exception, the copyright holders of Engine3
-give you permission to combine Engine3 program with free software
-programs or libraries that are released under the GNU LGPL and with
-code included in the standard release of Core3 under the GNU LGPL
-license (or modified versions of such code, with unchanged license).
-You may copy and distribute such a system following the terms of the
-GNU LGPL for Engine3 and the licenses of the other code concerned,
-provided that you include the source code of that other code when
-and as the GNU LGPL requires distribution of source code.
-
-Note that people who make modified versions of Engine3 are not obligated
-to grant this special exception for their modified versions;
-it is their choice whether to do so. The GNU Lesser General Public License
-gives permission to release a modified version without this exception;
-this exception also makes it possible to release a modified version
-which carries forward this exception.
-*/
+				Copyright <SWGEmu>
+		See file COPYING for copying conditions.*/
 
 package server.zone.managers.guild;
 
 import engine.core.ManagedService;
+import system.lang.StringBuffer;
 import server.zone.ZoneProcessServer;
 import server.zone.ZoneServer;
 import server.chat.ChatManager;
@@ -91,14 +52,22 @@ class GuildManager extends ManagedService implements Logger {
 		
 		requiredMembers = 5;
 		maximumMembers = 500;
-		guildUpdateInterval = 1440;
+		guildUpdateInterval = 10080; // In minutes
 	}
 	
 	public void setChatManager(ChatManager chatmanager) {
 		chatManager = chatmanager;
 	}
-	
+
+	public native void loadLuaConfig();
+
+	private native void scheduleGuildUpdates();
+	public native void processGuildUpdate(GuildObject guild);
+	private native void destroyGuild(GuildObject guild, @dereferenced StringIdChatParameter mailbody);
+
 	public native void sendGuildListTo(CreatureObject player, final string guildFilter);
+	public native void sendAdminGuildInfoTo(CreatureObject player, GuildObject guild);
+	private native void addPermsToAdminGuildInfo(byte perms, @dereferenced StringBuffer text);
 	
 	public synchronized void addPendingGuild(unsigned long playerID, final string guildName) {
 		pendingGuilds.put(playerID, guildName);
@@ -132,8 +101,6 @@ class GuildManager extends ManagedService implements Logger {
 		return sponsoredPlayers.get(playerID);
 	}
 
-	
-	
 	public native void sendBaselinesTo(CreatureObject player);
 	
 	public native void loadGuilds();
@@ -186,15 +153,15 @@ class GuildManager extends ManagedService implements Logger {
 	
 	public native boolean guildAbbrevExists(final string guildAbbrev);
 
-	public native void scheduleGuildRename(CreatureObject player, GuildObject guild);
+	public native void setupGuildRename(CreatureObject player, GuildObject guild);
 
-	public native void renameGuild(GuildObject guild, CreatureObject player, final string newName, final string newAbbrev);
+	public native void renameGuild(GuildObject guild);
 
-	public native GuildObject createGuild(CreatureObject player, GuildTerminal guildTerminal, final string guildName, final string guildAbbrev);
+	public native GuildObject createGuild(CreatureObject player, final string guildName, final string guildAbbrev);
 	
-	public native boolean disbandGuild(CreatureObject player, GuildTerminal guildTerminal, GuildObject guild);
+	public native boolean disbandGuild(CreatureObject player, GuildObject guild);
 	
-	public native void sponsorPlayer(CreatureObject player, GuildTerminal guildTerminal, final string playerName);
+	public native void sponsorPlayer(CreatureObject player, final string playerName);
 	
 	public native void acceptSponsorshipRequest(CreatureObject player, CreatureObject target);
 	
@@ -205,9 +172,7 @@ class GuildManager extends ManagedService implements Logger {
 	public native void leaveGuild(CreatureObject player, GuildObject guild);
 	
 	public native void setMemberTitle(CreatureObject player, CreatureObject target, final string title);
-	
-	public native void setAllegianceTo(CreatureObject player, unsigned long targetID, GuildTerminal guildTerminal);
-	
+
 	public native void toggleGuildPermission(CreatureObject player, unsigned long targetID, int permissionIndex, GuildTerminal guildTerminal);
 	
 	public native ChatRoom createGuildChannels(GuildObject guild);

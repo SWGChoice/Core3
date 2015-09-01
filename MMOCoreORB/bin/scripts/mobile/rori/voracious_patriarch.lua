@@ -1,7 +1,6 @@
 voracious_patriarch = Creature:new {
 	objectName = "@mob/creature_names:torton_voracious_patriarch",
 	socialGroup = "torton",
-	pvpFaction = "",
 	faction = "",
 	level = 37,
 	chanceHit = 0.4,
@@ -11,7 +10,7 @@ voracious_patriarch = Creature:new {
 	baseHAM = 8500,
 	baseHAMmax = 10300,
 	armor = 0,
-	resists = {0,0,0,0,0,0,0,0,0},
+	resists = {115,115,25,25,25,115,115,200,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 1300,
 	hideType = "hide_wooly",
@@ -31,8 +30,8 @@ voracious_patriarch = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
-		{"knockdownattack","knockdownChance=50"}
+		{"knockdownattack",""},
+		{"intimidationattack",""}
 	}
 }
 

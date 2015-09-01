@@ -12,7 +12,7 @@ public:
 	}
 
 
-	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) {
+	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) const {
 
 		ManagedReference<PetControlDevice*> controlDevice = creature->getControlDevice().castTo<PetControlDevice*>();
 		if (controlDevice == NULL)
@@ -26,9 +26,8 @@ public:
 		if (player == NULL || !player->isPlayerCreature() ) {
 			return GENERALERROR;
 		}
-
 		Locker clocker(player, pet);
-
+		Locker locker(controlDevice);
 		controlDevice->storeObject(player);
 
 		return SUCCESS;

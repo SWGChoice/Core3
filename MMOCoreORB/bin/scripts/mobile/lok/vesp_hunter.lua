@@ -1,7 +1,6 @@
 vesp_hunter = Creature:new {
 	objectName = "@mob/creature_names:vesp_hunter",
 	socialGroup = "vesp",
-	pvpFaction = "",
 	faction = "",
 	level = 25,
 	chanceHit = 0.36,
@@ -11,7 +10,7 @@ vesp_hunter = Creature:new {
 	baseHAM = 5000,
 	baseHAMmax = 6100,
 	armor = 0,
-	resists = {20,20,15,50,15,15,50,-1,-1},
+	resists = {120,120,15,150,15,15,150,-1,-1},
 	meatType = "meat_reptilian",
 	meatAmount = 10,
 	hideType = "hide_leathery",
@@ -30,11 +29,11 @@ vesp_hunter = Creature:new {
 	controlDeviceTemplate = "object/intangible/pet/vesp_hue.iff",
 	scale = 1.05,
 	lootGroups = {},
-	weapons = {},
+	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"posturedownattack","postureDownChance=50"}
+		{"blindattack",""},
+		{"posturedownattack",""}
 	}
 }
 

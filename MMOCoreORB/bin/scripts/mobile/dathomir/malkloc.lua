@@ -1,7 +1,6 @@
 malkloc = Creature:new {
 	objectName = "@mob/creature_names:malkloc",
 	socialGroup = "malkloc",
-	pvpFaction = "",
 	faction = "",
 	level = 22,
 	chanceHit = 0.33,
@@ -11,7 +10,7 @@ malkloc = Creature:new {
 	baseHAM = 5400,
 	baseHAMmax = 6600,
 	armor = 0,
-	resists = {15,20,5,-1,-1,-1,5,45,-1},
+	resists = {115,120,5,-1,-1,-1,5,145,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 1000,
 	hideType = "hide_leathery",
@@ -32,7 +31,7 @@ malkloc = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

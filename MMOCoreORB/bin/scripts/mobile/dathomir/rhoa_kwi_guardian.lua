@@ -1,7 +1,6 @@
 rhoa_kwi_guardian = Creature:new {
 	objectName = "@mob/creature_names:rhoa_kwi_guardian",
 	socialGroup = "kwi",
-	pvpFaction = "",
 	faction = "",
 	level = 45,
 	chanceHit = 0.44,
@@ -11,7 +10,7 @@ rhoa_kwi_guardian = Creature:new {
 	baseHAM = 10000,
 	baseHAMmax = 12000,
 	armor = 0,
-	resists = {40,65,30,80,30,30,15,30,-1},
+	resists = {140,165,30,180,30,30,115,30,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 120,
 	hideType = "hide_leathery",
@@ -33,8 +32,8 @@ rhoa_kwi_guardian = Creature:new {
 	weapons = {"creature_spit_small_red"},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""},
+		{"dizzyattack",""}
 	}
 }
 

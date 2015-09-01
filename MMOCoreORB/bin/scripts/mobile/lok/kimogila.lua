@@ -1,7 +1,6 @@
 kimogila = Creature:new {
 	objectName = "@mob/creature_names:kimogila",
 	socialGroup = "kimogila",
-	pvpFaction = "",
 	faction = "",
 	level = 95,
 	chanceHit = 0.9,
@@ -11,7 +10,7 @@ kimogila = Creature:new {
 	baseHAM = 22000,
 	baseHAMmax = 27000,
 	armor = 2,
-	resists = {45,75,0,75,0,0,100,-1,-1},
+	resists = {145,175,0,175,0,0,200,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 1000,
 	hideType = "hide_leathery",
@@ -33,14 +32,14 @@ kimogila = Creature:new {
 	        groups = {
 				{group = "kimogila_common", chance = 10000000}
 			},
-			lootChance = 6500000
+			lootChance = 2900000
 		}
 	},
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"dizzyattack","dizzyChance=50"}
+		{"blindattack",""},
+		{"dizzyattack",""}
 	}
 }
 

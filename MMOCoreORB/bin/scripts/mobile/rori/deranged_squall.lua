@@ -1,7 +1,6 @@
 deranged_squall = Creature:new {
 	objectName = "@mob/creature_names:deranged_squall",
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 15,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ deranged_squall = Creature:new {
 	baseHAM = 2000,
 	baseHAMmax = 2400,
 	armor = 0,
-	resists = {10,5,5,-1,-1,-1,-1,-1,-1},
+	resists = {110,5,5,-1,-1,-1,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 10,
 	hideType = "hide_bristley",
@@ -32,7 +31,7 @@ deranged_squall = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

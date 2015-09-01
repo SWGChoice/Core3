@@ -29,7 +29,7 @@ int SarlaccMenuComponent::handleObjectMenuSelect(SceneObject* sceneObject, Creat
 			sco = inventory->getContainerObject(i);
 			if (sco == NULL)
 				continue;
-			if (sco->getServerObjectCRC() == String("object/tangible/loot/quest/quest_item_sarlacc_bile_jar.iff").hashCode()) {
+			if (sco->getServerObjectCRC() == STRING_HASHCODE("object/tangible/loot/quest/quest_item_sarlacc_bile_jar.iff")) {
 				player->sendSystemMessage("@mob/sarlacc:bile_already"); // You already have a good sample of bile. It probably isn't wise to risk getting more.
 				return 0;
 			}
@@ -40,7 +40,7 @@ int SarlaccMenuComponent::handleObjectMenuSelect(SceneObject* sceneObject, Creat
 					if (child == NULL)
 						continue;
 
-					if (child->getServerObjectCRC() == String("object/tangible/loot/quest/quest_item_sarlacc_bile_jar.iff").hashCode()) {
+					if (child->getServerObjectCRC() == STRING_HASHCODE("object/tangible/loot/quest/quest_item_sarlacc_bile_jar.iff")) {
 						player->sendSystemMessage("@mob/sarlacc:bile_already"); // You already have a good sample of bile. It probably isn't wise to risk getting more.
 						return 0;
 					}
@@ -53,16 +53,20 @@ int SarlaccMenuComponent::handleObjectMenuSelect(SceneObject* sceneObject, Creat
 			return 0;
 		}
 
-		Reference<SceneObject*> bileSceno = player->getZoneServer()->createObject(String("object/tangible/loot/quest/quest_item_sarlacc_bile_jar.iff").hashCode(), 1);
+		Reference<SceneObject*> bileSceno = player->getZoneServer()->createObject(STRING_HASHCODE("object/tangible/loot/quest/quest_item_sarlacc_bile_jar.iff"), 1);
 		if (bileSceno == NULL)
+			return 1;
+
+		if (inventory->transferObject(bileSceno, -1)) {
+			inventory->broadcastObject(bileSceno, true);
+			player->sendSystemMessage("@mob/sarlacc:bile_success"); // Despite being nearly overwhelmed by the stench of decay and the reaching tentacles, you manage to collect a sufficient sample of bile.
+			player->getCooldownTimerMap()->updateToCurrentAndAddMili("extractBileCooldown", 1000 * 60 * 30); // 30 min cooldown
+
 			return 0;
-
-		inventory->transferObject(bileSceno, -1);
-		inventory->broadcastObject(bileSceno, true);
-		player->sendSystemMessage("@mob/sarlacc:bile_success"); // Despite being nearly overwhelmed by the stench of decay and the reaching tentacles, you manage to collect a sufficient sample of bile.
-		player->getCooldownTimerMap()->updateToCurrentAndAddMili("extractBileCooldown", 1000 * 60 * 30); // 30 min cooldown
-
-		return 1;
+		} else {
+			bileSceno->destroyObjectFromDatabase(true);
+			return 1;
+		}
 	}
 
 	return 0;

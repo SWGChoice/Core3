@@ -8,7 +8,7 @@
 #include "CreatureAttackData.h"
 #include "server/zone/objects/creature/commands/CombatQueueCommand.h"
 
-CreatureAttackData::CreatureAttackData(const UnicodeString& dataString, CombatQueueCommand* base) {
+CreatureAttackData::CreatureAttackData(const UnicodeString& dataString, const CombatQueueCommand* base) {
 	baseCommand = base;
 	fillFromBase();
 
@@ -50,14 +50,6 @@ CreatureAttackData::CreatureAttackData(const CreatureAttackData& data) {
 
 	stateEffects = data.stateEffects;
 	dotEffects = data.dotEffects;
-	nextAttackDelayChance = data.nextAttackDelayChance;
-	durationStateTime = data.durationStateTime;
-
-	dotDuration = data.dotDuration;
-	dotType = data.dotType;
-	dotPool = data.dotPool;
-	dotStrength = data.dotStrength;
-	dotPotency = data.dotPotency;
 
 	range = data.range;
 	coneAngle = data.coneAngle;
@@ -69,6 +61,8 @@ CreatureAttackData::CreatureAttackData(const CreatureAttackData& data) {
 	trails = data.trails;
 
 	combatSpam = data.combatSpam;
+
+	stateAccuracyBonus = data.stateAccuracyBonus;
 }
 
 void CreatureAttackData::fillFromBase() {
@@ -83,13 +77,6 @@ void CreatureAttackData::fillFromBase() {
 	poolsToDamage = baseCommand->getPoolsToDamage();
 	stateEffects = baseCommand->getStateEffects();
 	dotEffects = baseCommand->getDotEffects();
-	nextAttackDelayChance = baseCommand->getNextAttackDelayChance();
-	durationStateTime = baseCommand->getDurationStateTime();
-	dotDuration = baseCommand->getDotDuration();
-	dotType = baseCommand->getDotType();
-	dotPool = baseCommand->getDotPool();
-	dotStrength = baseCommand->getDotStrength();
-	dotPotency = baseCommand->getDotPotency();
 	coneAngle = baseCommand->getConeAngle();
 	range = baseCommand->getRange();
 	areaRange = baseCommand->getAreaRange();
@@ -97,6 +84,8 @@ void CreatureAttackData::fillFromBase() {
 	attackType = baseCommand->getAttackType();
 	trails = baseCommand->getTrails();
 	combatSpam = baseCommand->getCombatSpam();
+
+	stateAccuracyBonus = 0;
 
 	healthDamageMultiplier = 1.f;
 	actionDamageMultiplier = 1.f;
@@ -106,83 +95,65 @@ void CreatureAttackData::fillFromBase() {
 void CreatureAttackData::setVariable(const String& var, const String& val) {
 	uint32 crc = var.hashCode();
 	switch(crc) {
-	case 0x9E64852D: // String("damage").hashCode():
+	case 0x9E64852D: // STRING_HASHCODE("damage"):
 		damage = Float::valueOf(val);
 		break;
-	case 0xA82FB287: // String("damageMultiplier").hashCode():
+	case 0xA82FB287: // STRING_HASHCODE("damageMultiplier"):
 		damageMultiplier = Float::valueOf(val);
 		break;
-	case 0xC60F1652: // String("healthDamageMultiplier").hashCode():
+	case 0xC60F1652: // STRING_HASHCODE("healthDamageMultiplier"):
 		healthDamageMultiplier = Float::valueOf(val);
 		break;
-	case 0x77139783: // String("actionDamageMultiplier").hashCode():
+	case 0x77139783: // STRING_HASHCODE("actionDamageMultiplier"):
 		actionDamageMultiplier = Float::valueOf(val);
 		break;
-	case 0xD7D06F99: // String("mindDamageMultiplier").hashCode():
+	case 0xD7D06F99: // STRING_HASHCODE("mindDamageMultiplier"):
 		mindDamageMultiplier = Float::valueOf(val);
 		break;
 	case 0xC33D0A1B: // String("accuracyBonus").hashcode()
 		accuracyBonus = Integer::valueOf(val);
 		break;
-	case 0x7CA69F2E: // String("speedMultiplier").hashCode()
+	case 0x7CA69F2E: // STRING_HASHCODE("speedMultiplier")
 		speedMultiplier = Float::valueOf(val);
 		break;
-	case 0x3A1C0159: // String("healthCostMultiplier").hashCode()
+	case 0x3A1C0159: // STRING_HASHCODE("healthCostMultiplier")
 		healthCostMultiplier = Float::valueOf(val);
 		break;
-	case 0x5FFD87F5: // String("actionCostMultiplier").hashCode()
+	case 0x5FFD87F5: // STRING_HASHCODE("actionCostMultiplier")
 		actionCostMultiplier = Float::valueOf(val);
 		break;
-	case 0xDF28A3E4: // String("mindCostMultiplier").hashCode()
+	case 0xDF28A3E4: // STRING_HASHCODE("mindCostMultiplier")
 		mindCostMultiplier = Float::valueOf(val);
 		break;
-	case 0xA3CB47C4: // String("forceCostMultiplier").hashCode()
+	case 0xA3CB47C4: // STRING_HASHCODE("forceCostMultiplier")
 		forceCostMultiplier = Float::valueOf(val);
 		break;
-	case 0xBF4C6ADB: // String("poolsToDamage").hashCode()
+	case 0xBF4C6ADB: // STRING_HASHCODE("poolsToDamage")
 		poolsToDamage = Integer::valueOf(val);
 		break;
-	case 0xB8BC4726: // String("nextAttackDelayChance").hashCode()
-		nextAttackDelayChance = Integer::valueOf(val);
-		break;
-	case 0x91E2CE2E: // String("durationStateTime").hashCode()
-		durationStateTime = Integer::valueOf(val);
-		break;
-	case 0x3B3CF0ED: // String("dotDuration").hashCode()
-		dotDuration = (uint32)Long::valueOf(val);
-		break;
-	case 0x5292F0A8: // String("dotType").hashCode()
-		dotType = UnsignedLong::valueOf(val);
-		break;
-	case 0xB821C9FB: // String("dotPool").hashCode()
-		dotPool = (uint8)Integer::valueOf(val);
-		break;
-	case 0x35656F0F: // String("dotStrength").hashCode()
-		dotStrength = (uint32)Long::valueOf(val);
-		break;
-	case 0x509E1FC0: // String("dotPotency").hashCode()
-		dotPotency = Float::valueOf(val);
-		break;
-	case 0xD2C29953: // String("coneAngle").hashCode()
+	case 0xD2C29953: // STRING_HASHCODE("coneAngle")
 		coneAngle = Integer::valueOf(val);
 		break;
-	case 0xE17D7C71: // String("range").hashCode()
+	case 0xE17D7C71: // STRING_HASHCODE("range")
 		range = Integer::valueOf(val);
 		break;
-	case 0xFEC2FA79: // String("areaRange").hashCode()
+	case 0xFEC2FA79: // STRING_HASHCODE("areaRange")
 		areaRange = Integer::valueOf(val);
 		break;
-	case 0x244FB60D: // String("animationCRC").hashCode()
+	case 0x244FB60D: // STRING_HASHCODE("animationCRC")
 		animationCRC = Integer::valueOf(val);
 		break;
-	case 0x708615B8: // String("attackType").hashCode()
+	case 0x708615B8: // STRING_HASHCODE("attackType")
 		attackType = Integer::valueOf(val);
 		break;
-	case 0x550ED3F5: // String("trails").hashCode()
+	case 0x550ED3F5: // STRING_HASHCODE("trails")
 		trails = Integer::valueOf(val);
 		break;
-	case 0xFAFA1475: // String("combatSpam").hashCode()
+	case 0xFAFA1475: // STRING_HASHCODE("combatSpam")
 		combatSpam = val;
+		break;
+	case 0x97F6A373: // STRING_HASHCODE("stateAccuracyBonus")
+		stateAccuracyBonus = Integer::valueOf(val);
 		break;
 	default:
 		break;

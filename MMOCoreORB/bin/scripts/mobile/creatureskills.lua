@@ -4,16 +4,19 @@
 -- command useage inside npc templates is attacks = merge(skilltreename1,skilltreename2,ect,ect)
 
 --creature level 1 to 10
-brawlernovice = { {"intimidate1",""},{"melee1hlunge1",""},{"melee2hlunge1",""},{"polearmlunge1",""},{"unarmedlunge1",""} }
+--brawlernovice = { {"intimidate1",""},{"melee1hlunge1",""},{"melee2hlunge1",""},{"polearmlunge1",""},{"unarmedlunge1",""} }
+brawlernovice = { {"melee1hlunge1",""},{"melee2hlunge1",""},{"polearmlunge1",""},{"unarmedlunge1",""} }
 marksmannovice = { {"overchargeshot1",""},{"pointblanksingle1",""},{"pointblankarea1",""} }
 
 --creature level 11 to 15
-brawlermid = { {"intimidate1",""},{"melee1hlunge1",""},{"melee1hhit1",""},{"melee1hbodyhit1",""},{"melee2hlunge1",""},{"melee2hhit1",""},{"melee2hheadhit1",""},{"polearmlunge1",""},{"polearmhit1",""},{"polearmleghit1",""},{"unarmedlunge1",""},{"unarmedhit1",""},{"unarmedstun1",""} }
+--brawlermid = { {"intimidate1",""},{"melee1hlunge1",""},{"melee1hhit1",""},{"melee1hbodyhit1",""},{"melee2hlunge1",""},{"melee2hhit1",""},{"melee2hheadhit1",""},{"polearmlunge1",""},{"polearmhit1",""},{"polearmleghit1",""},{"unarmedlunge1",""},{"unarmedhit1",""},{"unarmedstun1",""} }
+brawlermid = { {"melee1hlunge1",""},{"melee1hhit1",""},{"melee1hbodyhit1",""},{"melee2hlunge1",""},{"melee2hhit1",""},{"melee2hheadhit1",""},{"polearmlunge1",""},{"polearmhit1",""},{"polearmleghit1",""},{"unarmedlunge1",""},{"unarmedhit1",""},{"unarmedstun1",""} }
 marksmanmid = { {"overchargeshot1",""},{"pointblanksingle1",""},{"pointblankarea1",""},{"headshot1",""},{"bodyshot1",""},{"legshot1",""},{"fullautosingle1",""},{"diveshot",""},{"kipupshot",""},{"rollshot",""} }
 
 --creature level 16 to 20
 marksmanmaster = { {"overchargeshot2",""},{"pointblanksingle1",""},{"pointblankarea1",""},{"diveshot",""},{"kipupshot",""},{"rollshot",""},{"bodyshot2",""},{"healthshot1",""},{"legshot2",""},{"fullautosingle1",""},{"actionshot1",""},{"headshot2",""},{"mindshot1",""},{"warningshot",""},{"suppressionfire1",""} }
-brawlermaster = { {"intimidate2",""},{"unarmedlunge2",""},{"unarmedhit1",""},{"unarmedstun1",""},{"unarmedblind1",""},{"unarmedspinattack1",""},{"melee1hspinattack1",""},{"melee1hlunge2",""},{"melee1hdizzyhit1",""},{"melee1hhit1",""},{"melee1hbodyhit1",""},{"melee2hhit1",""},{"melee2hlunge2",""},{"melee2hheadhit1",""},{"melee2hsweep1",""},{"melee2hspinattack1",""},{"polearmlunge2",""},{"polearmhit1",""},{"polearmleghit1",""},{"polearmstun1",""},{"polearmspinattack1",""} }
+--brawlermaster = { {"intimidate2",""},{"unarmedlunge2",""},{"unarmedhit1",""},{"unarmedstun1",""},{"unarmedblind1",""},{"unarmedspinattack1",""},{"melee1hspinattack1",""},{"melee1hlunge2",""},{"melee1hdizzyhit1",""},{"melee1hhit1",""},{"melee1hbodyhit1",""},{"melee2hhit1",""},{"melee2hlunge2",""},{"melee2hheadhit1",""},{"melee2hsweep1",""},{"melee2hspinattack1",""},{"polearmlunge2",""},{"polearmhit1",""},{"polearmleghit1",""},{"polearmstun1",""},{"polearmspinattack1",""} }
+brawlermaster = { {"unarmedlunge2",""},{"unarmedhit1",""},{"unarmedstun1",""},{"unarmedblind1",""},{"unarmedspinattack1",""},{"melee1hspinattack1",""},{"melee1hlunge2",""},{"melee1hdizzyhit1",""},{"melee1hhit1",""},{"melee1hbodyhit1",""},{"melee2hhit1",""},{"melee2hlunge2",""},{"melee2hheadhit1",""},{"melee2hsweep1",""},{"melee2hspinattack1",""},{"polearmlunge2",""},{"polearmhit1",""},{"polearmleghit1",""},{"polearmstun1",""},{"polearmspinattack1",""} }
 
 --creature level 21 to 25 use base profession master with these depending on weapons in thier weapons groups
 bountyhunternovice = { {"firelightningsingle1",""},{"bleedingshot",""},{"underhandshot",""} }
@@ -50,7 +53,8 @@ tkamaster = { {"unarmedhit3",""},{"unarmedleghit1",""},{"unarmedbodyhit1",""},{"
 
 --npc jedi skills
 lightsabermaster = { {"saber1hheadhit1",""},{"saber1hhit1",""},{"saber1hcombohit1",""},{"saber1hflurry",""},{"saber2hbodyhit1",""},{"saber2hfrenzy",""},{"saber2hhit1",""},{"saber2hphantom",""},{"saber2hsweep1",""},{"saberpolearmdervish",""},{"saberpolearmhit1",""},{"saberpolearmleghit1",""},{"saberpolearmspinattack1",""},{"saberslash1",""},{"saberthrow1",""} }
-forcepowermaster = { {"forcelightningsingle2",""},{"forcelightningcone2",""},{"forceintimidate2",""},{"forceknockdown2",""},{"forcethrow2",""},{"forcechoke",""} }
+--forcepowermaster = { {"forcelightningsingle2",""},{"forcelightningcone2",""},{"forceintimidate2",""},{"forceknockdown2",""},{"forcethrow2",""},{"forcechoke",""} }
+forcepowermaster = { {"forcelightningsingle2",""},{"forcelightningcone2",""},{"forceknockdown2",""},{"forcethrow2",""},{"forcechoke",""} }
 
 -- npc force wielders use standard profession mastery with the addition of this command
 forcewielder ={ {"forcelightningsingle1",""},{"forcechoke",""},{"forcelightningcone1",""} }

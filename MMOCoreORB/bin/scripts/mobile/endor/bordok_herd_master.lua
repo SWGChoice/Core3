@@ -1,7 +1,6 @@
 bordok_herd_master = Creature:new {
 	objectName = "@mob/creature_names:bordok_herd_master",
 	socialGroup = "bordok",
-	pvpFaction = "",
 	faction = "",
 	level = 40,
 	chanceHit = 0.43,
@@ -11,7 +10,7 @@ bordok_herd_master = Creature:new {
 	baseHAM = 9500,
 	baseHAMmax = 11600,
 	armor = 0,
-	resists = {20,20,20,100,100,-1,-1,-1,-1},
+	resists = {25,25,25,200,200,-1,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 250,
 	hideType = "hide_leathery",
@@ -32,7 +31,7 @@ bordok_herd_master = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

@@ -1,7 +1,7 @@
 spiderclan_web_dancer = Creature:new {
 	objectName = "@mob/creature_names:spider_nightsister_web_dancer",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "spider_nightsister",
-	pvpFaction = "spider_nightsister",
 	faction = "spider_nightsister",
 	level = 87,
 	chanceHit = 0.75,
@@ -41,8 +41,7 @@ spiderclan_web_dancer = Creature:new {
 				{group = "carbines", chance = 1000000},
 				{group = "wearables_common", chance = 500000},
 				{group = "wearables_uncommon", chance = 500000}
-			},
-			lootChance = 2700000
+			}
 		}
 	},
 	weapons = {"mixed_force_weapons"},

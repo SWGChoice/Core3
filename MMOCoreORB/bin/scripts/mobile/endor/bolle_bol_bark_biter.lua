@@ -1,7 +1,6 @@
 bolle_bol_bark_biter = Creature:new {
 	objectName = "@mob/creature_names:bolle_bol_bark_biter",
 	socialGroup = "bol",
-	pvpFaction = "",
 	faction = "",
 	level = 27,
 	chanceHit = 0.36,
@@ -11,7 +10,7 @@ bolle_bol_bark_biter = Creature:new {
 	baseHAM = 7200,
 	baseHAMmax = 8800,
 	armor = 0,
-	resists = {35,25,-1,15,40,15,40,-1,-1},
+	resists = {135,125,-1,15,140,15,140,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 450,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ bolle_bol_bark_biter = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"posturedownattack","postureDownChance=50"}
+		{"dizzyattack",""},
+		{"posturedownattack",""}
 	}
 }
 

@@ -1,7 +1,7 @@
 rebel_second_lieutenant = Creature:new {
 	objectName = "@mob/creature_names:rebel_second_lieutenant",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "rebel",
-	pvpFaction = "rebel",
 	faction = "rebel",
 	level = 19,
 	chanceHit = 0.33,
@@ -46,12 +46,13 @@ rebel_second_lieutenant = Creature:new {
 				{group = "armor_attachments", chance = 150000},
 				{group = "rebel_officer_common", chance = 450000},
 				{group = "wearables_common", chance = 1000000}
-			},
-			lootChance = 2600000
+			}
 		}
 	},
 	weapons = {"rebel_weapons_medium"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/military",
+	personalityStf = "@hireling/hireling_military",
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 

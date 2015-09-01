@@ -1,7 +1,6 @@
 perlek_scavenger = Creature:new {
 	objectName = "@mob/creature_names:perlek_scavanger",
 	socialGroup = "perlek",
-	pvpFaction = "",
 	faction = "",
 	level = 15,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ perlek_scavenger = Creature:new {
 	baseHAM = 2400,
 	baseHAMmax = 3000,
 	armor = 0,
-	resists = {5,5,5,30,30,-1,-1,-1,-1},
+	resists = {5,5,5,130,130,-1,-1,-1,-1},
 	meatType = "meat_avian",
 	meatAmount = 275,
 	hideType = "hide_leathery",
@@ -33,7 +32,8 @@ perlek_scavenger = Creature:new {
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"",""},
+		{"stunattack",""}
 	}
 }
 

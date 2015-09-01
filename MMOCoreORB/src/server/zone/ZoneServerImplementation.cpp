@@ -1,46 +1,6 @@
 /*
-Copyright (C) 2007 <SWGEmu>
-
-This File is part of Core3.
-
-This program is free software; you can redistribute
-it and/or modify it under the terms of the GNU Lesser
-General Public License as published by the Free Software
-Foundation; either version 2 of the License,
-or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU Lesser General Public License for
-more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this program; if not, write to
-the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-
-Linking Engine3 statically or dynamically with other modules
-is making a combined work based on Engine3.
-Thus, the terms and conditions of the GNU Lesser General Public License
-cover the whole combination.
-
-In addition, as a special exception, the copyright holders of Engine3
-give you permission to combine Engine3 program with free software
-programs or libraries that are released under the GNU LGPL and with
-code included in the standard release of Core3 under the GNU LGPL
-license (or modified versions of such code, with unchanged license).
-You may copy and distribute such a system following the terms of the
-GNU LGPL for Engine3 and the licenses of the other code concerned,
-provided that you include the source code of that other code when
-and as the GNU LGPL requires distribution of source code.
-
-Note that people who make modified versions of Engine3 are not obligated
-to grant this special exception for their modified versions;
-it is their choice whether to do so. The GNU Lesser General Public License
-gives permission to release a modified version without this exception;
-this exception also makes it possible to release a modified version
-which carries forward this exception.
-*/
+				Copyright <SWGEmu>
+		See file COPYING for copying conditions.*/
 
 #include "server/zone/ZoneServer.h"
 
@@ -75,6 +35,7 @@ which carries forward this exception.
 #include "server/zone/managers/guild/GuildManager.h"
 #include "server/zone/managers/creature/CreatureManager.h"
 #include "server/zone/managers/faction/FactionManager.h"
+#include "server/zone/managers/reaction/ReactionManager.h"
 #include "server/zone/managers/director/DirectorManager.h"
 #include "server/zone/managers/city/CityManager.h"
 #include "server/zone/managers/structure/StructureManager.h"
@@ -169,7 +130,7 @@ void ZoneServerImplementation::initialize() {
 
 	loadGalaxyName();
 
-	processor = new ZoneProcessServer(_this.get());
+	processor = new ZoneProcessServer(_this.getReferenceUnsafeStaticCast());
 	processor->deploy("ZoneProcessServer");
 	processor->initialize();
 
@@ -180,6 +141,9 @@ void ZoneServerImplementation::initialize() {
 	objectManager->updateObjectVersion();
 
 	stringIdManager = StringIdManager::instance();
+
+	reactionManager = new ReactionManager(_this.getReferenceUnsafeStaticCast());
+	reactionManager->loadLuaConfig();
 
 	creatureTemplateManager = CreatureTemplateManager::instance();
 	creatureTemplateManager->loadTemplates();
@@ -192,11 +156,11 @@ void ZoneServerImplementation::initialize() {
 
 	info("Initializing chat manager...", true);
 
-	chatManager = new ChatManager(_this.get(), 10000);
+	chatManager = new ChatManager(_this.getReferenceUnsafeStaticCast(), 10000);
 	chatManager->deploy("ChatManager");
 	chatManager->initiateRooms();
 
-	playerManager = new PlayerManager(_this.get(), processor);
+	playerManager = new PlayerManager(_this.getReferenceUnsafeStaticCast(), processor);
 	playerManager->deploy("PlayerManager");
 
 	chatManager->setPlayerManager(playerManager);
@@ -206,24 +170,24 @@ void ZoneServerImplementation::initialize() {
 	craftingManager->setZoneProcessor(processor);
 	craftingManager->initialize();
 
-	lootManager = new LootManager(craftingManager, objectManager, _this.get());
+	lootManager = new LootManager(craftingManager, objectManager, _this.getReferenceUnsafeStaticCast());
 	lootManager->deploy("LootManager");
 	lootManager->initialize();
 
-	resourceManager = new ResourceManager(_this.get(), processor, objectManager);
+	resourceManager = new ResourceManager(_this.getReferenceUnsafeStaticCast(), processor, objectManager);
 	resourceManager->deploy("ResourceManager");
 
-	cityManager = new CityManager(_this.get());
+	cityManager = new CityManager(_this.getReferenceUnsafeStaticCast());
 	cityManager->deploy("CityManager");
 	cityManager->loadLuaConfig();
 
-	auctionManager = new AuctionManager(_this.get());
+	auctionManager = new AuctionManager(_this.getReferenceUnsafeStaticCast());
 	auctionManager->deploy();
 
-	missionManager = new MissionManager(_this.get(), processor);
+	missionManager = new MissionManager(_this.getReferenceUnsafeStaticCast(), processor);
 	missionManager->deploy("MissionManager");
 
-	petManager = new PetManager(_this.get());
+	petManager = new PetManager(_this.getReferenceUnsafeStaticCast());
 	petManager->initialize();
 
 	startZones();
@@ -242,7 +206,7 @@ void ZoneServerImplementation::startZones() {
 	SortedVector<String>* enabledZones = configManager->getEnabledZones();
 
 	StructureManager* structureManager = StructureManager::instance();
-	structureManager->setZoneServer(_this.get());
+	structureManager->setZoneServer(_this.getReferenceUnsafeStaticCast());
 
 	for (int i = 0; i < enabledZones->size(); ++i) {
 		String zoneName = enabledZones->get(i);
@@ -262,7 +226,7 @@ void ZoneServerImplementation::startZones() {
 	for (int i = 0; i < zones->size(); ++i) {
 		Zone* zone = zones->get(i);
 		if (zone != NULL) {
-			ZoneLoadManagersTask* task = new ZoneLoadManagersTask(_this.get(), zone);
+			ZoneLoadManagersTask* task = new ZoneLoadManagersTask(_this.getReferenceUnsafeStaticCast(), zone);
 			task->execute();
 		}
 	}
@@ -280,12 +244,13 @@ void ZoneServerImplementation::startZones() {
 void ZoneServerImplementation::startManagers() {
 	info("loading managers..");
 
-	radialManager = new RadialManager(_this.get());
+	radialManager = new RadialManager(_this.getReferenceUnsafeStaticCast());
 	radialManager->deploy("RadialManager");
 
-	guildManager = new GuildManager(_this.get(), processor);
+	guildManager = new GuildManager(_this.getReferenceUnsafeStaticCast(), processor);
 	guildManager->deploy("GuildManager");
 	guildManager->setChatManager(chatManager);
+	guildManager->loadLuaConfig();
 	guildManager->loadGuilds();
 
 	chatManager->initiatePlanetRooms();
@@ -294,6 +259,13 @@ void ZoneServerImplementation::startManagers() {
 	FactionManager::instance()->loadData();
 
 	cityManager->loadCityRegions();
+
+	for (int i = 0; i < zones->size(); ++i) {
+		Zone* zone = zones->get(i);
+		if (zone != NULL) {
+			zone->updateCityRegions();
+		}
+	}
 
 	//Start global screen plays
 	DirectorManager::instance()->loadPersistentEvents();
@@ -304,7 +276,7 @@ void ZoneServerImplementation::startManagers() {
 }
 
 void ZoneServerImplementation::start(int p, int mconn) {
-	zoneHandler = new ZoneHandler(_this.get());
+	zoneHandler = new ZoneHandler(_this.getReferenceUnsafeStaticCast());
 
 	datagramService->setHandler(zoneHandler);
 
@@ -321,7 +293,7 @@ void ZoneServerImplementation::stop() {
 }
 
 void ZoneServerImplementation::timedShutdown(int minutes) {
-	Reference<Task*> task = new ShutdownTask(_this.get(), minutes);
+	Reference<Task*> task = new ShutdownTask(_this.getReferenceUnsafeStaticCast(), minutes);
 	task->schedule(60 * 1000);
 
 	String str = "Server will shutdown in " + String::valueOf(minutes) + " minutes";
@@ -707,7 +679,7 @@ void ZoneServerImplementation::unlock(bool doLock) {
 }
 
 void ZoneServerImplementation::setServerStateLocked() {
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	serverState = LOCKED;
 
@@ -717,7 +689,7 @@ void ZoneServerImplementation::setServerStateLocked() {
 }
 
 void ZoneServerImplementation::setServerStateOnline() {
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	serverState = ONLINE;
 
@@ -731,7 +703,7 @@ String ZoneServerImplementation::getLoginMessage() {
 }
 
 void ZoneServerImplementation::loadLoginMessage() {
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	File* file;
 	FileReader* reader;
@@ -756,7 +728,7 @@ void ZoneServerImplementation::loadLoginMessage() {
 }
 
 void ZoneServerImplementation::changeLoginMessage(const String& motd) {
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	File* file;
 	FileWriter* writer;

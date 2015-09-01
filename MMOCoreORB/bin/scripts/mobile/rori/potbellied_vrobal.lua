@@ -1,7 +1,6 @@
 potbellied_vrobal = Creature:new {
 	objectName = "@mob/creature_names:potbellied_vrobal",
 	socialGroup = "vrobal",
-	pvpFaction = "",
 	faction = "",
 	level = 12,
 	chanceHit = 0.29,
@@ -11,7 +10,7 @@ potbellied_vrobal = Creature:new {
 	baseHAM = 1200,
 	baseHAMmax = 1400,
 	armor = 0,
-	resists = {0,0,0,10,0,0,0,-1,-1},
+	resists = {0,0,0,110,0,0,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 10,
 	hideType = "hide_leathery",

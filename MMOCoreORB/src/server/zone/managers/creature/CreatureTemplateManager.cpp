@@ -8,6 +8,7 @@
 #include "CreatureTemplateManager.h"
 #include "SpawnGroup.h"
 #include "server/conf/ConfigManager.h"
+#include "server/zone/managers/name/NameManager.h"
 
 AtomicInteger CreatureTemplateManager::loadedMobileTemplates;
 
@@ -59,6 +60,21 @@ CreatureTemplateManager::CreatureTemplateManager() : Logger("CreatureTemplateMan
 
 	lua->setGlobalInt("CARNIVORE", CreatureFlag::CARNIVORE);
 	lua->setGlobalInt("HERBIVORE", CreatureFlag::HERBIVORE);
+
+	// NameManager Types
+	lua->setGlobalInt("NAME_TAG", NameManagerType::TAG);
+	lua->setGlobalInt("NAME_GENERIC", NameManagerType::GENERIC);
+	lua->setGlobalInt("NAME_GENERIC_TAG", NameManagerType::GENERIC_TAG);
+	lua->setGlobalInt("NAME_GENERIC_FIRSTNAME", NameManagerType::GENERIC_FIRSTNAME);
+	lua->setGlobalInt("NAME_GENERIC_FIRSTNAME_TAG", NameManagerType::GENERIC_FIRSTNAME_TAG);
+	lua->setGlobalInt("NAME_STORMTROOPER", NameManagerType::STORMTROOPER);
+	lua->setGlobalInt("NAME_STORMTROOPER_TAG", NameManagerType::STORMTROOPER_TAG);
+	lua->setGlobalInt("NAME_SCOUTTROOPER", NameManagerType::SCOUTTROOPER);
+	lua->setGlobalInt("NAME_SCOUTTROOPER_TAG", NameManagerType::SCOUTTROOPER_TAG);
+	lua->setGlobalInt("NAME_DARKTROOPER", NameManagerType::DARKTROOPER);
+	lua->setGlobalInt("NAME_DARKTROOPER_TAG", NameManagerType::DARKTROOPER_TAG);
+	lua->setGlobalInt("NAME_SWAMPTROOPER", NameManagerType::SWAMPTROOPER);
+	lua->setGlobalInt("NAME_SWAMPTROOPER_TAG", NameManagerType::SWAMPTROOPER_TAG);
 }
 
 CreatureTemplateManager::~CreatureTemplateManager() {

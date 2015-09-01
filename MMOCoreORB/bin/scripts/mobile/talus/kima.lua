@@ -1,7 +1,6 @@
 kima = Creature:new {
 	objectName = "@mob/creature_names:kima",
 	socialGroup = "kima",
-	pvpFaction = "",
 	faction = "",
 	level = 18,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ kima = Creature:new {
 	baseHAM = 4500,
 	baseHAMmax = 5500,
 	armor = 0,
-	resists = {15,20,5,-1,5,5,-1,-1,-1},
+	resists = {115,120,5,-1,5,5,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 7,
 	hideType = "hide_bristley",
@@ -32,7 +31,8 @@ kima = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"",""},
+		{"intimidationattack",""}
 	}
 }
 

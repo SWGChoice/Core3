@@ -1,7 +1,6 @@
 wood_mite_matriarch = Creature:new {
 	objectName = "@mob/creature_names:wood_mite_matriarch",
 	socialGroup = "mite",
-	pvpFaction = "",
 	faction = "",
 	level = 15,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ wood_mite_matriarch = Creature:new {
 	baseHAM = 2000,
 	baseHAMmax = 2400,
 	armor = 0,
-	resists = {25,15,-1,-1,-1,-1,-1,-1,-1},
+	resists = {125,115,0,0,0,0,0,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 10,
 	hideType = "",
@@ -21,7 +20,7 @@ wood_mite_matriarch = Creature:new {
 	milk = 0,
 	tamingChance = 0,
 	ferocity = 0,
-	pvpBitmask = AGGRESSIVE + ATTACKABLE,
+	pvpBitmask = AGGRESSIVE + ATTACKABLE + ENEMY,
 	creatureBitmask = PACK + HERD,
 	optionsBitmask = 0,
 	diet = CARNIVORE,
@@ -32,7 +31,7 @@ wood_mite_matriarch = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

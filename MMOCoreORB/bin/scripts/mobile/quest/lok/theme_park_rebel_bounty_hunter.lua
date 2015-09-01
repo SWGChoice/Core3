@@ -1,7 +1,6 @@
 theme_park_rebel_bounty_hunter = Creature:new {
 	objectName = "@mob/creature_names:bounty_hunter",
 	socialGroup = "mercenary",
-	pvpFaction = "",
 	faction = "",
 	level = 24,
 	chanceHit = 0.350000,
@@ -27,7 +26,18 @@ theme_park_rebel_bounty_hunter = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_bountyhunter_trainer_03.iff"},
-	lootGroups = {},
+	lootGroups = {
+		{
+			groups = {
+				{group = "junk", chance = 5000000},
+				{group = "rifles", chance = 1000000},
+				{group = "pistols", chance = 1000000},
+				{group = "melee_weapons", chance = 1000000},
+				{group = "carbines", chance = 1000000},
+				{group = "wearables_common", chance = 1000000}
+			}
+		}
+	},
 	weapons = {"pirate_weapons_heavy"},
 	attacks = merge(brawlermaster,marksmanmaster)
 }

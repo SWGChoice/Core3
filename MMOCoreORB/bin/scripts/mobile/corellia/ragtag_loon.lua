@@ -1,7 +1,7 @@
 ragtag_loon = Creature:new {
 	objectName = "@mob/creature_names:ragtag_loon",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "ragtag",
-	pvpFaction = "thug",
 	faction = "thug",
 	level = 6,
 	chanceHit = 0.250000,
@@ -39,7 +39,7 @@ ragtag_loon = Creature:new {
 		"object/mobile/dressed_commoner_old_human_female_01.iff",
 		"object/mobile/dressed_commoner_old_human_male_02.iff",
 		"object/mobile/dressed_commoner_tatooine_aqualish_female_07.iff"
-		},
+	},
 	lootGroups = {
 		{
 			groups = {
@@ -48,11 +48,11 @@ ragtag_loon = Creature:new {
 				{group = "loot_kit_parts", chance = 1500000},
 				{group = "crystals_poor", chance = 500000},
 				{group = "tailor_components", chance = 1000000}
-			},
-			lootChance = 3200000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_light"},
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlernovice,marksmannovice)
 }
 

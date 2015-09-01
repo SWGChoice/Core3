@@ -1,7 +1,6 @@
 erratic_swirl_prong = Creature:new {
 	objectName = "@mob/creature_names:erratic_swirl_prong",
 	socialGroup = "prong",
-	pvpFaction = "",
 	faction = "",
 	level = 27,
 	chanceHit = 0.36,
@@ -10,8 +9,8 @@ erratic_swirl_prong = Creature:new {
 	baseXp = 2730,
 	baseHAM = 7200,
 	baseHAMmax = 8800,
-	armor = 1,
-	resists = {25,35,15,50,50,-1,-1,-1,-1},
+	armor = 0,
+	resists = {125,135,15,150,150,-1,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 150,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ erratic_swirl_prong = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""},
+		{"intimidationattack",""}
 	}
 }
 

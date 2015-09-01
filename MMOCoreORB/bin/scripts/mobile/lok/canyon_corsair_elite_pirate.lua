@@ -1,7 +1,7 @@
 canyon_corsair_elite_pirate = Creature:new {
 	objectName = "@mob/creature_names:canyon_corsair_pirate_elite",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "canyon_corsair",
-	pvpFaction = "canyon_corsair",
 	faction = "canyon_corsair",
 	level = 42,
 	chanceHit = 0.44,
@@ -32,8 +32,8 @@ canyon_corsair_elite_pirate = Creature:new {
 		"object/mobile/dressed_corsair_pirate_elite_nikto_m.iff",
 		"object/mobile/dressed_corsair_pirate_elite_wee_m.iff",
 		"object/mobile/dressed_corsair_pirate_elite_zab_m.iff"
-		},
-	
+	},
+
 	lootGroups = {
 		{
 			groups = {
@@ -48,12 +48,12 @@ canyon_corsair_elite_pirate = Creature:new {
 				{group = "armor_attachments", chance = 450000},
 				{group = "canyon_corsair_common", chance = 1500000},
 				{group = "wearables_uncommon", chance = 500000},
-			},
-			lootChance = 4000000
+			}
 		}
 	},
 	weapons = {"canyon_corsair_weapons"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(swordsmanmaster,carbineermaster,tkamaster,brawlermaster,marksmanmaster)
 }
 

@@ -134,8 +134,11 @@ bool DeliverMissionObjectiveImplementation::activateWithResult() {
 		WaypointObject* waypoint = mission->getWaypointToMission();
 
 		if (waypoint == NULL) {
+			Locker mlocker(mission);
 			waypoint = mission->createWaypoint();
 		}
+
+		Locker locker(waypoint);
 
 		waypoint->setPlanetCRC(mission->getStartPlanetCRC());
 		waypoint->setPosition(targetPosition->getX(), 0, targetPosition->getY());
@@ -183,41 +186,48 @@ void DeliverMissionObjectiveImplementation::updateMissionStatus(CreatureObject* 
 
 	Locker lock(player);
 
-	switch (objectiveStatus) {
-	case 0:
+	if (objectiveStatus == 0) {
 		itemEntry << "l";
 		item = NULL;
 		//TODO: create correct item.
-		item = (player->getZoneServer()->createObject(String("object/tangible/mission/mission_datadisk.iff").hashCode(), 2)).castTo<TangibleObject*>();
+		item = (player->getZoneServer()->createObject(STRING_HASHCODE("object/tangible/mission/mission_datadisk.iff"), 2)).castTo<TangibleObject*>();
 		if (item == NULL) {
+			abort();
 			return;
 		}
 
+		Locker clocker(item, player);
+
 		itemName.setStringId("mission/mission_deliver_neutral_easy", itemEntry.toString());
 		item->setObjectName(itemName);
-		item->sendTo(player, true);
 
 		//Give player the item to deliver
-		inventory->transferObject(item, -1, true);
+		if (inventory->transferObject(item, -1, true)) {
+			item->sendTo(player, true);
+		} else {
+			abort();
+			item->destroyObjectFromDatabase(true);
+			return;
+		}
 
 		updateMissionTarget(player);
 
 		objectiveStatus = PICKEDUPSTATUS;
-		break;
-	case 1:
+
+	} else if (objectiveStatus == 1) {
 		// check for item, then remove item
 		if (item == NULL || !inventory->hasObjectInContainer(item->getObjectID())) {
 			return;
 		}
 
+		Locker clocker2(item, player);
+
 		item->destroyObjectFromWorld(true);
+		item->destroyObjectFromDatabase(true);
 
 		complete();
 
 		objectiveStatus = DELIVEREDSTATUS;
-		break;
-	default:
-		break;
 	}
 }
 
@@ -227,8 +237,11 @@ bool DeliverMissionObjectiveImplementation::updateMissionTarget(CreatureObject* 
 
 	WaypointObject* waypoint = mission->getWaypointToMission();
 	if (waypoint == NULL) {
+		Locker mlocker(mission);
 		waypoint = mission->createWaypoint();
 	}
+
+	Locker locker(waypoint);
 
 	waypoint->setPlanetCRC(mission->getEndPlanet().hashCode());
 	waypoint->setPosition(destinationSpawnPoint->getPosition()->getX(), 0, destinationSpawnPoint->getPosition()->getY());

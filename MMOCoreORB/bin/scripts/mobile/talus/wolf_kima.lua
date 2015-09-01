@@ -1,7 +1,6 @@
 wolf_kima = Creature:new {
 	objectName = "@mob/creature_names:wolf_kima",
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 19,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ wolf_kima = Creature:new {
 	baseHAM = 2900,
 	baseHAMmax = 3500,
 	armor = 0,
-	resists = {0,0,0,0,0,0,0,0,0},
+	resists = {115,110,-1,-1,5,5,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 10,
 	hideType = "hide_bristley",
@@ -33,8 +32,8 @@ wolf_kima = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"stunattack","stunChance=50"}
+		{"blindattack",""},
+		{"stunattack",""}
 	}
 }
 

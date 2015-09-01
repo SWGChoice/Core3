@@ -1,7 +1,6 @@
 giant_cave_veermok = Creature:new {
 	objectName = "@mob/creature_names:veermok_giant_cave",
 	socialGroup = "veermok",
-	pvpFaction = "",
 	faction = "",
 	level = 26,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ giant_cave_veermok = Creature:new {
 	baseHAM = 5900,
 	baseHAMmax = 7200,
 	armor = 0,
-	resists = {50,50,0,0,0,0,0,-1,-1},
+	resists = {150,150,0,0,0,0,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 290,
 	hideType = "hide_bristley",
@@ -32,7 +31,8 @@ giant_cave_veermok = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"",""},
+		{"stunattack",""}
 	}
 }
 

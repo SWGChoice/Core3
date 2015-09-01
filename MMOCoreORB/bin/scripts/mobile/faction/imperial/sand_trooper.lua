@@ -1,7 +1,7 @@
 sand_trooper = Creature:new {
 	objectName = "@mob/creature_names:sand_trooper",
+	randomNameType = NAME_STORMTROOPER_TAG,
 	socialGroup = "imperial",
-	pvpFaction = "imperial",
 	faction = "imperial",
 	level = 25,
 	chanceHit = 0.36,
@@ -40,12 +40,13 @@ sand_trooper = Creature:new {
 				{group = "armor_attachments", chance = 25000},
 				{group = "stormtrooper_common", chance = 100000},
 				{group = "wearables_common", chance = 1000000}
-			},
-			lootChance = 2800000
+			}
 		}
 	},
 	weapons = {"sandtrooper_weapons"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/stormtrooper",
+	personalityStf = "@hireling/hireling_stormtrooper",
 	attacks = merge(riflemanmaster,brawlermaster)
 }
 

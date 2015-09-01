@@ -1,7 +1,6 @@
 giant_carrion_spat = Creature:new {
 	objectName = "@mob/creature_names:giant_carrion_spat",
 	socialGroup = "carrion_spat",
-	pvpFaction = "",
 	faction = "",
 	level = 18,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ giant_carrion_spat = Creature:new {
 	baseHAM = 3500,
 	baseHAMmax = 4300,
 	armor = 0,
-	resists = {-1,25,5,45,45,-1,-1,-1,-1},
+	resists = {-1,125,5,145,145,-1,-1,-1,-1},
 	meatType = "meat_avian",
 	meatAmount = 350,
 	hideType = "",
@@ -33,8 +32,8 @@ giant_carrion_spat = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"stunattack","stunChance=50"}
+		{"dizzyattack",""},
+		{"stunattack",""}
 	}
 }
 

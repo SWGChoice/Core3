@@ -16,54 +16,53 @@ void DestroyMissionLairObserverImplementation::checkForHeal(TangibleObject* lair
 }
 
 bool DestroyMissionLairObserverImplementation::checkForNewSpawns(TangibleObject* lair, TangibleObject* attacker, bool forceSpawn) {
-	if (lair->getZone() == NULL)
+	Zone* zone = lair->getZone();
+
+	if (zone == NULL)
 		return false;
 
 	int spawnLimitAdjustment = 0;
-	if (getMobType() == LairTemplate::NPC) {
-		spawnLimitAdjustment = difficulty - 2;
-	} else {
-		if (difficulty == 0) {
-			spawnLimitAdjustment = -3;
-		} else if (difficulty == 4) {
-			spawnLimitAdjustment = 3;
-		}
+
+	if (difficulty == 0) {
+		spawnLimitAdjustment = -3;
+	} else if (difficulty == 4) {
+		spawnLimitAdjustment = 3;
 	}
 
 	int spawnLimit = lairTemplate->getSpawnLimit() + spawnLimitAdjustment;
 
-	if (spawnedCreatures.size() >= spawnLimit && !lairTemplate->hasBossMobs())
-		return true;
-
 	if (forceSpawn) {
-		spawnNumber++;
+		spawnNumber.increment();
 	} else if (getMobType() == LairTemplate::NPC) {
 		return false;
 	} else {
+		if (spawnedCreatures.size() >= spawnLimit && !lairTemplate->hasBossMobs())
+			return true;
+
 		int conditionDamage = lair->getConditionDamage();
 		int maxCondition = lair->getMaxCondition();
 
 		switch (spawnNumber) {
 		case 0:
-			spawnNumber++;
+			spawnNumber.increment();
 			break;
 		case 1:
 			if (conditionDamage > (maxCondition / 10)) {
-				spawnNumber++;
+				spawnNumber.increment();
 			} else {
 				return false;
 			}
 			break;
 		case 2:
 			if (conditionDamage > (maxCondition / 2)) {
-				spawnNumber++;
+				spawnNumber.increment();
 			} else {
 				return false;
 			}
 			break;
 		case 3:
 			if (lairTemplate->hasBossMobs() && conditionDamage > ((maxCondition * 9) / 10)) {
-				spawnNumber++;
+				spawnNumber.increment();
 			} else {
 				return false;
 			}
@@ -93,7 +92,7 @@ bool DestroyMissionLairObserverImplementation::checkForNewSpawns(TangibleObject*
 		if (getMobType() == LairTemplate::CREATURE) {
 			amountToSpawn = spawnLimit / 3;
 		} else {
-			amountToSpawn = spawnLimit;
+			amountToSpawn = System::random(2) + (spawnLimit / 3);
 		}
 
 		if (amountToSpawn < 1)
@@ -128,13 +127,15 @@ bool DestroyMissionLairObserverImplementation::checkForNewSpawns(TangibleObject*
 
 		float tamingChance = creatureTemplate->getTame();
 
-		CreatureManager* creatureManager = lair->getZone()->getCreatureManager();
+		CreatureManager* creatureManager = zone->getCreatureManager();
 
 		for (int j = 0; j < numberToSpawn; j++) {
+			if (lair->getZone() == NULL)
+				break;
 
 			float x = lair->getPositionX() + (size - System::random(size * 20) / 10.0f);
 			float y = lair->getPositionY() + (size - System::random(size * 20) / 10.0f);
-			float z = lair->getZone()->getHeight(x, y);
+			float z = zone->getHeight(x, y);
 
 			ManagedReference<CreatureObject*> creo = NULL;
 
@@ -154,7 +155,7 @@ bool DestroyMissionLairObserverImplementation::checkForNewSpawns(TangibleObject*
 			} else {
 				AiAgent* ai = cast<AiAgent*>( creo.get());
 
-				//Locker clocker(npc, lair);
+				Locker clocker(ai, lair);
 
 				ai->setDespawnOnNoPlayerInRange(false);
 				ai->setHomeLocation(x, z, y);
@@ -168,7 +169,7 @@ bool DestroyMissionLairObserverImplementation::checkForNewSpawns(TangibleObject*
 	}
 
 	if (spawnNumber == 4) {
-		Reference<LairAggroTask*> task = new LairAggroTask(lair, attacker, _this.get(), true);
+		Reference<LairAggroTask*> task = new LairAggroTask(lair, attacker, _this.getReferenceUnsafeStaticCast(), true);
 		task->schedule(1000);
 	}
 

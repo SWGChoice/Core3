@@ -1,7 +1,6 @@
 sickle_rasp = Creature:new {
 	objectName = "@mob/creature_names:sickle_rasp",
 	socialGroup = "rasp",
-	pvpFaction = "",
 	faction = "",
 	level = 8,
 	chanceHit = 0.27,
@@ -11,7 +10,7 @@ sickle_rasp = Creature:new {
 	baseHAM = 180,
 	baseHAMmax = 220,
 	armor = 0,
-	resists = {0,0,0,0,0,10,0,-1,-1},
+	resists = {0,0,0,0,0,110,0,-1,-1},
 	meatType = "meat_avian",
 	meatAmount = 15,
 	hideType = "",
@@ -32,7 +31,7 @@ sickle_rasp = Creature:new {
 	conversationTemplate = "",
 	attacks = {
 		{"mildpoison",""},
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""}
 	}
 }
 

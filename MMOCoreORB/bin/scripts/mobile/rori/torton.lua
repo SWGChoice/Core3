@@ -1,7 +1,6 @@
 torton = Creature:new {
 	objectName = "@mob/creature_names:torton",
 	socialGroup = "torton",
-	pvpFaction = "",
 	faction = "",
 	level = 24,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ torton = Creature:new {
 	baseHAM = 5900,
 	baseHAMmax = 7200,
 	armor = 0,
-	resists = {10,10,10,-1,-1,-1,-1,45,-1},
+	resists = {10,10,10,-1,-1,-1,-1,145,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 1000,
 	hideType = "hide_wooly",
@@ -31,8 +30,8 @@ torton = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"knockdownattack","knockdownChance=50"}
+		{"knockdownattack",""},
+		{"dizzyattack",""}
 	}
 }
 

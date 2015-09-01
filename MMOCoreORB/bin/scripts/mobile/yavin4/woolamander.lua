@@ -1,7 +1,6 @@
 woolamander = Creature:new {
 	objectName = "@mob/creature_names:woolamander",
 	socialGroup = "woolamander",
-	pvpFaction = "",
 	faction = "",
 	level = 27,
 	chanceHit = 0.35,
@@ -10,8 +9,8 @@ woolamander = Creature:new {
 	baseXp = 2730,
 	baseHAM = 6800,
 	baseHAMmax = 8300,
-	armor = 1,
-	resists = {20,20,0,80,80,80,0,0,0},
+	armor = 0,
+	resists = {130,130,-1,150,150,135,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 20,
 	hideType = "hide_wooly",
@@ -31,8 +30,8 @@ woolamander = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"dizzyattack",""}
 	}
 }
 

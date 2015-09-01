@@ -1,7 +1,7 @@
 sleemo_hoodlum = Creature:new {
 	objectName = "@mob/creature_names:sleemo_hoodlum",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "sleemo_gang",
-	pvpFaction = "",
 	faction = "",
 	level = 6,
 	chanceHit = 0.250000,
@@ -26,26 +26,25 @@ sleemo_hoodlum = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_criminal_thug_human_male_02.iff",
-				"object/mobile/dressed_crook_zabrak_male_01.iff",
-				"object/mobile/dressed_criminal_thug_zabrak_male_01.iff",
-				"object/mobile/dressed_desperado_bith_female_01.iff"},
+		"object/mobile/dressed_crook_zabrak_male_01.iff",
+		"object/mobile/dressed_criminal_thug_zabrak_male_01.iff",
+		"object/mobile/dressed_desperado_bith_female_01.iff"},
 	lootGroups = {
-	    {
-	        groups = {
+		{
+			groups = {
 				{group = "junk", chance = 3200000},
-				{group = "wearables_common", chance = 2000000},				
+				{group = "wearables_common", chance = 2000000},
 				{group = "rifles", chance = 700000},
 				{group = "melee_knife", chance = 700000},
 				{group = "pistols", chance = 700000},
 				{group = "carbines", chance = 700000},
 				{group = "printer_parts", chance = 1000000},
 				{group = "loot_kit_parts", chance = 1000000},
-				
-	    	},
-			lootChance = 2200000
+			}
 		}
-},
+	},
 	weapons = {"pirate_weapons_light"},
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlernovice,marksmannovice)
 }
 

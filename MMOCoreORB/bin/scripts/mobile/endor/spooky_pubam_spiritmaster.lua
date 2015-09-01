@@ -1,7 +1,7 @@
 spooky_pubam_spiritmaster = Creature:new {
 	objectName = "@mob/creature_names:spooky_pubam_spiritmaster",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "pubam",
-	pvpFaction = "pubam",
 	faction = "pubam",
 	level = 35,
 	chanceHit = 0.41,
@@ -27,15 +27,15 @@ spooky_pubam_spiritmaster = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {
-			"object/mobile/dulok_male.iff",
-			"object/mobile/dulok_female.iff"},
+		"object/mobile/dulok_male.iff",
+		"object/mobile/dulok_female.iff"},
 	lootGroups = {
-		 {
-	        groups = {
+		{
+			groups = {
 				{group = "ewok", chance = 9000000},
 				{group = "wearables_uncommon", chance = 1000000},
 			},
-			lootChance = 2300000
+			lootChance = 1700000
 		}
 	},
 	weapons = {},

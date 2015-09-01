@@ -1,7 +1,7 @@
 kunga_rockshaper = Creature:new {
 	objectName = "@mob/creature_names:kunga_rockshaper",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "kunga_tribe",
-	pvpFaction = "kunga_tribe",
 	faction = "kunga_tribe",
 	level = 71,
 	chanceHit = 0.65,
@@ -37,8 +37,7 @@ kunga_rockshaper = Creature:new {
 				{group = "armor_attachments", chance = 500000},
 				{group = "clothing_attachments", chance = 500000},
 				{group = "wearables_all", chance = 2000000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"primitive_weapons"},

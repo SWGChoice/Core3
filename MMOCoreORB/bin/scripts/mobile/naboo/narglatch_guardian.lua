@@ -1,7 +1,6 @@
 narglatch_guardian = Creature:new {
 	objectName = "@mob/creature_names:narglatch_guardian",
 	socialGroup = "narglatch",
-	pvpFaction = "",
 	faction = "",
 	level = 18,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ narglatch_guardian = Creature:new {
 	baseHAM = 2900,
 	baseHAMmax = 3500,
 	armor = 0,
-	resists = {10,20,5,-1,5,50,-1,-1,-1},
+	resists = {110,120,5,-1,5,150,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 65,
 	hideType = "hide_bristley",
@@ -32,8 +31,8 @@ narglatch_guardian = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
-		{"stunattack","stunChance=50"}
+		{"intimidationattack",""},
+		{"stunattack",""}
 	}
 }
 

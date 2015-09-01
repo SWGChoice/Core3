@@ -1,7 +1,6 @@
 elder_pugoriss = Creature:new {
 	objectName = "@mob/creature_names:elder_pugoriss",
 	socialGroup = "pugoriss",
-	pvpFaction = "",
 	faction = "",
 	level = 17,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ elder_pugoriss = Creature:new {
 	baseHAM = 2900,
 	baseHAMmax = 3500,
 	armor = 0,
-	resists = {15,15,5,-1,35,-1,-1,-1,-1},
+	resists = {115,115,5,-1,135,-1,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 35,
 	hideType = "hide_leathery",
@@ -32,7 +31,7 @@ elder_pugoriss = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"}
+		{"blindattack",""}
 	}
 }
 

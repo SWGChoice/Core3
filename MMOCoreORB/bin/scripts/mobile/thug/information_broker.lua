@@ -1,7 +1,7 @@
 information_broker = Creature:new {
 	objectName = "@mob/creature_names:bothan_information_broker",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "mercenary",
-	pvpFaction = "",
 	faction = "",
 	level = 5,
 	chanceHit = 0.25,
@@ -27,20 +27,20 @@ information_broker = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_criminal_slicer_human_male_01.iff",
-			"object/mobile/dressed_criminal_slicer_human_female_01.iff", },
+		"object/mobile/dressed_criminal_slicer_human_female_01.iff", },
 	lootGroups = {
-      	{
+		{
 			groups = {
 				{group = "junk", chance = 4000000},
 				{group = "wearables_common", chance = 3000000},
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "tailor_components", chance = 1000000},
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"rebel_weapons_light"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(marksmannovice,brawlernovice)
 }
 

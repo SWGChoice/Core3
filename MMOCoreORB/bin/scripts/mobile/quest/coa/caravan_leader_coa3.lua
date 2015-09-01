@@ -2,7 +2,6 @@ caravan_leader_coa3 = Creature:new {
 	objectName = "",
 	customName = "Caravan Leader",
 	socialGroup = "caravan",
-	pvpFaction = "jabba",
 	faction = "jabba",
 	level = 19,
 	chanceHit = 0.33,
@@ -28,8 +27,17 @@ caravan_leader_coa3 = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_gran_thug_male_01.iff",
-			"object/mobile/dressed_gran_thug_male_02.iff"},
-	lootGroups = {},
+		"object/mobile/dressed_gran_thug_male_02.iff"},
+	lootGroups = {
+		{
+			groups = {
+				{group = "junk", chance = 4000000},
+				{group = "wearables_common", chance = 3000000},
+				{group = "loot_kit_parts", chance = 2000000},
+				{group = "tailor_components", chance = 1000000},
+			}
+		}
+	},
 	weapons = {"pirate_weapons_heavy"},
 	conversationTemplate = "",
 	attacks = merge(brawlermaster,marksmanmaster)

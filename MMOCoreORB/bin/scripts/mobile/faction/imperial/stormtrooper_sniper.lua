@@ -1,7 +1,7 @@
 stormtrooper_sniper = Creature:new {
 	objectName = "@mob/creature_names:stormtrooper_sniper",
+	randomNameType = NAME_STORMTROOPER_TAG,
 	socialGroup = "imperial",
-	pvpFaction = "imperial",
 	faction = "imperial",
 	level = 25,
 	chanceHit = 0.36,
@@ -39,11 +39,12 @@ stormtrooper_sniper = Creature:new {
 				{group = "armor_attachments", chance = 250000},
 				{group = "stormtrooper_common", chance = 700000},
 				{group = "wearables_common", chance = 1000000}
-			},
-			lootChance = 2800000
+			}
 		}
 	},
 	weapons = {"st_sniper_weapons"},
+	reactionStf = "@npc_reaction/stormtrooper",
+	personalityStf = "@hireling/hireling_stormtrooper",		
 	attacks = merge(riflemanmaster,brawlermaster)
 }
 

@@ -1,7 +1,6 @@
 cavern_spider_hunter = Creature:new {
 	objectName = "@mob/creature_names:gaping_spider_hunter",
 	socialGroup = "spider",
-	pvpFaction = "",
 	faction = "",
 	level = 46,
 	chanceHit = 0.46,
@@ -11,7 +10,7 @@ cavern_spider_hunter = Creature:new {
 	baseHAM = 9500,
 	baseHAMmax = 11600,
 	armor = 1,
-	resists = {40,40,60,15,-1,-1,0,-1,-1},
+	resists = {140,140,160,115,-1,-1,0,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 35,
 	hideType = "",
@@ -32,8 +31,8 @@ cavern_spider_hunter = Creature:new {
 	weapons = {"creature_spit_small_toxicgreen"},
 	conversationTemplate = "",
 	attacks = {
-		{"mediumpoison",""},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"mediumpoison",""}
 	}
 }
 

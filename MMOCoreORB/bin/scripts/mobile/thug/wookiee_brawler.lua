@@ -1,7 +1,6 @@
 wookiee_brawler = Creature:new {
 	objectName = "@mob/creature_names:wookiee_brawler",
 	socialGroup = "mercenary",
-	pvpFaction = "",
 	faction = "",
 	level = 7,
 	chanceHit = 0.26,
@@ -31,17 +30,17 @@ wookiee_brawler = Creature:new {
 		{
 	        	groups = {
 				{group = "junk", chance = 4000000},
-				{group = "wearables_common", chance = 2000000},			
+				{group = "wearables_common", chance = 2000000},
 				{group = "rifles", chance = 1000000},
 				{group = "pistols", chance = 1000000},
 				{group = "melee_weapons", chance = 1000000},
 				{group = "carbines", chance = 1000000},
-			},
-			lootChance = 2600000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_light"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(marksmannovice,brawlernovice)
 }
 

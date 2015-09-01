@@ -1,7 +1,6 @@
 young_borgle = Creature:new {
 	objectName = "@mob/creature_names:young_borgle",
 	socialGroup = "borgle",
-	pvpFaction = "",
 	faction = "",
 	level = 6,
 	chanceHit = 0.25,
@@ -11,7 +10,7 @@ young_borgle = Creature:new {
 	baseHAM = 135,
 	baseHAMmax = 165,
 	armor = 0,
-	resists = {15,5,0,0,0,0,0,0,0},
+	resists = {115,105,0,0,0,0,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 5,
 	hideType = "hide_leathery",
@@ -32,7 +31,8 @@ young_borgle = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"",""},
+		{"posturedownattack",""}
 	}
 }
 

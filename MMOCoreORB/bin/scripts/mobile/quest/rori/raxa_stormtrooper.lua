@@ -1,7 +1,7 @@
 raxa_stormtrooper = Creature:new {
 	objectName = "@mob/creature_names:stormtrooper",
+	randomNameType = NAME_STORMTROOPER_TAG,
 	socialGroup = "imperial",
-	pvpFaction = "imperial",
 	faction = "imperial",
 	level = 25,
 	chanceHit = 0.36,
@@ -40,9 +40,8 @@ raxa_stormtrooper = Creature:new {
 				{group = "armor_attachments", chance = 250000},
 				{group = "stormtrooper_common", chance = 700000},
 				{group = "wearables_common", chance = 500000}
-			},
-			lootChance = 2800000
-		}						
+			}
+		}
 	},
 	weapons = {"stormtrooper_weapons"},
 	conversationTemplate = "",

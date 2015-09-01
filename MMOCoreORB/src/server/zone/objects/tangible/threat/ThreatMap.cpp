@@ -31,7 +31,7 @@ void ThreatMapEntry::addDamage(String xp, uint32 damage) {
 }
 
 void ThreatMapEntry::setThreatState(uint64 state) {
-	if(!threatBitmask & state)
+	if(!(threatBitmask & state))
 		threatBitmask |= state;
 
 }
@@ -64,23 +64,14 @@ void ThreatMap::removeObservers() {
 
 	Reference<ThreatMapClearObserversTask*> task = new ThreatMapClearObserversTask(*this, threatMapObserver);
 	Core::getTaskManager()->executeTask(task);
-
-	//moved this to a task so it executes async in a different thread to avoid deadlocks
-	/*Locker locker(self);
-
-	for (int i = 0; i < size(); ++i) {
-		CreatureObject* creature = elementAt(i).getKey();
-
-		if (creature != NULL && threatMapObserver != NULL) {
-			Locker clocker(creature, self);
-
-			creature->dropObserver(ObserverEventType::HEALINGPERFORMED, threatMapObserver);
-		}
-	}*/
 }
 
 void ThreatMap::addDamage(CreatureObject* target, uint32 damage, String xp) {
 	Locker locker(&lockMutex);
+
+	ManagedReference<TangibleObject*> strongSelf = self.get();
+	if (strongSelf == NULL || strongSelf.get() == target)
+		return;
 
 	int idx = find(target);
 	String xpToAward = "";
@@ -104,17 +95,34 @@ void ThreatMap::addDamage(CreatureObject* target, uint32 damage, String xp) {
 		entry->addDamage(xpToAward, damage);
 		entry->addAggro(1);
 	}
-
-	// randomly change target everytime threatmap is added to, TODO: keep this in mind and perhaps make it slightly more complicated
-	if (System::random(5) == 0)
-		currentThreat = target;
 }
 
 void ThreatMap::removeAll() {
 	Locker locker(&lockMutex);
 
 	removeObservers();
-	VectorMap<ManagedReference<CreatureObject*> , ThreatMapEntry>::removeAll();
+
+	for (int i = 0; i < size(); i++) {
+		VectorMapEntry<ManagedReference<CreatureObject*> , ThreatMapEntry> *entry = &elementAt(i);
+
+		ManagedReference<CreatureObject*> key = entry->getKey();
+		ThreatMapEntry *value = &entry->getValue();
+
+		ManagedReference<TangibleObject*> selfStrong = self.get();
+
+		// these checks will determine if we should store the damage from the dropped aggressor
+		if (key == NULL || selfStrong == NULL || key->isDead() || !key->isOnline() || key->getPlanetCRC() != selfStrong->getPlanetCRC()) {
+			remove(i);
+
+			if (threatMapObserver != NULL)
+				key->dropObserver(ObserverEventType::HEALINGPERFORMED, threatMapObserver);
+		} else {
+			value->setNonAggroDamage(value->getTotalDamage());
+			value->addHeal(-value->getHeal()); // don't need to store healing
+			value->clearAggro();
+		}
+	}
+
 	currentThreat = NULL;
 	threatMatrix.clear();
 }
@@ -122,16 +130,23 @@ void ThreatMap::removeAll() {
 void ThreatMap::dropDamage(CreatureObject* target) {
 	Locker llocker(&lockMutex);
 
-	drop(target);
+	ManagedReference<TangibleObject*> selfStrong = self.get();
+	if (target == NULL || selfStrong == NULL || target->isDead() || !target->isOnline() || target->getPlanetCRC() != selfStrong->getPlanetCRC()) {
+		drop(target);
+
+		if (threatMapObserver != NULL)
+			target->dropObserver(ObserverEventType::HEALINGPERFORMED, threatMapObserver);
+	} else {
+		ThreatMapEntry *entry = &get(target);
+		entry->setNonAggroDamage(entry->getTotalDamage());
+		entry->addHeal(-entry->getHeal()); // don't need to store healing
+		entry->clearAggro();
+	}
 
 	llocker.release();
 
 	if (currentThreat == target)
 		currentThreat = NULL;
-
-	if (threatMapObserver != NULL) {
-		target->dropObserver(ObserverEventType::HEALINGPERFORMED, threatMapObserver);
-	}
 }
 
 bool ThreatMap::setThreatState(CreatureObject* target, uint64 state, uint64 duration, uint64 cooldown) {
@@ -213,11 +228,7 @@ uint32 ThreatMap::getTotalDamage() {
 	for (int i = 0; i < size(); ++i) {
 		ThreatMapEntry* entry = &elementAt(i).getValue();
 
-		for (int j = 0; j < entry->size(); ++j) {
-			uint32 damage = entry->elementAt(j).getValue();
-
-			totalDamage += damage;
-		}
+		totalDamage += entry->getTotalDamage();
 	}
 
 	return totalDamage;
@@ -233,13 +244,7 @@ CreatureObject* ThreatMap::getHighestDamagePlayer() {
 	for (int i = 0; i < size(); ++i) {
 		ThreatMapEntry* entry = &elementAt(i).getValue();
 
-		uint32 totalDamage = 0;
-
-		for (int j = 0; j < entry->size(); ++j) {
-			uint32 damage = entry->elementAt(j).getValue();
-
-			totalDamage += damage;
-		}
+		uint32 totalDamage = entry->getTotalDamage();
 
 		CreatureObject* creature = elementAt(i).getKey();
 
@@ -289,13 +294,7 @@ CreatureObject* ThreatMap::getHighestDamageGroupLeader(){
 	for (int i = 0; i < size(); ++i) {
 		ThreatMapEntry* entry = &elementAt(i).getValue();
 
-		uint32 totalDamage = 0;
-
-		for (int j = 0; j < entry->size(); ++j) {
-			uint32 damage = entry->elementAt(j).getValue();
-
-			totalDamage += damage;
-		}
+		uint32 totalDamage = entry->getTotalDamage();
 
 		CreatureObject* creature = elementAt(i).getKey();
 		//tlog.info("Group id is " + String::valueOf(creature->getGroupID()),true);
@@ -398,6 +397,10 @@ CreatureObject* ThreatMap::getHighestThreatCreature() {
 void ThreatMap::addAggro(CreatureObject* target, int value, uint64 duration) {
 	Locker locker(&lockMutex);
 
+	ManagedReference<TangibleObject*> strongSelf = self.get();
+	if (strongSelf == NULL || strongSelf.get() == target)
+		return;
+
 	int idx = find(target);
 
 	if (idx == -1) {
@@ -442,18 +445,22 @@ void ThreatMap::clearAggro(CreatureObject* target) {
 void ThreatMap::addHeal(CreatureObject* target, int value) {
 	Locker locker(&lockMutex);
 
+	ManagedReference<TangibleObject*> strongSelf = self.get();
+	if (strongSelf == NULL || strongSelf.get() == target)
+		return;
+
 	int idx = find(target);
 
 	if (idx == -1) {
 		ThreatMapEntry entry;
 		entry.addHeal(value);
-		entry.addAggro(2);
+		entry.addAggro(1);
 		put(target, entry);
 		registerObserver(target);
 
 	} else {
 		ThreatMapEntry* entry = &elementAt(idx).getValue();
 		entry->addHeal(value);
-		entry->addAggro(2);
+		entry->addAggro(1);
 	}
 }

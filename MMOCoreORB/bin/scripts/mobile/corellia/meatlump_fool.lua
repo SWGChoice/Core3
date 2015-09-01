@@ -1,7 +1,7 @@
 meatlump_fool = Creature:new {
 	objectName = "@mob/creature_names:meatlump_fool",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "meatlump",
-	pvpFaction = "meatlump",
 	faction = "meatlump",
 	level = 6,
 	chanceHit = 0.250000,
@@ -48,11 +48,11 @@ meatlump_fool = Creature:new {
 				{group = "color_crystals", chance = 100000},
 				{group = "tailor_components", chance = 500000},
 				{group = "meatlump_common", chance = 5000000}
-			},
-			lootChance = 2200000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_light"},
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlernovice,marksmannovice)
 }
 

@@ -1,7 +1,6 @@
 gronda = Creature:new {
 	objectName = "@mob/creature_names:gronda",
 	socialGroup = "gronda",
-	pvpFaction = "",
 	faction = "",
 	level = 19,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ gronda = Creature:new {
 	baseHAM = 5000,
 	baseHAMmax = 6100,
 	armor = 0,
-	resists = {20,15,5,-1,-1,-1,-1,-1,-1},
+	resists = {120,115,5,-1,-1,-1,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 360,
 	hideType = "hide_leathery",
@@ -32,7 +31,8 @@ gronda = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"knockdownattack","knockdownChance=50"}
+		{"",""},
+		{"knockdownattack",""}
 	}
 }
 

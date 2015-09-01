@@ -1,7 +1,6 @@
 bloodseeker_mite_queen = Creature:new {
 	objectName = "@mob/creature_names:bloodseeker_mite_queen",
 	socialGroup = "bloodseeker",
-	pvpFaction = "",
 	faction = "",
 	level = 38,
 	chanceHit = 0.41,
@@ -11,7 +10,7 @@ bloodseeker_mite_queen = Creature:new {
 	baseHAM = 8800,
 	baseHAMmax = 10800,
 	armor = 0,
-	resists = {40,45,-1,80,-1,80,80,-1,-1},
+	resists = {140,145,-1,180,-1,180,180,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 15,
 	hideType = "",
@@ -32,7 +31,7 @@ bloodseeker_mite_queen = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
+		{"dizzyattack",""},
 		{"strongdisease",""}
 	}
 }

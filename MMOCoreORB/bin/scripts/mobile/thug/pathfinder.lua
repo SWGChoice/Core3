@@ -2,7 +2,6 @@ pathfinder = Creature:new {
 	objectName = "",
 	costumName = "Pathfinder",
 	socialGroup = "wilder",
-	pvpFaction = "",
 	faction = "",
 	level = 21,
 	chanceHit = 0.33,
@@ -34,18 +33,18 @@ pathfinder = Creature:new {
 			"object/mobile/dressed_criminal_thug_rodian_male_01.iff",
 			"object/mobile/dressed_criminal_thug_rodian_female_01.iff", },
 	lootGroups = {
-      	{
+		{
 			groups = {
 				{group = "junk", chance = 4000000},
 				{group = "wearables_common", chance = 3000000},
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "tailor_components", chance = 1000000},
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"rebel_weapons_heavy"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/townperson",
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 

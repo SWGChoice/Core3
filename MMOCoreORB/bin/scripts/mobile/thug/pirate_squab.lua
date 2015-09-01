@@ -1,8 +1,8 @@
 pirate_squab = Creature:new {
 	objectName = "",
+	randomNameType = NAME_GENERIC_TAG,
 	customName = "a Pirate Squab",
 	socialGroup = "pirate",
-	pvpFaction = "",
 	faction = "",
 	level = 4,
 	chanceHit = 0.24,
@@ -48,18 +48,18 @@ pirate_squab = Creature:new {
 		"object/mobile/dressed_criminal_thug_zabrak_female_01.iff"
 	},
 	lootGroups = {
-      	{
+		{
 			groups = {
 				{group = "junk", chance = 4000000},
 				{group = "wearables_common", chance = 3000000},
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "tailor_components", chance = 1000000},
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_light"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(marksmannovice,brawlernovice)
 }
 

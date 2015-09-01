@@ -15,13 +15,14 @@
 #include <system/lang/String.h>
 #include <system/platform.h>
 
-#include "../../../../autogen/server/chat/ChatManager.h"
-#include "../../../../autogen/server/zone/ZoneServer.h"
-#include "../../../chat/StringIdChatParameter.h"
-#include "../../../ServerCore.h"
+#include "server/chat/ChatManager.h"
+#include "server/zone/ZoneServer.h"
+#include "server/chat/StringIdChatParameter.h"
+#include "server/ServerCore.h"
 
 #include "server/zone/managers/creature/AiMap.h"
 #include "server/zone/managers/collision/CollisionManager.h"
+#include "server/zone/managers/reaction/ReactionManager.h"
 #include "server/zone/objects/intangible/PetControlDevice.h"
 
 //#include "server/zone/objects/creature/AiAgent.h"
@@ -43,6 +44,8 @@ Luna<LuaAiAgent>::RegType LuaAiAgent::Register[] = {
 		{ "getTargetID", &LuaCreatureObject::getTargetID },
 		{ "getObjectID", &LuaSceneObject::getObjectID },
 		{ "getFollowState", &LuaAiAgent::getFollowState },
+		{ "setFollowState", &LuaAiAgent::setFollowState },
+		{ "setNextPosition", &LuaAiAgent::setNextPosition },
 		{ "findNextPosition", &LuaAiAgent::findNextPosition },
 		{ "getMaxDistance", &LuaAiAgent::getMaxDistance },
 		{ "generatePatrol", &LuaAiAgent::generatePatrol },
@@ -52,11 +55,13 @@ Luna<LuaAiAgent>::RegType LuaAiAgent::Register[] = {
 		{ "getWait", &LuaAiAgent::getWait },
 		{ "isWaiting", &LuaAiAgent::isWaiting },
 		{ "stopWaiting", &LuaAiAgent::stopWaiting },
-		{ "getCurrentSpeed", &LuaAiAgent::getCurrentSpeed },
+		{ "getCurrentSpeed", &LuaCreatureObject::getCurrentSpeed },
 		{ "setCurrentSpeed", &LuaAiAgent::setCurrentSpeed },
 		{ "getTargetFromMap", &LuaAiAgent::getTargetFromMap },
 		{ "getTargetFromDefenders", &LuaAiAgent::getTargetFromDefenders },
+		{ "getTargetFromTargetsDefenders", &LuaAiAgent::getTargetFromTargetsDefenders },
 		{ "validateTarget", &LuaAiAgent::validateTarget },
+		{ "validateFollow", &LuaAiAgent::validateFollow },
 		{ "followHasState", &LuaAiAgent::followHasState },
 		{ "selectWeapon", &LuaAiAgent::selectWeapon },
 		{ "selectDefaultWeapon", &LuaAiAgent::selectDefaultWeapon },
@@ -81,6 +86,7 @@ Luna<LuaAiAgent>::RegType LuaAiAgent::Register[] = {
 		{ "isStalker", &LuaAiAgent::isStalker },
 		{ "isKiller", &LuaAiAgent::isKiller },
 		{ "getFerocity", &LuaAiAgent::getFerocity },
+		{ "getAggroRadius", &LuaAiAgent::getAggroRadius },
 		{ "getArmor", &LuaAiAgent::getArmor },
 		{ "getDespawnOnNoPlayerInRange", &LuaAiAgent::getDespawnOnNoPlayerInRange },
 		{ "getNumberOfPlayersInRange", &LuaAiAgent::getNumberOfPlayersInRange },
@@ -93,14 +99,14 @@ Luna<LuaAiAgent>::RegType LuaAiAgent::Register[] = {
 		{ "hasLoot", &LuaAiAgent::hasLoot },
 		{ "isEventMob", &LuaAiAgent::isEventMob },
 		{ "isPet", &LuaAiAgent::isPet },
-		{ "getPvPFaction", &LuaAiAgent::getPvPFaction },
-		{ "getAvgSpeed", &LuaAiAgent::getAvgSpeed },
+		{ "isCreature", &LuaSceneObject::isCreature},
 		{ "isAggressiveTo", &LuaAiAgent::isAggressiveTo },
 		{ "isAttackableBy", &LuaAiAgent::isAttackableBy },
 		{ "isScentMasked", &LuaAiAgent::isScentMasked },
 		{ "isConcealed", &LuaAiAgent::isConcealed },
 		{ "isCamouflaged", &LuaAiAgent::isCamouflaged },
 		{ "shouldRetreat", &LuaAiAgent::shouldRetreat },
+		{ "leash", &LuaAiAgent::leash },
 		{ "clearCombatState", &LuaAiAgent::clearCombatState },
 		{ "isInCombat", &LuaAiAgent::isInCombat },
 		{ "checkLineOfSight", &LuaAiAgent::checkLineOfSight },
@@ -118,27 +124,45 @@ Luna<LuaAiAgent>::RegType LuaAiAgent::Register[] = {
 		{ "checkRange", &LuaAiAgent::checkRange },
 		{ "broadcastInterrupt", &LuaAiAgent::broadcastInterrupt },
 		{ "getSocialGroup", &LuaAiAgent::getSocialGroup },
-		{ "getOwner", &LuaAiAgent::getOwner },
+		{ "getOwner", &LuaCreatureObject::getOwner },
 		{ "getLastCommand", &LuaAiAgent::getLastCommand },
 		{ "getLastCommandTarget", &LuaAiAgent::getLastCommandTarget },
+		{ "setLastCommandTarget", &LuaAiAgent::setLastCommandTarget },
 		{ "setAlertDuration", &LuaAiAgent::setAlertDuration },
 		{ "alertedTimeIsPast", &LuaAiAgent::alertedTimeIsPast },
 		{ "setLevel", &LuaAiAgent::setLevel },
+		{ "hasReactionChatMessages", &LuaAiAgent::hasReactionChatMessages },
+		{ "sendReactionChat", &LuaAiAgent::sendReactionChat },
+		{ "addPatrolPoint", &LuaAiAgent::addPatrolPoint },
+		{ "runAwarenessLogicCheck", &LuaAiAgent::runAwarenessLogicCheck },
+		{ "setConvoTemplate", &LuaAiAgent::setConvoTemplate },
 		{ 0, 0 }
 };
 
 
 LuaAiAgent::LuaAiAgent(lua_State *L) : LuaCreatureObject(L) {
+#ifdef DYNAMIC_CAST_LUAOBJECTS
+	realObject = dynamic_cast<AiAgent*>(_getRealSceneObject());
+
+	assert(!_getRealSceneObject() || realObject != NULL);
+#else
 	realObject = static_cast<AiAgent*>(lua_touserdata(L, 1));
+#endif
 }
 
 LuaAiAgent::~LuaAiAgent(){
 }
 
 int LuaAiAgent::_setObject(lua_State* L) {
-	realObject = static_cast<AiAgent*>(lua_touserdata(L, -1));
-
 	LuaCreatureObject::_setObject(L);
+
+#ifdef DYNAMIC_CAST_LUAOBJECTS
+	realObject = dynamic_cast<AiAgent*>(_getRealSceneObject());
+
+	assert(!_getRealSceneObject() || realObject != NULL);
+#else
+	realObject = static_cast<AiAgent*>(lua_touserdata(L, -1));
+#endif
 
 	return 0;
 }
@@ -177,7 +201,7 @@ int LuaAiAgent::setStalkObject(lua_State* L) {
 }
 
 int LuaAiAgent::getFollowObject(lua_State* L) {
-	SceneObject* followObject = realObject->getFollowObject();
+	SceneObject* followObject = realObject->getFollowObject().get();
 
 	if (followObject == NULL)
 		lua_pushnil(L);
@@ -198,7 +222,7 @@ int LuaAiAgent::restoreFollowObject(lua_State* L) {
 }
 
 int LuaAiAgent::getTargetOfTargetID(lua_State* L) {
-	SceneObject* target = realObject->getFollowObject();
+	SceneObject* target = realObject->getFollowObject().get();
 	if (target == NULL || !target->isCreatureObject()) {
 		lua_pushnil(L);
 		return 1;
@@ -221,6 +245,37 @@ int LuaAiAgent::getFollowState(lua_State* L) {
 	lua_pushinteger(L, state);
 
 	return 1;
+}
+
+int LuaAiAgent::setNextPosition(lua_State* L) {
+	ZoneServer* zoneServer = ServerCore::getZoneServer();
+	if (zoneServer == NULL)
+		return 0;
+
+	uint64 cellID = lua_tointeger(L, -1);
+	SceneObject* cell = NULL;
+
+	if (cellID != 0) {
+		cell = zoneServer->getObject(cellID);
+		if (cell != NULL && !cell->isCellObject())
+			cell = NULL;
+	}
+
+	float y = lua_tonumber(L, -2);
+	float z = lua_tonumber(L, -3);
+	float x = lua_tonumber(L, -4);
+
+	realObject->setNextPosition(x, z, y, cell);
+
+	return 0;
+}
+
+int LuaAiAgent::setFollowState(lua_State* L) {
+	int state = lua_tonumber(L, -1);
+
+	realObject->setFollowState(state);
+
+	return 0;
 }
 
 /**
@@ -276,6 +331,8 @@ int LuaAiAgent::completeMove(lua_State* L) {
 int LuaAiAgent::setLevel(lua_State* L) {
 	int level = (int) lua_tonumber(L, -1);
 
+	Locker locker(realObject);
+
 	realObject->setLevel(level);
 
 	return 0;
@@ -311,14 +368,6 @@ int LuaAiAgent::stopWaiting(lua_State* L) {
 	return 0;
 }
 
-int LuaAiAgent::getCurrentSpeed(lua_State* L) {
-	float currentSpeed = realObject->getCurrentSpeed();
-
-	lua_pushnumber(L, currentSpeed);
-
-	return 1;
-}
-
 int LuaAiAgent::setCurrentSpeed(lua_State* L) {
 	float currentSpeed = lua_tonumber(L, -1);
 
@@ -328,6 +377,8 @@ int LuaAiAgent::setCurrentSpeed(lua_State* L) {
 }
 
 int LuaAiAgent::getTargetFromMap(lua_State* L) {
+	Locker locker(realObject);
+
 	SceneObject* retVal = realObject->getTargetFromMap();
 
 	if (retVal == NULL)
@@ -339,6 +390,8 @@ int LuaAiAgent::getTargetFromMap(lua_State* L) {
 }
 
 int LuaAiAgent::getTargetFromDefenders(lua_State* L) {
+	Locker locker(realObject);
+
 	SceneObject* retVal = realObject->getTargetFromDefenders();
 
 	if (retVal == NULL)
@@ -349,7 +402,30 @@ int LuaAiAgent::getTargetFromDefenders(lua_State* L) {
 	return 1;
 }
 
+int LuaAiAgent::getTargetFromTargetsDefenders(lua_State* L) {
+	Locker locker(realObject);
+
+	SceneObject* retVal = realObject->getTargetFromTargetsDefenders();
+
+	if (retVal == NULL)
+		lua_pushnil(L);
+	else
+		lua_pushlightuserdata(L, retVal);
+
+	return 1;
+}
+
 int LuaAiAgent::validateTarget(lua_State* L) {
+	SceneObject* obj = (SceneObject*) lua_touserdata(L, -1);
+
+	bool retVal = realObject->validateTarget(obj);
+
+	lua_pushboolean(L, retVal);
+
+	return 1;
+}
+
+int LuaAiAgent::validateFollow(lua_State* L) {
 	bool retVal = realObject->validateTarget();
 
 	lua_pushboolean(L, retVal);
@@ -358,7 +434,7 @@ int LuaAiAgent::validateTarget(lua_State* L) {
 }
 
 int LuaAiAgent::followHasState(lua_State* L) {
-	SceneObject* follow = realObject->getFollowObject();
+	SceneObject* follow = realObject->getFollowObject().get();
 
 	if (follow == NULL || !follow->isCreatureObject()) {
 		lua_pushboolean(L, false);
@@ -410,12 +486,16 @@ int LuaAiAgent::validateStateAttack(lua_State* L) {
 }
 
 int LuaAiAgent::removeDefender(lua_State* L) {
-	realObject->removeDefender(realObject->getFollowObject());
+	Locker locker(realObject);
+
+	realObject->removeDefender(realObject->getFollowObject().get());
 
 	return 0;
 }
 
 int LuaAiAgent::removeDefenders(lua_State* L) {
+	Locker locker(realObject);
+
 	realObject->removeDefenders();
 
 	return 0;
@@ -443,8 +523,11 @@ int LuaAiAgent::runAway(lua_State* L) {
 	CreatureObject* target = static_cast<CreatureObject*>(lua_touserdata(L, -2));
 	float range = lua_tonumber(L, -1);
 
-	if (target != NULL)
+	if (target != NULL) {
+		Locker locker(realObject);
+
 		realObject->runAway(target, range);
+	}
 
 	return 0;
 }
@@ -509,6 +592,11 @@ int LuaAiAgent::getFerocity(lua_State* L) {
 	return 1;
 }
 
+int LuaAiAgent::getAggroRadius(lua_State* L) {
+	lua_pushinteger(L, realObject->getAggroRadius());
+	return 1;
+}
+
 int LuaAiAgent::getArmor(lua_State* L) {
 	lua_pushinteger(L, realObject->getArmor());
 	return 1;
@@ -569,16 +657,6 @@ int LuaAiAgent::isPet(lua_State* L) {
 	return 1;
 }
 
-int LuaAiAgent::getPvPFaction(lua_State* L) {
-	lua_pushstring(L, realObject->getPvPFaction().toCharArray());
-	return 1;
-}
-
-int LuaAiAgent::getAvgSpeed(lua_State* L) {
-	lua_pushnumber(L, realObject->getAvgSpeed());
-	return 1;
-}
-
 int LuaAiAgent::isAggressiveTo(lua_State* L) {
 	CreatureObject* obj = (CreatureObject*) lua_touserdata(L, -1);
 
@@ -629,9 +707,11 @@ int LuaAiAgent::shouldRetreat(lua_State* L) {
 	PatrolPoint* homeLocation = realObject->getHomeLocation();
 
 	bool retVal;
-	SceneObject* target = realObject->getFollowObject();
+	SceneObject* target = realObject->getFollowObject().get();
 
-	if (target != NULL)
+	if (realObject->isRetreating())
+		retVal = false;
+	else if (target != NULL)
 		retVal = !homeLocation->isInRange(target, range);
 	else
 		retVal = !homeLocation->isInRange(realObject, range);
@@ -641,8 +721,18 @@ int LuaAiAgent::shouldRetreat(lua_State* L) {
 	return 1;
 }
 
+int LuaAiAgent::leash(lua_State* L) {
+	Locker locker(realObject);
+
+	realObject->leash();
+
+	return 0;
+}
+
 int LuaAiAgent::clearCombatState(lua_State* L) {
 	bool clearDefenders = lua_toboolean(L, -1);
+
+	Locker locker(realObject);
 
 	realObject->clearCombatState(clearDefenders);
 
@@ -667,14 +757,15 @@ int LuaAiAgent::checkLineOfSight(lua_State* L) {
 }
 
 int LuaAiAgent::activateRecovery(lua_State* L) {
+	Locker locker(realObject);
+
 	realObject->activateRecovery();
 
 	return 0;
 }
 
 int LuaAiAgent::activateAwareness(lua_State* L) {
-	CreatureObject* target = (CreatureObject*) lua_touserdata(L, -1);
-	realObject->activateAwarenessEvent(target);
+	realObject->activateAwarenessEvent();
 
 	return 0;
 }
@@ -694,6 +785,8 @@ int LuaAiAgent::getBehaviorStatus(lua_State* L) {
 }
 
 int LuaAiAgent::resetBehaviorList(lua_State* L) {
+	Locker locker(realObject);
+
 	realObject->resetBehaviorList();
 	return 0;
 }
@@ -764,9 +857,13 @@ int LuaAiAgent::assist(lua_State* L) {
 	if (agent == NULL)
 		return 0;
 
-	SceneObject* target = agent->getFollowObject();
+	SceneObject* target = agent->getFollowObject().get();
+	if (target == NULL)
+		return 0;
 
 	Locker locker(realObject);
+
+	realObject->sendReactionChat(ReactionManager::ASSIST);
 
 	realObject->setDefender(target);
 
@@ -801,16 +898,6 @@ int LuaAiAgent::getSocialGroup(lua_State* L) {
 	return 1;
 }
 
-int LuaAiAgent::getOwner(lua_State* L) {
-	CreatureObject* retVal = realObject->getLinkedCreature().get();
-
-	if (retVal == NULL)
-		lua_pushnil(L);
-	else
-		lua_pushlightuserdata(L, retVal);
-	return 1;
-}
-
 int LuaAiAgent::getLastCommand(lua_State* L) {
 	ManagedReference<PetControlDevice*> controlDevice = realObject->getControlDevice().castTo<PetControlDevice*>();
 
@@ -837,6 +924,20 @@ int LuaAiAgent::getLastCommandTarget(lua_State* L) {
 	return 1;
 }
 
+int LuaAiAgent::setLastCommandTarget(lua_State* L) {
+	SceneObject* obj = (SceneObject*) lua_touserdata(L, -1);
+
+	ManagedReference<PetControlDevice*> controlDevice = realObject->getControlDevice().castTo<PetControlDevice*>();
+	if (controlDevice == NULL)
+		return 0;
+  
+  	Locker locker(controlDevice);
+
+	controlDevice->setLastCommandTarget(obj);
+
+	return 0;
+}
+
 int LuaAiAgent::setAlertDuration(lua_State* L) {
 	int duration = lua_tointeger(L, -1);
 
@@ -858,4 +959,54 @@ int LuaAiAgent::alertedTimeIsPast(lua_State* L) {
 		lua_pushboolean(L, true);
 
 	return 1;
+}
+
+int LuaAiAgent::hasReactionChatMessages(lua_State* L) {
+	lua_pushboolean(L, realObject->hasReactionChatMessages());
+
+	return 1;
+}
+
+int LuaAiAgent::sendReactionChat(lua_State* L) {
+	int state = lua_tointeger(L, -1);
+	int type = lua_tointeger(L, -2);
+
+	Locker locker(realObject);
+
+	realObject->sendReactionChat(type, state);
+
+	return 0;
+}
+
+int LuaAiAgent::addPatrolPoint(lua_State* L) {
+	SceneObject* cell = static_cast<SceneObject*>(lua_touserdata(L, -1));
+	float y = lua_tonumber(L, -2);
+	float z = lua_tonumber(L, -3);
+	float x = lua_tonumber(L, -4);
+
+	PatrolPoint newPoint(x, z, y, cell);
+
+	realObject->addPatrolPoint(newPoint);
+
+	return 0;
+}
+
+int LuaAiAgent::runAwarenessLogicCheck(lua_State* L) {
+	SceneObject* target = static_cast<SceneObject*>(lua_touserdata(L, -1));
+
+	bool ret = realObject->runAwarenessLogicCheck(target);
+
+	lua_pushboolean(L, ret);
+
+	return 1;
+}
+
+int LuaAiAgent::setConvoTemplate(lua_State* L) {
+	String templateName = lua_tostring(L, -1);
+
+	Locker locker(realObject);
+
+	realObject->setConvoTemplate(templateName);
+
+	return 0;
 }

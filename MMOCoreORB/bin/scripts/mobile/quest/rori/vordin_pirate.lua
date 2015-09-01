@@ -1,7 +1,6 @@
 vordin_pirate = Creature:new {
 	objectName = "@mob/creature_names:pirate",
 	socialGroup = "thug",
-	pvpFaction = "thug",
 	faction = "thug",
 	level = 15,
 	chanceHit = 0.32,
@@ -38,8 +37,7 @@ vordin_pirate = Creature:new {
 				{group = "pistols", chance = 1000000},
 				{group = "melee_weapons", chance = 1000000},
 				{group = "carbines", chance = 1000000},
-			},
-			lootChance = 2600000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_heavy"},

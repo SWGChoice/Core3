@@ -1,7 +1,7 @@
 first_brigade_trooper = Creature:new {
 	objectName = "@mob/creature_names:brigade_trooper",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "restuss",
-	pvpFaction = "restuss",
 	faction = "restuss",
 	level = 6,
 	chanceHit = 0.25,
@@ -30,7 +30,7 @@ first_brigade_trooper = Creature:new {
 		"object/mobile/dressed_brigade_trooper_bith_male_01.iff",
 		"object/mobile/dressed_brigade_trooper_bith_female_01.iff"},
 	lootGroups = {
-	    {
+		{
 			groups = {
 				{group = "junk", chance = 5000000},
 				{group = "wearables_common", chance = 2000000},
@@ -38,12 +38,12 @@ first_brigade_trooper = Creature:new {
 				{group = "rifles", chance = 1000000},
 				{group = "pistols", chance = 1000000},
 				{group = "loot_kit_parts", chance = 500000}
-			},
-			lootChance = 3200000
-		}					
+			}
+		}
 	},
 	weapons = {"rebel_weapons_medium"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/townperson",
 	attacks = merge(brawlernovice,marksmannovice)
 }
 

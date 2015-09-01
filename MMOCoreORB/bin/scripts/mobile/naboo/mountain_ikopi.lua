@@ -1,7 +1,6 @@
 mountain_ikopi = Creature:new {
 	objectName = "@mob/creature_names:mountain_ikopi",
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 17,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ mountain_ikopi = Creature:new {
 	baseHAM = 2900,
 	baseHAMmax = 3500,
 	armor = 0,
-	resists = {15,5,5,5,5,-1,-1,-1,-1},
+	resists = {115,5,5,5,5,-1,-1,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 75,
 	hideType = "hide_bristley",
@@ -32,7 +31,7 @@ mountain_ikopi = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

@@ -1,7 +1,7 @@
 singing_mountain_clan_guardian = Creature:new {
 	objectName = "@mob/creature_names:singing_mtn_clan_guardian",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "mtn_clan",
-	pvpFaction = "mtn_clan",
 	faction = "mtn_clan",
 	level = 156,
 	chanceHit = 8.5,
@@ -10,8 +10,8 @@ singing_mountain_clan_guardian = Creature:new {
 	baseXp = 14789,
 	baseHAM = 81000,
 	baseHAMmax = 99000,
-	armor = 1,
-	resists = {100,20,20,100,100,100,100,100,-1},
+	armor = 2,
+  resists = {200,30,30,200,200,200,200,200,-1},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "",
@@ -41,9 +41,8 @@ singing_mountain_clan_guardian = Creature:new {
 				{group = "carbines", chance = 1000000},
 				{group = "wearables_common", chance = 500000},
 				{group = "wearables_uncommon", chance = 500000}
-			},
-			lootChance = 4100000
-		}			
+			}
+		}
 	},
 	weapons = {"mixed_force_weapons"},
 	conversationTemplate = "",

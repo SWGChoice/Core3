@@ -1,7 +1,6 @@
 wasteland_cu_pa = Creature:new {
 	objectName = "@mob/creature_names:wasteland_cu_pa",
 	socialGroup = "cu_pa",
-	pvpFaction = "",
 	faction = "",
 	level = 19,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ wasteland_cu_pa = Creature:new {
 	baseHAM = 4100,
 	baseHAMmax = 5000,
 	armor = 0,
-	resists = {5,20,5,0,0,0,0,0,0},
+	resists = {5,120,5,-1,-1,-1,-1,-1,-1},
 	meatType = "meat_reptilian",
 	meatAmount = 215,
 	hideType = "hide_bristley",
@@ -33,7 +32,7 @@ wasteland_cu_pa = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

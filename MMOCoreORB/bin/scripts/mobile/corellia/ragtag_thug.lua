@@ -1,8 +1,8 @@
 ragtag_thug = Creature:new {
 	objectName = "",
+	randomNameType = NAME_GENERIC_TAG,
 	customName = "a Ragtag thug",
 	socialGroup = "ragtag",
-	pvpFaction = "thug",
 	faction = "thug",
 	level = 8,
 	chanceHit = 0.270000,
@@ -27,9 +27,9 @@ ragtag_thug = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {
-				"object/mobile/dressed_hooligan_rodian_female_01.iff",
-				"object/mobile/dressed_criminal_thug_human_female_01.iff"
-				},
+		"object/mobile/dressed_hooligan_rodian_female_01.iff",
+		"object/mobile/dressed_criminal_thug_human_female_01.iff"
+	},
 	lootGroups = {
 		{
 			groups = {
@@ -38,11 +38,11 @@ ragtag_thug = Creature:new {
 				{group = "loot_kit_parts", chance = 1500000},
 				{group = "crystals_poor", chance = 500000},
 				{group = "tailor_components", chance = 1000000}
-			},
-			lootChance = 3200000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_medium"},
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlernovice,marksmannovice)
 }
 

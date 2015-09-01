@@ -1,7 +1,6 @@
 elder_mamien = Creature:new {
 	objectName = "@mob/creature_names:mamien_elder",
 	socialGroup = "mamien",
-	pvpFaction = "",
 	faction = "",
 	level = 20,
 	chanceHit = 0.33,
@@ -10,8 +9,8 @@ elder_mamien = Creature:new {
 	baseXp = 1609,
 	baseHAM = 4500,
 	baseHAMmax = 5500,
-	armor = 1,
-	resists = {5,20,5,5,5,5,5,-1,-1},
+	armor = 0,
+	resists = {5,120,5,5,5,5,5,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 18,
 	hideType = "hide_wooly",
@@ -32,8 +31,8 @@ elder_mamien = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"knockdownattack","knockdownChance=50"}
+		{"knockdownattack",""},
+		{"dizzyattack",""}
 	}
 }
 

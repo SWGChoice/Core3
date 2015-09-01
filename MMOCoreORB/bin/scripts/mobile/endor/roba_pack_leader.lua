@@ -1,7 +1,6 @@
 roba_pack_leader = Creature:new {
 	objectName = "@mob/creature_names:roba_pack_leader",
 	socialGroup = "roba",
-	pvpFaction = "",
 	faction = "",
 	level = 30,
 	chanceHit = 0.39,
@@ -11,7 +10,7 @@ roba_pack_leader = Creature:new {
 	baseHAM = 8100,
 	baseHAMmax = 9900,
 	armor = 0,
-	resists = {20,20,20,60,-1,60,-1,-1,-1},
+	resists = {20,20,20,160,-1,160,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 15,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ roba_pack_leader = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"dizzyattack","dizzyChance=50"}
+		{"dizzyattack",""},
+		{"blindattack",""}
 	}
 }
 

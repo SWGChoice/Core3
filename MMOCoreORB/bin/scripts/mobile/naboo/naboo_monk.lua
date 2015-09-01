@@ -1,7 +1,7 @@
 naboo_monk = Creature:new {
 	objectName = "@mob/creature_names:naboo_monk",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "self",
-	pvpFaction = "naboo",
 	faction = "naboo",
 	level = 4,
 	chanceHit = 0.24,
@@ -27,7 +27,7 @@ naboo_monk = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_naboo_monk.iff",
-				 "object/mobile/dressed_commoner_fat_human_female_02.iff", --in Theed?
+		"object/mobile/dressed_commoner_fat_human_female_02.iff", --in Theed?
 	},
 	lootGroups = {
 		{
@@ -36,12 +36,12 @@ naboo_monk = Creature:new {
 				{group = "wearables_common", chance = 2000000},
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000}
-			},
-			lootChance = 3200000
+			}
 		}
 	},
 	weapons = {},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/fancy",
 	attacks = brawlernovice
 }
 

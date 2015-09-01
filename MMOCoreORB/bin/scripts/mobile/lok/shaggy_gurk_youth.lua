@@ -1,7 +1,6 @@
 shaggy_gurk_youth = Creature:new {
 	objectName = "@mob/creature_names:shaggy_gurk_youth",
 	socialGroup = "gurk",
-	pvpFaction = "",
 	faction = "",
 	level = 30,
 	chanceHit = 0.39,
@@ -11,7 +10,7 @@ shaggy_gurk_youth = Creature:new {
 	baseHAM = 8400,
 	baseHAMmax = 10300,
 	armor = 0,
-	resists = {40,0,0,-1,0,0,-1,-1,-1},
+	resists = {140,20,20,-1,20,20,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 300,
 	hideType = "hide_leathery",
@@ -32,7 +31,8 @@ shaggy_gurk_youth = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"",""},
+		{"stunattack",""}
 	}
 }
 

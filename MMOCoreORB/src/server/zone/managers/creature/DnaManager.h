@@ -21,16 +21,13 @@ namespace creature {
 
 class DnaManager : public Singleton<DnaManager>, public Object, public Logger {
 protected:
-	HashTable<uint32, DnaSampleRange* > dexerity;
-	HashTable<uint32, DnaSampleRange* > fortitude;
-	HashTable<uint32, DnaSampleRange* > endurance;
-	HashTable<uint32, DnaSampleRange* > intelligence;
-	HashTable<uint32, DnaSampleRange* > hardiness;
-	HashTable<uint32, DnaSampleRange* > power;
-	HashTable<uint32, DnaSampleRange* > cleverness;
-	HashTable<uint32, DnaSampleRange* > courage;
-	HashTable<uint32, DnaSampleRange* > dependency;
-	HashTable<uint32, DnaSampleRange* > fierceness;
+	// how to store this?
+	ArrayList<float> dnaHit;
+	ArrayList<int> dnaHam;
+	ArrayList<int> dnaDPS;
+	ArrayList<int> dnaArmor;
+	ArrayList<int> dnaRegen;
+
 	HashTable<int,uint32> qualityTemplates;
 	Lua* lua;
 	static AtomicInteger loadedDnaData;
@@ -39,21 +36,30 @@ public:
 	virtual ~DnaManager();
 	void loadSampleData();
 	int generateXp(int creatureLevel);
-	static int addRange(lua_State* L);
 	static int addQualityTemplate(lua_State* L);
-	static const int FORTITUDE     = 1;
-	static const int ENDURANCE     = 2;
-	static const int CLEVERNESS    = 3;
-	static const int INTELLIGENCE  = 4;
-	static const int DEXTERITY     = 5;
-	static const int HARDINESS     = 6;
-	static const int DEPENDABILITY = 7;
-	static const int COURAGE       = 8;
-	static const int POWER         = 9;
-	static const int FIERCENESS    = 10;
-	int generateScoreFor(int stat, int cl,int quality);
+	enum {
+		FORTITUDE     = 1,
+		ENDURANCE     = 2,
+		CLEVERNESS    = 3,
+		INTELLIGENCE  = 4,
+		DEXTERITY     = 5,
+		HARDINESS     = 6,
+		DEPENDABILITY = 7,
+		COURAGE       = 8,
+		POWER         = 9,
+		FIERCENESS    = 10
+	};
+	enum {
+		HIT_LEVEL = 1,
+		HAM_LEVEL = 2,
+		DPS_LEVEL = 3,
+		ARM_LEVEL = 4,
+		REG_LEVEL = 5
+	};
 	void generateSample(Creature* creature, CreatureObject* player, int quality);
 	void generationalSample(PetDeed* deed, CreatureObject* player, int quality);
+	int levelForScore(int type, float value);
+	float valueForLevel(int type, int level);
 protected:
 	int reduceByPercent(int source, int percent) {
 		float reduceBy = (100.0 - (float)percent) / 100.0;

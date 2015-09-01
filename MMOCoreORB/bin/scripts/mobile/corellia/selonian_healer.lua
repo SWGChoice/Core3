@@ -1,7 +1,7 @@
 selonian_healer = Creature:new {
 	objectName = "@mob/creature_names:selonian_healer",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "selonian",
-	pvpFaction = "",
 	faction = "",
 	level = 7,
 	chanceHit = 0.26,
@@ -40,19 +40,19 @@ selonian_healer = Creature:new {
 		"object/mobile/dressed_selonian_f_11.iff",
 		"object/mobile/dressed_selonian_f_12.iff"},
 	lootGroups = {
-      	{
+		{
 			groups = {
 				{group = "junk", chance = 3000000},
 				{group = "wearables_common", chance = 2000000},
 				{group = "pistols", chance = 1000000},
 				{group = "loot_kit_parts", chance = 2500000},
 				{group = "tailor_components", chance = 1500000}
-			},
-			lootChance = 3000000
-		}		
+			}
+		}
 	},
 	weapons = {"rebel_weapons_light"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/fancy",
 	attacks = merge(brawlernovice,marksmannovice)
 }
 

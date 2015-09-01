@@ -1,7 +1,6 @@
 bocatt = Creature:new {
 	objectName = "@mob/creature_names:bocatt",
 	socialGroup = "bocatt",
-	pvpFaction = "",
 	faction = "",
 	level = 22,
 	chanceHit = 0.34,
@@ -11,7 +10,7 @@ bocatt = Creature:new {
 	baseHAM = 6300,
 	baseHAMmax = 7700,
 	armor = 0,
-	resists = {10,10,-1,-1,50,50,-1,-1,-1},
+	resists = {10,10,-1,-1,150,150,-1,-1,-1},
 	meatType = "meat_reptilian",
 	meatAmount = 100,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ bocatt = Creature:new {
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"},
-		{"stunattack","stunChance=50"}
+		{"posturedownattack",""},
+		{"stunattack",""}
 	}
 }
 

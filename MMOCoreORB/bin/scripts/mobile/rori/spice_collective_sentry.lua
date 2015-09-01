@@ -1,7 +1,7 @@
 spice_collective_sentry = Creature:new {
 	objectName = "@mob/creature_names:spice_collective_sentry",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "spice_collective",
-	pvpFaction = "spice_collective",
 	faction = "spice_collective",
 	level = 14,
 	chanceHit = 0.3,
@@ -36,11 +36,11 @@ spice_collective_sentry = Creature:new {
 				{group = "carbines", chance = 2000000},
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000}
-			},
-			lootChance = 3200000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_medium"},
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlermid,marksmanmid)
 }
 

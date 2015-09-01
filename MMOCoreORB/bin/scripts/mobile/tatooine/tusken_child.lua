@@ -1,7 +1,6 @@
 tusken_child = Creature:new {
 	objectName = "@mob/creature_names:tusken_child",
 	socialGroup = "tusken_raider",
-	pvpFaction = "tusken_raider",
 	faction = "tusken_raider",
 	level = 8,
 	chanceHit = 0.31,
@@ -33,11 +32,10 @@ tusken_child = Creature:new {
 			groups = {
 				{group = "junk", chance = 3500000},
 				{group = "tusken_common", chance = 3000000},
-				{group = "wearables_common", chance = 2000000},				
+				{group = "wearables_common", chance = 2000000},
 				{group = "bone_armor", chance = 750000},
 				{group = "chitin_armor", chance = 750000},
-			},
-			lootChance = 2200000
+			}
 		}
 	},
 	weapons = {"primitive_weapons"},

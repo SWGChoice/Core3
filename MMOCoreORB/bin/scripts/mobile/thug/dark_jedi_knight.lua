@@ -1,7 +1,7 @@
 dark_jedi_knight = Creature:new {
 	objectName = "@mob/creature_names:dark_jedi_knight",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "dark_jedi",
-	pvpFaction = "",
 	faction = "",
 	level = 265,
 	chanceHit = 23.5,
@@ -41,9 +41,8 @@ dark_jedi_knight = Creature:new {
 				{group = "armor_attachments", chance = 1100000},
 				{group = "clothing_attachments", chance = 1100000},
 				{group = "carbines", chance = 1300000},
-				{group = "wearables_scarce", chance = 800000}			
-			},
-			lootChance = 7000000
+				{group = "wearables_scarce", chance = 800000}
+			}
 		}
 	},
 	weapons = {"dark_jedi_weapons_gen3"},

@@ -1,7 +1,6 @@
 veermok_sentry = Creature:new {
 	objectName = "@mob/creature_names:veermok_sentry",
 	socialGroup = "veermok",
-	pvpFaction = "",
 	faction = "",
 	level = 9,
 	chanceHit = 0.27,
@@ -11,7 +10,7 @@ veermok_sentry = Creature:new {
 	baseHAM = 405,
 	baseHAMmax = 495,
 	armor = 0,
-	resists = {10,5,0,0,0,0,0,0,0},
+	resists = {0,0,0,0,0,0,115,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 150,
 	hideType = "hide_bristley",
@@ -33,7 +32,8 @@ veermok_sentry = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"",""},
+		{"stunattack",""}
 	}
 }
 

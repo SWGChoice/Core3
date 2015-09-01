@@ -1,7 +1,6 @@
 large_rock_beetle = Creature:new {
 	objectName = "@mob/creature_names:large_rock_beetle",
 	socialGroup = "beetle",
-	pvpFaction = "",
 	faction = "",
 	level = 21,
 	chanceHit = 0.33,
@@ -11,7 +10,7 @@ large_rock_beetle = Creature:new {
 	baseHAM = 4500,
 	baseHAMmax = 5500,
 	armor = 0,
-	resists = {20,20,5,15,5,-1,5,-1,-1},
+	resists = {120,120,5,115,5,-1,5,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 10,
 	hideType = "hide_scaley",
@@ -33,6 +32,8 @@ large_rock_beetle = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
+		{"",""},
+		{"posturedownattack",""}
 	}
 }
 

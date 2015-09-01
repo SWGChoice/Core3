@@ -58,7 +58,7 @@ FlurryShot1Command = {
 		{ "dizzy_defense", "resistance_states" }, 
 		{ "jedi_state_defense" }, 
 		85, 
-		100, 
+		0, 
 		45 
 	  )
 	},
@@ -68,6 +68,8 @@ FlurryShot1Command = {
 	animationCRC = hashCode("fire_5_special_single_medium_face"),
 
 	combatSpam = "flurryshot",
+	
+	weaponType = RIFLEWEAPON,
 
 	range = -1
 }

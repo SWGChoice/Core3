@@ -2,7 +2,6 @@ mand_bunker_technician = Creature:new {
 	objectName = "",
 	customName = "Labsoll Renuffi (a technican)",
 	socialGroup = "death_watch",
-	pvpFaction = "",
 	faction = "",
 	level = 100,
 	chanceHit = 1,
@@ -30,7 +29,7 @@ mand_bunker_technician = Creature:new {
 	templates = {"object/mobile/dressed_mand_bunker_technician.iff"},
 	lootGroups = {},
 	weapons = {},
-	conversationTemplate = "mand_bunker_technician_convotemplate",
+	conversationTemplate = "deathWatchTechnicianConvoTemplate",
 	attacks = {
 	}
 }

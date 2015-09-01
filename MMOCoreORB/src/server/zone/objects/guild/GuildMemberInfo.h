@@ -21,7 +21,7 @@ namespace guild {
 		uint64 playerID;
 		String guildTitle;
 		uint8 permissions;
-		uint64 declaredAllegiance;
+		uint64 declaredAllegiance; // TODO: remove after wipe
 
 	public:
 		GuildMemberInfo() {
@@ -110,14 +110,6 @@ namespace guild {
 
 		inline bool hasPermission(uint8 permission) {
 			return (permissions & permission);
-		}
-
-		inline uint64 getDeclaredAllegiance() {
-			return declaredAllegiance;
-		}
-
-		inline void setDeclaredAllegiance(uint64 playerid) {
-			declaredAllegiance = playerid;
 		}
 	};
 }

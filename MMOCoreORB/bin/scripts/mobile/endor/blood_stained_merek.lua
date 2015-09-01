@@ -1,7 +1,6 @@
 blood_stained_merek = Creature:new {
 	objectName = "@mob/creature_names:blood_stained_merek",
 	socialGroup = "merek",
-	pvpFaction = "",
 	faction = "",
 	level = 32,
 	chanceHit = 0.4,
@@ -11,7 +10,7 @@ blood_stained_merek = Creature:new {
 	baseHAM = 8600,
 	baseHAMmax = 10500,
 	armor = 0,
-	resists = {-1,45,20,60,60,20,75,-1,-1},
+	resists = {-1,145,20,160,160,20,175,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 55,
 	hideType = "hide_leathery",
@@ -33,7 +32,7 @@ blood_stained_merek = Creature:new {
 	weapons = {"creature_spit_small_red"},
 	conversationTemplate = "",
 	attacks = {
-		{"knockdownattack","knockdownChance=50"}
+		{"knockdownattack",""}
 	}
 }
 

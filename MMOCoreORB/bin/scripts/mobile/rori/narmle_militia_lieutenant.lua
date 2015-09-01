@@ -1,7 +1,7 @@
 narmle_militia_lieutenant = Creature:new {
 	objectName = "@mob/creature_names:narmle_lieutenant",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "narmle",
-	pvpFaction = "narmle",
 	faction = "narmle",
 	level = 9,
 	chanceHit = 0.27,
@@ -30,19 +30,19 @@ narmle_militia_lieutenant = Creature:new {
 		"object/mobile/dressed_narmle_lieutenant_twk_female_01.iff",
 		"object/mobile/dressed_narmle_lieutenant_twk_male_01.iff"},
 	lootGroups = {
-	    {
+		{
 			groups = {
 				{group = "junk", chance = 2000000},
 				{group = "wearables_common", chance = 2000000},
 				{group = "carbines", chance = 2000000},
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000}
-			},
-			lootChance = 3200000
-		}					
+			}
+		}
 	},
 	weapons = {"rebel_weapons_medium"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/townperson",
 	attacks = merge(brawlernovice,marksmannovice)
 }
 

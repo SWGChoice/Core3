@@ -1,7 +1,6 @@
 gackle_bat_myrmidon_lord = Creature:new {
 	objectName = "@mob/creature_names:gackle_bat_myrmidon_lord",
 	socialGroup = "gacklebat",
-	pvpFaction = "",
 	faction = "",
 	level = 20,
 	chanceHit = 0.33,
@@ -11,7 +10,7 @@ gackle_bat_myrmidon_lord = Creature:new {
 	baseHAM = 4100,
 	baseHAMmax = 5000,
 	armor = 0,
-	resists = {15,20,-1,25,-1,-1,-1,-1,-1},
+	resists = {115,120,-1,125,-1,-1,-1,-1,-1},
 	meatType = "meat_avian",
 	meatAmount = 10,
 	hideType = "hide_leathery",
@@ -33,8 +32,8 @@ gackle_bat_myrmidon_lord = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"blindattack",""}
 	}
 }
 

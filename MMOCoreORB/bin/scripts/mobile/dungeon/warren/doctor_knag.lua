@@ -1,7 +1,6 @@
 doctor_knag = Creature:new {
 	objectName = "@theme_park/warren/warren_system_messages:name_knag",
 	socialGroup = "warren_scientist",
-	pvpFaction = "",
 	faction = "",
 	level = 11,
 	chanceHit = 1,
@@ -27,7 +26,16 @@ doctor_knag = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/warren_knag_garhun.iff"},
-	lootGroups = {},
+	lootGroups = {
+		{
+			groups = {
+				{group = "junk", chance = 4000000},
+				{group = "wearables_common", chance = 3000000},
+				{group = "loot_kit_parts", chance = 2000000},
+				{group = "tailor_components", chance = 1000000},
+			}
+		}
+	},
 	weapons = {},
 	conversationTemplate = "",
 	attacks = brawlermid

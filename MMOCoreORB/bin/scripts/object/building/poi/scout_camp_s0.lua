@@ -48,7 +48,11 @@ object_building_poi_scout_camp_s0 = object_building_poi_shared_scout_camp_s0:new
 	baseMaintenanceRate = 0,
 	basePowerRate = 0,
 
-	skillMods = {{"private_medical_rating", 60}, {"private_med_wound_health", 20}, {"private_med_wound_action", 20}, {"private_buff_mind", 100}},
+	skillMods = {
+	{"private_medical_rating", 60},
+	{"private_med_wound_health", 20},
+	{"private_med_wound_action", 20},
+	{"private_buff_mind", 100}},
 	
 	aggroMod = 0,
 	
@@ -80,7 +84,13 @@ object_building_poi_scout_camp_s0 = object_building_poi_shared_scout_camp_s0:new
 			x = .863, z = 0, y = -2.75, 
 			ox = 0, oy = 0, oz = -.009319, ow = -.999957, 
 			cellid = -1, 
-			containmentType = -1}
+			containmentType = -1},
+
+		{templateFile = "object/tangible/terminal/terminal_mission.iff", 
+			x = 0.848195, z = 0, y = 3.642, 
+			ox = 0, oy = 1, oz = 0, ow = 0, 
+			cellid = -1, 
+			containmentType = -1},
 	}
 }
 

@@ -1,7 +1,6 @@
 grand_wrix = Creature:new {
 	objectName = "@mob/creature_names:grand_wrix",
 	socialGroup = "wrix",
-	pvpFaction = "",
 	faction = "",
 	level = 25,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ grand_wrix = Creature:new {
 	baseHAM = 5900,
 	baseHAMmax = 7200,
 	armor = 0,
-	resists = {35,30,10,50,-1,35,-1,10,-1},
+	resists = {135,130,10,150,-1,135,-1,10,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 70,
 	hideType = "hide_bristley",
@@ -33,8 +32,8 @@ grand_wrix = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"knockdownattack","knockdownChance=50"},
-		{"stunattack","stunChance=50"}
+		{"knockdownattack",""},
+		{"stunattack",""}
 	}
 }
 

@@ -1,7 +1,6 @@
 grizzled_dewback = Creature:new {
 	objectName = "@mob/creature_names:grizzled_dewback",
 	socialGroup = "dewback",
-	pvpFaction = "",
 	faction = "",
 	level = 27,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ grizzled_dewback = Creature:new {
 	baseHAM = 7700,
 	baseHAMmax = 9400,
 	armor = 0,
-	resists = {35,20,10,40,-1,-1,-1,-1,-1},
+	resists = {135,120,10,140,-1,-1,-1,-1,-1},
 	meatType = "meat_reptilian",
 	meatAmount = 365,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ grizzled_dewback = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"knockdownattack","knockdownChance=50"}
+		{"knockdownattack",""},
+		{"dizzyattack",""}
 	}
 }
 

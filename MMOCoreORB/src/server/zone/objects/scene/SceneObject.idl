@@ -1,46 +1,6 @@
 /*
-Copyright (C) 2007 <SWGEmu>
-
-This File is part of Core3.
-
-This program is free software; you can redistribute
-it and/or modify it under the terms of the GNU Lesser
-General Public License as published by the Free Software
-Foundation; either version 2 of the License,
-or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU Lesser General Public License for
-more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this program; if not, write to
-the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-
-Linking Engine3 statically or dynamically with other modules
-is making a combined work based on Engine3.
-Thus, the terms and conditions of the GNU Lesser General Public License
-cover the whole combination.
-
-In addition, as a special exception, the copyright holders of Engine3
-give you permission to combine Engine3 program with free software
-programs or libraries that are released under the GNU LGPL and with
-code included in the standard release of Core3 under the GNU LGPL
-license (or modified versions of such code, with unchanged license).
-You may copy and distribute such a system following the terms of the
-GNU LGPL for Engine3 and the licenses of the other code concerned,
-provided that you include the source code of that other code when
-and as the GNU LGPL requires distribution of source code.
-
-Note that people who make modified versions of Engine3 are not obligated
-to grant this special exception for their modified versions;
-it is their choice whether to do so. The GNU Lesser General Public License
-gives permission to release a modified version without this exception;
-this exception also makes it possible to release a modified version
-which carries forward this exception.
- */
+				Copyright <SWGEmu>
+		See file COPYING for copying conditions. */
 
 package server.zone.objects.scene;
 
@@ -99,6 +59,8 @@ import engine.util.u3d.Matrix4;
 import system.thread.ReadWriteLock;
 import system.thread.Mutex;
 include server.zone.objects.scene.variables.ContainerObjectsMap;
+import server.zone.objects.tangible.TangibleObject;
+import server.zone.objects.creature.AiAgent;
 
 @mock
 class SceneObject extends QuadTreeEntry implements Logger {
@@ -557,7 +519,7 @@ class SceneObject extends QuadTreeEntry implements Logger {
 	 * @param newPositionZ new position Z
 	 * @param newPositionY new position Y
 	 */
-	public native abstract void switchZone(final string newTerrainName, float newPostionX, float newPositionZ, float newPositionY, unsigned long parentID = 0);
+	public native abstract void switchZone(final string newTerrainName, float newPostionX, float newPositionZ, float newPositionY, unsigned long parentID = 0, boolean  toggleInvisibility = false);
 	
 	public native abstract void teleport(float newPositionX, float newPositionZ, float newPositionY, unsigned long parentID = 0);
 	
@@ -727,6 +689,21 @@ class SceneObject extends QuadTreeEntry implements Logger {
 	}
 	
 	/**
+	 * Executes a task async of this SceneObject in a serialized manner
+	 * Order of execution is guaranteed to be the same as insertion order
+	 * @pre { this locked }
+	 * @post { this locked}
+	 * @param name Name of the task
+	 * @param task Task to add
+	 */
+	@local
+	public void executeOrderedTask(Task task) {
+		synchronized (containerLock) {
+			getPendingTasks().putOrdered(task, this);
+		}
+	}
+	
+	/**
 	 * Removes a pending task from this SceneObject
 	 * @pre { this locked }
 	 * @post { this locked }
@@ -747,14 +724,10 @@ class SceneObject extends QuadTreeEntry implements Logger {
 		synchronized (containerLock) {
 			if (pendingTasks == null) {
 				pendingTasks = new PendingTasksMap();
-				pendingTasks.setNoDuplicateInsertPlan();
-				pendingTasks.setNullValue(null);
 			}
 
 			return pendingTasks;
 		}
-		
-		return pendingTasks;
 	}
 	
 	/**
@@ -844,7 +817,15 @@ class SceneObject extends QuadTreeEntry implements Logger {
 	@dirty
 	public native float getDistanceTo(Coordinate coordinate);
 	
-	public native void updateVehiclePosition(boolean sendPackets);
+	public abstract native void updateVehiclePosition(boolean sendPackets);
+	
+	@dirty
+	public native void playEffect(final string file, final string aux);
+	
+	@dirty
+	public void playEffect(final string file) {
+		playEffect(file, "");
+	}
 	
 	
 	/**
@@ -898,7 +879,7 @@ class SceneObject extends QuadTreeEntry implements Logger {
 		return zone.get();
 	}
 
-	@read
+	@dirty
 	public native unsigned long getObjectID();
 	
 	@local
@@ -996,10 +977,8 @@ class SceneObject extends QuadTreeEntry implements Logger {
 
 	public native int getArrangementDescriptorSize();
  	
-	@dereferenced
 	@local
-	public native Vector<string> getArrangementDescriptor(int idx);
-
+	public native final Vector<string> getArrangementDescriptor(int idx);
 
 	@dirty
 	public string getSlotDescriptor(int idx) {
@@ -1160,9 +1139,12 @@ class SceneObject extends QuadTreeEntry implements Logger {
 	/**
 	 * Sets this objects direction so that the object is facing the specified object.
 	 * @param obj The object to face.
+	 * @param notifyClient if true, updates the client with the new direction
 	 */
-	public native void faceObject(SceneObject obj);
-	
+	public native void faceObject(SceneObject obj, boolean notifyClient = false);
+
+	public native boolean isFacingObject(SceneObject obj);
+
 	public native abstract void notifySelfPositionUpdate();
 	
 	@dirty
@@ -1334,7 +1316,6 @@ class SceneObject extends QuadTreeEntry implements Logger {
 	}
 	
 	public native boolean isDecoration();
-	public native boolean isCityStreetLamp();
 	
 	@local
 	public native void setObjectMenuComponent(final string name);
@@ -1378,8 +1359,20 @@ class SceneObject extends QuadTreeEntry implements Logger {
 	}
 	
 	@dirty
+	@local
+	public abstract CreatureObject asCreatureObject() {
+		return null;
+	}
+	
+	@dirty
 	public abstract boolean isAiAgent() {
 		return false;
+	}
+	
+	@dirty
+	@local
+	public abstract AiAgent asAiAgent() {
+		return null;
 	}
 
 	@dirty
@@ -1410,6 +1403,12 @@ class SceneObject extends QuadTreeEntry implements Logger {
 	@dirty
 	public abstract boolean isBuildingObject() {
 		return false;
+	}
+	
+	@dirty
+	@local
+	public abstract BuildingObject asBuildingObject() {
+		return null;
 	}
 	
 	@dirty
@@ -1471,6 +1470,17 @@ class SceneObject extends QuadTreeEntry implements Logger {
 	public abstract boolean isTangibleObject() {
 		return false;
 	}
+	
+	@dirty
+	@local
+	public abstract TangibleObject asTangibleObject() {
+		return null;
+	}
+	
+	@dirty
+	@local
+	@nativeStub
+	public native SceneObject asSceneObject();
 	
 	@dirty
 	public abstract boolean isResourceContainer() {
@@ -1652,39 +1662,52 @@ class SceneObject extends QuadTreeEntry implements Logger {
 		return gameObjectType == SceneObjectType.RECYCLETOOL;
 	}
 	
+	@dirty
+	public abstract boolean isAntiDecayKitObject() {
+		return gameObjectType == SceneObjectType.ANTIDECAYKIT;
+	}
+	
 	@local
 	public ContainerPermissions getContainerPermissions() {
 		return containerPermissions;
 	}
-	
+
+	@preLocked
 	public void setContainerDefaultAllowPermission(unsigned short perm) {
 		containerPermissions.setDefaultAllowPermission(perm);
 	}
-	
+
+	@preLocked
 	public void clearContainerDefaultAllowPermission(unsigned short perm) {
 		containerPermissions.clearDefaultAllowPermission(perm);
 	}
-	
+
+	@preLocked
 	public void setContainerDefaultDenyPermission(unsigned short perm) {
 		containerPermissions.setDefaultDenyPermission(perm);
 	}
-	
+
+	@preLocked
 	public void clearContainerDefaultDenyPermission(unsigned short perm) {
 		containerPermissions.clearDefaultDenyPermission(perm);
 	}
-	
+
+	@preLocked
 	public void setContainerInheritPermissionsFromParent(boolean val) {
 		containerPermissions.setInheritPermissionsFromParent(val);
 	}
-	
+
+	@preLocked
 	public void setContainerOwnerID(unsigned long id) {
 		containerPermissions.setOwner(id);
 	}
-	
+
+	@preLocked
 	public void setContainerAllowPermission(final string group, unsigned short perm) {
 		containerPermissions.setAllowPermission(group, perm);
 	}
-	
+
+	@preLocked
 	public void setContainerDenyPermission(final string group, unsigned short perm) {
 		containerPermissions.setDenyPermission(group, perm);
 	}
@@ -1877,7 +1900,11 @@ class SceneObject extends QuadTreeEntry implements Logger {
 	public native SortedVector<Observer> getObservers(unsigned int eventType);
 	
 	public native abstract void createChildObjects();
-	
+
+	public void addChildObject(SceneObject obj) {
+		childObjects.put(obj);
+	}
+
 	@local
 	@dirty
 	public Matrix4 getTransformForCollisionMatrix() {
@@ -1930,8 +1957,23 @@ class SceneObject extends QuadTreeEntry implements Logger {
 	}
 
 	@dirty
+	public abstract boolean isPoiBuilding() {
+		return false;
+	}
+
+	@dirty
+	public abstract boolean isTheaterObject() {
+		return false;
+	}
+
+	@dirty
 	public abstract boolean isEventPerkDeed() {
 		return false;
 	}	
+	
+	@dirty
+	public native boolean isDataPad();
+
+	public native abstract float getTemplateRadius();
 }
 

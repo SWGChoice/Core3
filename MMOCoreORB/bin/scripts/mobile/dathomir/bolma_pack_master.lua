@@ -1,7 +1,6 @@
 bolma_pack_master = Creature:new {
 	objectName = "@mob/creature_names:bolma_pack_master",
 	socialGroup = "bolma",
-	pvpFaction = "",
 	faction = "",
 	level = 22,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ bolma_pack_master = Creature:new {
 	baseHAM = 5900,
 	baseHAMmax = 7200,
 	armor = 0,
-	resists = {0,30,0,-1,-1,-1,-1,-1,-1},
+	resists = {0,130,0,-1,-1,-1,-1,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 150,
 	hideType = "hide_leathery",
@@ -32,7 +31,7 @@ bolma_pack_master = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"}
+		{"blindattack",""}
 	}
 }
 

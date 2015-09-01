@@ -1,7 +1,6 @@
 putrid_borgle = Creature:new {
 	objectName = "@mob/creature_names:putrid_borgle",
 	socialGroup = "borgle",
-	pvpFaction = "",
 	faction = "",
 	level = 19,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ putrid_borgle = Creature:new {
 	baseHAM = 4100,
 	baseHAMmax = 5000,
 	armor = 0,
-	resists = {10,5,5,-1,25,25,45,-1,-1},
+	resists = {110,5,5,-1,125,125,145,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 5,
 	hideType = "hide_leathery",
@@ -32,7 +31,7 @@ putrid_borgle = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
+		{"intimidationattack",""},
 		{"mediumdisease",""}
 	}
 }

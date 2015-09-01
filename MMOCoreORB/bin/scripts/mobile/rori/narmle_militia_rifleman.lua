@@ -1,7 +1,7 @@
 narmle_militia_rifleman = Creature:new {
 	objectName = "@mob/creature_names:narmle_rifleman",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "narmle",
-	pvpFaction = "narmle",
 	faction = "narmle",
 	level = 14,
 	chanceHit = 0.3,
@@ -30,19 +30,19 @@ narmle_militia_rifleman = Creature:new {
 		"object/mobile/dressed_narmle_rifleman_rodian_male_01.iff",
 		"object/mobile/dressed_narmle_rifleman_rodian_female_01.iff"},
 	lootGroups = {
-	    {
+		{
 			groups = {
 				{group = "junk", chance = 2000000},
 				{group = "wearables_common", chance = 2000000},
 				{group = "rifles", chance = 2000000},
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000}
-			},
-			lootChance = 3200000
-		}					
+			}
+		}
 	},
 	weapons = {"rebel_weapons_medium"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/townperson",
 	attacks = merge(brawlermid,marksmanmid)
 }
 

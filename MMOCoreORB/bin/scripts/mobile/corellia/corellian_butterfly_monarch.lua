@@ -1,7 +1,6 @@
 corellian_butterfly_monarch = Creature:new {
 	objectName = "@mob/creature_names:corellian_butterfly_monarch",
 	socialGroup = "butterfly",
-	pvpFaction = "",
 	faction = "",
 	level = 20,
 	chanceHit = 0.33,
@@ -11,7 +10,7 @@ corellian_butterfly_monarch = Creature:new {
 	baseHAM = 4500,
 	baseHAMmax = 5500,
 	armor = 0,
-	resists = {-1,25,-1,5,5,-1,-1,-1,-1},
+	resists = {-1,125,-1,5,5,-1,-1,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 27,
 	hideType = "hide_scaley",
@@ -32,8 +31,8 @@ corellian_butterfly_monarch = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
-		{"knockdownattack","knockdownChance=50"}
+		{"knockdownattack",""},
+		{"intimidationattack",""}
 	}
 }
 

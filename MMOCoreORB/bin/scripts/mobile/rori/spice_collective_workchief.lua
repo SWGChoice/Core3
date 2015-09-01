@@ -1,7 +1,7 @@
 spice_collective_workchief = Creature:new {
 	objectName = "@mob/creature_names:spice_collective_workchief",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "spice_collective",
-	pvpFaction = "spice_collective",
 	faction = "spice_collective",
 	level = 11,
 	chanceHit = 0.29,
@@ -36,11 +36,11 @@ spice_collective_workchief = Creature:new {
 				{group = "rifles", chance = 2000000},
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000}
-			},
-			lootChance = 3200000
+			}
 		}
 	},
 	weapons = {"ranged_weapons"},
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlermid,marksmanmid)
 }
 

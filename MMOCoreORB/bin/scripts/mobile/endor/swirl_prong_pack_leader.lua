@@ -1,7 +1,6 @@
 swirl_prong_pack_leader = Creature:new {
 	objectName = "@mob/creature_names:swirl_prong_pack_leader",
 	socialGroup = "prong",
-	pvpFaction = "",
 	faction = "",
 	level = 32,
 	chanceHit = 0.4,
@@ -11,7 +10,7 @@ swirl_prong_pack_leader = Creature:new {
 	baseHAM = 8600,
 	baseHAMmax = 10500,
 	armor = 1,
-	resists = {35,15,15,15,-1,-1,-1,15,-1},
+	resists = {135,15,15,15,-1,-1,-1,15,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 125,
 	hideType = "hide_leathery",

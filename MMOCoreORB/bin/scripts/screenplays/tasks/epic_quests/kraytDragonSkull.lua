@@ -20,7 +20,7 @@ huff_darklighter_missions =
 			missionType = "assassinate",
 			primarySpawns =
 			{
-				{ npcTemplate = "thug", planetName = "tatooine", npcName = "a Thug" }
+				{ npcTemplate = "thug", planetName = "tatooine", npcName = "Slaver" }
 			},
 			secondarySpawns =	{},
 			itemSpawns = {},
@@ -203,39 +203,51 @@ KraytSkullContainerComponent = {}
 
 function KraytSkullContainerComponent:transferObject(pContainer, pObj, slot)
 	local pPlayer = KraytDragonSkull:getObjOwner(pObj)
-	return ObjectManager.withSceneObject(pObj, function(object)
-		if (SceneObject(pContainer):getObjectName() == "borvo_the_hutt") then
-			if (object:getTemplateObjectPath() == "object/tangible/loot/quest/huff_quest_borvos_money.iff") then
-				spatialChat(pContainer, "Good")
-				KraytDragonSkull:setState(CreatureObject(pPlayer), 1, "krayt_skull_epic_quest")
-				object:destroyObjectFromWorld()
-				object:destroyObjectFromDatabase()
-				return 1
-			else
-				spatialChat(pContainer, "@static_npc/naboo/borvo:notit_1")
-				return 0
-			end
-		elseif (SceneObject(pContainer):getCustomObjectName() == "Huff Darklighter") then
-			if (KraytDragonSkull:getActiveNpcNumber(pPlayer) ~= 16) then
-				spatialChat(pContainer, "@epic_quest/krayt_skull/huff_darklighter:notyet")
-			elseif (object:getTemplateObjectPath() == "object/tangible/loot/quest/rifle_quest_tusken.iff") then
-				spatialChat(pContainer, "@epic_quest/krayt_skull/huff_darklighter:good")
-				KraytDragonSkull:setState(CreatureObject(pPlayer), 2, "krayt_skull_epic_quest")
-				object:destroyObjectFromWorld()
-				object:destroyObjectFromDatabase()
-				return 1
-			else
-				spatialChat(pContainer, "@epic_quest/krayt_skull/huff_darklighter:notit")
-				return 0
-			end
+
+	if (pPlayer == nil or pContainer == nil) then
+		return 0
+	end
+
+	if (SceneObject(pContainer):getObjectName() == "borvo_the_hutt") then
+		local object = SceneObject(pObj)
+		if (object:getTemplateObjectPath() == "object/tangible/loot/quest/huff_quest_borvos_money.iff") then
+			spatialChat(pContainer, "Good")
+			CreatureObject(pPlayer):setScreenPlayState(1, "krayt_skull_epic_quest")
+			object:destroyObjectFromWorld()
+			object:destroyObjectFromDatabase()
+			return 1
+		else
+			spatialChat(pContainer, "@static_npc/naboo/borvo:notit_1")
+			return 0
 		end
-	end)
+	elseif (SceneObject(pContainer):getCustomObjectName() == "Huff Darklighter") then
+		local object = SceneObject(pObj)
+		if (KraytDragonSkull:getActiveNpcNumber(pPlayer) ~= 16) then
+			spatialChat(pContainer, "@epic_quest/krayt_skull/huff_darklighter:notyet")
+		elseif (object:getTemplateObjectPath() == "object/tangible/loot/quest/rifle_quest_tusken.iff") then
+			spatialChat(pContainer, "@epic_quest/krayt_skull/huff_darklighter:good")
+			CreatureObject(pPlayer):setScreenPlayState(2, "krayt_skull_epic_quest")
+			object:destroyObjectFromWorld()
+			object:destroyObjectFromDatabase()
+			return 1
+		else
+			spatialChat(pContainer, "@epic_quest/krayt_skull/huff_darklighter:notit")
+			return 0
+		end
+	end
+
+	return 0
 end
 
 function KraytSkullContainerComponent:canAddObject(pContainer, pObj, slot)
 	local pPlayer = KraytDragonSkull:getObjOwner(pObj)
-	if (SceneObject(pContainer):getObjectName() == "borvo_the_hutt" and CreatureObject(pPlayer):hasScreenPlayState(1, "krayt_skull_epic_quest") == 1) or
-		(SceneObject(pContainer):getCustomObjectName() == "Huff Darklighter" and CreatureObject(pPlayer):hasScreenPlayState(2, "krayt_skull_epic_quest") == 1) then
+
+	if (pPlayer == nil or pContainer == nil) then
+		return -1
+	end
+
+	if (SceneObject(pContainer):getObjectName() == "borvo_the_hutt" and CreatureObject(pPlayer):hasScreenPlayState(1, "krayt_skull_epic_quest")) or
+		(SceneObject(pContainer):getCustomObjectName() == "Huff Darklighter" and CreatureObject(pPlayer):hasScreenPlayState(2, "krayt_skull_epic_quest")) then
 		return -1
 	else
 		return true
@@ -246,17 +258,28 @@ function KraytSkullContainerComponent:removeObject(pContainer, pObj, slot)
 	return -1
 end
 
-function KraytDragonSkull:setState(creatureObject, state, questGiver)
-	creatureObject:setScreenPlayState(state, questGiver)
-end
-
-function KraytDragonSkull:removeState(creatureObject, state, questGiver)
-	creatureObject:removeScreenPlayState(state, questGiver)
-end
-
 function KraytDragonSkull:getObjOwner(pObj)
+	if (pObj == nil) then
+		return nil
+	end
+
 	local pPlayerInv = SceneObject(pObj):getParent()
-	return SceneObject(pPlayerInv):getParent()
+
+	if (pPlayerInv == nil) then
+		return nil
+	end
+
+	local parent = SceneObject(pPlayerInv):getParent()
+
+	if (parent == nil) then
+		return nil
+	end
+
+	if (SceneObject(parent):isCreatureObject()) then
+		return parent
+	end
+
+	return nil
 end
 
 -- Custom spawnNpcs to handle setting npcs as containers for quest item turnin
@@ -265,10 +288,11 @@ function KraytDragonSkull:spawnNpcs()
 		local npcSpawnData = self.npcMap[i].spawnData
 		if isZoneEnabled(npcSpawnData.planetName) then
 			local pNpc = spawnMobile(npcSpawnData.planetName, npcSpawnData.npcTemplate, 1, npcSpawnData.x, npcSpawnData.z, npcSpawnData.y, npcSpawnData.direction, npcSpawnData.cellID)
-			if npcSpawnData.position == SIT then
+			if pNpc ~= nil and npcSpawnData.position == SIT then
 				CreatureObject(pNpc):setState(STATESITTINGONCHAIR)
 			end
-			if npcSpawnData.npcTemplate == "borvo_the_hutt" or npcSpawnData.npcTemplate == "huff_darklighter" then
+
+			if pNpc ~= nil and npcSpawnData.npcTemplate == "borvo_the_hutt" or npcSpawnData.npcTemplate == "huff_darklighter" then
 				SceneObject(pNpc):setContainerComponent("KraytSkullContainerComponent")
 			end
 		end

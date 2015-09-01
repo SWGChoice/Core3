@@ -1,7 +1,6 @@
 tusken_observer = Creature:new {
 	objectName = "@mob/creature_names:tusken_observer",
 	socialGroup = "tusken_raider",
-	pvpFaction = "tusken_raider",
 	faction = "tusken_raider",
 	level = 227,
 	chanceHit = 19.75,
@@ -11,7 +10,7 @@ tusken_observer = Creature:new {
 	baseHAM = 208000,
 	baseHAMmax = 254000,
 	armor = 3,
-	resists = {85,85,35,100,10,30,45,80,-1},
+	resists = {185,185,135,200,10,130,145,180,-1},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "",
@@ -32,16 +31,15 @@ tusken_observer = Creature:new {
 			groups = {
 				{group = "junk", chance = 1500000},
 				{group = "tusken_common", chance = 3000000},
-				{group = "wearables_scarce", chance = 2000000},				
+				{group = "wearables_scarce", chance = 2000000},
 				{group = "bone_armor", chance = 750000},
 				{group = "chitin_armor", chance = 750000},
 				{group = "armor_attachments", chance = 500000},
 				{group = "clothing_attachments", chance = 500000},
 				{group = "color_crystals", chance = 500000},
 				{group = "crystals_premium", chance = 500000}
-			},
-			lootChance = 6500000
-		}		
+			}
+		}
 	},
 	weapons = {"tusken_weapons"},
 	conversationTemplate = "",

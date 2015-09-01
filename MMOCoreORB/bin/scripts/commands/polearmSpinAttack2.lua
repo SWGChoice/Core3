@@ -52,7 +52,7 @@ PolearmSpinAttack2Command = {
 	accuracyBonus = 10,
 
 	areaAction = true,
-	areaRange = 7,
+	areaRange = 16,
 
 	stateEffects = {
 	  StateEffect( 
@@ -61,7 +61,7 @@ PolearmSpinAttack2Command = {
 		{ "dizzy_defense", "resistance_states" }, 
 		{ "jedi_state_defense" }, 
 		75, 
-		100, 
+		0, 
 		25 
 	  )
 	},
@@ -69,6 +69,8 @@ PolearmSpinAttack2Command = {
 	animationCRC = hashCode("combo_2c_medium"),
 
 	combatSpam = "limbbreaker",
+	
+	weaponType = POLEARMWEAPON,
 
 	range = -1
 }

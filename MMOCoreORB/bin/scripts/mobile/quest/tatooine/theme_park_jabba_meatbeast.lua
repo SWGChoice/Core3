@@ -1,7 +1,6 @@
 theme_park_jabba_meatbeast = Creature:new {
 	objectName = "@mob/creature_names:dewback_cannibal",
 	socialGroup = "dewback",
-	pvpFaction = "",
 	faction = "",
 	level = 21,
 	chanceHit = 0.33,
@@ -11,7 +10,7 @@ theme_park_jabba_meatbeast = Creature:new {
 	baseHAM = 5900,
 	baseHAMmax = 7200,
 	armor = 0,
-	resists = {10,10,10,-1,10,-1,10,-1,-1},
+	resists = {110,110,110,-1,110,-1,110,-1,-1},
 	meatType = "meat_reptilian",
 	meatAmount = 340,
 	hideType = "hide_leathery",
@@ -39,7 +38,8 @@ theme_park_jabba_meatbeast = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"}
+		{"",""},
+		{"dizzyattack",""}
 	}
 }
 

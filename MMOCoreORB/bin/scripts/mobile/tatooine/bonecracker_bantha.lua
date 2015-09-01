@@ -1,7 +1,6 @@
 bonecracker_bantha = Creature:new {
 	objectName = "@mob/creature_names:bantha_bonecracker",
 	socialGroup = "bantha",
-	pvpFaction = "",
 	faction = "",
 	level = 24,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ bonecracker_bantha = Creature:new {
 	baseHAM = 7200,
 	baseHAMmax = 8800,
 	armor = 0,
-	resists = {10,25,10,40,-1,-1,-1,-1,-1},
+	resists = {10,125,10,140,-1,-1,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 475,
 	hideType = "hide_wooly",
@@ -33,8 +32,8 @@ bonecracker_bantha = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
-		{"stunattack","stunChance=50"}
+		{"intimidationattack",""},
+		{"stunattack",""}
 	}
 }
 

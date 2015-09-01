@@ -1,7 +1,6 @@
 juvenile_canyon_krayt_dragon = Creature:new {
 	objectName = "@mob/creature_names:juvenile_canyon_krayt",
 	socialGroup = "krayt",
-	pvpFaction = "",
 	faction = "",
 	level = 122,
 	chanceHit = 4.0,
@@ -11,7 +10,7 @@ juvenile_canyon_krayt_dragon = Creature:new {
 	baseHAM = 54000,
 	baseHAMmax = 64000,
 	armor = 2,
-	resists = {70,70,15,15,10,15,15,15,-1},
+	resists = {170,170,15,15,110,15,15,15,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 750,
 	hideType = "hide_bristley",
@@ -32,26 +31,20 @@ juvenile_canyon_krayt_dragon = Creature:new {
 	lootGroups = {
 		{
 	        groups = {
-				{group = "krayt_tissue_common", chance = 3500000},
-				{group = "krayt_dragon_common", chance = 6500000},
+				{group = "krayt_tissue_common", chance = 2500000},
+				{group = "krayt_dragon_common", chance = 3000000},
+				{group = "armor_all", chance = 1500000},
+				{group = "weapons_all", chance = 1500000},
+				{group = "wearables_all", chance = 1500000},
 			},
-			lootChance = 4000000
-		},
-		{
-	        groups = {
-				{group = "composite_armor", chance = 2000000},
-				{group = "ubese_armor", chance = 2000000},
-				{group = "melee_two_handed", chance = 2000000},
-				{group = "rifles", chance = 2000000},
-				{group = "wearables_all", chance = 2000000},				
-			},
-			lootChance = 2500000
+			lootChance = 3440000
 		}
 	},
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"posturedownattack",""},
+		{"creatureareaattack",""}
 	}
 }
 

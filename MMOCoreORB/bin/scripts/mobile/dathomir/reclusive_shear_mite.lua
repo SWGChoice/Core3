@@ -1,7 +1,6 @@
 reclusive_shear_mite = Creature:new {
 	objectName = "@mob/creature_names:reclusive_shear_mite",
 	socialGroup = "shear_mite",
-	pvpFaction = "",
 	faction = "",
 	level = 26,
 	chanceHit = 0.35,
@@ -10,8 +9,8 @@ reclusive_shear_mite = Creature:new {
 	baseXp = 2637,
 	baseHAM = 5400,
 	baseHAMmax = 6600,
-	armor = 1,
-	resists = {30,45,-1,60,-1,-1,-1,-1,-1},
+	armor = 0,
+	resists = {130,135,-1,160,-1,-1,-1,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 15,
 	hideType = "hide_scaley",
@@ -33,7 +32,8 @@ reclusive_shear_mite = Creature:new {
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"}
+		{"",""},
+		{"blindattack",""}
 	}
 }
 

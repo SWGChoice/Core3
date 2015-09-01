@@ -1,7 +1,6 @@
 female_kai_tok = Creature:new {
 	objectName = "@mob/creature_names:female_kai_tok",
 	socialGroup = "kai_tok",
-	pvpFaction = "",
 	faction = "",
 	level = 13,
 	chanceHit = 0.29,
@@ -11,7 +10,7 @@ female_kai_tok = Creature:new {
 	baseHAM = 1200,
 	baseHAMmax = 1400,
 	armor = 0,
-	resists = {0,15,0,0,0,0,0,-1,-1},
+	resists = {0,115,0,0,0,0,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 25,
 	hideType = "hide_leathery",
@@ -21,7 +20,7 @@ female_kai_tok = Creature:new {
 	milk = 0,
 	tamingChance = 0.25,
 	ferocity = 2,
-	pvpBitmask = AGGRESSIVE + ATTACKABLE + ENEMY,
+	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK,
 	optionsBitmask = 128,
 	diet = CARNIVORE,
@@ -32,7 +31,7 @@ female_kai_tok = Creature:new {
 	weapons = {"creature_spit_small_green"},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

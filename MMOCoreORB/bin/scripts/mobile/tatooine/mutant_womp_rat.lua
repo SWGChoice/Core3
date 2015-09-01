@@ -1,7 +1,6 @@
 mutant_womp_rat = Creature:new {
 	objectName = "@mob/creature_names:mutant_womprat",
 	socialGroup = "rat",
-	pvpFaction = "",
 	faction = "",
 	level = 13,
 	chanceHit = 0.29,
@@ -11,7 +10,7 @@ mutant_womp_rat = Creature:new {
 	baseHAM = 1000,
 	baseHAMmax = 1200,
 	armor = 0,
-	resists = {10,15,0,0,0,0,15,-1,-1},
+	resists = {110,115,0,0,0,0,115,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 6,
 	hideType = "hide_leathery",
@@ -33,7 +32,7 @@ mutant_womp_rat = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

@@ -1,7 +1,7 @@
 gundark_crook = Creature:new {
 	objectName = "@mob/creature_names:gundark_crook",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "gundark_gang",
-	pvpFaction = "thug",
 	faction = "thug",
 	level = 5,
 	chanceHit = 0.25,
@@ -30,19 +30,19 @@ gundark_crook = Creature:new {
 		"object/mobile/dressed_crook_zabrak_female_01.iff",
 		"object/mobile/dressed_crook_zabrak_male_01.iff"},
 	lootGroups = {
-	    {
+		{
 			groups = {
 				{group = "junk", chance = 2000000},
 				{group = "wearables_common", chance = 2000000},
 				{group = "carbines", chance = 2000000},
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000}
-			},
-			lootChance = 3200000
-		}					
+			}
+		}
 	},
 	weapons = {"pirate_weapons_light"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlernovice,marksmannovice)
 }
 

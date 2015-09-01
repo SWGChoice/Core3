@@ -1,7 +1,7 @@
 kobola_thief = Creature:new {
 	objectName = "@mob/creature_names:kobola_thief",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "kobola",
-	pvpFaction = "kobola",
 	faction = "kobola",
 	level = 9,
 	chanceHit = 0.27,
@@ -30,18 +30,18 @@ kobola_thief = Creature:new {
 		"object/mobile/dressed_kobola_thief_rodian_female_01.iff",
 		"object/mobile/dressed_kobola_thief_rodian_male_01.iff"},
 	lootGroups = {
-	    {
+		{
 			groups = {
 				{group = "junk", chance = 2400000},
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "kobola_common", chance = 3600000}
-			},
-			lootChance = 2400000
-		}				
+			}
+		}
 	},
 	weapons = {"pirate_weapons_medium"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlernovice,marksmannovice)
 }
 

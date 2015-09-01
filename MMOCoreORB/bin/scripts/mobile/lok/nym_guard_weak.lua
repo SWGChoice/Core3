@@ -1,7 +1,7 @@
 nym_guard_weak = Creature:new {
 	objectName = "@mob/creature_names:nym_guard_weak",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "nym",
-	pvpFaction = "nym",
 	faction = "nym",
 	level = 36,
 	chanceHit = 0.410000,
@@ -25,10 +25,10 @@ nym_guard_weak = Creature:new {
 	creatureBitmask = PACK + KILLER,
 	diet = HERBIVORE,
 
-	templates = {"object/mobile/dressed_nym_guard_weak_hum_f.iff", 
-				"object/mobile/dressed_nym_guard_weak_rod_m.iff",
-				"object/mobile/dressed_nym_guard_weak_nikto_m.iff",
-				"object/mobile/dressed_nym_guard_weak_hum_m.iff"},
+	templates = {"object/mobile/dressed_nym_guard_weak_hum_f.iff",
+		"object/mobile/dressed_nym_guard_weak_rod_m.iff",
+		"object/mobile/dressed_nym_guard_weak_nikto_m.iff",
+		"object/mobile/dressed_nym_guard_weak_hum_m.iff"},
 	lootGroups = {
 		{
 			groups = {
@@ -37,11 +37,11 @@ nym_guard_weak = Creature:new {
 				{group = "pistols", chance = 1000000},
 				{group = "carbines", chance = 1000000},
 				{group = "tailor_components", chance = 500000}
-			},
-			lootChance = 3500000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_heavy"},
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(bountyhuntermaster,marksmanmaster,brawlermaster)
 }
 

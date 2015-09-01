@@ -1,7 +1,6 @@
 young_mountain_squill = Creature:new {
 	objectName = "@mob/creature_names:young_mountain_squill",
 	socialGroup = "squill",
-	pvpFaction = "",
 	faction = "",
 	level = 10,
 	chanceHit = 0.28,
@@ -11,7 +10,7 @@ young_mountain_squill = Creature:new {
 	baseHAM = 810,
 	baseHAMmax = 990,
 	armor = 0,
-	resists = {0,0,0,0,0,0,0,0,0},
+	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 2,
 	hideType = "hide_leathery",

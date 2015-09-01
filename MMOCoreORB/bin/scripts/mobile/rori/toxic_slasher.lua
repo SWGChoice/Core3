@@ -1,7 +1,6 @@
 toxic_slasher = Creature:new {
 	objectName = "@mob/creature_names:vir_vur_toxic_slasher",
 	socialGroup = "vir_vur",
-	pvpFaction = "",
 	faction = "",
 	level = 15,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ toxic_slasher = Creature:new {
 	baseHAM = 1200,
 	baseHAMmax = 1400,
 	armor = 0,
-	resists = {10,0,0,0,0,-1,0,-1,-1},
+	resists = {110,0,0,0,0,-1,0,-1,-1},
 	meatType = "meat_avian",
 	meatAmount = 10,
 	hideType = "hide_wooly",
@@ -34,7 +33,7 @@ toxic_slasher = Creature:new {
 	conversationTemplate = "",
 	attacks = {
 		{"mildpoison",""},
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""}
 	}
 }
 

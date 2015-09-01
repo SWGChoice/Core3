@@ -31,6 +31,7 @@
 #include "server/zone/managers/stringid/StringIdManager.h"
 #include "server/zone/managers/creature/DnaManager.h"
 #include "server/zone/objects/creature/events/SampleDeedTask.h"
+#include "server/zone/managers/crafting/labratories/Genetics.h"
 
 
 void PetDeedImplementation::loadTemplateData(SharedObjectTemplate* templateData) {
@@ -200,9 +201,19 @@ String PetDeedImplementation::getTemplateName() {
 	String name = petTemplate->getObjectName();
 	return name;
 }
-
+int PetDeedImplementation::calculatePetLevel() {
+	// Regenerate the LEvel
+	int effective = (int)(((fortitude - (armor * 500)) / 50) * 5);
+	int dps = ((damageMax + damageMin) / 2.0f) / attackSpeed;
+	int avgHam = (health + action + mind) / 3;
+	if (regen == 0) {
+		regen = avgHam / 10;
+	}
+	return Genetics::calculateAgentLevel(avgHam, dps, chanceHit, regen, armor, effective, kinResist, energyResist, blastResist, heatResist, coldResist, elecResist, acidResist, stunResist);
+}
 void PetDeedImplementation::updateCraftingValues(CraftingValues* values, bool firstUpdate) {
 	ManagedReference<ManufactureSchematic*> manufact = values->getManufactureSchematic();
+	float clFactor = 0;
 	for (int i = 0; i < manufact->getSlotCount(); ++i) {
 		// Dna Component Slots
 		Reference<IngredientSlot* > iSlot = manufact->getSlot(i);
@@ -211,22 +222,22 @@ void PetDeedImplementation::updateCraftingValues(CraftingValues* values, bool fi
 			ManagedReference<TangibleObject*> tano = cSlot->getPrototype();
 			ManagedReference<GeneticComponent*> component = cast<GeneticComponent*>( tano.get());
 			// Now we can suck in the values
-			level = component->getLevel();
+			clFactor = component->getLevel();
 			quality = component->getQuality();
 			chanceHit = component->getHit();
 			attackSpeed = component->getSpeed();
 			damageMin = component->getMinDamage();
 			damageMax = component->getMaxDamage();
 			armor = component->getArmor();
-			kinResist = component->getKinetic();
-			energyResist = component->getEnergy();
-			blastResist = component->getBlast();
-			coldResist = component->getCold();
-			heatResist = component->getHeat();
-			elecResist = component->getElectrical();
-			acidResist = component->getAcid();
-			stunResist = component->getStun();
-			saberResist = component->getSaber();
+			kinResist = round(component->getKinetic());
+			energyResist = round(component->getEnergy());
+			blastResist = round(component->getBlast());
+			coldResist = round(component->getCold());
+			heatResist = round(component->getHeat());
+			elecResist = round(component->getElectrical());
+			acidResist = round(component->getAcid());
+			stunResist = round(component->getStun());
+			saberResist = round(component->getSaber());
 			health = component->getHealth();
 			action = component->getAction();
 			mind = component->getMind();
@@ -243,19 +254,37 @@ void PetDeedImplementation::updateCraftingValues(CraftingValues* values, bool fi
 			dexterity = component->getDexterity();
 			fortitude = component->getFortitude();
 			hardiness = component->getHardiness();
+			if (component->isSpecialResist(WeaponObject::KINETIC))
+				setSpecialResist(WeaponObject::KINETIC);
+			if (component->isSpecialResist(WeaponObject::ELECTRICITY))
+				setSpecialResist(WeaponObject::ELECTRICITY);
+			if (component->isSpecialResist(WeaponObject::ENERGY))
+				setSpecialResist(WeaponObject::ENERGY);
+			if (component->isSpecialResist(WeaponObject::ACID))
+				setSpecialResist(WeaponObject::ACID);
+			if (component->isSpecialResist(WeaponObject::BLAST))
+				setSpecialResist(WeaponObject::BLAST);
+			if (component->isSpecialResist(WeaponObject::COLD))
+				setSpecialResist(WeaponObject::COLD);
+			if (component->isSpecialResist(WeaponObject::HEAT))
+				setSpecialResist(WeaponObject::HEAT);
+			if (component->isSpecialResist(WeaponObject::LIGHTSABER))
+				setSpecialResist(WeaponObject::LIGHTSABER);
+			if (component->isSpecialResist(WeaponObject::STUN))
+				setSpecialResist(WeaponObject::STUN);
+			level = Genetics::calculatePetLevel(component);
 		}
 	}
 	CreatureTemplateManager* creatureTemplateManager = CreatureTemplateManager::instance();
 	ManagedReference<CreatureTemplate*> petTemplate =  creatureTemplateManager->getTemplate( mobileTemplate.hashCode() );
 	if (petTemplate != NULL) {
 		// get min CL from the template
-		int minCl = petTemplate->getLevel();
-		if (level < minCl) {
-			level = minCl;
-		}
-		// max pet deed lvel is 75 mantis #5610
-		if (getLevel() > 75) {
+		int skinFactor = petTemplate->getLevel();
+		if (level > 75) {
 			level = 75;
+		}
+		if (level < skinFactor) {
+			level = skinFactor;
 		}
 	}
 	// setup attack map
@@ -291,9 +320,9 @@ int PetDeedImplementation::handleObjectMenuSelect(CreatureObject* player, byte s
 			return 1;
 		}
 
-		Locker clocker(_this.get());
+		Locker clocker(_this.getReferenceUnsafeStaticCast());
 
-		ManagedReference<SampleDeedTask*> task = new SampleDeedTask(_this.get(), player);
+		ManagedReference<SampleDeedTask*> task = new SampleDeedTask(_this.getReferenceUnsafeStaticCast(), player);
 		player->addPendingTask("sampledeed",task,0);
 		return 0;
 	}
@@ -401,21 +430,30 @@ int PetDeedImplementation::handleObjectMenuSelect(CreatureObject* player, byte s
 			return 1;
 		}
 
+		Locker locker(controlDevice);
+
 		String templateToSpawn = creatureManager->getTemplateToSpawn(mobileTemplate.hashCode());
 		ManagedReference<CreatureObject*> creatureObject = creatureManager->createCreature(templateToSpawn.hashCode(), true, 0 );
-		if( creatureObject == NULL ){
+		if( creatureObject == NULL ) {
+			controlDevice->destroyObjectFromDatabase(true);
 			player->sendSystemMessage("wrong pet template;mobileTemplate=[" + mobileTemplate + "]" );
 			return 1;
 		}
 
+		Locker clocker(creatureObject, player);
+
 		ManagedReference<Creature*> pet = creatureObject.castTo<Creature*>();
-		if( pet == NULL ){
+		if( pet == NULL ) {
+			controlDevice->destroyObjectFromDatabase(true);
+			creatureObject->destroyObjectFromDatabase(true);
 			player->sendSystemMessage("Internal Pet Deed Error #348" );
 			return 1;
 		}
+
 		ObjectManager* objectManager = server->getZoneServer()->getObjectManager();
-		pet->setPetDeed(_this.get());
+		pet->setPetDeed(_this.getReferenceUnsafeStaticCast());
 		pet->loadTemplateData( petTemplate );
+		pet->setCustomObjectName(StringIdManager::instance()->getStringId(*pet->getObjectName()), true);
 		pet->createChildObjects();
 		pet->setBaby(false);
 		// update base stats on the pet now
@@ -443,16 +481,17 @@ int PetDeedImplementation::handleObjectMenuSelect(CreatureObject* player, byte s
 		controlDevice->setGrowthStage(1);
 		controlDevice->updateStatus(1);
 
-		datapad->transferObject(controlDevice, -1);
-
-		objectManager->persistSceneObjectsRecursively(pet, 1);
+		if (!datapad->transferObject(controlDevice, -1)) {
+			controlDevice->destroyObjectFromDatabase(true);
+			return 1;
+		}
 
 		datapad->broadcastObject(controlDevice, true);
 		controlDevice->growPet(player,true);
 		controlDevice->callObject(player);
 
 		//Remove the deed from it's container.
-		ManagedReference<SceneObject*> deedContainer = getParent();
+		ManagedReference<SceneObject*> deedContainer = getParent().get();
 
 		if (deedContainer != NULL) {
 			destroyObjectFromWorld(true);
@@ -466,3 +505,72 @@ int PetDeedImplementation::handleObjectMenuSelect(CreatureObject* player, byte s
 	return DeedImplementation::handleObjectMenuSelect(player, selectedID);
 }
 
+bool PetDeedImplementation::isSpecialResist(int type) {
+	return specialResists & type;
+}
+void PetDeedImplementation::setSpecialResist(int type) {
+	specialResists |= type;
+}
+void PetDeedImplementation::adjustPetLevel(CreatureObject* player, CreatureObject* pet) {
+	int newLevel = calculatePetLevel();
+
+	if (newLevel < 1 || newLevel > 75) {
+		player->sendSystemMessage("@bio_engineer:pet_sui_fix_error");
+		return;
+	}
+
+	level = newLevel;
+	pet->reloadTemplate();
+	player->sendSystemMessage("@bio_engineer:pet_sui_level_fixed");
+}
+void PetDeedImplementation::adjustPetStats(CreatureObject* player, CreatureObject *pet) {
+	int oldLevel = pet->getLevel();
+	if (oldLevel < 1) {
+		player->sendSystemMessage("@bio_engineer:pet_sui_fix_error");
+		return;
+	}
+
+	if (oldLevel > 75) {
+		oldLevel = 75;
+	}
+
+	int ham = DnaManager::instance()->valueForLevel(DnaManager::HAM_LEVEL,oldLevel);
+	health = ham;
+	action = ham;
+	mind = ham;
+	regen = DnaManager::instance()->valueForLevel(DnaManager::REG_LEVEL,oldLevel);
+	float dps = DnaManager::instance()->valueForLevel(DnaManager::DPS_LEVEL,oldLevel);
+	damageMin = round((dps * 2.0) * 0.5);
+	attackSpeed = 2.0;
+	damageMax = round((dps * 2.0) * 1.5);
+	chanceHit = DnaManager::instance()->valueForLevel(DnaManager::HIT_LEVEL,oldLevel);
+
+	// Adjust Armor Now
+	fortitude = DnaManager::instance()->valueForLevel(DnaManager::ARM_LEVEL,oldLevel);
+	armor = fortitude/500;
+	float effectiveness = (int)(((fortitude - (armor * 500)) / 50) * 5);
+	if (!isSpecialResist(WeaponObject::KINETIC) && kinResist > 0)
+		kinResist = effectiveness;
+	if(!isSpecialResist(WeaponObject::ACID) && acidResist > 0)
+		acidResist = effectiveness;
+	if(!isSpecialResist(WeaponObject::BLAST) && blastResist > 0)
+		blastResist = effectiveness;
+	if(!isSpecialResist(WeaponObject::COLD) && coldResist > 0)
+		coldResist = effectiveness;
+	if(!isSpecialResist(WeaponObject::ELECTRICITY) && elecResist > 0)
+		elecResist = effectiveness;
+	if(!isSpecialResist(WeaponObject::ENERGY) && energyResist > 0)
+		energyResist = effectiveness;
+	if(!isSpecialResist(WeaponObject::HEAT) && heatResist > 0)
+		heatResist = effectiveness;
+	if(!isSpecialResist(WeaponObject::LIGHTSABER) && saberResist > 0)
+		saberResist = effectiveness;
+	if(!isSpecialResist(WeaponObject::STUN) && stunResist > 0)
+		stunResist = effectiveness;
+
+	// ensure the stats are set
+	pet->reloadTemplate();
+
+	player->sendSystemMessage("@bio_engineer:pet_sui_stats_fixed");
+	return;
+}

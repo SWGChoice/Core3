@@ -1,7 +1,6 @@
 male_mamien = Creature:new {
 	objectName = "@mob/creature_names:mamien_male",
 	socialGroup = "mamien",
-	pvpFaction = "",
 	faction = "",
 	level = 19,
 	chanceHit = 0.32,
@@ -10,8 +9,8 @@ male_mamien = Creature:new {
 	baseXp = 1426,
 	baseHAM = 4100,
 	baseHAMmax = 5000,
-	armor = 1,
-	resists = {15,15,15,15,15,15,15,15,-1},
+	armor = 0,
+	resists = {120,115,5,5,-1,-1,5,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 45,
 	hideType = "hide_wooly",
@@ -32,7 +31,8 @@ male_mamien = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"",""},
+		{"stunattack",""}
 	}
 }
 

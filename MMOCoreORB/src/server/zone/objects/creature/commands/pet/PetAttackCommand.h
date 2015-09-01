@@ -16,7 +16,7 @@ public:
 	}
 
 
-	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) {
+	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) const {
 
 		ManagedReference<PetControlDevice*> controlDevice = creature->getControlDevice().castTo<PetControlDevice*>();
 		if (controlDevice == NULL)
@@ -49,14 +49,14 @@ public:
 
 		ManagedReference<TangibleObject*> targetTano = targetObject.castTo<TangibleObject*>();
 
-		CombatManager* combatManager = CombatManager::instance();
-
-		combatManager->startCombat(pet, targetTano);
-
+		Locker clocker(controlDevice, creature);
 		controlDevice->setLastCommand(PetManager::ATTACK);
 		controlDevice->setLastCommandTarget(targetTano);
 
 		pet->activateInterrupt(pet->getLinkedCreature().get(), ObserverEventType::STARTCOMBAT);
+
+		pet->selectDefaultAttack();
+		pet->enqueueAttack(QueueCommand::FRONT);
 
 		return SUCCESS;
 	}

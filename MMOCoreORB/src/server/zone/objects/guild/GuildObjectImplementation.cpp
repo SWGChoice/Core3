@@ -7,36 +7,25 @@
 
 #include "server/zone/objects/guild/GuildObject.h"
 #include "server/zone/ZoneServer.h"
+#include "server/ServerCore.h"
 #include "server/zone/objects/creature/CreatureObject.h"
 #include "server/zone/objects/scene/SceneObject.h"
 #include "server/zone/objects/guild/GuildMemberInfo.h"
 #include "server/zone/objects/guild/RenameGuildTask.h"
+#include "server/zone/objects/guild/GuildUpdateEvent.h"
 
-void GuildObjectImplementation::rescheduleRename() {
-	Locker locker(_this.get());
+void GuildObjectImplementation::rescheduleUpdateEvent(uint32 seconds) {
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
-	if (renamePending) {
-		CreatureObject* renamer = server->getZoneServer()->getObject(renamerID).castTo<CreatureObject*>();
-
-		if (renamer == NULL) {
-			setRenamePending(false);
-		} else {
-			RenameGuildTask* renameGuildTask = new RenameGuildTask(renamer, server->getZoneServer(), _this.get());
-
-			if (renameTime.isPast()) {
-				renameGuildTask->execute();
-			} else {
-				renameGuildTask->schedule(renameTime);
-			}
-		}
+	if (guildUpdateEvent == NULL) {
+		guildUpdateEvent = new GuildUpdateEvent(_this.getReferenceUnsafeStaticCast(), ServerCore::getZoneServer());
+	} else if (guildUpdateEvent->isScheduled()) {
+		guildUpdateEvent->cancel();
 	}
-}
 
-void GuildObjectImplementation::updateRenameTime(uint64 miliseconds) {
-	Locker locker(_this.get());
+	guildUpdateEvent->schedule(seconds * 1000);
 
-	renameTime.updateToCurrentTime();
-	renameTime.addMiliTime(miliseconds);
+	Core::getTaskManager()->getNextExecutionTime(guildUpdateEvent, nextUpdateTime);
 }
 
 void GuildObjectImplementation::sendBaselinesTo(SceneObject* player) {
@@ -49,20 +38,20 @@ void GuildObjectImplementation::broadcastMessage(CreatureObject* player, BaseMes
 }
 
 void GuildObjectImplementation::addMember(uint64 playerID) {
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	GuildMemberInfo gmi(playerID);
 	guildMembers.put(playerID, gmi);
 }
 
 void GuildObjectImplementation::removeMember(uint64 playerID) {
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	guildMembers.drop(playerID);
 }
 
 bool GuildObjectImplementation::hasMember(uint64 playerID) {
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	return guildMembers.contains(playerID);
 }
@@ -100,12 +89,14 @@ uint64 GuildObjectImplementation::getMember(int index) {
 }
 
 GuildMemberInfo* GuildObjectImplementation::getMember(uint64 playerID) {
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	return &guildMembers.get(playerID);
 }
 
 bool GuildObjectImplementation::hasMailPermission(uint64 playerID) {
+	Locker locker(_this.getReferenceUnsafeStaticCast());
+
 	if (!guildMembers.contains(playerID))
 		return false;
 
@@ -115,6 +106,8 @@ bool GuildObjectImplementation::hasMailPermission(uint64 playerID) {
 }
 
 bool GuildObjectImplementation::hasSponsorPermission(uint64 playerID) {
+	Locker locker(_this.getReferenceUnsafeStaticCast());
+
 	if (!guildMembers.contains(playerID))
 		return false;
 
@@ -124,7 +117,7 @@ bool GuildObjectImplementation::hasSponsorPermission(uint64 playerID) {
 }
 
 bool GuildObjectImplementation::hasAcceptPermission(uint64 playerID) {
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	if (!guildMembers.contains(playerID))
 		return false;
@@ -135,7 +128,7 @@ bool GuildObjectImplementation::hasAcceptPermission(uint64 playerID) {
 }
 
 bool GuildObjectImplementation::hasKickPermission(uint64 playerID) {
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	if (!guildMembers.contains(playerID))
 		return false;
@@ -146,7 +139,7 @@ bool GuildObjectImplementation::hasKickPermission(uint64 playerID) {
 }
 
 bool GuildObjectImplementation::hasDisbandPermission(uint64 playerID) {
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	if (!guildMembers.contains(playerID))
 		return false;
@@ -157,7 +150,7 @@ bool GuildObjectImplementation::hasDisbandPermission(uint64 playerID) {
 }
 
 bool GuildObjectImplementation::hasNamePermission(uint64 playerID) {
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	if (!guildMembers.contains(playerID))
 		return false;
@@ -168,7 +161,7 @@ bool GuildObjectImplementation::hasNamePermission(uint64 playerID) {
 }
 
 bool GuildObjectImplementation::hasTitlePermission(uint64 playerID) {
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	if (!guildMembers.contains(playerID))
 		return false;
@@ -179,7 +172,7 @@ bool GuildObjectImplementation::hasTitlePermission(uint64 playerID) {
 }
 
 bool GuildObjectImplementation::hasWarPermission(uint64 playerID) {
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	if (!guildMembers.contains(playerID))
 		return false;

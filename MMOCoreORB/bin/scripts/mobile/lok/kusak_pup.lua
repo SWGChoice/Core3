@@ -1,7 +1,6 @@
 kusak_pup = Creature:new {
 	objectName = "@mob/creature_names:kusak_pup",
 	socialGroup = "kusak",
-	pvpFaction = "",
 	faction = "",
 	level = 8,
 	chanceHit = 0.27,
@@ -11,7 +10,7 @@ kusak_pup = Creature:new {
 	baseHAM = 405,
 	baseHAMmax = 495,
 	armor = 0,
-	resists = {10,10,10,0,0,0,0,-1,-1},
+	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 10,
 	hideType = "hide_bristley",
@@ -32,7 +31,8 @@ kusak_pup = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"}
+		{"",""},
+		{"blindattack",""}
 	}
 }
 

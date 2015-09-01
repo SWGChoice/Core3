@@ -1,7 +1,6 @@
 dewback = Creature:new {
 	objectName = "@mob/creature_names:dewback",
 	socialGroup = "dewback",
-	pvpFaction = "",
 	faction = "",
 	level = 19,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ dewback = Creature:new {
 	baseHAM = 4100,
 	baseHAMmax = 5000,
 	armor = 0,
-	resists = {20,5,10,5,-1,-1,-1,-1,-1},
+	resists = {120,5,110,5,-1,-1,-1,-1,-1},
 	meatType = "meat_reptilian",
 	meatAmount = 350,
 	hideType = "hide_leathery",
@@ -32,7 +31,8 @@ dewback = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"",""},
+		{"stunattack",""}
 	}
 }
 

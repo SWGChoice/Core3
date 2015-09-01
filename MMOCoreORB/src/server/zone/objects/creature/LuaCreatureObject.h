@@ -10,7 +10,7 @@
 
 #include "engine/engine.h"
 
-#include "server/zone/objects/scene/LuaSceneObject.h"
+#include "server/zone/objects/tangible/LuaTangibleObject.h"
 
 namespace server {
 namespace zone {
@@ -18,7 +18,7 @@ namespace objects {
 namespace creature {
 	class CreatureObject;
 
-	class LuaCreatureObject : public LuaSceneObject {
+	class LuaCreatureObject : public LuaTangibleObject {
 	public:
 		// Constants
 		static const char className[];
@@ -46,19 +46,21 @@ namespace creature {
 		int getScreenPlayState(lua_State *L);
 		int sendNewbieTutorialEnableHudElement(lua_State* L);
 		int getInCellNumber(lua_State* L);
+		int getBuildingParentID(lua_State* L);
 		int sendOpenHolocronToPageMessage(lua_State* L);
 		int getTargetID(lua_State* L);
 		int clearCombatState(lua_State* L);
 		int getHAM(lua_State* L);
 		int getMaxHAM(lua_State* L);
 		int inflictDamage(lua_State* L);
-		int playEffect(lua_State* L);
+		//int playEffect(lua_State* L);
 		int setState(lua_State* L);
 		int setPosture(lua_State* L);
 		int setMoodString(lua_State* L);
 		int getPosture(lua_State* L);
 		int hasSkill(lua_State* L);
 		int removeSkill(lua_State* L);
+		int surrenderSkill(lua_State* L);
 		int getConversationSession(lua_State* L);
 		int doAnimation(lua_State* L);
 		int engageCombat(lua_State* L);
@@ -76,7 +78,6 @@ namespace creature {
 		int subtractCashCredits(lua_State* L);
 		int addCashCredits(lua_State* L);
 		int removeScreenPlayState(lua_State* L);
-		int setPvpStatusBitmask(lua_State* L);
 		int setLootRights(lua_State* L);
 		int isGrouped(lua_State* L);
 		int isGroupedWith(lua_State* L);
@@ -96,7 +97,12 @@ namespace creature {
 		int getWalkSpeed(lua_State* L);
 		int isAttackableBy(lua_State* L);
 		int getSpecies(lua_State* L);
-
+		int isDroidPet(lua_State* L);
+		int isCombatDroidPet(lua_State* L);
+		int awardExperience(lua_State* L);
+		int getOwner(lua_State* L);
+		int getCurrentSpeed(lua_State* L);
+		int isInvisible(lua_State* L);
 	private:
 		// The pointer to the 'real object' defined in object.cc
 		CreatureObject* realObject;

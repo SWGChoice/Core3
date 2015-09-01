@@ -1,7 +1,6 @@
 giant_kimogila = Creature:new {
 	objectName = "@mob/creature_names:giant_kimogila",
 	socialGroup = "kimogila",
-	pvpFaction = "",
 	faction = "",
 	level = 139,
 	chanceHit = 5.5,
@@ -11,7 +10,7 @@ giant_kimogila = Creature:new {
 	baseHAM = 65000,
 	baseHAMmax = 80000,
 	armor = 2,
-	resists = {35,80,35,80,35,35,100,20,-1},
+	resists = {135,180,20,180,20,20,200,20,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 1000,
 	hideType = "hide_leathery",
@@ -33,14 +32,14 @@ giant_kimogila = Creature:new {
 	        groups = {
 				{group = "kimogila_common", chance = 10000000}
 			},
-			lootChance = 6500000
+			lootChance = 3780000
 		}
 	},
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"creatureareaknockdown","knockdownChance=50"},
-		{"dizzyattack","dizzyChance=50"}
+		{"creatureareaknockdown",""},
+		{"dizzyattack",""}
 	}
 }
 

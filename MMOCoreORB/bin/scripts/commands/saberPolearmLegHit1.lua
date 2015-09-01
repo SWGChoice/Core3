@@ -45,15 +45,17 @@ SaberPolearmLegHit1Command = {
         name = "saberpolearmleghit1",
         
                         
-    damageMultiplier = 1.2,
+    damageMultiplier = 1.5,
 	speedMultiplier = 1.5,
-	forceCostMultiplier = 1.2,
+	forceCostMultiplier = 1.25,
 
-	animationCRC = hashCode("combo_3d_medium"),
+	animationCRC = hashCode("combo_3a_medium"),
 
 	combatSpam = "saberpolearmleghit1",
 	
 	poolsToDamage = ACTION_ATTRIBUTE,
+	
+	weaponType = POLEARMJEDIWEAPON,
 
 	range = -1
 }

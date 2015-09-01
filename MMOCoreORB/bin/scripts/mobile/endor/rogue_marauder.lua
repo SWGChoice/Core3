@@ -1,8 +1,8 @@
 rogue_marauder = Creature:new {
 	objectName = "",
+	randomNameType = NAME_GENERIC_TAG,
 	customName = "a Rogue Marauder",
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 44,
 	chanceHit = 0.47,
@@ -28,34 +28,28 @@ rogue_marauder = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {
-			"object/mobile/dressed_marauder.iff",
-			"object/mobile/marauder_male.iff",
-			"object/mobile/marauder_male_02.iff",
-			"object/mobile/marauder_male_03.iff",
-			"object/mobile/marauder_female.iff"
+		"object/mobile/dressed_marauder.iff",
+		"object/mobile/marauder_male.iff",
+		"object/mobile/marauder_male_02.iff",
+		"object/mobile/marauder_male_03.iff",
+		"object/mobile/marauder_female.iff"
 	},
 	lootGroups = {
 		{
 			groups = {
-				{group = "pistols", chance = 2000000},
-				{group = "carbines", chance = 2000000},
-				{group = "rifles", chance = 2000000},
-				{group = "melee_baton", chance = 2000000},
+				{group = "pistols", chance = 1000000},
+				{group = "carbines", chance = 1000000},
+				{group = "rifles", chance = 1000000},
+				{group = "melee_baton", chance = 1000000},
 				{group = "loot_kit_parts", chance = 1000000},
 				{group = "armor_attachments", chance = 500000},
-				{group = "clothing_attachments", chance = 500000}
-			},
-			lootChance = 2200000
-		},
-		{
-			groups = {
-				{group = "bone_armor", chance = 2000000},
-				{group = "chitin_armor", chance = 2000000},
-				{group = "mabari_armor", chance = 2000000},
-				{group = "tantel_armor", chance = 2000000},
-				{group = "ubese_armor", chance = 2000000},
-			},
-			lootChance = 2500000
+				{group = "clothing_attachments", chance = 500000},
+				{group = "bone_armor", chance = 800000},
+				{group = "chitin_armor", chance = 800000},
+				{group = "mabari_armor", chance = 800000},
+				{group = "tantel_armor", chance = 800000},
+				{group = "ubese_armor", chance = 800000},
+			}
 		}
 	},
 	weapons = {"pirate_weapons_heavy"},

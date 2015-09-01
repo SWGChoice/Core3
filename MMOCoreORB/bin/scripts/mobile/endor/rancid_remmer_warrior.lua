@@ -1,7 +1,6 @@
 rancid_remmer_warrior = Creature:new {
 	objectName = "@mob/creature_names:rancid_remmer_warrior",
 	socialGroup = "remmer",
-	pvpFaction = "",
 	faction = "",
 	level = 33,
 	chanceHit = 0.39,
@@ -11,7 +10,7 @@ rancid_remmer_warrior = Creature:new {
 	baseHAM = 8400,
 	baseHAMmax = 10200,
 	armor = 0,
-	resists = {60,0,70,0,0,-1,0,-1,-1},
+	resists = {160,0,170,0,0,-1,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 35,
 	hideType = "hide_bristley",
@@ -32,8 +31,8 @@ rancid_remmer_warrior = Creature:new {
 	weapons = {"creature_spit_small_red"},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"posturedownattack",""}
 	}
 }
 

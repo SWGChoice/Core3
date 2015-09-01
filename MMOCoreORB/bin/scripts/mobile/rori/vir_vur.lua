@@ -1,7 +1,6 @@
 vir_vur = Creature:new {
 	objectName = "@mob/creature_names:vir_vur",
 	socialGroup = "vir_vur",
-	pvpFaction = "",
 	faction = "",
 	level = 10,
 	chanceHit = 0.28,
@@ -11,7 +10,7 @@ vir_vur = Creature:new {
 	baseHAM = 810,
 	baseHAMmax = 990,
 	armor = 0,
-	resists = {0,0,0,0,0,0,0,0,0},
+	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_avian",
 	meatAmount = 10,
 	hideType = "",

@@ -1,7 +1,6 @@
 minor_gorax = Creature:new {
 	objectName = "@mob/creature_names:minor_gorax",
 	socialGroup = "gorax",
-	pvpFaction = "",
 	faction = "",
 	level = 131,
 	chanceHit = 4,
@@ -11,7 +10,7 @@ minor_gorax = Creature:new {
 	baseHAM = 89000,
 	baseHAMmax = 109000,
 	armor = 3,
-	resists = {65,65,50,50,50,50,50,50,-1},
+	resists = {165,165,150,150,150,0,150,150,-1},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "",
@@ -31,11 +30,11 @@ minor_gorax = Creature:new {
 	lootGroups = {
 	    {
 	        groups = {
-				{group = "minor_gorax", chance = 5000000},
-				{group = "armor_attachments", chance = 2500000},
-				{group = "clothing_attachments", chance = 2500000}
+				{group = "minor_gorax", chance = 6000000},
+				{group = "armor_attachments", chance = 2000000},
+				{group = "clothing_attachments", chance = 2000000}
 			},
-			lootChance = 3000000
+			lootChance = 3620000
 		}
 	},
 	weapons = {},

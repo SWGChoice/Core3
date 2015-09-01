@@ -1,7 +1,7 @@
 rebel_trooper = Creature:new {
 	objectName = "@mob/creature_names:rebel_trooper",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "rebel",
-	pvpFaction = "rebel",
 	faction = "rebel",
 	level = 15,
 	chanceHit = 0.31,
@@ -34,7 +34,6 @@ rebel_trooper = Creature:new {
 		"object/mobile/dressed_rebel_trooper_twk_female_01.iff",
 		"object/mobile/dressed_rebel_trooper_twk_male_01.iff"
 	},
-	
 	lootGroups = {
 		{
 			groups = {
@@ -47,12 +46,13 @@ rebel_trooper = Creature:new {
 				{group = "clothing_attachments", chance = 100000},
 				{group = "armor_attachments", chance = 100000},
 				{group = "wearables_common", chance = 1000000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"rebel_weapons_light"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/military",
+	personalityStf = "@hireling/hireling_military",
 	attacks = merge(brawlermid,marksmanmid)
 }
 

@@ -1,7 +1,6 @@
 nightspider_poison_spitter = Creature:new {
 	objectName = "@mob/creature_names:nightspider_poison_spitter",
 	socialGroup = "spider",
-	pvpFaction = "",
 	faction = "",
 	level = 11,
 	chanceHit = 0.29,
@@ -11,7 +10,7 @@ nightspider_poison_spitter = Creature:new {
 	baseHAM = 810,
 	baseHAMmax = 990,
 	armor = 0,
-	resists = {0,0,0,0,0,0,15,-1,-1},
+	resists = {0,0,0,0,0,0,115,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 7,
 	hideType = "",
@@ -32,8 +31,8 @@ nightspider_poison_spitter = Creature:new {
 	weapons = {"creature_spit_small_toxicgreen"},
 	conversationTemplate = "",
 	attacks = {
-		{"mildpoison",""},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"mildpoison",""}
 	}
 }
 

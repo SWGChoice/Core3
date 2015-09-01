@@ -1,7 +1,6 @@
 mountain_squill_guardian = Creature:new {
 	objectName = "@mob/creature_names:mountain_squill_guardian",
 	socialGroup = "squill",
-	pvpFaction = "",
 	faction = "",
 	level = 40,
 	chanceHit = 0.42,
@@ -11,7 +10,7 @@ mountain_squill_guardian = Creature:new {
 	baseHAM = 8900,
 	baseHAMmax = 10900,
 	armor = 0,
-	resists = {60,60,25,-1,25,25,25,-1,-1},
+	resists = {160,160,25,-1,25,25,25,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 3,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ mountain_squill_guardian = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
-		{"knockdownattack","knockdownChance=50"}
+		{"intimidationattack",""},
+		{"knockdownattack",""}
 	}
 }
 

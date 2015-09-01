@@ -1,7 +1,7 @@
 blood_razor_weak_pirate = Creature:new {
 	objectName = "@mob/creature_names:blood_razor_pirate_weak",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "bloodrazor",
-	pvpFaction = "bloodrazor",
 	faction = "bloodrazor",
 	level = 21,
 	chanceHit = 0.33,
@@ -33,7 +33,7 @@ blood_razor_weak_pirate = Creature:new {
 		"object/mobile/dressed_blood_razor_pirate_weak_rod_m.iff",
 		"object/mobile/dressed_blood_razor_pirate_weak_wee_m.iff",
 		"object/mobile/dressed_blood_razor_pirate_weak_zab_m.iff"
-		},
+	},
 
 	lootGroups = {
 		{
@@ -48,12 +48,12 @@ blood_razor_weak_pirate = Creature:new {
 				{group = "clothing_attachments", chance = 300000},
 				{group = "armor_attachments", chance = 300000},
 				{group = "bloodrazor_common", chance = 2000000}
-			},
-			lootChance = 3500000
+			}
 		}
 	},
 	weapons = {"blood_razer_weapons"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(marksmanmaster,brawlermaster)
 }
 

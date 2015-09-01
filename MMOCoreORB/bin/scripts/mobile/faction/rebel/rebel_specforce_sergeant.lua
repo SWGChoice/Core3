@@ -1,7 +1,7 @@
 rebel_specforce_sergeant = Creature:new {
 	objectName = "@mob/creature_names:rebel_specforce_sergeant",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "rebel",
-	pvpFaction = "rebel",
 	faction = "rebel",
 	level = 21,
 	chanceHit = 0.34,
@@ -45,12 +45,13 @@ rebel_specforce_sergeant = Creature:new {
 				{group = "clothing_attachments", chance = 100000},
 				{group = "armor_attachments", chance = 100000},
 				{group = "wearables_common", chance = 1000000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"ranged_weapons"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/military",
+	personalityStf = "@hireling/hireling_military",
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 

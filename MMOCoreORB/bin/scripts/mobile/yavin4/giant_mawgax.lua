@@ -1,7 +1,6 @@
 giant_mawgax = Creature:new {
 	objectName = "@mob/creature_names:giant_mawgax",
 	socialGroup = "mawgax",
-	pvpFaction = "",
 	faction = "",
 	level = 32,
 	chanceHit = 0.4,
@@ -11,7 +10,7 @@ giant_mawgax = Creature:new {
 	baseHAM = 8600,
 	baseHAMmax = 10500,
 	armor = 0,
-	resists = {20,30,20,-1,30,-1,20,20,-1},
+	resists = {20,130,20,-1,130,-1,20,20,-1},
 	meatType = "meat_domesticated",
 	meatAmount = 130,
 	hideType = "hide_leathery",
@@ -33,7 +32,7 @@ giant_mawgax = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

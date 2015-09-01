@@ -1,7 +1,6 @@
 worrt_gutbuster = Creature:new {
 	objectName = "@mob/creature_names:worrt_gutbuster",
 	socialGroup = "worrt",
-	pvpFaction = "",
 	faction = "",
 	level = 16,
 	chanceHit = 0.33,
@@ -11,7 +10,7 @@ worrt_gutbuster = Creature:new {
 	baseHAM = 2900,
 	baseHAMmax = 3500,
 	armor = 0,
-	resists = {0,0,0,0,0,0,0,0,0},
+	resists = {0,0,0,0,0,110,0,-1,-1},
 	meatType = "meat_reptilian",
 	meatAmount = 9,
 	hideType = "hide_leathery",
@@ -32,7 +31,7 @@ worrt_gutbuster = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

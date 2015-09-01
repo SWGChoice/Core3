@@ -1,7 +1,6 @@
 swamp_stalker = Creature:new {
 	objectName = "@mob/creature_names:swamp_stalker",
 	socialGroup = "tusk_cat",
-	pvpFaction = "",
 	faction = "",
 	level = 32,
 	chanceHit = 0.39,
@@ -11,7 +10,7 @@ swamp_stalker = Creature:new {
 	baseHAM = 8400,
 	baseHAMmax = 10200,
 	armor = 0,
-	resists = {40,30,30,100,30,60,90,5,-1},
+	resists = {135,20,20,170,20,20,160,20,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 65,
 	hideType = "hide_bristley",
@@ -33,8 +32,8 @@ swamp_stalker = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"stunattack","stunChance=50"}
+		{"blindattack",""},
+		{"stunattack",""}
 	}
 }
 

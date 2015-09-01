@@ -4,15 +4,13 @@ RaceTrack =ScreenPlay:new {}
 
 function RaceTrack:createRaceTrack()
 	for lc = 1, table.getn(self.trackConfig.waypoints) , 1 do
-		local pWaypointAA = spawnSceneObject(self.trackConfig.planetName, "object/active_area.iff", self.trackConfig.waypoints[lc].x, 0, self.trackConfig.waypoints[lc].y, 0, 0, 0, 0, 0)
+		local pWaypointAA = spawnActiveArea(self.trackConfig.planetName, "object/active_area.iff", self.trackConfig.waypoints[lc].x, 0, self.trackConfig.waypoints[lc].y, self.trackConfig.waypointRadius, 0)
 
 		if (pWaypointAA ~= nil) then
-			local activeArea = ActiveArea(pWaypointAA)
-			activeArea:setRadius(self.trackConfig.waypointRadius)
 			createObserver(ENTEREDAREA, self.trackConfig.className, "enteredWaypoint" , pWaypointAA)
 		end
 	end
-  self:createResetBestTimeEvent()
+	self:createResetBestTimeEvent()
 end
 
 function RaceTrack:startRacing(pObject)
@@ -30,7 +28,7 @@ end
 
 function RaceTrack:processWaypoint(pActiveArea, pObject)
 	if not SceneObject(pObject):isPlayerCreature() then
-		return
+		return 0
 	end
 
 	local lastIndex =  readScreenPlayData(pObject, self.trackConfig.trackName, "waypoint")
@@ -41,9 +39,11 @@ function RaceTrack:processWaypoint(pActiveArea, pObject)
 				self:finalWaypoint(pActiveArea, pObject)
 			else
 				self:actuallyProcessWaypoint(pObject,index)
-			end 
+			end
 		end
 	end
+
+	return 0
 end
 
 function RaceTrack:roundNumber(num)
@@ -106,7 +106,7 @@ function RaceTrack:checkServerRecordTime(pObject)
 			local recordTime = readSharedMemory(self.trackConfig.trackName ..".recordtime."..lc)
 			if recordTime == 0 then
 				recordTime = 9999999999
-			end	
+			end
 			if seconds < recordTime then
 				resPos=lc
 				break
@@ -117,7 +117,7 @@ function RaceTrack:checkServerRecordTime(pObject)
 			printf("Position :"..resPos)
 		end
 
-		if resPos>0 then			
+		if resPos>0 then
 			self:adjustResultPositions(resPos,creatureObject:getFirstName(),seconds)
 			if resPos==1 and playerObject:hasBadge(self.trackConfig.badgeToAward) == false then
 				creatureObject:sendSystemMessage("@theme_park/racing/racing:beat_the_record")
@@ -148,18 +148,16 @@ function RaceTrack:adjustResultPositions(resPos,playerName,seconds)
 end
 
 function RaceTrack:getWaypointIndex(pActiveArea)
-	return ObjectManager.withSceneObject(pActiveArea, function(sceneObject)
-		local index = 0
-		local wpX = sceneObject:getPositionX()
-		local wpY = sceneObject:getPositionY()
-		for lc = 1, table.getn(self.trackConfig.waypoints) , 1 do
-			if self.trackConfig.waypoints[lc].x==wpX and self.trackConfig.waypoints[lc].y==wpY then
-				index = lc
-				break
-			end
+	local index = 0
+	local wpX = SceneObject(pActiveArea):getPositionX()
+	local wpY = SceneObject(pActiveArea):getPositionY()
+	for lc = 1, table.getn(self.trackConfig.waypoints) , 1 do
+		if self.trackConfig.waypoints[lc].x==wpX and self.trackConfig.waypoints[lc].y==wpY then
+			index = lc
+			break
 		end
-		return index
-	end)
+	end
+	return index
 end
 
 function RaceTrack:displayPersonalBestTime(pObject,trackConfig)
@@ -219,7 +217,7 @@ end
 function RaceTrack:resetPlayerUnfinishedEventHandler(pObject)
 	ObjectManager.withCreaturePlayerObject(pObject, function(playerObject)
 		local startTime = tonumber(readScreenPlayData(pObject, self.trackConfig.trackName , "starttime"))
-		if not(startTime == nil) then 
+		if not(startTime == nil) then
 			local time = getTimestampMilli()
 			if  math.abs((time/1000) - (startTime/1000)) > (self.trackConfig.expiryTime-5) then
 				clearScreenPlayData(pObject,self.trackConfig.trackName )
@@ -227,7 +225,7 @@ function RaceTrack:resetPlayerUnfinishedEventHandler(pObject)
 				if self.trackConfig.debugMode==1 then
 					printf("Reset Player for :" .. self.trackConfig.trackName .. "\n")
 				end
-			end 
+			end
 		end
 	end)
 end

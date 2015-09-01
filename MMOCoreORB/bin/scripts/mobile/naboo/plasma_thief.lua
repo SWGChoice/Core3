@@ -1,7 +1,7 @@
 plasma_thief = Creature:new {
 	objectName = "@mob/creature_names:plasma_thief",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "plasma_thief",
-	pvpFaction = "plasma_thief",
 	faction = "plasma_thief",
 	level = 3,
 	chanceHit = 0.23,
@@ -33,11 +33,11 @@ plasma_thief = Creature:new {
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "plasma_thief_common", chance = 1000000},
-			},
-			lootChance = 3200000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_light"},
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(marksmannovice,brawlernovice)
 }
 

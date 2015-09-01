@@ -1,7 +1,7 @@
 imperial_recruiter = Creature:new {
 	objectName = "@mob/creature_names:imperial_recruiter",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "imperial",
-	pvpFaction = "imperial",
 	faction = "imperial",
 	level = 30,
 	chanceHit = 0.390000,

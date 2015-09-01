@@ -1,7 +1,7 @@
 force_trained_archaist = Creature:new {
 	objectName = "@mob/creature_names:force_trained_archaist",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "force",
-	pvpFaction = "",
 	faction = "",
 	level = 90,
 	chanceHit = 0.9,
@@ -40,8 +40,7 @@ force_trained_archaist = Creature:new {
 				{group = "clothing_attachments", chance = 1000000},
 				{group = "wearables_common", chance = 750000},
 				{group = "wearables_uncommon", chance = 750000}
-			},
-			lootChance = 4500000
+			}
 		}
 	},
 	weapons = {"mixed_force_weapons"},

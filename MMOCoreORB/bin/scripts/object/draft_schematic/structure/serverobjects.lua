@@ -45,6 +45,7 @@
 --Children folder includes
 includeFile("draft_schematic/structure/city/serverobjects.lua")
 includeFile("draft_schematic/structure/component/serverobjects.lua")
+includeFile("draft_schematic/structure/new_house_schem/serverobjects.lua")
 
 -- Server Objects
 includeFile("draft_schematic/structure/corellia_house_guild_hall.lua")

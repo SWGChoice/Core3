@@ -1,7 +1,6 @@
 huurton_matron = Creature:new {
 	objectName = "@mob/creature_names:huurton_matron",
 	socialGroup = "huurton",
-	pvpFaction = "",
 	faction = "",
 	level = 26,
 	chanceHit = 0.36,
@@ -11,7 +10,7 @@ huurton_matron = Creature:new {
 	baseHAM = 7700,
 	baseHAMmax = 9400,
 	armor = 0,
-	resists = {15,15,15,40,100,-1,-1,-1,-1},
+	resists = {15,15,15,140,200,-1,-1,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 15,
 	hideType = "hide_wooly",
@@ -32,8 +31,8 @@ huurton_matron = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"stunattack","stunChance=50"}
+		{"blindattack",""},
+		{"stunattack",""}
 	}
 }
 

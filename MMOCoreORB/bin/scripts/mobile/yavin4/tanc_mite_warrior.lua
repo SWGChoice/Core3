@@ -1,7 +1,6 @@
 tanc_mite_warrior = Creature:new {
 	objectName = "@mob/creature_names:tanc_mite_warrior",
 	socialGroup = "mite",
-	pvpFaction = "",
 	faction = "",
 	level = 17,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ tanc_mite_warrior = Creature:new {
 	baseHAM = 2900,
 	baseHAMmax = 3500,
 	armor = 0,
-	resists = {5,20,-1,20,-1,-1,-1,-1,-1},
+	resists = {5,115,-1,5,-1,-1,-1,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 3,
 	hideType = "",
@@ -32,7 +31,7 @@ tanc_mite_warrior = Creature:new {
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

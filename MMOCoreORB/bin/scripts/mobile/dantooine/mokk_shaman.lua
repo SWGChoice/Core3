@@ -1,7 +1,7 @@
 mokk_shaman = Creature:new {
 	objectName = "@mob/creature_names:mokk_shaman",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "mokk_tribe",
-	pvpFaction = "mokk_tribe",
 	faction = "mokk_tribe",
 	level = 60,
 	chanceHit = 0.6,
@@ -36,8 +36,7 @@ mokk_shaman = Creature:new {
 				{group = "loot_kit_parts", chance = 3000000},
 				{group = "armor_attachments", chance = 500000},
 				{group = "clothing_attachments", chance = 500000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"primitive_weapons"},

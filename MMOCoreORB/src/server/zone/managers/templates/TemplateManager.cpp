@@ -53,6 +53,9 @@
 #include "server/zone/templates/tangible/DiceTemplate.h"
 #include "server/zone/templates/tangible/DnaSampleTemplate.h"
 #include "server/zone/templates/tangible/DroidComponentTemplate.h"
+#include "server/zone/templates/tangible/DroidCraftingModuleTemplate.h"
+#include "server/zone/templates/tangible/DroidEffectsModuleTemplate.h"
+#include "server/zone/templates/tangible/DroidPersonalityModuleTemplate.h"
 #include "server/zone/templates/tangible/CamoKitTemplate.h"
 #include "server/zone/templates/universe/SharedGroupObjectTemplate.h"
 #include "server/zone/templates/universe/SharedGuildObjectTemplate.h"
@@ -233,7 +236,7 @@ void TemplateManager::loadAssetCustomizationManager() {
 	/*printf("getting cust vars\n");
 	//uint32 appearanceFileCRC, VectorMap<String, Reference<CustomizationVariable*> >& variables, bool skipShared
 	VectorMap<String, Reference<CustomizationVariable*> > variables;
-	AssetCustomizationManagerTemplate::instance()->getCustomizationVariables(String("appearance/wp_mle_sword_lightsaber_blade_anakin.lsb").hashCode(), variables, false);
+	AssetCustomizationManagerTemplate::instance()->getCustomizationVariables(STRING_HASHCODE("appearance/wp_mle_sword_lightsaber_blade_anakin.lsb"), variables, false);
 
 	for (int i = 0; i < variables.size(); ++i) {
 		printf("%s\n", variables.elementAt(i).getKey().toCharArray());
@@ -473,9 +476,9 @@ void TemplateManager::addTemplate(uint32 key, const String& fullName, LuaObject*
 
 		if (iffStream != NULL) {
 			templateObject->readObject(iffStream);
-		}
 
-		delete iffStream;
+			delete iffStream;
+		}
 	}
 
 	templateObject->readObject(templateData);
@@ -571,6 +574,9 @@ void TemplateManager::registerTemplateObjects() {
 	templateFactory.registerObject<LightsaberCrystalObjectTemplate>(SharedObjectTemplate::LIGHTSABERCRYSTAL);
 	templateFactory.registerObject<DnaSampleTemplate>(SharedObjectTemplate::DNASAMPLE);
 	templateFactory.registerObject<DroidComponentTemplate>(SharedObjectTemplate::DROIDCOMPONENT);
+	templateFactory.registerObject<DroidCraftingModuleTemplate>(SharedObjectTemplate::DROIDMODULECRAFTING);
+	templateFactory.registerObject<DroidEffectsModuleTemplate>(SharedObjectTemplate::DROIDMODULEEFFECTS);
+	templateFactory.registerObject<DroidPersonalityModuleTemplate>(SharedObjectTemplate::DROIDMODULEPERSONALITY);
 }
 
 void TemplateManager::registerFunctions() {
@@ -631,6 +637,27 @@ void TemplateManager::registerGlobals() {
 	luaTemplatesInstance->setGlobalInt("HEAVYPARTICLEBEAMATTACK", WeaponObject::HEAVYPARTICLEBEAMATTACK);
 	luaTemplatesInstance->setGlobalInt("HEAVYROCKETLAUNCHERATTACK", WeaponObject::HEAVYROCKETLAUNCHERATTACK);
 	luaTemplatesInstance->setGlobalInt("HEAVYLAUNCHERATTACK", WeaponObject::HEAVYLAUNCHERATTACK);
+
+	luaTemplatesInstance->setGlobalInt("ANYWEAPON", CombatManager::ANYWEAPON);
+	luaTemplatesInstance->setGlobalInt("THROWNWEAPON", CombatManager::THROWNWEAPON);
+	luaTemplatesInstance->setGlobalInt("HEAVYWEAPON", CombatManager::HEAVYWEAPON);
+	luaTemplatesInstance->setGlobalInt("MINEWEAPON", CombatManager::MINEWEAPON);
+	luaTemplatesInstance->setGlobalInt("SPECIALHEAVYWEAPON", CombatManager::SPECIALHEAVYWEAPON);
+	luaTemplatesInstance->setGlobalInt("UNARMEDWEAPON", CombatManager::UNARMEDWEAPON);
+	luaTemplatesInstance->setGlobalInt("ONEHANDMELEEWEAPON", CombatManager::ONEHANDMELEEWEAPON);
+	luaTemplatesInstance->setGlobalInt("TWOHANDMELEEWEAPON", CombatManager::TWOHANDMELEEWEAPON);
+	luaTemplatesInstance->setGlobalInt("POLEARMWEAPON", CombatManager::POLEARMWEAPON);
+	luaTemplatesInstance->setGlobalInt("PISTOLWEAPON", CombatManager::PISTOLWEAPON);
+	luaTemplatesInstance->setGlobalInt("CARBINEWEAPON", CombatManager::CARBINEWEAPON);
+	luaTemplatesInstance->setGlobalInt("RIFLEWEAPON", CombatManager::RIFLEWEAPON);
+	luaTemplatesInstance->setGlobalInt("GRENADEWEAPON", CombatManager::GRENADEWEAPON);
+	luaTemplatesInstance->setGlobalInt("LIGHTNINGRIFLEWEAPON", CombatManager::LIGHTNINGRIFLEWEAPON);
+	luaTemplatesInstance->setGlobalInt("ONEHANDJEDIWEAPON", CombatManager::ONEHANDJEDIWEAPON);
+	luaTemplatesInstance->setGlobalInt("TWOHANDJEDIWEAPON", CombatManager::TWOHANDJEDIWEAPON);
+	luaTemplatesInstance->setGlobalInt("POLEARMJEDIWEAPON", CombatManager::POLEARMJEDIWEAPON);
+	luaTemplatesInstance->setGlobalInt("MELEEWEAPON", CombatManager::MELEEWEAPON);
+	luaTemplatesInstance->setGlobalInt("RANGEDWEAPON", CombatManager::RANGEDWEAPON);
+	luaTemplatesInstance->setGlobalInt("JEDIWEAPON", CombatManager::JEDIWEAPON);
 
 	luaTemplatesInstance->setGlobalInt("OBJECTDESTRUCTION", ObserverEventType::OBJECTDESTRUCTION);
 	luaTemplatesInstance->setGlobalInt("DAMAGERECEIVED", ObserverEventType::DAMAGERECEIVED);
@@ -726,7 +753,9 @@ void TemplateManager::registerGlobals() {
 	luaTemplatesInstance->setGlobalInt("DROIDCUSTOMKIT", SharedObjectTemplate::DROIDCUSTOMKIT);
 	luaTemplatesInstance->setGlobalInt("DNASAMPLE", SharedObjectTemplate::DNASAMPLE);
 	luaTemplatesInstance->setGlobalInt("DROIDCOMPONENT", SharedObjectTemplate::DROIDCOMPONENT);
-
+	luaTemplatesInstance->setGlobalInt("DROIDCRAFTINGMODULE", SharedObjectTemplate::DROIDMODULECRAFTING);
+	luaTemplatesInstance->setGlobalInt("DROIDEFFECTSMODULE", SharedObjectTemplate::DROIDMODULEEFFECTS);
+	luaTemplatesInstance->setGlobalInt("DROIDPERSONALITYCHIP", SharedObjectTemplate::DROIDMODULEPERSONALITY);
 	luaTemplatesInstance->setGlobalInt("NO_HITLOCATION", CombatManager::NOLOCATION);
 	luaTemplatesInstance->setGlobalInt("CHEST_HITLOCATION", CombatManager::CHEST);
 	luaTemplatesInstance->setGlobalInt("ARMS_HITLOCATION", CombatManager::ARMS);
@@ -740,6 +769,13 @@ void TemplateManager::registerGlobals() {
 	luaTemplatesInstance->setGlobalInt("THEATER", EventPerkDeedTemplate::THEATER);
 	luaTemplatesInstance->setGlobalInt("PERSONNEL", EventPerkDeedTemplate::PERSONNEL);
 	luaTemplatesInstance->setGlobalInt("GAME", EventPerkDeedTemplate::GAME);
+
+	luaTemplatesInstance->setGlobalInt("STIM_A", StimPackTemplate::STIM_A);
+	luaTemplatesInstance->setGlobalInt("STIM_B", StimPackTemplate::STIM_B);
+	luaTemplatesInstance->setGlobalInt("STIM_C", StimPackTemplate::STIM_C);
+	luaTemplatesInstance->setGlobalInt("STIM_D", StimPackTemplate::STIM_D);
+	luaTemplatesInstance->setGlobalInt("STIM_E", StimPackTemplate::STIM_E);
+
 }
 
 String TemplateManager::getTemplateFile(uint32 key) {

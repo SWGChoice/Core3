@@ -1,7 +1,6 @@
 malkloc_bull = Creature:new {
 	objectName = "@mob/creature_names:malkloc_bull",
 	socialGroup = "malkloc",
-	pvpFaction = "",
 	faction = "",
 	level = 28,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ malkloc_bull = Creature:new {
 	baseHAM = 8200,
 	baseHAMmax = 10000,
 	armor = 0,
-	resists = {35,35,10,-1,-1,-1,10,50,-1},
+	resists = {135,135,10,-1,-1,-1,10,150,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 1000,
 	hideType = "hide_leathery",
@@ -32,7 +31,7 @@ malkloc_bull = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

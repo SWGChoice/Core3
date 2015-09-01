@@ -1,7 +1,6 @@
 dreaded_vir_vur = Creature:new {
 	objectName = "@mob/creature_names:dreaded_vir_vir",
 	socialGroup = "vir_vur",
-	pvpFaction = "",
 	faction = "",
 	level = 38,
 	chanceHit = 0.44,
@@ -11,7 +10,7 @@ dreaded_vir_vur = Creature:new {
 	baseHAM = 8400,
 	baseHAMmax = 10200,
 	armor = 0,
-	resists = {40,0,-1,-1,0,0,0,0,-1},
+	resists = {140,0,-1,-1,0,0,0,0,-1},
 	meatType = "meat_avian",
 	meatAmount = 25,
 	hideType = "hide_wooly",
@@ -33,7 +32,7 @@ dreaded_vir_vur = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

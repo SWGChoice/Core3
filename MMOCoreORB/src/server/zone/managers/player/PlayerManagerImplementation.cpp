@@ -119,6 +119,9 @@
 #include "server/zone/managers/creature/PetManager.h"
 
 #include "server/zone/objects/creature/events/BurstRunNotifyAvailableEvent.h"
+#include "server/zone/objects/creature/DroidObject.h"
+#include "server/zone/objects/player/Races.h"
+#include "server/zone/objects/tangible/components/droid/DroidPlaybackModuleDataComponent.h"
 
 #include <iostream>
 
@@ -186,6 +189,7 @@ void PlayerManagerImplementation::loadLuaConfig() {
 	baseStoredVehicles = lua->getGlobalInt("baseStoredVehicles");
 	baseStoredShips = lua->getGlobalInt("baseStoredShips");
 
+	veteranRewardAdditionalMilestones = lua->getGlobalInt("veteranRewardAdditionalMilestones");
 
 	LuaObject rewardMilestonesLua = lua->getGlobalObject("veteranRewardMilestones");
 	for (int i = 1; i <= rewardMilestonesLua.getTableSize(); ++i) {
@@ -317,15 +321,11 @@ void PlayerManagerImplementation::loadNameMap() {
 bool PlayerManagerImplementation::existsName(const String& name) {
 	bool res = false;
 
-	rlock();
-
 	try {
 		res = nameMap->containsKey(name.toLowerCase());
 	} catch (DatabaseException& e) {
 		error(e.getMessage());
 	}
-
-	runlock();
 
 	return res;
 }
@@ -384,11 +384,12 @@ bool PlayerManagerImplementation::kickUser(const String& name, const String& adm
 Reference<CreatureObject*> PlayerManagerImplementation::getPlayer(const String& name) {
 	uint64 oid = 0;
 
-	rlock();
-
-	oid = nameMap->get(name.toLowerCase());
-
-	runlock();
+	try {
+		oid = nameMap->get(name.toLowerCase());
+	} catch (ArrayIndexOutOfBoundsException& ex) {
+		// `oid` is initialized with zero so the method will return NULL after unlocking.
+		error("Didn't find player " +  name);
+	}
 
 	if (oid == 0)
 		return NULL;
@@ -404,11 +405,7 @@ Reference<CreatureObject*> PlayerManagerImplementation::getPlayer(const String& 
 uint64 PlayerManagerImplementation::getObjectID(const String& name) {
 	uint64 oid = 0;
 
-	rlock();
-
 	oid = nameMap->get(name.toLowerCase());
-
-	runlock();
 
 	return oid;
 }
@@ -501,50 +498,22 @@ bool PlayerManagerImplementation::checkPlayerName(MessageCallback* messageCallba
 	return true;
 }
 
-
-Reference<TangibleObject*> PlayerManagerImplementation::createHairObject(const String& hairObjectFile, const String& hairCustomization) {
-	Reference<TangibleObject*> hairObject = NULL;
-
-	if (hairObjectFile.isEmpty()) {
-		info("hairObjectFile empty");
-		return NULL;
-	}
-
-	info("trying to create hair object " + hairObjectFile);
-	Reference<SceneObject*> hair = server->createObject(hairObjectFile.hashCode(), 1);
-
-	if (hair == NULL) {
-		info("objectManager returned NULL hair object");
-		return NULL;
-	}
-
-	if (hair->getGameObjectType() != SceneObjectType::GENERICITEM || hair->getArrangementDescriptor(0).get(0) != "hair") {
-		ManagedReference<SceneObject*> clearRef = hair;
-
-		return NULL;
-	} else {
-		hairObject = hair.castTo<TangibleObject*>();
-
-		hairObject->setCustomizationString(hairCustomization);
-
-		info("hair object created successfully");
-	}
-
-	return hairObject;
-}
-
 void PlayerManagerImplementation::createTutorialBuilding(CreatureObject* player) {
 	Zone* zone = server->getZone("tutorial");
 
-	String tut = "object/building/general/newbie_hall.iff";
-	String cell = "object/cell/cell.iff";
+//	const static String cell = "object/cell/cell.iff";
 
-	Reference<BuildingObject*> tutorial = server->createObject(tut.hashCode(), 1).castTo<BuildingObject*>();
+	Reference<BuildingObject*> tutorial = server->createObject(STRING_HASHCODE("object/building/general/newbie_hall.iff"), 1).castTo<BuildingObject*>();
+
+	Locker locker(tutorial);
+
 	tutorial->createCellObjects();
 	tutorial->setPublicStructure(true);
 
 	tutorial->initializePosition(System::random(5000), 0, System::random(5000));
 	zone->transferObject(tutorial, -1, true);
+
+	locker.release();
 
 	SceneObject* cellTut = tutorial->getCell(11);
 
@@ -563,17 +532,22 @@ void PlayerManagerImplementation::createTutorialBuilding(CreatureObject* player)
 void PlayerManagerImplementation::createSkippedTutorialBuilding(CreatureObject* player) {
 	Zone* zone = server->getZone("tutorial");
 
-	String tut = "object/building/general/newbie_hall_skipped.iff";
-	String cell = "object/cell/cell.iff";
+	Reference<BuildingObject*> tutorial = server->createObject(STRING_HASHCODE("object/building/general/newbie_hall_skipped.iff"), 1).castTo<BuildingObject*>();
 
-	Reference<BuildingObject*> tutorial = server->createObject(tut.hashCode(), 1).castTo<BuildingObject*>();
+	Locker locker(tutorial);
+
 	tutorial->createCellObjects();
 	tutorial->initializePosition(System::random(5000), 0, System::random(5000));
 	zone->transferObject(tutorial, -1, true);
 
-	Reference<SceneObject*> travelTutorialTerminal = server->createObject((uint32)String("object/tangible/beta/beta_terminal_warp.iff").hashCode(), 1);
+	locker.release();
+
+	Reference<SceneObject*> travelTutorialTerminal = server->createObject(STRING_HASHCODE("object/tangible/beta/beta_terminal_warp.iff"), 1);
 
 	SceneObject* cellTut = tutorial->getCell(1);
+
+	Locker locker2(travelTutorialTerminal);
+
 	cellTut->transferObject(travelTutorialTerminal, -1);
 
 	travelTutorialTerminal->initializePosition(27.0f, -3.5f, -168.0f);
@@ -622,6 +596,10 @@ uint8 PlayerManagerImplementation::calculateIncapacitationTimer(CreatureObject* 
 }
 
 int PlayerManagerImplementation::notifyDestruction(TangibleObject* destructor, TangibleObject* destructedObject, int condition) {
+	if (destructor == NULL) {
+		assert(0 && "destructor should always be != NULL.");
+	}
+
 	if (!destructedObject->isPlayerCreature())
 		return 1;
 
@@ -632,18 +610,23 @@ int PlayerManagerImplementation::notifyDestruction(TangibleObject* destructor, T
 
 	if (playerCreature->isRidingMount()) {
 		playerCreature->updateCooldownTimer("mount_dismount", 0);
-		playerCreature->executeObjectControllerAction(String("dismount").hashCode());
+		playerCreature->executeObjectControllerAction(STRING_HASHCODE("dismount"));
 	}
-
-	playerCreature->clearDots();
 
 	PlayerObject* ghost = playerCreature->getPlayerObject();
 
 	ghost->updateIncapacitationCounter();
 
-	destructor->removeDefender(destructedObject);
+	DeltaVector<ManagedReference<SceneObject*> >* defenderList = destructor->getDefenderList();
 
-	if (!destructor->isKiller() && ghost->getIncapacitationCounter() < 3) {
+	bool isDefender = false;
+
+	if (defenderList->contains(destructedObject)) {
+		isDefender = true;
+		destructor->removeDefender(destructedObject);
+	}
+
+	if ((!destructor->isKiller() || !isDefender) && ghost->getIncapacitationCounter() < 3) {
 		playerCreature->setCurrentSpeed(0);
 		playerCreature->setPosture(CreaturePosture::INCAPACITATED, true);
 		playerCreature->updateLocomotion();
@@ -663,12 +646,8 @@ int PlayerManagerImplementation::notifyDestruction(TangibleObject* destructor, T
 
 		StringIdChatParameter stringId;
 
-		if (destructor != NULL) {
-			stringId.setStringId("base_player", "prose_victim_incap");
-			stringId.setTT(destructor->getObjectID());
-		} else {
-			stringId.setStringId("base_player", "victim_incapacitated");
-		}
+		stringId.setStringId("base_player", "prose_victim_incap");
+		stringId.setTT(destructor->getObjectID());
 
 		playerCreature->sendSystemMessage(stringId);
 
@@ -692,8 +671,10 @@ void PlayerManagerImplementation::killPlayer(TangibleObject* attacker, CreatureO
 
 	if (player->isRidingMount()) {
 		player->updateCooldownTimer("mount_dismount", 0);
-		player->executeObjectControllerAction(String("dismount").hashCode());
+		player->executeObjectControllerAction(STRING_HASHCODE("dismount"));
 	}
+
+	player->clearDots();
 
 	player->setCurrentSpeed(0);
 	player->setPosture(CreaturePosture::DEAD, true);
@@ -721,12 +702,7 @@ void PlayerManagerImplementation::killPlayer(TangibleObject* attacker, CreatureO
 			}
 
 			if (attackerCreature->isPlayerCreature()) {
-				PlayerObject* attackerGhost = attackerCreature->getPlayerObject();
-				PlayerObject* ghost = player->getPlayerObject();
-
-				bool areInDuel = (ghost->requestedDuelTo(attackerCreature) && attackerGhost->requestedDuelTo(player));
-
-				if (!areInDuel) {
+				if (!CombatManager::instance()->areInDuel(attackerCreature, player)) {
 					FactionManager::instance()->awardPvpFactionPoints(attackerCreature, player);
 				}
 			}
@@ -772,14 +748,17 @@ void PlayerManagerImplementation::sendActivateCloneRequest(CreatureObject* playe
 	ManagedReference<SceneObject*> preDesignatedFacility = server->getObject(preDesignatedFacilityOid);
 	String predesignatedName = "None";
 
-	//Get the name of the predesignated facility
+	//Get the name of the pre-designated facility
 	if (preDesignatedFacility != NULL) {
 		ManagedReference<CityRegion*> cr = preDesignatedFacility->getCityRegion();
 
-		if (cr != NULL)
-			predesignatedName = cr->getRegionName();
-		else
+		if (preDesignatedFacility->getZone() != zone) {
+			predesignatedName = "off-planet (unavailable)";
+		} else if (cr != NULL) {
+			predesignatedName = cr->getRegionDisplayedName();
+		} else {
 			predesignatedName = preDesignatedFacility->getDisplayedName();
+		}
 	}
 
 	SortedVector<ManagedReference<SceneObject*> > locations = zone->getPlanetaryObjectList("cloningfacility");
@@ -814,7 +793,7 @@ void PlayerManagerImplementation::sendActivateCloneRequest(CreatureObject* playe
 				if (cr->isBanned(playerID))
 					continue;
 
-				name = cr->getRegionName();
+				name = cr->getRegionDisplayedName();
 			} else {
 				name = location->getDisplayedName();
 			}
@@ -828,15 +807,15 @@ void PlayerManagerImplementation::sendActivateCloneRequest(CreatureObject* playe
 
 	} else {
 		if (cr != NULL)
-			closestName = cr->getRegionName();
+			closestName = cr->getRegionDisplayedName();
 		else
 			closestName = closestCloning->getDisplayedName();
 	}
 
 	StringBuffer promptText;
-	promptText << "@base_player:revive_closest : " << closestName << "\n"
-			<< "@base_player:revive_bind : " << predesignatedName << "\n" //Space before tab character is needed for proper formatting in this case.
-			<< "Cash Balance : " << player->getCashCredits() << "\n\n"
+	promptText << "Closest:\t\t " << closestName << "\n"
+			<< "Pre-Designated: " << predesignatedName << "\n"
+			<< "Cash Balance:\t " << player->getCashCredits() << "\n\n"
 			<< "Select the desired option and click OK.";
 
 	cloneMenu->setPromptText(promptText.toString());
@@ -853,8 +832,6 @@ void PlayerManagerImplementation::sendActivateCloneRequest(CreatureObject* playe
 
 void PlayerManagerImplementation::sendPlayerToCloner(CreatureObject* player, uint64 clonerID, int typeofdeath) {
 	ManagedReference<SceneObject*> cloner = server->getObject(clonerID);
-
-	info("entering sendPlayerToCloner");
 
 	if (cloner == NULL) {
 		error("Cloning structure is null");
@@ -911,21 +888,18 @@ void PlayerManagerImplementation::sendPlayerToCloner(CreatureObject* player, uin
 	uint64 preDesignatedFacilityOid = ghost->getCloningFacility();
 	ManagedReference<SceneObject*> preDesignatedFacility = server->getObject(preDesignatedFacilityOid);
 
-	if (preDesignatedFacility != NULL && preDesignatedFacility == cloningBuilding) {
-		// bind removed
-		player->sendSystemMessage("@base_player:bind_removed");
-		ghost->setCloningFacility(NULL);
-	} else {
-		// TODO: add wounds
-		player->addWounds(CreatureAttribute::HEALTH, 100, true);
-		player->addWounds(CreatureAttribute::ACTION, 100, true);
-		player->addWounds(CreatureAttribute::MIND, 100, true);
+	if (preDesignatedFacility == NULL || preDesignatedFacility != cloningBuilding) {
+		player->addWounds(CreatureAttribute::HEALTH, 100, true, false);
+		player->addWounds(CreatureAttribute::ACTION, 100, true, false);
+		player->addWounds(CreatureAttribute::MIND, 100, true, false);
+		player->addShockWounds(100, true);
 	}
-
-	player->addShockWounds(100, true);
 
 	if (ghost->getFactionStatus() != FactionStatus::ONLEAVE)
 		ghost->setFactionStatus(FactionStatus::ONLEAVE);
+
+	if (ghost->hasPvpTef())
+		ghost->schedulePvpTefRemovalTask(true);
 
 	// Decay
 	if (typeofdeath == 0) {
@@ -936,6 +910,8 @@ void PlayerManagerImplementation::sendPlayerToCloner(CreatureObject* player, uin
 
 			if (item != NULL && item->isTangibleObject()) {
 				ManagedReference<TangibleObject*> obj = cast<TangibleObject*>(item);
+
+				Locker clocker(obj, player);
 
 				if (obj->getOptionsBitmask() & OptionBitmask::INSURED) {
 					//1% Decay for insured items
@@ -956,10 +932,76 @@ void PlayerManagerImplementation::sendPlayerToCloner(CreatureObject* player, uin
 
 	player->notifyObservers(ObserverEventType::PLAYERCLONED, player, 0);
 
+
 	// Jedi experience loss.
-	if (ghost->getJediState() > 1)
-	  //		awardExperience(player, "jedi_general", -200000, true);
-		awardExperience(player, "jedi_general", 0, true);
+	// If player is a Jedi Initiate
+	if(ghost->getJediState()  == 2) {
+		awardExperience(player, "jedi_general", -4500, true);
+		StringIdChatParameter message("base_player","prose_revoke_xp");
+		message.setDI(4500);
+		message.setTO("exp_n", "jedi_general");
+		player->sendSystemMessage(message);
+
+	} else if (ghost->getJediState() > 2) {
+		SkillList* skillList = player->getSkillList();
+		int highestLevel = -1;
+
+
+		for(int i=0;i < skillList->size(); ++i) {
+			Skill* skill = skillList->get(i);
+			String skillName = skill->getSkillName();
+
+			if(skillName.contains("force_discipline") && skillName.contains("4")) {
+				highestLevel = 4;
+				break;
+			} else if(highestLevel < 3 && (skillName.contains("force_discipline") && skillName.contains("3"))) {
+				highestLevel = 3;
+			} else if(highestLevel < 2 && (skillName.contains("force_discipline") && skillName.contains("2"))) {
+				highestLevel = 2;
+			} else if(highestLevel < 1 && (skillName.contains("force_discipline") && skillName.contains("1"))) {
+				highestLevel = 1;
+			} else if(highestLevel < 0 && (skillName.contains("force_discipline") && skillName.contains("novice"))) {
+				highestLevel = 0;
+			}
+
+		}
+		int expRemoved = 0;
+
+		switch(highestLevel) {
+		// If player has any level 4 box in any discipline
+		case 4:
+			expRemoved = 200000;
+			break;
+		// If player has any level 3 box in any discipline
+		case 3:
+			expRemoved =  100000;
+			break;
+		// If player has any level 2 box in any discipline
+		case 2:
+			expRemoved =  50000;
+			break;
+		// If player has any level 1 box in any discipline
+		case 1:
+			expRemoved = 30000;
+			break;
+		// If player has any novice box in any discipline
+		case 0:
+			expRemoved =  15000;
+			break;
+		// If player has no novice boxes (new Padawan)
+		case -1:
+			expRemoved = 5000;
+			break;
+		}
+                // Change to not do this if Jedi is on the pre-Pub-9 skill branches
+                expRemoved = 0;
+
+		awardExperience(player, "jedi_general", 0-expRemoved, true);
+		StringIdChatParameter message("base_player","prose_revoke_xp");
+		message.setDI(expRemoved);
+		message.setTO("exp_n", "jedi_general");
+		player->sendSystemMessage(message);
+	}
 }
 
 void PlayerManagerImplementation::ejectPlayerFromBuilding(CreatureObject* player) {
@@ -1036,108 +1078,119 @@ void PlayerManagerImplementation::disseminateExperience(TangibleObject* destruct
 			baseXp = ai->getBaseXp();
 	}
 
-	for (int i = 0; i < threatMap->size(); ++i) {
-
+	// first loop and combine pet's damage with their owner's, keyed by the appropriate exp
+	// we can just use the original threatmap since the mob is dead anyway
+	for (int i = 0; i < threatMap->size(); i++) {
+		ThreatMapEntry* entry = &threatMap->elementAt(i).getValue();
 		CreatureObject* attacker = threatMap->elementAt(i).getKey();
-		CreatureObject* owner = NULL;
-		int totalPets = 1;
-
-		if (attacker->isPet()) {
-			PetControlDevice* pcd = attacker->getControlDevice().get().castTo<PetControlDevice*>();
-
-			if (pcd == NULL || pcd->getPetType() != PetManager::CREATUREPET) {
-				continue;
-			}
-
-			owner = attacker->getLinkedCreature().get();
-
-			if (owner == NULL || !owner->isPlayerCreature() || !owner->hasSkill("outdoors_creaturehandler_novice"))
-				continue;
-
-			PlayerObject* ownerGhost = owner->getPlayerObject();
-
-			if (ownerGhost == NULL)
-				continue;
-
-			for (int i = 0; i < ownerGhost->getActivePetsSize(); i++) {
-				ManagedReference<AiAgent*> object = ownerGhost->getActivePet(i);
-
-				if (object != NULL && object->isCreature()) {
-					if (object == attacker)
-						continue;
-
-					PetControlDevice* petControlDevice = object->getControlDevice().get().castTo<PetControlDevice*>();
-					if (petControlDevice != NULL && petControlDevice->getPetType() == PetManager::CREATUREPET)
-						totalPets++;
-				}
-			}
-
+		if (entry == NULL || attacker == NULL) {
+			threatMap->drop(attacker);
+			continue;
 		}
 
-		if (!attacker->isPlayerCreature() && !attacker->isPet())
+		// only worried about pets at this stage
+		if (!attacker->isPet())
+			continue;
+
+		PetControlDevice* pcd = attacker->getControlDevice().get().castTo<PetControlDevice*>();
+
+		// only creature pets will award exp, so discard anything else
+		if (pcd == NULL || pcd->getPetType() != PetManager::CREATUREPET) {
+			threatMap->drop(attacker);
+			continue;
+		}
+
+		CreatureObject* owner = attacker->getLinkedCreature().get();
+		if (owner == NULL || !owner->isPlayerCreature() || !owner->hasSkill("outdoors_creaturehandler_novice") || !destructedObject->isInRange(owner, 80)) {
+			threatMap->drop(attacker);
+			continue;
+		}
+
+		PlayerObject* ownerGhost = owner->getPlayerObject();
+		if (ownerGhost == NULL) {
+			threatMap->drop(attacker);
+			continue;
+		}
+
+		int totalPets = 1;
+
+		for (int i = 0; i < ownerGhost->getActivePetsSize(); i++) {
+			ManagedReference<AiAgent*> object = ownerGhost->getActivePet(i);
+
+			if (object != NULL && object->isCreature()) {
+				if (object == attacker)
+					continue;
+
+				PetControlDevice* petControlDevice = object->getControlDevice().get().castTo<PetControlDevice*>();
+				if (petControlDevice != NULL && petControlDevice->getPetType() == PetManager::CREATUREPET)
+					totalPets++;
+			}
+		}
+
+		// TODO: Find a more correct CH xp formula
+		float levelRatio = (float)destructedObject->getLevel() / (float)attacker->getLevel();
+
+		float xpAmount = levelRatio * 500.f;
+
+		xpAmount = MIN(xpAmount, (float)attacker->getLevel() * 50.f);
+
+		xpAmount /= totalPets;
+
+		if (levelRatio <= 0.5)
+			xpAmount = 1;
+
+		threatMap->addDamage(owner, xpAmount, "creaturehandler");
+		threatMap->drop(attacker);
+	}
+
+	for (int i = 0; i < threatMap->size(); ++i) {
+		ThreatMapEntry* entry = &threatMap->elementAt(i).getValue();
+
+		uint32 entryTotalDamage = entry->getTotalDamage();
+
+		CreatureObject* attacker = threatMap->elementAt(i).getKey();
+		if (attacker == NULL || !attacker->isPlayerCreature())
+			continue;
+
+		if (!destructedObject->isInRange(attacker, 80))
 			continue;
 
 		ManagedReference<GroupObject*> group = attacker->getGroup();
 
-		ThreatMapEntry* entry = &threatMap->elementAt(i).getValue();
-
 		uint32 combatXp = 0;
+
+		Locker crossLocker(attacker, destructedObject);
 
 		for (int j = 0; j < entry->size(); ++j) {
 			uint32 damage = entry->elementAt(j).getValue();
 			String xpType = entry->elementAt(j).getKey();
 			float xpAmount = baseXp;
 
-			if (attacker->isPlayerCreature()) {
+			if (xpType == "creaturehandler")
+				xpAmount = damage; // this was pre-calculated in the previous loop
+			else {
 				xpAmount *= (float) damage / totalDamage;
 
 				//Cap xp based on level
 				xpAmount = MIN(xpAmount, calculatePlayerLevel(attacker, xpType) * 300.f);
-
-			} else if (attacker->isPet()) {
-				// TODO: Find a more correct CH xp formula
-				float levelRatio = (float)destructedObject->getLevel() / (float)attacker->getLevel();
-
-				xpAmount = (float)attacker->getLevel() * 25.f * levelRatio;
-
-				xpAmount = MIN(xpAmount,attacker->getLevel() * 50.f);
-
-				xpAmount /= totalPets;
-
-				if (levelRatio <= 0.5)
-					xpAmount = 1;
 			}
 
 			//Apply group bonus if in group
-			if (group != NULL)
+			if (group != NULL && xpType != "creaturehandler")
 				xpAmount *= groupExpMultiplier;
 
+			if( winningFaction == attacker->getFaction())
+				xpAmount *= gcwBonus;
+
 			//Jedi experience doesn't count towards combat experience supposedly.
-			if (xpType != "jedi_general")
+			if (xpType != "jedi_general" && xpType != "creaturehandler")
 				combatXp += xpAmount;
 
-			if( winningFaction == attacker->getFaction()){
-				xpAmount *= gcwBonus;
-				combatXp *= gcwBonus;
-			}
-			//Award individual weapon exp.
-			if (attacker->isPlayerCreature()) {
-				Locker crossLocker(attacker, destructedObject);
-
-				awardExperience(attacker, xpType, xpAmount);
-			} else if (attacker->isPet()) {
-				Locker crossLocker(owner, destructedObject);
-
-				awardExperience(owner, xpType, xpAmount);
-			}
+			//Award individual expType
+			awardExperience(attacker, xpType, xpAmount);
 		}
 
-		if (attacker->isPet())
-			continue;
-
 		combatXp /= 10.f;
-
-		Locker crossLocker(attacker, destructedObject);
 
 		awardExperience(attacker, "combat_general", combatXp);
 
@@ -1190,6 +1243,9 @@ bool PlayerManagerImplementation::checkEncumbrancies(CreatureObject* player, Arm
 	int healthEncumb = armor->getHealthEncumbrance();
 	int actionEncumb = armor->getActionEncumbrance();
 	int mindEncumb = armor->getMindEncumbrance();
+
+	if (healthEncumb <= 0 && actionEncumb <= 0 && mindEncumb <= 0)
+		return true;
 
 	if (healthEncumb >= strength || healthEncumb >= constitution ||
 			actionEncumb >= quickness || actionEncumb >= stamina ||
@@ -1460,7 +1516,14 @@ void PlayerManagerImplementation::handleAddItemToTradeWindow(CreatureObject* pla
 	}
 
 	if(objectToTrade->isControlDevice()) {
-		cast<ControlDevice*>(objectToTrade.get())->storeObject(player, true);
+		Reference<ControlDevice*> controlDevice = cast<ControlDevice*>(objectToTrade.get());
+		Reference<TangibleObject*> controlledObject = controlDevice->getControlledObject();
+
+		if (controlledObject != NULL) {
+			Locker crossLocker(controlledObject, player);
+
+			controlDevice->storeObject(player, true);
+		}
 	}
 
 	tradeContainer->addTradeItem(objectToTrade);
@@ -1945,11 +2008,13 @@ int PlayerManagerImplementation::healEnhance(CreatureObject* enhancer, CreatureO
 		}
 	}
 
-	Reference<Buff*> buff = new Buff(patient, buffname.hashCode(), duration, BuffType::MEDICAL);
+	Reference<Buff*> buff = new Buff(patient, buffcrc, duration, BuffType::MEDICAL);
 
-	if(BuffAttribute::isProtection(attribute))
+	Locker locker(buff);
+
+	if(BuffAttribute::isProtection(attribute)) {
 		buff->setSkillModifier(BuffAttribute::getProtectionString(attribute), buffvalue);
-	else{
+	} else {
 		buff->setAttributeModifier(attribute, buffvalue);
 		buff->setFillAttributesOnBuff(true);
 	}
@@ -1969,6 +2034,37 @@ void PlayerManagerImplementation::stopListen(CreatureObject* creature, uint64 en
 
 	if (object == NULL)
 		return;
+
+	if(object->isDroidObject()) {
+		creature->setMood(creature->getMoodID());
+		if (entid != listenID ) {
+			creature->sendSystemMessage("You are not currently listening to " + object->getDisplayedName() + ".");
+			return;
+		}
+		if(doSendPackets) {
+			creature->setListenToID(0, true);
+			creature->setMoodString(creature->getMoodString(), true);
+		}
+		if (creature->isPlayerCreature()) {
+			CreatureObject* player = cast<CreatureObject*>( creature);
+			StringIdChatParameter stringID;
+			if (forced) {
+				stringID.setTU(entid);
+				stringID.setStringId("performance", "music_stop_other");
+				player->sendSystemMessage(stringID);
+				return;
+			} else if (outOfRange) {
+				StringBuffer msg;
+				msg << "You stop listening to " << object->getDisplayedName() << " because they are too far away.";
+				player->sendSystemMessage(msg.toString());
+				return;
+			} else {
+				player->sendSystemMessage("@performance:music_listen_stop_self"); //"You stop watching."
+				return;
+			}
+		}
+		return;
+	}
 
 	if (!object->isPlayerCreature()) {
 		creature->sendSystemMessage("You cannot stop listening an object.");
@@ -2230,6 +2326,51 @@ void PlayerManagerImplementation::startListen(CreatureObject* creature, uint64 e
 		creature->sendSystemMessage("@performance:dance_watch_npc");
 		return;
 	}*/
+
+	// Droid playback handling
+	if(object->isDroidObject()) {
+		DroidObject* droid = cast<DroidObject*>( object.get());
+		if (droid == NULL) {
+			creature->sendSystemMessage("You cannot start listening an object.");
+			return;
+		}
+		BaseDroidModuleComponent* bmodule = droid->getModule("playback_module");
+		if(bmodule != NULL) {
+			DroidPlaybackModuleDataComponent* module = cast<DroidPlaybackModuleDataComponent*>(bmodule);
+			if(module != NULL) {
+				if (creature->isDancing() || creature->isPlayingMusic()) {
+					creature->sendSystemMessage("You cannot /watch while skill animating.");
+					return;
+				}
+
+				if(module->isActive()) {
+					// the droid is playing so we can do something
+					if (entid == listenID) {
+						creature->sendSystemMessage("You are already listening " + droid->getDisplayedName() + ".");
+						return;
+					}
+					if (creature->isListening()) {
+						stopListen(creature, listenID, false);
+					}
+					creature->sendSystemMessage("You begin to listen " + droid->getDisplayedName() + ".");
+					creature->setListenToID(entid, true);
+					String str = Races::getMoodStr("entertained");
+					creature->setMoodString(str, true);
+					creature->setListenToID(droid->getObjectID());
+					module->addListener(creature->getObjectID());
+					return;
+				} else {
+					creature->sendSystemMessage(droid->getDisplayedName() + " is not currently playing music.");
+					return;
+				}
+			} else {
+				creature->sendSystemMessage("You cannot start listening an object.");
+			}
+		} else {
+			creature->sendSystemMessage("You cannot start listening an object.");
+		}
+		return;
+	}
 
 	if (!object->isPlayerCreature()) {
 		creature->sendSystemMessage("You cannot start listening an object.");
@@ -2683,6 +2824,9 @@ int PlayerManagerImplementation::checkSpeedHackSecondTest(CreatureObject* player
 			lastValidatedPosition->setParent(0);
 
 		ghost->updateServerLastMovementStamp();
+
+		if (ghost->isOnLoadScreen())
+			ghost->setOnLoadScreen(false);
 	}
 
 	return ret;
@@ -2747,7 +2891,7 @@ void PlayerManagerImplementation::lootAll(CreatureObject* player, CreatureObject
 	for (int i = totalItems - 1; i >= 0; --i) {
 		SceneObject* object = creatureInventory->getContainerObject(i);
 
-		player->executeObjectControllerAction(String("transferitemmisc").hashCode(), object->getObjectID(), stringArgs);
+		player->executeObjectControllerAction(STRING_HASHCODE("transferitemmisc"), object->getObjectID(), stringArgs);
 	}
 
 	if (creatureInventory->getContainerObjectsSize() <= 0) {
@@ -2787,7 +2931,10 @@ void PlayerManagerImplementation::addInsurableItemsRecursive(SceneObject* obj, S
 
 		TangibleObject* item = cast<TangibleObject*>( object);
 
-		if (item != NULL && !(item->getOptionsBitmask() & OptionBitmask::INSURED) && (item->isArmorObject() || item->isWearableObject())) {
+		if(item == NULL || item->hasAntiDecayKit())
+			continue;
+
+		if (!(item->getOptionsBitmask() & OptionBitmask::INSURED) && (item->isArmorObject() || item->isWearableObject())) {
 			items->put(item);
 		} else if ((item->getOptionsBitmask() & OptionBitmask::INSURED) && (item->isArmorObject() || item->isWearableObject()) && !onlyInsurable) {
 			items->put(item);
@@ -2818,7 +2965,10 @@ SortedVector<ManagedReference<SceneObject*> > PlayerManagerImplementation::getIn
 		if (container->isTangibleObject()) {
 			TangibleObject* item = cast<TangibleObject*>( container);
 
-			if (item != NULL && !(item->getOptionsBitmask() & OptionBitmask::INSURED) && (item->isArmorObject() || item->isWearableObject())) {
+			if(item == NULL || item->hasAntiDecayKit())
+				continue;
+
+			if (!(item->getOptionsBitmask() & OptionBitmask::INSURED) && (item->isArmorObject() || item->isWearableObject())) {
 				insurableItems.put(item);
 			} else if ((item->getOptionsBitmask() & OptionBitmask::INSURED) && (item->isArmorObject() || item->isWearableObject()) && !onlyInsurable) {
 				insurableItems.put(item);
@@ -2907,8 +3057,7 @@ CraftingStation* PlayerManagerImplementation::getNearbyCraftingStation(CreatureO
 
 	for (int i = 0; i < closeObjects->size(); ++i) {
 		SceneObject* scno = cast<SceneObject*> (closeObjects->get(i));
-
-		if (scno->isCraftingStation() && (abs(scno->getPositionZ() - player->getPositionZ()) < 7.0f) && player->isInRange(scno, 7.0f)) {
+		if (scno->isCraftingStation() && (fabs(scno->getPositionZ() - player->getPositionZ()) < 7.0f) && player->isInRange(scno, 7.0f)) {
 
 			station = server->getObject(scno->getObjectID()).castTo<CraftingStation*>();
 
@@ -2924,6 +3073,24 @@ CraftingStation* PlayerManagerImplementation::getNearbyCraftingStation(CreatureO
 					== CraftingTool::JEDI && station->getStationType()
 					== CraftingTool::WEAPON)) {
 
+				return station;
+			}
+		}
+		// dont check Z axis here just check in range call. z axis check for some reason returns a huge number when checking a mob standing on you.
+		// in range should be sufficient
+		if( scno->isDroidObject() && player->isInRange(scno, 7.0f)){
+			// check the droids around
+			DroidObject* droid = cast<DroidObject*>(scno);
+			if (droid == NULL) {
+				continue;
+			}
+			// only the player can benefit form thier droid
+			if( droid->getLinkedCreature() != player ) {
+				continue;
+			}
+			// check the droid
+			station = droid->getCraftingStation(type);
+			if (station != NULL) {
 				return station;
 			}
 		}
@@ -3280,8 +3447,11 @@ void PlayerManagerImplementation::fixHAM(CreatureObject* player) {
 			}
 		}
 
-		if (powerBoost != NULL)
+		if (powerBoost != NULL) {
+			Locker buffLocker(powerBoost);
+
 			player->removeBuff(powerBoost);
+		}
 
 		int encumbranceType = -1;
 
@@ -3306,6 +3476,47 @@ void PlayerManagerImplementation::fixHAM(CreatureObject* player) {
 
 				player->setMaxHAM(i, calculated, false);
 			}
+		}
+	} catch (Exception& e) {
+		error(e.getMessage());
+	}
+}
+
+void PlayerManagerImplementation::fixBuffSkillMods(CreatureObject* player) {
+	Locker locker(player);
+
+	try {
+		GroupObject* grp = player->getGroup();
+		if (grp != NULL)
+			GroupManager::instance()->leaveGroup(grp, player);
+
+		Reference<Buff*> buff = player->getBuff(STRING_HASHCODE("squadleader"));
+		if (buff != NULL) {
+			Locker locker(buff);
+			player->removeBuff(buff);
+		}
+
+		if (player->getSkillModList() == NULL)
+			return;
+
+		SkillModGroup* smodGroup = player->getSkillModList()->getSkillModGroup(SkillModManager::BUFF);
+		smodGroup->removeAll();
+
+		BuffList* buffs = player->getBuffList();
+
+		for (int i = 0; i < buffs->getBuffListSize(); i++) {
+			ManagedReference<Buff*> buff = buffs->getBuffByIndex(i);
+
+			Locker clocker(buff, player);
+
+			buff->setModsApplied(true);
+
+			buff->applySkillModifiers();
+		}
+
+		if (grp != NULL && grp->getLeader() != NULL) {
+			player->updateGroupInviterID(grp->getLeader()->getObjectID());
+			GroupManager::instance()->joinGroup(player);
 		}
 	} catch (Exception& e) {
 		error(e.getMessage());
@@ -4110,9 +4321,15 @@ void PlayerManagerImplementation::generateVeteranReward(CreatureObject* player )
 
 	// Generate item
 	SceneObject* inventory = player->getSlottedObject("inventory");
+	if( inventory == NULL ){
+		player->sendSystemMessage( "@veteran:reward_error"); //	The reward could not be granted.
+		cancelVeteranRewardSession( player );
+		return;
+	}
+
 	VeteranReward reward = veteranRewards.get(rewardSession->getSelectedRewardIndex());
 	Reference<SceneObject*> rewardSceno = server->createObject(reward.getTemplateFile().hashCode(), 1);
-	if( rewardSceno == NULL || inventory == NULL ){
+	if( rewardSceno == NULL ){
 		player->sendSystemMessage( "@veteran:reward_error"); //	The reward could not be granted.
 		cancelVeteranRewardSession( player );
 		return;
@@ -4121,6 +4338,7 @@ void PlayerManagerImplementation::generateVeteranReward(CreatureObject* player )
 	// Transfer to player
 	if( !inventory->transferObject(rewardSceno, -1, false, true) ){ // Allow overflow
 		player->sendSystemMessage( "@veteran:reward_error"); //	The reward could not be granted.
+		rewardSceno->destroyObjectFromDatabase(true);
 		cancelVeteranRewardSession( player );
 		return;
 	}
@@ -4146,25 +4364,43 @@ void PlayerManagerImplementation::generateVeteranReward(CreatureObject* player )
 
 	// If player is eligible for another reward, kick off selection
 	if( getEligibleMilestone( playerGhost, account ) >= 0 ){
-		player->enqueueCommand(String("claimveteranreward").hashCode(), 0, 0, "");
+		player->enqueueCommand(STRING_HASHCODE("claimveteranreward"), 0, 0, "");
 	}
 }
 
-int PlayerManagerImplementation::getEligibleMilestone( PlayerObject *playerGhost, Account* account ){
+int PlayerManagerImplementation::getEligibleMilestone( PlayerObject *playerGhost, Account* account ) {
 
 	if( account == NULL || playerGhost == NULL )
 		return -1;
 
 	int accountAge = account->getAgeInDays();
+	int milestone = -1;
+
+	// Return -1 if account age is less than the first milestone
+	if (accountAge < veteranRewardMilestones.get(0)) {
+		return -1;
+	}
 
 	// Return the first milestone for which the player is eligible and has not already claimed
-	for( int i=0; i < veteranRewardMilestones.size(); i++){
-		int milestone = veteranRewardMilestones.get(i);
-		if( accountAge >= milestone && playerGhost->getChosenVeteranReward(milestone).isEmpty() ){
+	for( int i=0; i < veteranRewardMilestones.size(); i++) {
+		milestone = veteranRewardMilestones.get(i);
+		if( accountAge >= milestone && playerGhost->getChosenVeteranReward(milestone).isEmpty() ) {
 			return milestone;
 		}
 	}
 
+	// They've claimed all of the established milestones, see if they're eligible for an additional one
+	milestone += veteranRewardAdditionalMilestones;
+
+	while (accountAge >= milestone) {
+		if (playerGhost->getChosenVeteranReward(milestone).isEmpty()) {
+			return milestone;
+		}
+
+		milestone += veteranRewardAdditionalMilestones;
+	}
+
+	// Not eligible for any milestones
 	return -1;
 }
 
@@ -4174,16 +4410,22 @@ int PlayerManagerImplementation::getFirstIneligibleMilestone( PlayerObject *play
 		return -1;
 
 	int accountAge = account->getAgeInDays();
+	int milestone = -1;
 
 	// Return the first milestone the player has not already claimed
 	for( int i=0; i < veteranRewardMilestones.size(); i++){
-		int milestone = veteranRewardMilestones.get(i);
-		if( accountAge < milestone && !playerGhost->getChosenVeteranReward(milestone).isEmpty() ){
+		milestone = veteranRewardMilestones.get(i);
+		if( accountAge < milestone ) {
 			return milestone;
 		}
 	}
 
-	return -1;
+	// Check additional milestones if all established ones have been claimed
+	while (accountAge >= milestone) {
+		milestone += veteranRewardAdditionalMilestones;
+	}
+
+	return milestone;
 }
 
 bool PlayerManagerImplementation::increaseOnlineCharCountIfPossible(ZoneClientSession* client) {
@@ -4350,7 +4592,7 @@ void PlayerManagerImplementation::getCleanupCharacterCount(){
 	int galaxyID = server->getGalaxyID();
 
 	while(iterator.getNextKeyAndValue(objectID, &objectData)){
-		if(Serializable::getVariable<String>(String("_className").hashCode(), &className, &objectData)){
+		if(Serializable::getVariable<String>(STRING_HASHCODE("_className"), &className, &objectData)){
 			if(className == "CreatureObject"){
 				playerCount++;
 
@@ -4398,7 +4640,7 @@ void PlayerManagerImplementation::cleanupCharacters(){
 	int galaxyID = server->getGalaxyID();
 
 	while(iterator.getNextKeyAndValue(objectID, &objectData) && deletedCount < 400 ){
-		if(Serializable::getVariable<String>(String("_className").hashCode(), &className, &objectData)){
+		if(Serializable::getVariable<String>(STRING_HASHCODE("_className"), &className, &objectData)){
 			if(className == "CreatureObject"){
 				playerCount++;
 
@@ -4448,7 +4690,7 @@ bool PlayerManagerImplementation::shouldDeleteCharacter(uint64 characterID, int 
 
 		if(result == NULL) {
 			error("ERROR WHILE LOOKING UP CHARACTER IN SQL TABLE");
-		} else if (result.get()->getRowsAffected() > 0 ) {
+		} else if (result.get()->getRowsAffected() > 1) {
 
 			error("More than one character with oid = " + String::valueOf(characterID) + " in galaxy " + String::valueOf(galaxyID));
 			return false;
@@ -4475,7 +4717,16 @@ bool PlayerManagerImplementation::doBurstRun(CreatureObject* player, float hamMo
 		return false;
 	}
 
-	if (player->hasBuff(String("gallop").hashCode()) || player->hasBuff(String("burstrun").hashCode()) || player->hasBuff(String("retreat").hashCode())) {
+	if (player->hasBuff(STRING_HASHCODE("gallop")) || player->hasBuff(STRING_HASHCODE("burstrun")) || player->hasBuff(STRING_HASHCODE("retreat"))) {
+		player->sendSystemMessage("@combat_effects:burst_run_no"); // You cannot burst run right now.
+		return false;
+	}
+
+	uint32 forceRun1CRC = BuffCRC::JEDI_FORCE_RUN_1;
+	uint32 forceRun2CRC = BuffCRC::JEDI_FORCE_RUN_2;
+	uint32 forceRun3CRC = BuffCRC::JEDI_FORCE_RUN_3;
+
+	if(player->hasBuff(forceRun1CRC) || player->hasBuff(forceRun2CRC) || player->hasBuff(forceRun3CRC)) {
 		player->sendSystemMessage("@combat_effects:burst_run_no"); // You cannot burst run right now.
 		return false;
 	}
@@ -4487,7 +4738,7 @@ bool PlayerManagerImplementation::doBurstRun(CreatureObject* player, float hamMo
 	}
 
 	if (zone->getZoneName() == "dungeon1") {
-		player->sendSystemMessage("@cbt_spam:burst_run_space_dungeon"); // The artificial gravity makes burst running impossible here.
+		player->sendSystemMessage("@combat_effects:burst_run_space_dungeon"); // The artificial gravity makes burst running impossible here.
 		return false;
 	}
 
@@ -4496,7 +4747,7 @@ bool PlayerManagerImplementation::doBurstRun(CreatureObject* player, float hamMo
 		return false;
 	}
 
-	uint32 crc = String("burstrun").hashCode();
+	uint32 crc = STRING_HASHCODE("burstrun");
 	float hamCost = 100.0f;
 	float duration = 30;
 	float cooldown = 300;
@@ -4534,13 +4785,24 @@ bool PlayerManagerImplementation::doBurstRun(CreatureObject* player, float hamMo
 	StringIdChatParameter endStringId("cbt_spam", "burstrun_stop_single");
 
 	ManagedReference<Buff*> buff = new Buff(player, crc, duration, BuffType::SKILL);
+
+	Locker locker(buff);
+
 	buff->setSpeedMultiplierMod(1.822f);
 	buff->setAccelerationMultiplierMod(1.822f);
+
 	if (cooldownModifier == 0.f)
 		buff->setStartMessage(startStringId);
 	else
 		buff->setStartMessage(modifiedStartStringId);
+
 	buff->setEndMessage(endStringId);
+
+	StringIdChatParameter startSpam("cbt_spam", "burstrun_start");
+	StringIdChatParameter endSpam("cbt_spam", "burstrun_stop");
+	buff->setStartSpam(startSpam);
+	buff->setEndSpam(endSpam);
+	buff->setBroadcastSpam(true);
 
 	player->addBuff(buff);
 
@@ -4560,6 +4822,9 @@ bool PlayerManagerImplementation::doEnhanceCharacter(uint32 crc, CreatureObject*
 		return false;
 
 	ManagedReference<Buff*> buff = new Buff(player, crc, duration, buffType);
+
+	Locker locker(buff);
+
 	buff->setAttributeModifier(attribute, amount);
 	player->addBuff(buff);
 

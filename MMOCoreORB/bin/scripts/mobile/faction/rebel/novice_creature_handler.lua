@@ -1,7 +1,7 @@
 novice_creature_handler = Creature:new {
 	objectName = "@mob/creature_names:rebel_creature_handler_novice",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "rebel",
-	pvpFaction = "rebel",
 	faction = "rebel",
 	level = 8,
 	chanceHit = 0.27,
@@ -27,11 +27,24 @@ novice_creature_handler = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_creaturehandler_trainer_human_male_01.iff",
-			"object/mobile/dressed_creaturehandler_trainer_rodian_female_01.iff",
-			"object/mobile/dressed_creaturehandler_trainer_zabrak_male_01.iff"},
-	lootGroups = {},
+		"object/mobile/dressed_creaturehandler_trainer_rodian_female_01.iff",
+		"object/mobile/dressed_creaturehandler_trainer_zabrak_male_01.iff"},
+	lootGroups = {
+		{
+			groups = {
+				{group = "junk", chance = 5000000},
+				{group = "rifles", chance = 1000000},
+				{group = "pistols", chance = 1000000},
+				{group = "melee_weapons", chance = 1000000},
+				{group = "carbines", chance = 1000000},
+				{group = "wearables_common", chance = 1000000}
+			}
+		}
+	},
 	weapons = {"rebel_weapons_light"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/military",
+	personalityStf = "@hireling/hireling_military",
 	attacks = merge(marksmannovice,brawlernovice)
 }
 

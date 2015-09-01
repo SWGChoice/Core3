@@ -1,7 +1,6 @@
 lieutenant_heb_nee = Creature:new {
 	objectName = "@mob/creature_names:lieutenant_heb_nee",
 	socialGroup = "rorgungan",
-	pvpFaction = "rorgungan",
 	faction = "rorgungan",
 	level = 50,
 	chanceHit = 0.5,
@@ -28,16 +27,15 @@ lieutenant_heb_nee = Creature:new {
 
 	templates = {"object/mobile/lieutenant_heb_nee.iff"},
 	lootGroups = {
-	    {
+		{
 			groups = {
 				{group = "junk", chance = 5000000},
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "wearables_common", chance = 500000},
 				{group = "wearables_uncommon", chance = 500000}
-			},
-			lootChance = 3200000
-		}					
+			}
+		}
 	},
 	weapons = {"lt_heb_nee_weapons"},
 	conversationTemplate = "",

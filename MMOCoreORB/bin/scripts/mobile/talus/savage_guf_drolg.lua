@@ -1,7 +1,6 @@
 savage_guf_drolg = Creature:new {
 	objectName = "@mob/creature_names:savage_guf_drolg",
 	socialGroup = "guf_drolg",
-	pvpFaction = "",
 	faction = "",
 	level = 15,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ savage_guf_drolg = Creature:new {
 	baseHAM = 2400,
 	baseHAMmax = 3000,
 	armor = 0,
-	resists = {10,5,5,-1,-1,-1,-1,-1,-1},
+	resists = {110,5,5,-1,-1,-1,-1,-1,-1},
 	meatType = "meat_reptilian",
 	meatAmount = 550,
 	hideType = "hide_leathery",
@@ -33,7 +32,8 @@ savage_guf_drolg = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"",""},
+		{"intimidationattack",""}
 	}
 }
 

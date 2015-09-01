@@ -1,7 +1,6 @@
 pugoriss = Creature:new {
 	objectName = "@mob/creature_names:pugoriss",
 	socialGroup = "pugoriss",
-	pvpFaction = "",
 	faction = "",
 	level = 14,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ pugoriss = Creature:new {
 	baseHAM = 1200,
 	baseHAMmax = 1400,
 	armor = 0,
-	resists = {10,10,0,0,15,0,0,-1,-1},
+	resists = {110,110,0,0,115,0,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 375,
 	hideType = "hide_leathery",
@@ -32,7 +31,7 @@ pugoriss = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

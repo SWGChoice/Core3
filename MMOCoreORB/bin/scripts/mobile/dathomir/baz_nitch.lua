@@ -1,7 +1,6 @@
 baz_nitch = Creature:new {
 	objectName = "@mob/creature_names:baz_nitch",
 	socialGroup = "baz_nitch",
-	pvpFaction = "",
 	faction = "",
 	level = 22,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ baz_nitch = Creature:new {
 	baseHAM = 5900,
 	baseHAMmax = 7200,
 	armor = 0,
-	resists = {20,10,10,-1,10,10,-1,10,-1},
+	resists = {120,10,10,-1,10,10,-1,10,-1},
 	meatType = "meat_wild",
 	meatAmount = 5,
 	hideType = "hide_leathery",

@@ -1,7 +1,6 @@
 poisonous_krevol_queen = Creature:new {
 	objectName = "@mob/creature_names:poisonous_krevol_queen",
 	socialGroup = "krevol",
-	pvpFaction = "",
 	faction = "",
 	level = 15,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ poisonous_krevol_queen = Creature:new {
 	baseHAM = 1500,
 	baseHAMmax = 1900,
 	armor = 0,
-	resists = {25,0,0,-1,20,0,20,-1,-1},
+	resists = {125,0,0,-1,120,0,120,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 12,
 	hideType = "",
@@ -32,7 +31,7 @@ poisonous_krevol_queen = Creature:new {
 	weapons = {"creature_spit_small_toxicgreen"},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
+		{"blindattack",""},
 		{"mediumpoison",""}
 	}
 }

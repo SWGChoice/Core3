@@ -1,7 +1,6 @@
 mantigrue_night_stalker = Creature:new {
 	objectName = "@mob/creature_names:mantigrue_night_stalker",
 	socialGroup = "mantigrue",
-	pvpFaction = "",
 	faction = "",
 	level = 28,
 	chanceHit = 0.36,
@@ -11,7 +10,7 @@ mantigrue_night_stalker = Creature:new {
 	baseHAM = 7200,
 	baseHAMmax = 8800,
 	armor = 0,
-	resists = {30,40,15,-1,-1,-1,-1,-1,-1},
+	resists = {130,140,15,-1,-1,-1,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 85,
 	hideType = "hide_wooly",
@@ -33,7 +32,8 @@ mantigrue_night_stalker = Creature:new {
 	weapons = {"creature_spit_small_red"},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"",""},
+		{"posturedownattack",""}
 	}
 }
 

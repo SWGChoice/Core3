@@ -1,7 +1,6 @@
 arachne_warrior = Creature:new {
 	objectName = "@mob/creature_names:arachne_warrior",
 	socialGroup = "arachne",
-	pvpFaction = "",
 	faction = "",
 	level = 42,
 	chanceHit = 0.44,
@@ -11,7 +10,7 @@ arachne_warrior = Creature:new {
 	baseHAM = 9100,
 	baseHAMmax = 11000,
 	armor = 1,
-	resists = {30,30,-1,60,60,-1,60,-1,-1},
+	resists = {130,130,-1,160,160,-1,160,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 55,
 	hideType = "",
@@ -33,7 +32,7 @@ arachne_warrior = Creature:new {
 	weapons = {"creature_spit_small_toxicgreen"},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
+		{"blindattack",""},
 		{"strongpoison",""}
 	}
 }

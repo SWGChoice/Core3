@@ -88,10 +88,10 @@ int InstrumentImplementation::handleObjectMenuSelect(CreatureObject* player, byt
 			return 1;
 		}
 
-		if (player->getDistanceTo(_this.get()) >= 5) {
+		if (player->getDistanceTo(_this.getReferenceUnsafeStaticCast()) >= 5) {
 			player->sendSystemMessage("@elevator_text:too_far");
 		} else
-			player->executeObjectControllerAction(String("startmusic").hashCode(), getObjectID(), "");
+			player->executeObjectControllerAction(STRING_HASHCODE("startmusic"), getObjectID(), "");
 	}
 
 	return 0;
@@ -106,6 +106,8 @@ void InstrumentImplementation::spawnInForeignCell(CreatureObject* player) {
 
 	if (spawnedObject->getZone() == NULL) {
 		Instrument* instrument = cast<Instrument*>( spawnedObject.get());
+
+		Locker locker(instrument);
 
 		instrument->initializePosition(player->getPositionX(), player->getPositionZ(), player->getPositionY());
 		instrument->setSpawnerPlayer(player);
@@ -133,6 +135,9 @@ void InstrumentImplementation::spawnOutside(CreatureObject* player) {
 
 	if (spawnedObject->getZone() == NULL) {
 		Instrument* instrument = cast<Instrument*>( spawnedObject.get());
+
+		Locker locker(instrument);
+
 		instrument->initializePosition(player->getPositionX(), player->getPositionZ(), player->getPositionY());
 		instrument->setSpawnerPlayer(player);
 		//instrument->insertToZone(player->getZone());
@@ -154,7 +159,7 @@ void InstrumentImplementation::spawnInAdminCell(CreatureObject* player) {
 
 	UnicodeString uni = arguments.toString();
 
-	player->executeObjectControllerAction(String("transferitemmisc").hashCode(), _this.get()->getObjectID(), uni);
+	player->executeObjectControllerAction(STRING_HASHCODE("transferitemmisc"), _this.getReferenceUnsafeStaticCast()->getObjectID(), uni);
 
 	spawnerPlayer = NULL;
 

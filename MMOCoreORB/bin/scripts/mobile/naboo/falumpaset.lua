@@ -1,7 +1,6 @@
 falumpaset = Creature:new {
 	objectName = "@mob/creature_names:falumpaset",
 	socialGroup = "falumpaset",
-	pvpFaction = "",
 	faction = "",
 	level = 19,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ falumpaset = Creature:new {
 	baseHAM = 4100,
 	baseHAMmax = 5000,
 	armor = 0,
-	resists = {15,15,25,-1,-1,-1,25,-1,-1},
+	resists = {125,15,125,-1,-1,-1,125,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 230,
 	hideType = "hide_leathery",
@@ -33,7 +32,7 @@ falumpaset = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""}
 	}
 }
 

@@ -1,7 +1,6 @@
 narglatch = Creature:new {
 	objectName = "@mob/creature_names:narglatch",
 	socialGroup = "narglatch",
-	pvpFaction = "",
 	faction = "",
 	level = 22,
 	chanceHit = 0.34,
@@ -11,7 +10,7 @@ narglatch = Creature:new {
 	baseHAM = 5400,
 	baseHAMmax = 6600,
 	armor = 0,
-	resists = {25,10,10,-1,10,50,-1,-1,-1},
+	resists = {125,10,10,-1,10,150,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 75,
 	hideType = "hide_bristley",
@@ -32,8 +31,8 @@ narglatch = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"stunattack","stunChance=50"}
+		{"dizzyattack",""},
+		{"stunattack",""}
 	}
 }
 

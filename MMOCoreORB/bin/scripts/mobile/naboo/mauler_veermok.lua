@@ -1,7 +1,6 @@
 mauler_veermok = Creature:new {
 	objectName = "@mob/creature_names:mauler_veermok",
 	socialGroup = "mauler",
-	pvpFaction = "",
 	faction = "",
 	level = 19,
 	chanceHit = 0.33,
@@ -11,7 +10,7 @@ mauler_veermok = Creature:new {
 	baseHAM = 4500,
 	baseHAMmax = 5500,
 	armor = 0,
-	resists = {25,5,5,-1,-1,5,-1,5,-1},
+	resists = {125,5,5,-1,-1,5,-1,5,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 150,
 	hideType = "hide_bristley",
@@ -31,8 +30,8 @@ mauler_veermok = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"stunattack","stunChance=50"}
+		{"dizzyattack",""},
+		{"stunattack",""}
 	}
 }
 

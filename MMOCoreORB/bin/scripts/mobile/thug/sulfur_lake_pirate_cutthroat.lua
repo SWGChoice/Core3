@@ -1,7 +1,7 @@
 sulfur_lake_pirate_cutthroat = Creature:new {
 	objectName = "@mob/creature_names:slp_cutthroat",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "pirate",
-	pvpFaction = "",
 	faction = "",
 	level = 12,
 	chanceHit = 0.29,
@@ -26,20 +26,20 @@ sulfur_lake_pirate_cutthroat = Creature:new {
 	optionsBitmask = 128,
 	diet = HERBIVORE,
 
-	templates = { "object/mobile/dressed_criminal_pirate_human_male_01.iff" }, 
+	templates = { "object/mobile/dressed_criminal_pirate_human_male_01.iff" },
 	lootGroups = {
-      	{
+		{
 			groups = {
 				{group = "junk", chance = 4000000},
 				{group = "wearables_common", chance = 3000000},
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "tailor_components", chance = 1000000},
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_light"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlermid,marksmanmid)
 }
 

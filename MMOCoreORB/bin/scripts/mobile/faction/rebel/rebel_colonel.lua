@@ -1,7 +1,7 @@
 rebel_colonel = Creature:new {
 	objectName = "@mob/creature_names:rebel_colonel",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "rebel",
-	pvpFaction = "rebel",
 	faction = "rebel",
 	level = 24,
 	chanceHit = 0.35,
@@ -46,12 +46,12 @@ rebel_colonel = Creature:new {
 				{group = "armor_attachments", chance = 100000},
 				{group = "rebel_officer_common", chance = 450000},
 				{group = "wearables_common", chance = 1000000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"rebel_weapons_heavy"},
 	conversationTemplate = "rebelRecruiterConvoTemplate",
+	reactionStf = "@npc_reaction/military",
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 

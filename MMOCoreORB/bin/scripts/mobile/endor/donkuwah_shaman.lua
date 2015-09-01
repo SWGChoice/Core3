@@ -1,7 +1,7 @@
 donkuwah_shaman = Creature:new {
 	objectName = "@mob/creature_names:donkuwah_shaman",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "donkuwah_tribe",
-	pvpFaction = "donkuwah_tribe",
 	faction = "donkuwah_tribe",
 	level = 30,
 	chanceHit = 0.39,
@@ -28,11 +28,11 @@ donkuwah_shaman = Creature:new {
 
 	templates = {"object/mobile/dulok_male.iff"},
 	lootGroups = {
-		 {
-	        groups = {
+		{
+			groups = {
 				{group = "donkuwah_common", chance = 10000000}
 			},
-			lootChance = 2300000
+			lootChance = 1600000
 		}
 	},
 	weapons = {"donkuwah_weapons"},

@@ -1,7 +1,6 @@
 ferine_razorfang = Creature:new {
 	objectName = "@mob/creature_names:kima_ferine_razorfang",
 	socialGroup = "kima",
-	pvpFaction = "",
 	faction = "",
 	level = 21,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ ferine_razorfang = Creature:new {
 	baseHAM = 3500,
 	baseHAMmax = 4300,
 	armor = 0,
-	resists = {20,20,10,10,10,10,10,10,-1},
+	resists = {120,120,10,10,10,10,10,10,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 7,
 	hideType = "hide_bristley",
@@ -33,8 +32,8 @@ ferine_razorfang = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"intimidationattack","intimidationChance=50"}
+		{"blindattack",""},
+		{"intimidationattack",""}
 	}
 }
 

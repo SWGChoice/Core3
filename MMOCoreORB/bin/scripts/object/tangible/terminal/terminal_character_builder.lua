@@ -56,7 +56,7 @@ object_tangible_terminal_terminal_character_builder = object_tangible_terminal_s
 
 	templateType = CHARACTERBUILDERTERMINAL,
 
-	itemList = { --[[
+	itemList = {
 		"Character Options",
 		{
 			"Learn Skill",
@@ -1795,12 +1795,12 @@ object_tangible_terminal_terminal_character_builder = object_tangible_terminal_s
 				"Vehicle Deeds",
 				{
 					"Swoop", "object/tangible/deed/vehicle_deed/speederbike_swoop_deed.iff",
-					--"Jetpack", "object/tangible/deed/vehicle_deed/jetpack_deed.iff",
+					"Jetpack", "object/tangible/deed/vehicle_deed/jetpack_deed.iff",
 					"Speederbike", "object/tangible/deed/vehicle_deed/speederbike_deed.iff",
-					--"Speederbike Flash", "object/tangible/deed/vehicle_deed/speederbike_flash_deed.iff",
-					--"Landspeeder av21", "object/tangible/deed/vehicle_deed/landspeeder_av21_deed.iff",
-					--"Landspeeder x31", "object/tangible/deed/vehicle_deed/landspeeder_x31_deed.iff",
-					--"Landspeeder x34", "object/tangible/deed/vehicle_deed/landspeeder_x34_deed.iff"
+					"Speederbike Flash", "object/tangible/deed/vehicle_deed/speederbike_flash_deed.iff",
+					"Landspeeder av21", "object/tangible/deed/vehicle_deed/landspeeder_av21_deed.iff",
+					"Landspeeder x31", "object/tangible/deed/vehicle_deed/landspeeder_x31_deed.iff",
+					"Landspeeder x34", "object/tangible/deed/vehicle_deed/landspeeder_x34_deed.iff"
 				},
 				"Structure Deeds",
 				{
@@ -1845,32 +1845,32 @@ object_tangible_terminal_terminal_character_builder = object_tangible_terminal_s
 					},
 					"Installation Deeds",
 					{
-						--"Harvester Deeds",
-						--{
+						"Harvester Deeds",
+						{
 							--"Creature Harvester Deed", "object/tangible/deed/harvester_deed/harvester_creature_deed.iff",
 							--"Personal Flora Harvester Deed", "object/tangible/deed/harvester_deed/harvester_flora_deed.iff",
-							--"Heavy Flora Harvester Deed", "object/tangible/deed/harvester_deed/harvester_flora_deed_heavy.iff",
+							"Heavy Flora Harvester Deed", "object/tangible/deed/harvester_deed/harvester_flora_deed_heavy.iff",
 							--"Medium Flora Harvester Deed", "object/tangible/deed/harvester_deed/harvester_flora_deed_medium.iff",
 							--"Personal Gas Harvester Deed", "object/tangible/deed/harvester_deed/harvester_gas_deed.iff",
-							--"Heavy Gas Harvester Deed", "object/tangible/deed/harvester_deed/harvester_gas_deed_heavy.iff",
+							"Heavy Gas Harvester Deed", "object/tangible/deed/harvester_deed/harvester_gas_deed_heavy.iff",
 							--"Medium Gas Harvester Deed", "object/tangible/deed/harvester_deed/harvester_gas_deed_medium.iff",
 							--"Personal Liquid Harvester Deed", "object/tangible/deed/harvester_deed/harvester_liquid_deed.iff",
-							--"Heavy Liquid Harvester Deed", "object/tangible/deed/harvester_deed/harvester_liquid_deed_heavy.iff",
+							"Heavy Chemical Harvester Deed", "object/tangible/deed/harvester_deed/harvester_liquid_deed_heavy.iff",
 							--"Medium Liquid Harvester Deed", "object/tangible/deed/harvester_deed/harvester_liquid_deed_medium.iff",
 							--"Personal Moisture Harvester Deed", "object/tangible/deed/harvester_deed/harvester_moisture_deed.iff",
-							--"Heavy Moisture Harvester Deed", "object/tangible/deed/harvester_deed/harvester_moisture_deed_heavy.iff",
+							"Heavy Moisture Harvester Deed", "object/tangible/deed/harvester_deed/harvester_moisture_deed_heavy.iff",
 							--"Medium Moisture Harvester Deed", "object/tangible/deed/harvester_deed/harvester_moisture_deed_medium.iff",
 							--"Personal Mineral Harvester Deed", "object/tangible/deed/harvester_deed/harvester_ore_s1_deed.iff",
-							--"Heavy Mineral Harvester Deed", "object/tangible/deed/harvester_deed/harvester_ore_heavy_deed.iff",
+							"Heavy Mineral Harvester Deed", "object/tangible/deed/harvester_deed/harvester_ore_heavy_deed.iff",
 							--"Medium Mineral Harvester Deed", "object/tangible/deed/harvester_deed/harvester_ore_s2_deed.iff"
-						--},
-						--"Generator Deeds",
-						--{
-							--"Fusion Generator Deed", "object/tangible/deed/generator_deed/generator_fusion_deed.iff",
+						},
+						"Generator Deeds",
+						{
+							"Fusion Generator Deed", "object/tangible/deed/generator_deed/generator_fusion_deed.iff",
 							--"Photo Bio Generator Deed", "object/tangible/deed/generator_deed/generator_photo_bio_deed.iff",
 							--"Solar Generator Deed", "object/tangible/deed/generator_deed/generator_solar_deed.iff",
 							--"Wind Generator Deed", "object/tangible/deed/generator_deed/generator_wind_deed.iff",
-						--},
+						},
 						"Factory Deeds",
 						{
 							"Clothing Factory Deed", "object/tangible/deed/factory_deed/factory_clothing_deed.iff",
@@ -1954,7 +1954,7 @@ object_tangible_terminal_terminal_character_builder = object_tangible_terminal_s
 							"Naboo Guild Hall Deed", "object/tangible/deed/guild_deed/naboo_guild_deed.iff",
 							"Large Naboo House Deed", "object/tangible/deed/player_house_deed/naboo_house_large_deed.iff",
 							"Medium Naboo House Deed", "object/tangible/deed/player_house_deed/naboo_house_medium_deed.iff",
-							--"Medium Naboo House Deed (Style 2)", "object/tangible/deed/player_house_deed/naboo_house_medium_style_02_deed.iff",
+							--"Medium Naboo House Deed (Style 2) - May Be Broken", "object/tangible/deed/player_house_deed/naboo_house_medium_style_02_deed.iff",
 							"Small Naboo House Deed", "object/tangible/deed/player_house_deed/naboo_house_small_deed.iff",
 							"Small Naboo House Deed (Style 2)", "object/tangible/deed/player_house_deed/naboo_house_small_style_02_deed.iff"
 						},
@@ -2023,6 +2023,36 @@ object_tangible_terminal_terminal_character_builder = object_tangible_terminal_s
 							"Small Tatooine Garden (Style 5)", "object/tangible/deed/city_deed/garden_tatooine_sml_05_deed.iff"
 						}
 					}
+				},
+                                "Post Publish 14.1 Structure Deeds",
+                                {
+--                                        "AT-AT House Deed", "object/tangible/deed/player_house_deed/atat_house_deed.iff",
+--                                        "Bespin House Deed", "object/tangible/deed/player_house_deed/bespin_house_deed.iff",
+--                                        "Commando Bunker Deed", "object/tangible/deed/player_house_deed/commando_house_deed.iff",
+--                                        "Emperors Spire Deed", "object/tangible/deed/player_house_deed/emperors_house_deed.iff",
+--                                        "Garage Deed", "object/tangible/deed/player_house_deed/vehicle_house_deed.iff",
+--                                        "Hanger Deed", "object/tangible/deed/player_house_deed/hangar_house_deed.iff",
+--                                        "Jabba's Sail Barge Deed", "object/tangible/deed/player_house_deed/jabbas_house_deed.iff",
+--                                        "Jedi Meditation Room Deed", "object/tangible/deed/player_house_deed/jedi_house_deed.iff",
+--                                        "Large Generic Type 1 Windowed House Deed", "object/tangible/deed/player_house_deed/generic_large_window_s01_deed.iff",
+--                                        "Large Generic Type 2 Windowed House Deed", "object/tangible/deed/player_house_deed/generic_large_window_s02_deed.iff",
+--                                        "Medium Generic Type 1 Windowed House Deed", "object/tangible/deed/player_house_deed/generic_medium_window_s01_deed.iff",
+--                                        "Medium Generic Type 2 Windowed House Deed", "object/tangible/deed/player_house_deed/generic_medium_window_s02_deed.iff",
+--                                        "Small Generic Type 1 Windowed House Deed", "object/tangible/deed/player_house_deed/generic_small_window_s01_deed.iff",
+--                                        "Small Generic Type 2 Windowed House Deed", "object/tangible/deed/player_house_deed/generic_small_window_s02_deed.iff",
+       		                        "Mustafarian Bunker Deed", "object/tangible/deed/player_house_deed/musty_house_deed.iff",
+--                                        "Rebel Spire Deed", "object/tangible/deed/player_house_deed/rebel_house_deed.iff",
+--                                        "Relaxation Pool Deed", "object/tangible/deed/player_house_deed/relaxation_house_deed.iff",
+--                                        "Sandcrawler House Deed", "object/tangible/deed/player_house_deed/sandcrawler_house_deed.iff",
+--                                        "Sith Meditation Room Deed", "object/tangible/deed/player_house_deed/sith_house_deed.iff",
+--                                        "Small Naboo Windowed House Deed", "object/tangible/deed/player_house_deed/naboo_small_window_s01_deed.iff",
+--                                        "Small Tatooine Windowed House Deed", "object/tangible/deed/player_house_deed/tatooine_small_window_s01_deed.iff",
+--                                        "Treehouse Deed", "object/tangible/deed/player_house_deed/tree_house_deed.iff",
+--                                        "VIP Bunker Deed", "object/tangible/deed/player_house_deed/vipbunker_house_deed.iff",
+--                                        "YT-1300 House Deed", "object/tangible/deed/player_house_deed/yt1300_house_deed.iff",
+--				        "Nightsister Style Hut", "object/tangible/deed/player_house_deed/ns_hut_deed.iff",
+--				        "Singing Mountain Clan Style Hut", "object/tangible/deed/player_house_deed/sm_hut_deed.iff",
+--                                        "Yoda's House Deed", "object/tangible/deed/player_house_deed/yoda_house_deed.iff"
 				},
 				"Event Perk Deeds",
 				{
@@ -2172,7 +2202,7 @@ object_tangible_terminal_terminal_character_builder = object_tangible_terminal_s
 				"@veteran_new:techconsole_d","object/tangible/veteran_reward/frn_tech_console_sectional_d.iff",
 				"@veteran_new:mini_jabba","object/tangible/veteran_reward/frn_vet_jabba_toy.iff",
 				"@veteran_new:mini_stormtrooper","object/tangible/veteran_reward/frn_vet_stormtrooper_toy.iff",
-				--"@veteran_new:antidecay","object/tangible/veteran_reward/antidecay.iff",
+				"@veteran_new:antidecay","object/tangible/veteran_reward/antidecay.iff",
 				--450 Day Rewards
 				"Camp Center (Small)","object/tangible/camp/camp_spit_s2.iff",
 				"Camp Center (Large)","object/tangible/camp/camp_spit_s3.iff",
@@ -2443,8 +2473,8 @@ object_tangible_terminal_terminal_character_builder = object_tangible_terminal_s
 					"Technical Console (Style 2)", "object/tangible/furniture/all/frn_all_technical_console_s02.iff",
 					"Large Toolchest", "object/tangible/furniture/all/frn_all_toolchest_lg_s01.iff",
 					"Small Toolchest", "object/tangible/furniture/all/frn_all_toolchest_med_s01.iff",
-					"Throwpillow (Red)", "object/tangible/furniture/all/frn_all_throwpillow_med_s01.iff",
-					"Throwpillow (Brown)", "object/tangible/furniture/all/frn_all_throwpillow_med_s02.iff",
+					"Throwpillow (Brown)", "object/tangible/furniture/all/frn_all_throwpillow_med_s01.iff",
+					"Throwpillow (Red)", "object/tangible/furniture/all/frn_all_throwpillow_med_s02.iff",
 					"Throwpillow (Blue)", "object/tangible/furniture/all/frn_all_throwpillow_med_s03.iff"
 				},			
 				"Elegant Furniture (COMPLETE)",
@@ -2855,7 +2885,14 @@ object_tangible_terminal_terminal_character_builder = object_tangible_terminal_s
 			--	"Dark Jedi Holocron (gift)", "object/tangible/jedi/no_drop_jedi_holocron_dark.iff",
 			--	"Light Jedi Holocron (gift)", "object/tangible/jedi/no_drop_jedi_holocron_light.iff"
 			--}
-		}--]]
+			"DWB Testing (Temporary)",
+			{
+				"Bounty Hunter Helmet", "object/tangible/wearables/armor/bounty_hunter/armor_bounty_hunter_helmet.iff",
+				"Jet Pack Base", "object/tangible/loot/dungeon/death_watch_bunker/jetpack_base.iff",
+				"Protective Liquid Coating", "object/tangible/loot/dungeon/death_watch_bunker/emulsion_protection.iff",
+				"Binary Liquid", "object/tangible/loot/dungeon/death_watch_bunker/binary_liquid.iff"
+			}
+		}
 	}
 }
 

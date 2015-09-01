@@ -20,7 +20,7 @@ public:
 	}
 
 
-	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) {
+	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) const {
 
 		ManagedReference<PetControlDevice*> controlDevice = creature->getControlDevice().castTo<PetControlDevice*>();
 		if (controlDevice == NULL)
@@ -105,10 +105,12 @@ public:
 			return GENERALERROR;
 		}
 
+		Locker locker(consumable);
+
 		// Apply buff if this is a pet specific food
 		if( consumable->getSpeciesRestriction() == "pets" ){
 
-			unsigned int buffCRC = String("petFoodBuff").hashCode();
+			unsigned int buffCRC = STRING_HASHCODE("petFoodBuff");
 
 			// Check if pet already has buff
 			if ( pet->hasBuff(buffCRC) ){
@@ -117,6 +119,9 @@ public:
 			}
 			else{
 				ManagedReference<Buff*> buff = new Buff(pet, buffCRC, consumable->getDuration(), BuffType::FOOD);
+
+				Locker blocker(buff);
+
 				consumable->setModifiers(buff, false);
 				pet->addBuff(buff);
 				player->sendSystemMessage("Your pet is fortified by the food!");
@@ -144,12 +149,12 @@ public:
 		int quicknessHeal = pet->getBaseHAM(CreatureAttribute::QUICKNESS) * 0.10;
 		int staminaHeal = pet->getBaseHAM(CreatureAttribute::STAMINA) * 0.10;
 
-		pet->addWounds(CreatureAttribute::HEALTH, -healthHeal);
-		pet->addWounds(CreatureAttribute::STRENGTH, -strengthHeal);
-		pet->addWounds(CreatureAttribute::CONSTITUTION, -conHeal);
-		pet->addWounds(CreatureAttribute::ACTION, -actionHeal);
-		pet->addWounds(CreatureAttribute::QUICKNESS, -quicknessHeal);
-		pet->addWounds(CreatureAttribute::STAMINA, -staminaHeal);
+		pet->healWound(player, CreatureAttribute::HEALTH, healthHeal, true, false);
+		pet->healWound(player, CreatureAttribute::STRENGTH, strengthHeal, true, false);
+		pet->healWound(player, CreatureAttribute::CONSTITUTION, conHeal, true, false);
+		pet->healWound(player, CreatureAttribute::ACTION, actionHeal, true, false);
+		pet->healWound(player, CreatureAttribute::QUICKNESS, quicknessHeal, true, false);
+		pet->healWound(player, CreatureAttribute::STAMINA, staminaHeal, true, false);
 
 		// Perform eat animation and do fly text
 		pet->doAnimation("eat");

@@ -1,46 +1,6 @@
 /*
-Copyright (C) 2007 <SWGEmu>
-
-This File is part of Core3.
-
-This program is free software; you can redistribute
-it and/or modify it under the terms of the GNU Lesser
-General Public License as published by the Free Software
-Foundation; either version 2 of the License,
-or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU Lesser General Public License for
-more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this program; if not, write to
-the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-
-Linking Engine3 statically or dynamically with other modules
-is making a combined work based on Engine3.
-Thus, the terms and conditions of the GNU Lesser General Public License
-cover the whole combination.
-
-In addition, as a special exception, the copyright holders of Engine3
-give you permission to combine Engine3 program with free software
-programs or libraries that are released under the GNU LGPL and with
-code included in the standard release of Core3 under the GNU LGPL
-license (or modified versions of such code, with unchanged license).
-You may copy and distribute such a system following the terms of the
-GNU LGPL for Engine3 and the licenses of the other code concerned,
-provided that you include the source code of that other code when
-and as the GNU LGPL requires distribution of source code.
-
-Note that people who make modified versions of Engine3 are not obligated
-to grant this special exception for their modified versions;
-it is their choice whether to do so. The GNU Lesser General Public License
-gives permission to release a modified version without this exception;
-this exception also makes it possible to release a modified version
-which carries forward this exception.
-*/
+				Copyright <SWGEmu>
+		See file COPYING for copying conditions.*/
 
 #ifndef CREATUREPOSTURE_H_
 #define CREATUREPOSTURE_H_
@@ -126,26 +86,129 @@ public:
 
 class CreaturePosture : public Singleton<CreaturePosture>, public Object, public Logger {
 public:
-	static const uint8 INVALID = 0xFF;
-	static const uint8 UPRIGHT = 0;
-	static const uint8 CROUCHED = 1;
-	static const uint8 PRONE = 2;
-	static const uint8 SNEAKING = 3;
-	static const uint8 BLOCKING = 4;
-	static const uint8 CLIMBING = 5;
-	static const uint8 FLYING = 6;
-	static const uint8 LYINGDOWN = 7;
-	static const uint8 SITTING = 8;
-	static const uint8 SKILLANIMATING = 9;
-	static const uint8 DRIVINGVEHICLE = 10;
-	static const uint8 RIDINGCREATURE = 11;
-	static const uint8 KNOCKEDDOWN = 12;
-	static const uint8 INCAPACITATED = 13;
-	static const uint8 DEAD = 14;
+	
+	enum {
+		INVALID        = 0xFF,
+		UPRIGHT        = 0,
+		CROUCHED       = 1,
+		PRONE          = 2,
+		SNEAKING       = 3,
+		BLOCKING       = 4,
+		CLIMBING       = 5,
+		FLYING         = 6,
+		LYINGDOWN      = 7,
+		SITTING        = 8,
+		SKILLANIMATING = 9,
+		DRIVINGVEHICLE = 10,
+		RIDINGCREATURE = 11,
+		KNOCKEDDOWN    = 12,
+		INCAPACITATED  = 13,
+		DEAD           = 14
+	};
 
 	HashTable<uint8, CreatureMovementEntry> movementTable;
+	HashTable<uint8, int> rangedAttackMod;
+	HashTable<uint8, int> rangedDefenseMod;
+	HashTable<uint8, int> meleeAttackMod;
+	HashTable<uint8, int> meleeDefenseMod;
 
-	CreaturePosture() {}
+	CreaturePosture() {
+		rangedAttackMod.put(CreatureLocomotion::STANDING, 0);
+		rangedAttackMod.put(CreatureLocomotion::SNEAKING, -5);
+		rangedAttackMod.put(CreatureLocomotion::WALKING, -20);
+		rangedAttackMod.put(CreatureLocomotion::RUNNING, -30);
+		rangedAttackMod.put(CreatureLocomotion::KNEELING, 15);
+		rangedAttackMod.put(CreatureLocomotion::CROUCHSNEAKING, 0);
+		rangedAttackMod.put(CreatureLocomotion::CROUCHWALKING, 0);
+		rangedAttackMod.put(CreatureLocomotion::PRONE, 30);
+		rangedAttackMod.put(CreatureLocomotion::CRAWLING, -10);
+		rangedAttackMod.put(CreatureLocomotion::CLIMBINGSTATIONARY, 15);
+		rangedAttackMod.put(CreatureLocomotion::CLIMBING, 15);
+		rangedAttackMod.put(CreatureLocomotion::HOVERING, 0);
+		rangedAttackMod.put(CreatureLocomotion::FLYING, -10);
+		rangedAttackMod.put(CreatureLocomotion::LYINGDOWN, 30);
+		rangedAttackMod.put(CreatureLocomotion::SITTING, 15);
+		rangedAttackMod.put(CreatureLocomotion::SKILLANIMATING, 0);
+		rangedAttackMod.put(CreatureLocomotion::DRIVINGVEHICLE, 15);
+		rangedAttackMod.put(CreatureLocomotion::RIDINGCREATURE, 0);
+		rangedAttackMod.put(CreatureLocomotion::KNOCKEDDOWN, 0);
+		rangedAttackMod.put(CreatureLocomotion::INCAPACITATED, 0);
+		rangedAttackMod.put(CreatureLocomotion::BLOCKING, 0);
+		rangedAttackMod.put(CreatureLocomotion::DEAD, 0);
+		rangedAttackMod.put(CreatureLocomotion::INVALID, 0);
+
+		rangedDefenseMod.put(CreatureLocomotion::STANDING, 0);
+		rangedDefenseMod.put(CreatureLocomotion::SNEAKING, 15);
+		rangedDefenseMod.put(CreatureLocomotion::WALKING, 15);
+		rangedDefenseMod.put(CreatureLocomotion::RUNNING, 25);
+		rangedDefenseMod.put(CreatureLocomotion::KNEELING, 5);
+		rangedDefenseMod.put(CreatureLocomotion::CROUCHSNEAKING, 0);
+		rangedDefenseMod.put(CreatureLocomotion::CROUCHWALKING, 0);
+		rangedDefenseMod.put(CreatureLocomotion::PRONE, 25);
+		rangedDefenseMod.put(CreatureLocomotion::CRAWLING, 15);
+		rangedDefenseMod.put(CreatureLocomotion::CLIMBINGSTATIONARY, 5);
+		rangedDefenseMod.put(CreatureLocomotion::CLIMBING, 5);
+		rangedDefenseMod.put(CreatureLocomotion::HOVERING, -5);
+		rangedDefenseMod.put(CreatureLocomotion::FLYING, -10);
+		rangedDefenseMod.put(CreatureLocomotion::LYINGDOWN, 25);
+		rangedDefenseMod.put(CreatureLocomotion::SITTING, 5);
+		rangedDefenseMod.put(CreatureLocomotion::SKILLANIMATING, 10);
+		rangedDefenseMod.put(CreatureLocomotion::DRIVINGVEHICLE, 5);
+		rangedDefenseMod.put(CreatureLocomotion::RIDINGCREATURE, 0);
+		rangedDefenseMod.put(CreatureLocomotion::KNOCKEDDOWN, 0);
+		rangedDefenseMod.put(CreatureLocomotion::INCAPACITATED, 10);
+		rangedDefenseMod.put(CreatureLocomotion::DEAD, 0);
+		rangedDefenseMod.put(CreatureLocomotion::BLOCKING, 0);
+		rangedDefenseMod.put(CreatureLocomotion::INVALID, 0);
+
+		meleeAttackMod.put(CreatureLocomotion::STANDING, 0);
+		meleeAttackMod.put(CreatureLocomotion::SNEAKING, -20);
+		meleeAttackMod.put(CreatureLocomotion::WALKING, -50);
+		meleeAttackMod.put(CreatureLocomotion::RUNNING, -15);
+		meleeAttackMod.put(CreatureLocomotion::KNEELING, 10);
+		meleeAttackMod.put(CreatureLocomotion::CROUCHSNEAKING, 0);
+		meleeAttackMod.put(CreatureLocomotion::CROUCHWALKING, 0);
+		meleeAttackMod.put(CreatureLocomotion::PRONE, -30);
+		meleeAttackMod.put(CreatureLocomotion::CRAWLING, -40);
+		meleeAttackMod.put(CreatureLocomotion::CLIMBINGSTATIONARY, 10);
+		meleeAttackMod.put(CreatureLocomotion::CLIMBING, 10);
+		meleeAttackMod.put(CreatureLocomotion::HOVERING, 0);
+		meleeAttackMod.put(CreatureLocomotion::FLYING, -10);
+		meleeAttackMod.put(CreatureLocomotion::LYINGDOWN, -30);
+		meleeAttackMod.put(CreatureLocomotion::SITTING, 10);
+		meleeAttackMod.put(CreatureLocomotion::SKILLANIMATING, 0);
+		meleeAttackMod.put(CreatureLocomotion::DRIVINGVEHICLE, 10);
+		meleeAttackMod.put(CreatureLocomotion::RIDINGCREATURE, 0);
+		meleeAttackMod.put(CreatureLocomotion::KNOCKEDDOWN, 0);
+		meleeAttackMod.put(CreatureLocomotion::INCAPACITATED, 0);
+		meleeAttackMod.put(CreatureLocomotion::BLOCKING, 0);
+		meleeAttackMod.put(CreatureLocomotion::DEAD, 0);
+		meleeAttackMod.put(CreatureLocomotion::INVALID, 0);
+
+		meleeDefenseMod.put(CreatureLocomotion::STANDING, 0);
+		meleeDefenseMod.put(CreatureLocomotion::SNEAKING, -5);
+		meleeDefenseMod.put(CreatureLocomotion::WALKING, -5);
+		meleeDefenseMod.put(CreatureLocomotion::RUNNING, -10);
+		meleeDefenseMod.put(CreatureLocomotion::KNEELING, -10);
+		meleeDefenseMod.put(CreatureLocomotion::CROUCHSNEAKING, 0);
+		meleeDefenseMod.put(CreatureLocomotion::CROUCHWALKING, 0);
+		meleeDefenseMod.put(CreatureLocomotion::PRONE, -30);
+		meleeDefenseMod.put(CreatureLocomotion::CRAWLING, -45);
+		meleeDefenseMod.put(CreatureLocomotion::CLIMBINGSTATIONARY, -10);
+		meleeDefenseMod.put(CreatureLocomotion::CLIMBING, -10);
+		meleeDefenseMod.put(CreatureLocomotion::HOVERING, -5);
+		meleeDefenseMod.put(CreatureLocomotion::FLYING, -40);
+		meleeDefenseMod.put(CreatureLocomotion::LYINGDOWN, -30);
+		meleeDefenseMod.put(CreatureLocomotion::SITTING, -10);
+		meleeDefenseMod.put(CreatureLocomotion::SKILLANIMATING, 0);
+		meleeDefenseMod.put(CreatureLocomotion::DRIVINGVEHICLE, -10);
+		meleeDefenseMod.put(CreatureLocomotion::RIDINGCREATURE, 0);
+		meleeDefenseMod.put(CreatureLocomotion::KNOCKEDDOWN, 0);
+		meleeDefenseMod.put(CreatureLocomotion::INCAPACITATED, 0);
+		meleeDefenseMod.put(CreatureLocomotion::DEAD, 0);
+		meleeDefenseMod.put(CreatureLocomotion::BLOCKING, 0);
+		meleeDefenseMod.put(CreatureLocomotion::INVALID, 0);
+	}
 
 	~CreaturePosture() {}
 
@@ -246,6 +309,22 @@ public:
 
 			movementTable.put(entry.posture, entry);
 		}
+	}
+
+	int getRangedAttackMod(uint loc) {
+		return rangedAttackMod.get(loc);
+	}
+
+	int getRangedDefenseMod(uint loc) {
+		return rangedDefenseMod.get(loc);
+	}
+
+	int getMeleeAttackMod(uint loc) {
+		return meleeAttackMod.get(loc);
+	}
+
+	int getMeleeDefenseMod(uint loc) {
+		return meleeDefenseMod.get(loc);
 	}
 };
 

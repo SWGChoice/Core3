@@ -1,7 +1,7 @@
 neo_cobral_runner = Creature:new {
 	objectName = "@mob/creature_names:cobral_runner",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "cobral",
-	pvpFaction = "cobral",
 	faction = "cobral",
 	level = 15,
 	chanceHit = 0.31,
@@ -31,19 +31,19 @@ neo_cobral_runner = Creature:new {
 		"object/mobile/dressed_cobral_runner_trandoshan_male_01.iff"},
 
 	lootGroups = {
-	    {
+		{
 			groups = {
 				{group = "junk", chance = 2000000},
 				{group = "wearables_common", chance = 2000000},
 				{group = "pistols", chance = 2000000},
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000}
-			},
-			lootChance = 3200000
-		}				
+			}
+		}
 	},
 	weapons = {"pirate_weapons_medium"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlermid,marksmanmid)
 }
 

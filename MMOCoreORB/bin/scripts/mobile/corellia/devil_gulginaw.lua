@@ -1,7 +1,6 @@
 devil_gulginaw = Creature:new {
 	objectName = "@mob/creature_names:devil_gulginaw",
 	socialGroup = "gulginaw",
-	pvpFaction = "",
 	faction = "",
 	level = 18,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ devil_gulginaw = Creature:new {
 	baseHAM = 2900,
 	baseHAMmax = 3500,
 	armor = 0,
-	resists = {15,15,15,-1,5,5,-1,-1,-1},
+	resists = {115,115,115,-1,5,5,-1,-1,-1},
 	meatType = "meat_avian",
 	meatAmount = 70,
 	hideType = "",
@@ -33,7 +32,8 @@ devil_gulginaw = Creature:new {
 	weapons = {"creature_spit_small_red"},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"}
+		{"",""},
+		{"dizzyattack",""}
 	}
 }
 

@@ -1,7 +1,6 @@
 wormed_vrobal = Creature:new {
 	objectName = "@mob/creature_names:wormed_vrobal",
 	socialGroup = "vrobal",
-	pvpFaction = "",
 	faction = "",
 	level = 11,
 	chanceHit = 0.29,
@@ -11,7 +10,7 @@ wormed_vrobal = Creature:new {
 	baseHAM = 1000,
 	baseHAMmax = 1200,
 	armor = 0,
-	resists = {0,0,0,0,0,0,0,0,0},
+	resists = {0,0,0,110,0,0,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 13,
 	hideType = "hide_leathery",
@@ -24,7 +23,7 @@ wormed_vrobal = Creature:new {
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = NONE,
 	optionsBitmask = 0,
-	diet = NONE,
+	diet = CARNIVORE,
 
 	templates = {"object/mobile/vrobal.iff"},
 	controlDeviceTemplate = "object/intangible/pet/roba_hue.iff",
@@ -33,7 +32,7 @@ wormed_vrobal = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

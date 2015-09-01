@@ -1,7 +1,6 @@
 mountain_dewback = Creature:new {
 	objectName = "@mob/creature_names:mountain_dewback",
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 20,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ mountain_dewback = Creature:new {
 	baseHAM = 5000,
 	baseHAMmax = 6100,
 	armor = 0,
-	resists = {40,10,20,50,50,-1,-1,-1,-1},
+	resists = {120,10,10,140,140,-1,-1,-1,-1},
 	meatType = "meat_reptilian",
 	meatAmount = 330,
 	hideType = "hide_leathery",
@@ -33,8 +32,8 @@ mountain_dewback = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"knockdownattack","knockdownChance=50"}
+		{"knockdownattack",""},
+		{"dizzyattack",""}
 	}
 }
 

@@ -25,9 +25,11 @@ class TreeFileRecord : public Object, public Logger {
 	byte md5Sum[16];
 
 public:
-	TreeFileRecord() : Object(), Logger() {
+	TreeFileRecord() : Object(), Logger(), checksum(0), uncompressedSize(0), fileOffset(0), compressionType(0), compressedSize(0), nameOffset(0) {
 		setLoggingName("TreeFileRecord");
 		setLogging(true);
+
+		memset(md5Sum, 0, 16);
 	}
 
 	TreeFileRecord(const TreeFileRecord& tfr) : Object(), Logger() {
@@ -132,7 +134,7 @@ public:
 		return buffer;
 	}
 
-	String toString() const {
+	String toString() {
 		StringBuffer str;
 		str << "Checksum: " << checksum;
 		str << " UncompressedSize: " << uncompressedSize;

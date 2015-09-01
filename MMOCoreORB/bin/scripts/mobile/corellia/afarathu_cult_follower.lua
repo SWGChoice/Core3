@@ -1,7 +1,7 @@
 afarathu_cult_follower = Creature:new {
 	objectName = "@mob/creature_names:afarathu_cult_follower",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "afarathu",
-	pvpFaction = "afarathu",
 	faction = "afarathu",
 	level = 5,
 	chanceHit = 0.25,
@@ -51,17 +51,17 @@ afarathu_cult_follower = Creature:new {
 		"object/mobile/dressed_selonian_m_11.iff",
 		"object/mobile/dressed_selonian_m_12.iff"},
 	lootGroups = {
-      	{
+		{
 			groups = {
 				{group = "junk", chance = 7000000},
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "tailor_components", chance = 1000000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_light"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlernovice,marksmannovice)
 }
 

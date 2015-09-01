@@ -1,7 +1,6 @@
 vine_rawl = Creature:new {
 	objectName = "@mob/creature_names:vine_rawl",
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 19,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ vine_rawl = Creature:new {
 	baseHAM = 4100,
 	baseHAMmax = 5000,
 	armor = 0,
-	resists = {10,10,5,5,5,5,45,5,0},
+	resists = {110,110,5,5,5,5,145,5,-1},
 	meatType = "meat_reptilian",
 	meatAmount = 40,
 	hideType = "hide_scaley",
@@ -33,8 +32,8 @@ vine_rawl = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"creatureareadisease",""},
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""},
+		{"mediumpoison",""}
 	}
 }
 

@@ -1,7 +1,7 @@
 ankura_gungan = Creature:new {
 	objectName = "@mob/creature_names:ankura_gungan",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "gungan",
-	pvpFaction = "gungan",
 	faction = "gungan",
 	level = 8,
 	chanceHit = 0.27,
@@ -27,7 +27,17 @@ ankura_gungan = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/ankura_gungan.iff"},
-	lootGroups = {},
+	lootGroups = {
+		{
+			groups = {
+				{group = "junk", chance = 5000000},
+				{group = "pistols", chance = 1000000},
+				{group = "melee_weapons", chance = 1000000},
+				{group = "carbines", chance = 1000000},
+				{group = "wearables_common", chance = 2000000}
+			}
+		}
+	},
 	weapons = {"rebel_weapons_light"},
 	conversationTemplate = "",
 	attacks = merge(brawlernovice,marksmannovice)

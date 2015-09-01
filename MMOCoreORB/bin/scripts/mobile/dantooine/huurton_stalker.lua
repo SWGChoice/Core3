@@ -1,7 +1,6 @@
 huurton_stalker = Creature:new {
 	objectName = "@mob/creature_names:huurton_stalker",
 	socialGroup = "huurton",
-	pvpFaction = "",
 	faction = "",
 	level = 33,
 	chanceHit = 0.4,
@@ -11,7 +10,7 @@ huurton_stalker = Creature:new {
 	baseHAM = 8600,
 	baseHAMmax = 10600,
 	armor = 0,
-	resists = {20,20,20,40,100,-1,-1,-1,-1},
+	resists = {20,20,20,140,200,-1,-1,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 15,
 	hideType = "hide_wooly",
@@ -33,8 +32,8 @@ huurton_stalker = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"dizzyattack",""}
 	}
 }
 

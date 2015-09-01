@@ -58,7 +58,7 @@ void FindSessionImplementation::initalizeFindMenu() {
 
 	player->getPlayerObject()->addSuiBox(box);
 	player->sendMessage(box->generateMessage());
-	player->addActiveSession(SessionFacadeType::FIND, _this.get());
+	player->addActiveSession(SessionFacadeType::FIND, _this.getReferenceUnsafeStaticCast());
 }
 
 void FindSessionImplementation::addWaypoint(float x, float y, const String& name) {
@@ -75,6 +75,8 @@ void FindSessionImplementation::addWaypoint(float x, float y, const String& name
 
 	ManagedReference<WaypointObject*> wpt =
 			( player->getZoneServer()->createObject(0xc456e788, 1)).castTo<WaypointObject*>(); // 0xC456E788 Waypoint
+
+	Locker locker(wpt);
 
 	wpt->setPlanetCRC(planet.hashCode());
 	wpt->setPosition(x, 0, y);
@@ -98,14 +100,7 @@ void FindSessionImplementation::clearWaypoint() {
 
 	PlayerObject* po = player->getPlayerObject();
 
-	WaypointList* waypointlist = po->getWaypointList();
-	uint64 wpid = waypointlist->getWaypointBySpecialType(
-			WaypointObject::SPECIALTYPE_FIND);
-
-	if (wpid != 0) {
-		po->removeWaypoint(wpid, true);
-
-	}
+	po->removeWaypointBySpecialType(WaypointObject::SPECIALTYPE_FIND, true);
 }
 
 void FindSessionImplementation::findPlanetaryObject(String& maplocationtype) {
@@ -115,6 +110,12 @@ void FindSessionImplementation::findPlanetaryObject(String& maplocationtype) {
 		return;
 
 	Zone* zone = player->getZone();
+
+	if (zone == NULL) {
+		cancelSession();
+		return;
+	}
+
 	ManagedReference<SceneObject*> object = zone->getNearestPlanetaryObject(player, maplocationtype);
 	Zone* objectZone = NULL;
 

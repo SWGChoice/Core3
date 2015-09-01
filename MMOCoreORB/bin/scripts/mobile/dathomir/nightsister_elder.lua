@@ -1,7 +1,7 @@
 nightsister_elder = Creature:new {
 	objectName = "@mob/creature_names:nightsister_elder",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "nightsister",
-	pvpFaction = "nightsister",
 	faction = "nightsister",
 	level = 278,
 	chanceHit = 27.25,
@@ -11,7 +11,7 @@ nightsister_elder = Creature:new {
 	baseHAM = 321000,
 	baseHAMmax = 392000,
 	armor = 3,
-	resists = {100,25,25,100,100,100,100,100,-1},
+	resists = {200,25,25,200,200,200,200,200,-1},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "",
@@ -40,8 +40,7 @@ nightsister_elder = Creature:new {
 				{group = "carbines", chance = 1000000},
 				{group = "melee_weapons", chance = 2000000},
 				{group = "wearables_scarce", chance = 1000000}
-			},
-			lootChance = 6500000
+			}
 		}
 	},
 	weapons = {},

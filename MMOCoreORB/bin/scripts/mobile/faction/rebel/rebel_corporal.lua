@@ -1,7 +1,7 @@
 rebel_corporal = Creature:new {
 	objectName = "@mob/creature_names:rebel_corporal",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "rebel",
-	pvpFaction = "rebel",
 	faction = "rebel",
 	level = 15,
 	chanceHit = 0.31,
@@ -45,12 +45,13 @@ rebel_corporal = Creature:new {
 				{group = "clothing_attachments", chance = 100000},
 				{group = "armor_attachments", chance = 100000},
 				{group = "wearables_common", chance = 1000000}
-			},
-			lootChance = 2400000
+			}
 		}
 	},
 	weapons = {"rebel_weapons_light"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/military",
+	personalityStf = "@hireling/hireling_military",
 	attacks = merge(brawlermid,marksmanmid)
 }
 

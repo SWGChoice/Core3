@@ -81,7 +81,7 @@ void VehicleControlDeviceImplementation::generateObject(CreatureObject* player) 
 
 	if(player->getCurrentCamp() == NULL && player->getCityRegion() == NULL) {
 
-		Reference<CallMountTask*> callMount = new CallMountTask(_this.get(), player, "call_mount");
+		Reference<CallMountTask*> callMount = new CallMountTask(_this.getReferenceUnsafeStaticCast(), player, "call_mount");
 
 		StringIdChatParameter message("pet/pet_menu", "call_vehicle_delay");
 		message.setDI(15);
@@ -90,7 +90,7 @@ void VehicleControlDeviceImplementation::generateObject(CreatureObject* player) 
 		player->addPendingTask("call_mount", callMount, 15 * 1000);
 
 		if (vehicleControlObserver == NULL) {
-			vehicleControlObserver = new VehicleControlObserver(_this.get());
+			vehicleControlObserver = new VehicleControlObserver(_this.getReferenceUnsafeStaticCast());
 			vehicleControlObserver->deploy();
 		}
 
@@ -134,7 +134,7 @@ void VehicleControlDeviceImplementation::spawnObject(CreatureObject* player) {
 	
 		vehicle = cast<CreatureObject*>(controlledObject.get());
 		vehicle->setCreatureLink(player);
-		vehicle->setControlDevice(_this.get());
+		vehicle->setControlDevice(_this.getReferenceUnsafeStaticCast());
 		if (vehicle->isDestroyed())
 		{
 			String vehicleName = vehicle->getDisplayedName();
@@ -160,7 +160,7 @@ void VehicleControlDeviceImplementation::spawnObject(CreatureObject* player) {
 	{
 	
 		controlledObject->setCustomizationVariable("/private/index_hover_height", 40, true); // Illusion of flying.
-		player->executeObjectControllerAction(String("mount").hashCode(), controlledObject->getObjectID(), ""); // Auto mount.
+		player->executeObjectControllerAction(STRING_HASHCODE("mount"), controlledObject->getObjectID(), ""); // Auto mount.
 		
 	}
 
@@ -196,11 +196,13 @@ void VehicleControlDeviceImplementation::storeObject(CreatureObject* player, boo
 		if (!force && !player->checkCooldownRecovery("mount_dismount"))
 			return;
 
-		player->executeObjectControllerAction(String("dismount").hashCode());
+		player->executeObjectControllerAction(STRING_HASHCODE("dismount"));
 
 		if (player->isRidingMount())
 			return;
 	}
+
+	Locker crossLocker(controlledObject, player);
 
 	controlledObject->destroyObjectFromWorld(true);
 
@@ -222,7 +224,7 @@ void VehicleControlDeviceImplementation::destroyObjectFromDatabase(bool destroyC
 		if (object != NULL) {
 			Locker clocker(object, controlledObject);
 
-			object->executeObjectControllerAction(String("dismount").hashCode());
+			object->executeObjectControllerAction(STRING_HASHCODE("dismount"));
 
 			object = controlledObject->getSlottedObject("rider").castTo<CreatureObject*>();
 

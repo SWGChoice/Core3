@@ -1,7 +1,7 @@
 mos_taike_veteran_guard = Creature:new {
 	objectName = "@mob/creature_names:mos_taike_guard_old",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "townsperson",
-	pvpFaction = "townsperson",
 	faction = "townsperson",
 	level = 21,
 	chanceHit = 0.33,
@@ -31,6 +31,7 @@ mos_taike_veteran_guard = Creature:new {
 	weapons = {},
 	outfit = "mos_taike_guard_old_outfit",
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/townperson",
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 

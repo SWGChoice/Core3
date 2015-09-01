@@ -1,7 +1,7 @@
 janta_warrior = Creature:new {
 	objectName = "@mob/creature_names:janta_warrior",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "janta_tribe",
-	pvpFaction = "janta_tribe",
 	faction = "janta_tribe",
 	level = 70,
 	chanceHit = 0.7,
@@ -35,8 +35,7 @@ janta_warrior = Creature:new {
 				{group = "junk", chance = 5500000},
 				{group = "janta_common", chance = 1500000},
 				{group = "loot_kit_parts", chance = 3000000}
-			},
-			lootChance = 2000000
+			}
 		}
 	},
 	weapons = {"primitive_weapons"},

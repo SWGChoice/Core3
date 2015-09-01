@@ -1,7 +1,6 @@
 gurk = Creature:new {
 	objectName = "@mob/creature_names:gurk",
 	socialGroup = "gurk",
-	pvpFaction = "",
 	faction = "",
 	level = 30,
 	chanceHit = 0.39,
@@ -11,7 +10,7 @@ gurk = Creature:new {
 	baseHAM = 8400,
 	baseHAMmax = 10200,
 	armor = 0,
-	resists = {40,20,20,20,20,-1,-1,-1,-1},
+	resists = {140,20,20,20,20,-1,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 350,
 	hideType = "hide_leathery",
@@ -31,8 +30,8 @@ gurk = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"stunattack","stunChance=50"}
+		{"dizzyattack",""},
+		{"stunattack",""}
 	}
 }
 

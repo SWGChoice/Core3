@@ -1,7 +1,7 @@
 informant_npc = Creature:new {
 	objectName = "@mob/creature_names:spynet_operative",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "",
-	pvpFaction = "",
 	faction = "",
 	level = 100,
 	chanceHit = 0.39,
@@ -27,20 +27,7 @@ informant_npc = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_hutt_informant_quest.iff"},
-	lootGroups = {
-	    {
-			groups = {
-				{group = "junk", chance = 5000000},
-				{group = "carbines", chance = 1000000},
-				{group = "rifles", chance = 1000000},
-				{group = "armor_attachments", chance = 1000000},
-				{group = "clothing_attachments", chance = 1000000},
-				{group = "wearables_common", chance = 500000},
-				{group = "wearables_uncommon", chance = 500000}
-			},
-			lootChance = 3000000
-		}	
-	},
+	lootGroups = {},
 	weapons = {"imperial_weapons_light"},
 	conversationTemplate = "informant_npc",
 	attacks = {

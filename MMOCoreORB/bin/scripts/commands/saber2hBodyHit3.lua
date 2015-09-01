@@ -45,14 +45,16 @@ Saber2hBodyHit3Command = {
         name = "saber2hbodyhit3",
         
     damageMultiplier = 2.25,
-	speedMultiplier = 2.5,
-	forceCostMultiplier = 2.5,
+	speedMultiplier = 2.25,
+	forceCostMultiplier = 1.75,
 
-	animationCRC = hashCode("showoff_3_light"),
+	animationCRC = hashCode("combo_4a_light"),
 
 	combatSpam = "saber2hbodyhit3",
 	
 	poolsToDamage = HEALTH_ATTRIBUTE,
+	
+	weaponType = TWOHANDJEDIWEAPON,
 
 	range = -1
 }

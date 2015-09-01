@@ -1,7 +1,6 @@
 perlek_ravager = Creature:new {
 	objectName = "@mob/creature_names:perlek_ravager",
 	socialGroup = "perlek",
-	pvpFaction = "",
 	faction = "",
 	level = 18,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ perlek_ravager = Creature:new {
 	baseHAM = 2400,
 	baseHAMmax = 3000,
 	armor = 0,
-	resists = {5,5,5,50,50,-1,50,-1,-1},
+	resists = {5,5,5,150,150,-1,150,-1,-1},
 	meatType = "meat_avian",
 	meatAmount = 275,
 	hideType = "hide_leathery",
@@ -33,8 +32,8 @@ perlek_ravager = Creature:new {
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"stunattack","stunChance=50"}
+		{"dizzyattack",""},
+		{"stunattack",""}
 	}
 }
 

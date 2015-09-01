@@ -1,7 +1,6 @@
 veneral_devourer = Creature:new {
 	objectName = "@mob/creature_names:pugoriss_venerable_devourer",
 	socialGroup = "pugoriss",
-	pvpFaction = "",
 	faction = "",
 	level = 20,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ veneral_devourer = Creature:new {
 	baseHAM = 3500,
 	baseHAMmax = 4300,
 	armor = 0,
-	resists = {20,20,10,25,35,10,10,10,-1},
+	resists = {120,120,10,125,135,10,10,10,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 35,
 	hideType = "hide_leathery",
@@ -33,8 +32,8 @@ veneral_devourer = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""},
+		{"blindattack",""}
 	}
 }
 

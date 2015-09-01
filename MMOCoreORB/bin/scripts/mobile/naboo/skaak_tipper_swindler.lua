@@ -1,7 +1,7 @@
 skaak_tipper_swindler = Creature:new {
 	objectName = "@mob/creature_names:skaak_tipper_swindler",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "skaak_tipper_gang",
-	pvpFaction = "thug",
 	faction = "thug",
 	level = 11,
 	chanceHit = 0.29,
@@ -36,11 +36,11 @@ skaak_tipper_swindler = Creature:new {
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "printer_parts", chance = 1000000},
 				{group = "skaak_tipper_common", chance = 1000000},
-			},
-			lootChance = 2200000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_medium"},
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlermid,marksmanmid)
 }
 

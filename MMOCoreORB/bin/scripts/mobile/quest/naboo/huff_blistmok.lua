@@ -1,7 +1,6 @@
 huff_blistmok = Creature:new {
 	objectName = "",
 	socialGroup = "",
-	pvpFaction = "",
 	faction = "",
 	level = 22,
 	chanceHit = 0.35,
@@ -12,7 +11,7 @@ huff_blistmok = Creature:new {
 	baseHAMmax = 7200,
 	scale = 2.0,
 	armor = 0,
-	resists = {0,0,0,0,0,0,0,0,0},
+	resists = {10,10,10,10,10,10,10,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 35,
 	hideType = "hide_leathery",
@@ -23,7 +22,7 @@ huff_blistmok = Creature:new {
 	tamingChance = 0,
 	ferocity = 0,
 	pvpBitmask = AGGRESSIVE + ATTACKABLE + ENEMY,
-	creatureBitmask = PACK + STALKER,
+	creatureBitmask = PACK,
 	optionsBitmask = 0,
 	diet = CARNIVORE,
 
@@ -32,7 +31,7 @@ huff_blistmok = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

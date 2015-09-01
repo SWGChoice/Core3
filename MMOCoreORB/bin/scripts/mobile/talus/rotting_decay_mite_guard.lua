@@ -1,7 +1,6 @@
 rotting_decay_mite_guard = Creature:new {
 	objectName = "@mob/creature_names:rotting_pustule_guard",
 	socialGroup = "mite",
-	pvpFaction = "",
 	faction = "",
 	level = 13,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ rotting_decay_mite_guard = Creature:new {
 	baseHAM = 1200,
 	baseHAMmax = 1400,
 	armor = 0,
-	resists = {0,0,0,0,0,0,10,-1,-1},
+	resists = {0,0,0,0,0,0,110,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 9,
 	hideType = "",
@@ -33,7 +32,7 @@ rotting_decay_mite_guard = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
+		{"intimidationattack",""},
 		{"mediumdisease",""}
 	}
 }

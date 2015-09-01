@@ -1,7 +1,7 @@
 hardened_jinda_warrior = Creature:new {
 	objectName = "@mob/creature_names:hardened_jinda_warrior",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "jinda_tribe",
-	pvpFaction = "",
 	faction = "",
 	level = 50,
 	chanceHit = 0.5,
@@ -27,16 +27,16 @@ hardened_jinda_warrior = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {
-			"object/mobile/jinda_male.iff",
-			"object/mobile/jinda_male_01.iff"},
+		"object/mobile/jinda_male.iff",
+		"object/mobile/jinda_male_01.iff"},
 	lootGroups = {
 		{
-	        groups = {
+			groups = {
 				{group = "ewok", chance = 9100000},
 				{group = "armor_attachments", chance = 450000},
 				{group = "clothing_attachments", chance = 450000}
 			},
-			lootChance = 2900000
+			lootChance = 2000000
 		}
 	},
 	weapons = {"ewok_weapons"},

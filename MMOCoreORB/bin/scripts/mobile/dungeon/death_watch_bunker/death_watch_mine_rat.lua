@@ -1,17 +1,16 @@
 death_watch_mine_rat = Creature:new {
 	objectName = "@mob/creature_names:death_watch_quenker",
 	socialGroup = "death_watch",
-	pvpFaction = "",
 	faction = "",
 	level = 102,
 	chanceHit = 1,
 	damageMin = 645,
 	damageMax = 1000,
 	baseXp = 9708,
-	baseHAM = 30000,
+	baseHAM = 24000,
 	baseHAMmax = 30000,
-	armor = 0,
-	resists = {55,55,80,35,35,35,100,35,-1},
+	armor = 2,
+	resists = {155,155,180,135,135,135,200,135,-1},
 	meatType = "meat_wild",
 	meatAmount = 2,
 	hideType = "hide_scaley",
@@ -31,8 +30,8 @@ death_watch_mine_rat = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
-		{"knockdownattack","knockdownChance=50"}
+		{"intimidationattack",""},
+		{"knockdownattack",""}
 	}
 }
 

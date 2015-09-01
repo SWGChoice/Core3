@@ -1,7 +1,6 @@
 fierce_borgle = Creature:new {
 	objectName = "@mob/creature_names:fierce_borgle",
 	socialGroup = "borgle",
-	pvpFaction = "",
 	faction = "",
 	level = 32,
 	chanceHit = 0.37,
@@ -11,7 +10,7 @@ fierce_borgle = Creature:new {
 	baseHAM = 6300,
 	baseHAMmax = 7700,
 	armor = 0,
-	resists = {40,30,30,-1,75,75,100,-1,-1},
+	resists = {140,130,130,-1,175,175,200,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 5,
 	hideType = "hide_leathery",
@@ -32,7 +31,8 @@ fierce_borgle = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"}
+		{"",""},
+		{"blindattack",""}
 	}
 }
 

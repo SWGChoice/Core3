@@ -1,7 +1,6 @@
 forest_slice_hound = Creature:new {
 	objectName = "@mob/creature_names:forest_slice_hound",
 	socialGroup = "slice_hound",
-	pvpFaction = "",
 	faction = "",
 	level = 16,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ forest_slice_hound = Creature:new {
 	baseHAM = 2400,
 	baseHAMmax = 3000,
 	armor = 0,
-	resists = {15,0,0,0,0,0,0,-1,-1},
+	resists = {115,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 65,
 	hideType = "hide_bristley",
@@ -33,7 +32,8 @@ forest_slice_hound = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"",""},
+		{"posturedownattack",""}
 	}
 }
 

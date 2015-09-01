@@ -1,7 +1,7 @@
 korga_cub = Creature:new {
 	objectName = "@mob/creature_names:korga_cub",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "korga_tribe",
-	pvpFaction = "korga_tribe",
 	faction = "korga_tribe",
 	level = 5,
 	chanceHit = 0.25,
@@ -27,14 +27,14 @@ korga_cub = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {
-			"object/mobile/dulok_male.iff",
-			"object/mobile/dulok_female.iff"},
+		"object/mobile/dulok_male.iff",
+		"object/mobile/dulok_female.iff"},
 	lootGroups = {
-		 {
-	        groups = {
+		{
+			groups = {
 				{group = "ewok", chance = 10000000}
 			},
-			lootChance = 2300000
+			lootChance = 1100000
 		}
 	},
 	weapons = {},

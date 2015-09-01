@@ -57,7 +57,7 @@ PolearmHit3Command = {
 		{ "stun_defense", "resistance_states" }, 
 		{ "jedi_state_defense" }, 
 		75, 
-		100, 
+		0, 
 		45 
 	  ),
 	  StateEffect( 
@@ -65,8 +65,8 @@ PolearmHit3Command = {
 		{ "postureDownRecovery" }, 
 		{ "posture_change_down_defense" }, 
 		{}, 
-		30, 
 		100, 
+		0, 
 		0 
 	  )
 	},
@@ -74,6 +74,8 @@ PolearmHit3Command = {
 	animationCRC = hashCode("combo_5a_medium"),
 
 	combatSpam = "bonebreaker",
+	
+	weaponType = POLEARMWEAPON,
 
 	range = -1
 }

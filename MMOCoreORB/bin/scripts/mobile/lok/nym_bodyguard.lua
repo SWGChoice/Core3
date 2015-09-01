@@ -1,7 +1,7 @@
 nym_bodyguard = Creature:new {
 	objectName = "@mob/creature_names:nym_bodyguard",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "nym",
-	pvpFaction = "nym",
 	faction = "nym",
 	level = 28,
 	chanceHit = 0.37,
@@ -27,8 +27,8 @@ nym_bodyguard = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_nym_bodyguard_rod_m.iff",
-				"object/mobile/dressed_nym_bodyguard_hum_m.iff",
-				"object/mobile/dressed_nym_bodyguard_hum_f.iff"},
+		"object/mobile/dressed_nym_bodyguard_hum_m.iff",
+		"object/mobile/dressed_nym_bodyguard_hum_f.iff"},
 	lootGroups = {
 		{
 			groups = {
@@ -37,12 +37,12 @@ nym_bodyguard = Creature:new {
 				{group = "pistols", chance = 1000000},
 				{group = "carbines", chance = 1000000},
 				{group = "tailor_components", chance = 500000}
-			},
-			lootChance = 3500000
+			}
 		}
 	},
 	weapons = {"rebel_weapons_medium"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(riflemanmaster,carbineermaster,brawlermaster)
 }
 

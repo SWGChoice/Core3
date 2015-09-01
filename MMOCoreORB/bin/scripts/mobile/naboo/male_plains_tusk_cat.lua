@@ -1,7 +1,6 @@
 male_plains_tusk_cat = Creature:new {
 	objectName = "@mob/creature_names:male_great_grass_plains_tusk_cat",
 	socialGroup = "tusk_cat",
-	pvpFaction = "",
 	faction = "",
 	level = 16,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ male_plains_tusk_cat = Creature:new {
 	baseHAM = 2000,
 	baseHAMmax = 2400,
 	armor = 0,
-	resists = {5,5,5,35,35,-1,-1,-1,-1},
+	resists = {5,5,5,135,135,-1,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 75,
 	hideType = "hide_bristley",
@@ -33,7 +32,8 @@ male_plains_tusk_cat = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"}
+		{"",""},
+		{"blindattack",""}
 	}
 }
 

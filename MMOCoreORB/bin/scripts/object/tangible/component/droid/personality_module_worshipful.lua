@@ -43,7 +43,11 @@
 
 object_tangible_component_droid_personality_module_worshipful = object_tangible_component_droid_shared_personality_module_worshipful:new {
 
-
+	templateType = DROIDPERSONALITYCHIP,
+	dataObjectComponent = "DroidPersonalityModuleDataComponent",
+	reactionName = "@npc_reaction/droid_worshipful",
+	attrName = "@craft_droid_ingredients_n:personality_module_worshipful",
+	personalityStf = "@hireling/hireling_droid_worshipful",
 	numberExperimentalProperties = {1, 1, 2, 1, 2, 1},
 	experimentalProperties = {"XX", "XX", "CD", "OQ", "XX", "CD", "OQ", "XX"},
 	experimentalWeights = {1, 1, 1, 1, 1, 1, 1, 1},
@@ -53,6 +57,7 @@ object_tangible_component_droid_personality_module_worshipful = object_tangible_
 	experimentalMax = {0, 0, 15, 1000, 15, 20},
 	experimentalPrecision = {0, 0, 0, 0, 0, 0},
 	experimentalCombineType = {0, 0, 1, 4, 1, 1},
+	conversationTemplate = "pet_worshipful_convotemplate"	
 }
 
 ObjectTemplates:addTemplate(object_tangible_component_droid_personality_module_worshipful, "object/tangible/component/droid/personality_module_worshipful.iff")

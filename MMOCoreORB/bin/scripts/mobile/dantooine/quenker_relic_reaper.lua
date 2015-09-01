@@ -1,7 +1,6 @@
 quenker_relic_reaper = Creature:new {
 	objectName = "@mob/creature_names:quenker_relic_reaper",
 	socialGroup = "quenker",
-	pvpFaction = "",
 	faction = "",
 	level = 45,
 	chanceHit = 0.44,
@@ -11,7 +10,7 @@ quenker_relic_reaper = Creature:new {
 	baseHAM = 9300,
 	baseHAMmax = 11300,
 	armor = 0,
-	resists = {55,55,30,30,-1,30,30,30,-1},
+	resists = {155,155,30,30,-1,30,30,30,-1},
 	meatType = "meat_wild",
 	meatAmount = 35,
 	hideType = "hide_scaley",
@@ -32,8 +31,8 @@ quenker_relic_reaper = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"intimidationattack","intimidationChance=50"}
+		{"blindattack",""},
+		{"intimidationattack",""}
 	}
 }
 

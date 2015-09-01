@@ -11,6 +11,7 @@
 #include "engine/util/u3d/Coordinate.h"
 #include "server/zone/objects/creature/AiAgent.h"
 #include "server/zone/objects/creature/CreatureObject.h"
+#include "server/zone/managers/combat/CombatManager.h"
 
 namespace server {
 namespace zone {
@@ -28,7 +29,7 @@ class ThrowTrapTask : public Task {
 	bool hit;
 public:
 	ThrowTrapTask(CreatureObject* p, CreatureObject* t,
-			Buff* b, StringIdChatParameter m, short po, int d, bool h) : Task(2300) {
+			Buff* b, const StringIdChatParameter& m, short po, int d, bool h) : Task(2300) {
 		player = p;
 		target = t;
 		buff = b;
@@ -48,12 +49,19 @@ public:
 		Locker locker2(player);
 
 		player->removePendingTask("throwtrap");
+
+		Locker locker(target, player);
+
+		if(!CombatManager::instance()->startCombat(player, target))
+			return;
+
 		player->sendSystemMessage(message);
 
 		if(hit) {
-			Locker locker(target, player);
 
 			if(buff != NULL) {
+				Locker buffLocker(buff);
+
 				target->addBuff(buff);
 			}
 

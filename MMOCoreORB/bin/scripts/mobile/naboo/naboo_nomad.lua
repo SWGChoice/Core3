@@ -1,7 +1,7 @@
 naboo_nomad = Creature:new {
 	objectName = "@mob/creature_names:naboo_nomad",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "nomad",
-	pvpFaction = "",
 	faction = "naboo",
 	level = 6,
 	chanceHit = 0.25,
@@ -27,7 +27,7 @@ naboo_nomad = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_naboo_nomad.iff",
-				"object/mobile/dressed_commoner_fat_zabrak_male_01.iff"},
+		"object/mobile/dressed_commoner_fat_zabrak_male_01.iff"},
 	lootGroups = {
 		{
 			groups = {
@@ -35,12 +35,12 @@ naboo_nomad = Creature:new {
 				{group = "wearables_common", chance = 2000000},
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000}
-			},
-			lootChance = 3200000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_light"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/townperson",
 	attacks = merge(marksmannovice,brawlernovice)
 }
 

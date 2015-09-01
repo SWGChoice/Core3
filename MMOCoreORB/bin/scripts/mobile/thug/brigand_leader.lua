@@ -1,7 +1,7 @@
 brigand_leader = Creature:new {
 	objectName = "@mob/creature_names:brigand_leader",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "brigand",
-	pvpFaction = "",
 	faction = "",
 	level = 20,
 	chanceHit = 0.330000,
@@ -26,10 +26,10 @@ brigand_leader = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_criminal_thug_zabrak_male_01.iff",
-			"object/mobile/dressed_criminal_thug_zabrak_female_01.iff",
-			"object/mobile/dressed_criminal_thug_bothan_male_01.iff",
-			"object/mobile/dressed_criminal_thug_human_male_01.iff",
-			"object/mobile/dressed_criminal_thug_human_male_02.iff" },
+		"object/mobile/dressed_criminal_thug_zabrak_female_01.iff",
+		"object/mobile/dressed_criminal_thug_bothan_male_01.iff",
+		"object/mobile/dressed_criminal_thug_human_male_01.iff",
+		"object/mobile/dressed_criminal_thug_human_male_02.iff" },
 	lootGroups = {
 		{
 			groups = {
@@ -37,11 +37,11 @@ brigand_leader = Creature:new {
 				{group = "wearables_common", chance = 3000000},
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "tailor_components", chance = 1000000},
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_heavy"},
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 

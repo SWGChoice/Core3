@@ -1,7 +1,6 @@
 merek_deaths_head = Creature:new {
 	objectName = "@mob/creature_names:merek_deaths_head",
 	socialGroup = "merek",
-	pvpFaction = "",
 	faction = "",
 	level = 56,
 	chanceHit = 0.55,
@@ -10,7 +9,7 @@ merek_deaths_head = Creature:new {
 	baseXp = 5464,
 	baseHAM = 9900,
 	baseHAMmax = 12100,
-	armor = 0,
+	armor = 1,
 	resists = {10,10,10,10,10,10,10,10,-1},
 	meatType = "meat_wild",
 	meatAmount = 64,
@@ -33,8 +32,8 @@ merek_deaths_head = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"strongdisease",""},
-		{"strongpoison",""}
+		{"strongpoison",""},
+		{"strongdisease",""}
 	}
 }
 

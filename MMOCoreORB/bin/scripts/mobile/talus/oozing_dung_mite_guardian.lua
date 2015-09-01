@@ -1,7 +1,6 @@
 oozing_dung_mite_guardian = Creature:new {
 	objectName = "@mob/creature_names:oozing_dung_royal_guardian",
 	socialGroup = "mite",
-	pvpFaction = "",
 	faction = "",
 	level = 17,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ oozing_dung_mite_guardian = Creature:new {
 	baseHAM = 4100,
 	baseHAMmax = 5000,
 	armor = 0,
-	resists = {5,15,5,5,5,5,50,-1,-1},
+	resists = {5,115,5,5,5,5,150,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 12,
 	hideType = "",
@@ -34,7 +33,7 @@ oozing_dung_mite_guardian = Creature:new {
 	conversationTemplate = "",
 	attacks = {
 		{"mediumdisease",""},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

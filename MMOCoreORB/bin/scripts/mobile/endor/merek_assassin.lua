@@ -1,7 +1,6 @@
 merek_assassin = Creature:new {
 	objectName = "@mob/creature_names:merek_assassin",
 	socialGroup = "merek",
-	pvpFaction = "",
 	faction = "",
 	level = 31,
 	chanceHit = 0.39,
@@ -10,8 +9,8 @@ merek_assassin = Creature:new {
 	baseXp = 3188,
 	baseHAM = 7700,
 	baseHAMmax = 9400,
-	armor = 1,
-	resists = {35,20,20,20,-1,20,-1,-1,-1},
+	armor = 0,
+	resists = {150,20,20,20,-1,20,-1,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 64,
 	hideType = "hide_leathery",
@@ -33,7 +32,7 @@ merek_assassin = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
+		{"dizzyattack",""},
 		{"strongpoison",""}
 	}
 }

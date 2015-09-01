@@ -1,7 +1,7 @@
 rebel_network_leader = Creature:new {
 	objectName = "@mob/creature_names:network_leader",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "rebel",
-	pvpFaction = "rebel",
 	faction = "rebel",
 	level = 12,
 	chanceHit = 0.29,
@@ -34,9 +34,22 @@ rebel_network_leader = Creature:new {
 		"object/mobile/aqualish_female.iff",
 		"object/mobile/aqualish_male.iff"
 	},
-	lootGroups = {},
+	lootGroups = {
+		{
+			groups = {
+				{group = "junk", chance = 5000000},
+				{group = "rifles", chance = 1000000},
+				{group = "pistols", chance = 1000000},
+				{group = "melee_weapons", chance = 1000000},
+				{group = "carbines", chance = 1000000},
+				{group = "wearables_common", chance = 1000000}
+			}
+		}
+	},
 	weapons = {"rebel_weapons_light"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/military",
+	personalityStf = "@hireling/hireling_military",
 	attacks = merge(brawlermid,marksmanmid)
 }
 

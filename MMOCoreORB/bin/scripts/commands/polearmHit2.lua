@@ -58,7 +58,7 @@ PolearmHit2Command = {
 		{ "stun_defense", "resistance_states" }, 
 		{ "jedi_state_defense" }, 
 		75, 
-		100, 
+		0, 
 		45 
 	  )
 	},
@@ -66,6 +66,8 @@ PolearmHit2Command = {
 	animationCRC = hashCode("combo_3a_medium"),
 
 	combatSpam = "bonesmasher",
+	
+	weaponType = POLEARMWEAPON,
 
 	range = -1
 }

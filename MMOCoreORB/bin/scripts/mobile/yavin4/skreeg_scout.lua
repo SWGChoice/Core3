@@ -1,7 +1,6 @@
 skreeg_scout = Creature:new {
 	objectName = "@mob/creature_names:skreeg_scout",
 	socialGroup = "skreeg",
-	pvpFaction = "",
 	faction = "",
 	level = 18,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ skreeg_scout = Creature:new {
 	baseHAM = 3500,
 	baseHAMmax = 4300,
 	armor = 0,
-	resists = {5,15,5,-1,5,-1,-1,-1,-1},
+	resists = {5,115,5,-1,5,-1,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 5,
 	hideType = "hide_bristley",
@@ -32,7 +31,7 @@ skreeg_scout = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

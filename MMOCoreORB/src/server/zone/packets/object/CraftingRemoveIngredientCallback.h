@@ -23,9 +23,8 @@ class CraftingRemoveIngredientCallback : public MessageCallback {
 	ObjectControllerMessageCallback* objectControllerMain;
 public:
 	CraftingRemoveIngredientCallback(ObjectControllerMessageCallback* objectControllerCallback) :
-		MessageCallback(objectControllerCallback->getClient(), objectControllerCallback->getServer()) {
-
-		objectControllerMain = objectControllerCallback;
+		MessageCallback(objectControllerCallback->getClient(), objectControllerCallback->getServer()),
+		objectID(0), slot(0), counter(0), objectControllerMain(objectControllerCallback) {
 	}
 
 	void parse(Message* message) {
@@ -48,7 +47,12 @@ public:
 		Reference<CraftingSession*> session = player->getActiveSession(SessionFacadeType::CRAFTING).castTo<CraftingSession*>();
 
 		if(session == NULL) {
-			warning("Trying to add an ingredient when no session exists");
+			//warning("Trying to remove an ingredient when no session exists");
+			return;
+		}
+
+		if(session->getState() > 2){
+			//warning("Trying to remove an ingredient when the item is already assembled");
 			return;
 		}
 

@@ -133,8 +133,6 @@ function CorelliaCoronetScreenPlay:spawnMobiles()
 	--{"farmer_rancher",60,-20.3488,2.12878,65.9854,180.006,2365400, "conversation", ""},
 	spawnMobile("corellia", "trainer_imagedesigner",0,-21.4483,2.12878,74.4461,185,2365400)
 
-
-
 	--Outside Misc
 	spawnMobile("corellia", "businessman",60,-306.34,28,-4620.82,67.4368,0)
 	spawnMobile("corellia", "businessman",60,-312.404,28,-4646.51,242.881,0)
@@ -289,7 +287,6 @@ function CorelliaCoronetScreenPlay:spawnMobiles()
 	spawnMobile("corellia", "informant_npc_lvl_1",0,-184,28,-4342,90,0)
 	spawnMobile("corellia", "io_tsomcren",60,-140.701,28,-4719.16,44.0418,0)
 	--{"junk_dealer",0,-118.2,28,-4792.9,-144,0, "", "",JUNKGENERIC,JUNKCONVGENERIC},
-	spawnMobile("corellia", "karin_featherlight",60,-185.082,28,-4460.71,86.3314,0)
 
 	--Meatlump's outside
 	spawnMobile("corellia", "meatlump_buffoon",300,-145,28.9,-4959.8,63,0)

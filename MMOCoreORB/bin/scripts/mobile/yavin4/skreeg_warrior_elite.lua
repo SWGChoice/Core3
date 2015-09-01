@@ -1,7 +1,6 @@
 skreeg_warrior_elite = Creature:new {
 	objectName = "@mob/creature_names:skreeg_warrior_elite",
 	socialGroup = "skreeg",
-	pvpFaction = "",
 	faction = "",
 	level = 30,
 	chanceHit = 0.39,
@@ -11,7 +10,7 @@ skreeg_warrior_elite = Creature:new {
 	baseHAM = 8400,
 	baseHAMmax = 10200,
 	armor = 0,
-	resists = {-1,75,20,-1,100,-1,-1,-1,-1},
+	resists = {-1,175,20,-1,200,-1,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 5,
 	hideType = "hide_bristley",
@@ -33,8 +32,8 @@ skreeg_warrior_elite = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"dizzyattack",""}
 	}
 }
 

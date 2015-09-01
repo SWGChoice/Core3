@@ -1,7 +1,6 @@
 crimson_razor_cat = Creature:new {
 	objectName = "@mob/creature_names:crimson_sand_panther",
 	socialGroup = "panther",
-	pvpFaction = "",
 	faction = "",
 	level = 29,
 	chanceHit = 0.39,
@@ -11,7 +10,7 @@ crimson_razor_cat = Creature:new {
 	baseHAM = 7700,
 	baseHAMmax = 9400,
 	armor = 0,
-	resists = {10,10,-1,50,50,50,50,-1,-1},
+	resists = {135,135,-1,-1,15,-1,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 65,
 	hideType = "hide_bristley",
@@ -33,8 +32,8 @@ crimson_razor_cat = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"stunattack","stunChance=50"}
+		{"dizzyattack",""},
+		{"stunattack",""}
 	}
 }
 

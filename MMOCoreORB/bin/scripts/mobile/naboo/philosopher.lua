@@ -1,7 +1,7 @@
 philosopher = Creature:new {
 	objectName = "@mob/creature_names:philosopher",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "townsperson",
-	pvpFaction = "townsperson",
 	faction = "townsperson",
 	level = 4,
 	chanceHit = 0.24,
@@ -30,14 +30,14 @@ philosopher = Creature:new {
 		{
 			groups = {
 				{group = "junk", chance = 2000000},
-				{group = "wearables_common", chance = 2000000},				
+				{group = "wearables_common", chance = 2000000},
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 4000000}
-			},
-			lootChance = 4800000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_light"},
+	reactionStf = "@npc_reaction/fancy",
 	attacks = merge(marksmannovice,brawlernovice)
 }
 

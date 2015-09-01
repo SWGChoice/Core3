@@ -1,44 +1,6 @@
 /*
-Copyright (C) 2007 <SWGEmu>
-This File is part of Core3.
-This program is free software; you can redistribute
-it and/or modify it under the terms of the GNU Lesser
-General Public License as published by the Free Software
-Foundation; either version 2 of the License,
-or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU Lesser General Public License for
-more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this program; if not, write to
-the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-
-Linking Engine3 statically or dynamically with other modules
-is making a combined work based on Engine3.
-Thus, the terms and conditions of the GNU Lesser General Public License
-cover the whole combination.
-
-In addition, as a special exception, the copyright holders of Engine3
-give you permission to combine Engine3 program with free software
-programs or libraries that are released under the GNU LGPL and with
-code included in the standard release of Core3 under the GNU LGPL
-license (or modified versions of such code, with unchanged license).
-You may copy and distribute such a system following the terms of the
-GNU LGPL for Engine3 and the licenses of the other code concerned,
-provided that you include the source code of that other code when
-and as the GNU LGPL requires distribution of source code.
-
-Note that people who make modified versions of Engine3 are not obligated
-to grant this special exception for their modified versions;
-it is their choice whether to do so. The GNU Lesser General Public License
-gives permission to release a modified version without this exception;
-this exception also makes it possible to release a modified version
-which carries forward this exception.
-
+				Copyright <SWGEmu>
+		See file COPYING for copying conditions.
  */
 
 #include "server/zone/managers/creature/LairObserver.h"
@@ -66,6 +28,9 @@ int LairObserverImplementation::notifyObserverEvent(unsigned int eventType, Obse
 	Reference<LairAggroTask*> task = NULL;
 	SceneObject* sourceObject = cast<SceneObject*>(arg1);
 	AiAgent* agent = NULL;
+	ManagedReference<LairObserver*> lairObserver = _this.getReferenceUnsafeStaticCast();
+	ManagedReference<TangibleObject*> lair = cast<TangibleObject*>(observable);
+	ManagedReference<TangibleObject*> attacker = cast<TangibleObject*>(arg1);
 
 	switch (eventType) {
 	case ObserverEventType::OBJECTREMOVEDFROMZONE:
@@ -73,19 +38,22 @@ int LairObserverImplementation::notifyObserverEvent(unsigned int eventType, Obse
 		return 1;
 		break;
 	case ObserverEventType::OBJECTDESTRUCTION:
-		notifyDestruction(cast<TangibleObject*>(observable), cast<TangibleObject*>(arg1), (int)arg2);
+		notifyDestruction(lair, attacker, (int)arg2);
 		return 1;
 		break;
 	case ObserverEventType::DAMAGERECEIVED:
 		// if there are living creatures, make them aggro
 		if(getLivingCreatureCount() > 0 ){
-			task = new LairAggroTask(cast<TangibleObject*>(observable), cast<TangibleObject*>(arg1), _this.get(), false);
+			task = new LairAggroTask(lair, attacker.get(), _this.getReferenceUnsafeStaticCast(), false);
 			task->execute();
 		}
 
-		// if new creatures have spawned or there are live creatures near the lair
-		if( checkForNewSpawns(cast<TangibleObject*>(observable), cast<TangibleObject*>(arg1)) || getLivingCreatureCount() > 0 )
-			checkForHeal(cast<TangibleObject*>(observable), cast<TangibleObject*>(arg1));
+		EXECUTE_TASK_3(lairObserver, lair, attacker, {
+				Locker locker(lair_p);
+				lairObserver_p->checkForNewSpawns(lair_p, attacker_p);
+		});
+
+		checkForHeal(lair, attacker);
 
 		break;
 	case ObserverEventType::AIMESSAGE:
@@ -181,7 +149,7 @@ void LairObserverImplementation::checkForHeal(TangibleObject* lair, TangibleObje
 		return;
 
 	if (healLairEvent == NULL) {
-		healLairEvent = new HealLairObserverEvent(lair, attacker, _this.get());
+		healLairEvent = new HealLairObserverEvent(lair, attacker, _this.getReferenceUnsafeStaticCast());
 		healLairEvent->schedule(1000);
 	} else if (!healLairEvent->isScheduled()) {
 		healLairEvent->schedule(1000);
@@ -228,14 +196,16 @@ void LairObserverImplementation::healLair(TangibleObject* lair, TangibleObject* 
 }
 
 bool LairObserverImplementation::checkForNewSpawns(TangibleObject* lair, TangibleObject* attacker, bool forceSpawn) {
-	if (lair->getZone() == NULL)
+	Zone* zone = lair->getZone();
+
+	if (zone == NULL)
 		return false;
 
 	if (spawnedCreatures.size() >= lairTemplate->getSpawnLimit() && !lairTemplate->hasBossMobs())
 		return false;
 
 	if (forceSpawn) {
-		spawnNumber++;
+		spawnNumber.increment();
 	} else if (getMobType() == LairTemplate::NPC) {
 		return false;
 	} else {
@@ -244,25 +214,25 @@ bool LairObserverImplementation::checkForNewSpawns(TangibleObject* lair, Tangibl
 
 		switch (spawnNumber) {
 		case 0:
-			spawnNumber++;
+			spawnNumber.increment();
 			break;
 		case 1:
 			if (conditionDamage > (maxCondition / 10)) {
-				spawnNumber++;
+				spawnNumber.increment();
 			} else {
 				return false;
 			}
 			break;
 		case 2:
 			if (conditionDamage > (maxCondition / 2)) {
-				spawnNumber++;
+				spawnNumber.increment();
 			} else {
 				return false;
 			}
 			break;
 		case 3:
 			if (lairTemplate->hasBossMobs() && conditionDamage > ((maxCondition * 9) / 10)) {
-				spawnNumber++;
+				spawnNumber.increment();
 			} else {
 				return false;
 			}
@@ -327,13 +297,13 @@ bool LairObserverImplementation::checkForNewSpawns(TangibleObject* lair, Tangibl
 
 		float tamingChance = creatureTemplate->getTame();
 
-		CreatureManager* creatureManager = lair->getZone()->getCreatureManager();
+		CreatureManager* creatureManager = zone->getCreatureManager();
 
 		for (int j = 0; j < numberToSpawn; j++) {
 
 			float x = lair->getPositionX() + (size - System::random(size * 20) / 10.0f);
 			float y = lair->getPositionY() + (size - System::random(size * 20) / 10.0f);
-			float z = lair->getZone()->getHeight(x, y);
+			float z = zone->getHeight(x, y);
 
 			ManagedReference<CreatureObject*> creo = NULL;
 
@@ -353,7 +323,7 @@ bool LairObserverImplementation::checkForNewSpawns(TangibleObject* lair, Tangibl
 			} else {
 				AiAgent* ai = cast<AiAgent*>( creo.get());
 
-				//Locker clocker(npc, lair);
+				Locker clocker(ai, lair);
 
 				ai->setDespawnOnNoPlayerInRange(false);
 				ai->setHomeLocation(x, z, y);
@@ -366,7 +336,7 @@ bool LairObserverImplementation::checkForNewSpawns(TangibleObject* lair, Tangibl
 	}
 
 	if (spawnNumber == 4) {
-		Reference<LairAggroTask*> task = new LairAggroTask(lair, attacker, _this.get(), true);
+		Reference<LairAggroTask*> task = new LairAggroTask(lair, attacker, _this.getReferenceUnsafeStaticCast(), true);
 		task->schedule(1000);
 	}
 

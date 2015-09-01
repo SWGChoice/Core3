@@ -1,7 +1,7 @@
 bedraggled_pubam_laborer = Creature:new {
 	objectName = "@mob/creature_names:bedraggled_pubam_laborer",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "pubam",
-	pvpFaction = "pubam",
 	faction = "pubam",
 	level = 21,
 	chanceHit = 0.33,
@@ -27,9 +27,18 @@ bedraggled_pubam_laborer = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {
-			"object/mobile/dulok_male.iff",
-			"object/mobile/dulok_female.iff"},
-	lootGroups = {},
+		"object/mobile/dulok_male.iff",
+		"object/mobile/dulok_female.iff"},
+	lootGroups = {
+		{
+			groups = {
+				{group = "ewok", chance = 9100000},
+				{group = "armor_attachments", chance = 450000},
+				{group = "clothing_attachments", chance = 450000}
+			},
+			lootChance = 1420000
+		}
+	},
 	weapons = {},
 	conversationTemplate = "",
 	attacks = brawlermaster

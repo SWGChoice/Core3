@@ -23,9 +23,9 @@ void ActiveAreaImplementation::enqueueEnterEvent(SceneObject* obj) {
 #ifdef WITH_STM
 	notifyEnter(obj);
 #else
-	Reference<Task*> task = new ActiveAreaEvent(_this.get(), obj, ActiveAreaEvent::ENTEREVENT);
+	Reference<Task*> task = new ActiveAreaEvent(_this.getReferenceUnsafeStaticCast(), obj, ActiveAreaEvent::ENTEREVENT);
+	obj->executeOrderedTask(task);
 
-	Core::getTaskManager()->executeTask(task);
 #endif
 }
 
@@ -33,20 +33,48 @@ void ActiveAreaImplementation::enqueueExitEvent(SceneObject* obj) {
 #ifdef WITH_STM
 	notifyExit(obj);
 #else
-	Reference<Task*> task = new ActiveAreaEvent(_this.get(), obj, ActiveAreaEvent::EXITEVENT);
+	Reference<Task*> task = new ActiveAreaEvent(_this.getReferenceUnsafeStaticCast(), obj, ActiveAreaEvent::EXITEVENT);
+	obj->executeOrderedTask(task);
 
-	Core::getTaskManager()->executeTask(task);
 #endif
 }
 
 void ActiveAreaImplementation::notifyEnter(SceneObject* obj) {
 	if (cellObjectID == 0 || cellObjectID == obj->getParentID())
 		notifyObservers(ObserverEventType::ENTEREDAREA, obj);
+
+	if (obj->isPlayerCreature() && attachedScenery.size() > 0) {
+		ManagedReference<SceneObject*> sceno = obj;
+		Vector<ManagedReference<SceneObject* > > scene = attachedScenery;
+
+		EXECUTE_TASK_2(scene, sceno, {
+			for (int i = 0; i < scene_p.size(); i++) {
+				SceneObject* scenery = scene_p.get(i);
+				Locker locker(scenery);
+
+				scenery->sendTo(sceno_p, true);
+			}
+		});
+	}
 }
 
 void ActiveAreaImplementation::notifyExit(SceneObject* obj) {
 	if (cellObjectID == 0 || cellObjectID == obj->getParentID())
 		notifyObservers(ObserverEventType::EXITEDAREA, obj);
+
+	if (obj->isPlayerCreature() && attachedScenery.size() > 0) {
+		ManagedReference<SceneObject*> sceno = obj;
+		Vector<ManagedReference<SceneObject* > > scene = attachedScenery;
+
+		EXECUTE_TASK_2(scene, sceno, {
+			for (int i = 0; i < scene_p.size(); i++) {
+				SceneObject* scenery = scene_p.get(i);
+				Locker locker(scenery);
+
+				scenery->sendDestroyTo(sceno_p);
+			}
+		});
+	}
 }
 
 bool ActiveAreaImplementation::intersectsWith(ActiveArea* area) {

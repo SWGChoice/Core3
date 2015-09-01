@@ -1,7 +1,7 @@
 kunga_clan_leader = Creature:new {
 	objectName = "@mob/creature_names:kunga_clan_leader",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "kunga_tribe",
-	pvpFaction = "kunga_tribe",
 	faction = "kunga_tribe",
 	level = 75,
 	chanceHit = 0.75,
@@ -35,8 +35,7 @@ kunga_clan_leader = Creature:new {
 				{group = "armor_attachments", chance = 500000},
 				{group = "clothing_attachments", chance = 500000},
 				{group = "wearables_all", chance = 2000000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"primitive_weapons"},

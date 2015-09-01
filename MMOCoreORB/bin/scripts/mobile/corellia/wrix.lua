@@ -1,7 +1,6 @@
 wrix = Creature:new {
 	objectName = "@mob/creature_names:wrix",
 	socialGroup = "wrix",
-	pvpFaction = "",
 	faction = "",
 	level = 12,
 	chanceHit = 0.29,
@@ -11,7 +10,7 @@ wrix = Creature:new {
 	baseHAM = 1200,
 	baseHAMmax = 1400,
 	armor = 0,
-	resists = {0,0,0,0,0,0,0,0,0},
+	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 60,
 	hideType = "hide_bristley",
@@ -32,7 +31,7 @@ wrix = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

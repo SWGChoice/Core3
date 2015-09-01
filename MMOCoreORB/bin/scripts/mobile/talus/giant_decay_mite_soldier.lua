@@ -1,7 +1,6 @@
 giant_decay_mite_soldier = Creature:new {
 	objectName = "@mob/creature_names:giant_decay_mite_soldier",
 	socialGroup = "mite",
-	pvpFaction = "",
 	faction = "",
 	level = 17,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ giant_decay_mite_soldier = Creature:new {
 	baseHAM = 3500,
 	baseHAMmax = 4300,
 	armor = 0,
-	resists = {20,20,0,0,0,-1,0,-1,-1},
+	resists = {120,120,0,0,0,-1,0,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 18,
 	hideType = "hide_scaley",
@@ -32,7 +31,7 @@ giant_decay_mite_soldier = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

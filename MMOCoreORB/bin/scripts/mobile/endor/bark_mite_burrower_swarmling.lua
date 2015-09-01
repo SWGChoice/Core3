@@ -1,7 +1,6 @@
 bark_mite_burrower_swarmling = Creature:new {
 	objectName = "@mob/creature_names:bark_mite_burrower_swarmling",
 	socialGroup = "mite",
-	pvpFaction = "",
 	faction = "",
 	level = 20,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ bark_mite_burrower_swarmling = Creature:new {
 	baseHAM = 3500,
 	baseHAMmax = 4300,
 	armor = 0,
-	resists = {5,20,-1,35,-1,20,35,-1,-1},
+	resists = {5,120,-1,135,-1,120,135,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 50,
 	hideType = "",

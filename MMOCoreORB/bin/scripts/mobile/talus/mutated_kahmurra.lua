@@ -1,7 +1,6 @@
 mutated_kahmurra = Creature:new {
 	objectName = "@mob/creature_names:mutated_kahmurra",
 	socialGroup = "kahmurra",
-	pvpFaction = "",
 	faction = "",
 	level = 26,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ mutated_kahmurra = Creature:new {
 	baseHAM = 6800,
 	baseHAMmax = 8300,
 	armor = 0,
-	resists = {25,25,10,40,40,40,-1,-1,-1},
+	resists = {125,125,10,140,140,140,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 50,
 	hideType = "hide_bristley",
@@ -33,7 +32,8 @@ mutated_kahmurra = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"",""},
+		{"stunattack",""}
 	}
 }
 

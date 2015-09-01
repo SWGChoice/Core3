@@ -6,9 +6,11 @@
  */
 
 #include "server/zone/objects/region/CityRegion.h"
-#include "events/CityUpdateEvent.h"
+#include "server/zone/objects/region/events/CityUpdateEvent.h"
+#include "server/zone/objects/region/events/CitizenAssessmentEvent.h"
 #include "server/chat/StringIdChatParameter.h"
 #include "server/ServerCore.h"
+#include "server/chat/ChatManager.h"
 #include "server/zone/managers/city/CityManager.h"
 #include "server/zone/managers/planet/PlanetManager.h"
 #include "server/zone/managers/planet/PlanetTravelPoint.h"
@@ -37,6 +39,7 @@ void CityRegionImplementation::initializeTransientMembers() {
 	ManagedObjectImplementation::initializeTransientMembers();
 
 	loaded = false;
+	completeStructureList.setNoDuplicateInsertPlan();
 }
 
 void CityRegionImplementation::notifyLoadFromDatabase() {
@@ -45,10 +48,8 @@ void CityRegionImplementation::notifyLoadFromDatabase() {
 	if (cityRank == CityManager::CLIENT)
 		return;
 
-	//if (zone !=)
-
-	if (cityTreasuryFixed == -1) {
-		cityTreasuryFixed = cityTreasury;
+	if (cityRank < CityManager::TOWNSHIP) {
+		citySpecialization = "";
 	}
 
 	Zone* zone = getZone();
@@ -56,11 +57,10 @@ void CityRegionImplementation::notifyLoadFromDatabase() {
 	if (zone == NULL)
 		return;
 
-
-	zone->addCityRegionToUpdate(_this.get());
+	zone->addCityRegionToUpdate(_this.getReferenceUnsafeStaticCast());
 
 	if (isRegistered())
-		zone->getPlanetManager()->addRegion(_this.get());
+		zone->getPlanetManager()->addRegion(_this.getReferenceUnsafeStaticCast());
 
 	//Add taxes if they dont exist.
 	if (taxes.size() <= 0) {
@@ -72,15 +72,22 @@ void CityRegionImplementation::notifyLoadFromDatabase() {
 		taxes.add(0);
 	}
 
-	/*
-	int seconds = -1 * round(nextUpdateTime.miliDifference() / 1000.f);
+	CityManager* cityManager = getZone()->getZoneServer()->getCityManager();
 
-	if (seconds < 0) //If the update occurred in the past, force an immediate update.
-		seconds = 0;
+	if (cityManager == NULL)
+		return;
 
-	rescheduleUpdateEvent(seconds);
-	 */
+	//Reset any tax rates that are over max
+	for (int i = 0; i < taxes.size(); i++) {
+		CityTax* cityTax = cityManager->getCityTax(i);
 
+		if (cityTax == NULL)
+			continue;
+
+		if (taxes.get(i) > cityTax->getMaxValue()) {
+			taxes.set(i, 0);
+		}
+	}
 }
 
 void CityRegionImplementation::initialize() {
@@ -100,17 +107,18 @@ void CityRegionImplementation::initialize() {
 
 	hasShuttle = false;
 
-	cityTreasuryFixed = -1;
-
 	zone = NULL;
 
 	cityUpdateEvent = NULL;
+
+	citizenAssessmentEvent = NULL;
+
+	assessmentPending = false;
 
 	zoningRights.setAllowOverwriteInsertPlan();
 	zoningRights.setNullValue(0);
 
 	cityMissionTerminals.setNoDuplicateInsertPlan();
-	cityDecorations.setNoDuplicateInsertPlan();
 	citySkillTrainers.setNoDuplicateInsertPlan();
 
 	bazaars.setNoDuplicateInsertPlan();
@@ -126,15 +134,17 @@ Region* CityRegionImplementation::addRegion(float x, float y, float radius, bool
 		return NULL;
 	}
 
-	String temp = "object/region_area.iff";
+	static const String temp = "object/region_area.iff";
 	ManagedReference<SceneObject*> obj = zone->getZoneServer()->createObject(temp.hashCode(), persistent ? 1 : 0);
 
 	if (obj == NULL || !obj->isRegion()) {
 		return NULL;
 	}
+	
+	Locker clocker(obj, _this.getReferenceUnsafeStaticCast());
 
 	ManagedReference<Region*> region = cast<Region*>(obj.get());
-	region->setCityRegion(_this.get());
+	region->setCityRegion(_this.getReferenceUnsafeStaticCast());
 	region->setRadius(radius);
 	region->initializePosition(x, 0, y);
 	region->setObjectName(regionName);
@@ -154,7 +164,7 @@ void CityRegionImplementation::rescheduleUpdateEvent(uint32 seconds) {
 		return;
 
 	if (cityUpdateEvent == NULL) {
-		cityUpdateEvent = new CityUpdateEvent(_this.get(), ServerCore::getZoneServer());
+		cityUpdateEvent = new CityUpdateEvent(_this.getReferenceUnsafeStaticCast(), ServerCore::getZoneServer());
 	} else if (cityUpdateEvent->isScheduled()) {
 		cityUpdateEvent->cancel();
 	}
@@ -164,15 +174,29 @@ void CityRegionImplementation::rescheduleUpdateEvent(uint32 seconds) {
 	Core::getTaskManager()->getNextExecutionTime(cityUpdateEvent, nextUpdateTime);
 }
 
+void CityRegionImplementation::scheduleCitizenAssessment(uint32 seconds) {
+
+
+	if (citizenAssessmentEvent == NULL) {
+		citizenAssessmentEvent = new CitizenAssessmentEvent(_this.getReferenceUnsafeStaticCast(), ServerCore::getZoneServer());
+	} else if (citizenAssessmentEvent->isScheduled()) {
+		citizenAssessmentEvent->cancel();
+	}
+
+	citizenAssessmentEvent->schedule(seconds * 1000);
+
+	Core::getTaskManager()->getNextExecutionTime(citizenAssessmentEvent, nextCitizenAssessment);
+}
+
 int CityRegionImplementation::getTimeToUpdate() {
 	return round(nextUpdateTime.miliDifference() / -1000.f);
 }
 
 void CityRegionImplementation::notifyEnter(SceneObject* object) {
-	if (object->getCityRegion().get() != _this.get() && object->isPlayerCreature())
+	if (object->getCityRegion().get() != _this.getReferenceUnsafeStaticCast() && object->isPlayerCreature())
 		currentPlayers.increment();
 
-	object->setCityRegion(_this.get());
+	object->setCityRegion(_this.getReferenceUnsafeStaticCast());
 
 	if (object->isBazaarTerminal() || object->isVendor()) {
 
@@ -191,7 +215,7 @@ void CityRegionImplementation::notifyEnter(SceneObject* object) {
 	if (isClientRegion())
 		return;
 
-	if (object->isCreatureObject()){
+	if (object->isCreatureObject()) {
 		CreatureObject* creature = cast<CreatureObject*>(object);
 
 		StringIdChatParameter params("city/city", "city_enter_city"); //You have entered %TT (%TO).
@@ -212,38 +236,51 @@ void CityRegionImplementation::notifyEnter(SceneObject* object) {
 		applySpecializationModifiers(creature);
 	}
 
-	if (object->isStructureObject()){
+	if (object->isStructureObject()) {
 		StructureObject* structure = cast<StructureObject*>(object);
+		CityManager* cityManager = getZone()->getZoneServer()->getCityManager();
 
 		Locker slocker(&structureListMutex);
+
+		if (isLoaded() && !completeStructureList.contains(structure->getObjectID()) && structure->getBaseMaintenanceRate() > 0) {
+			cityManager->sendAddStructureMails(_this.getReferenceUnsafeStaticCast(), structure);
+		}
 
 		if (structure->isBuildingObject()) {
 
 			BuildingObject* building = cast<BuildingObject*>(object);
-			uint64 owner = structure->getOwnerObjectID();
+			uint64 ownerID = structure->getOwnerObjectID();
 
-			if(building->isResidence() &&  owner != 0 && !citizenList.contains(owner)) {
-				addCitizen(owner);
+			ManagedReference<CreatureObject*> owner = zone->getZoneServer()->getObject(ownerID).castTo<CreatureObject*>();
+
+			if(owner != NULL && owner->isPlayerCreature() && building->isResidence() && !isCitizen(ownerID)) {
+				cityManager->registerCitizen(_this.getReferenceUnsafeStaticCast(), owner);
 			}
 		 }
 
 		completeStructureList.put(structure->getObjectID());
 
-		if(isLoaded()){
-
-			if ( structure->isDecoration() ) {
-				addDecoration(structure);
-			} else if (structure->isCivicStructure()) {
-				addStructure(structure);
-			} else if (structure->isCommercialStructure()) {
-				addCommercialStructure(structure);
-			}
-
+		if (structure->isCivicStructure() && !structure->isDecoration()) {
+			addStructure(structure);
+		} else if (structure->isCommercialStructure()) {
+			addCommercialStructure(structure);
 		}
 
 		if (registered) {
 			zone->registerObjectWithPlanetaryMap(structure);
 		}
+	}
+
+	if (object->isDecoration() && object->getParent().get() == NULL) {
+		addDecoration(object);
+	}
+
+	if (registered && cityMissionTerminals.contains(object)) {
+		zone->registerObjectWithPlanetaryMap(object);
+	}
+
+	if (!registered && citySkillTrainers.contains(object)) {
+		zone->unregisterObjectWithPlanetaryMap(object);
 	}
 }
 
@@ -259,7 +296,7 @@ void CityRegionImplementation::notifyExit(SceneObject* object) {
 
 			object->setCityRegion(city);
 
-			if (city == _this.get()) // if its the same city we wait till the object exits the last region
+			if (city == _this.getReferenceUnsafeStaticCast()) // if its the same city we wait till the object exits the last region
 				return;
 		} else {
 			object->setCityRegion(NULL);
@@ -288,7 +325,7 @@ void CityRegionImplementation::notifyExit(SceneObject* object) {
 	if (isClientRegion())
 		return;
 
-	if (object->isCreatureObject()){
+	if (object->isCreatureObject()) {
 
 		CreatureObject* creature = cast<CreatureObject*>(object);
 
@@ -311,22 +348,27 @@ void CityRegionImplementation::notifyExit(SceneObject* object) {
 		if (structure->isBuildingObject()) {
 
 			BuildingObject* building = cast<BuildingObject*>(object);
-			uint64 owner = structure->getOwnerObjectID();
+			uint64 ownerID = structure->getOwnerObjectID();
 
-			if( building->isResidence() &&  owner != 0 && citizenList.contains(owner)) {
-				removeCitizen(owner);
+			ManagedReference<CreatureObject*> owner = zone->getZoneServer()->getObject(ownerID).castTo<CreatureObject*>();
+
+			if(owner != NULL && owner->isPlayerCreature() && building->isResidence() && isCitizen(ownerID)) {
+				CityManager* cityManager = getZone()->getZoneServer()->getCityManager();
+				cityManager->unregisterCitizen(_this.getReferenceUnsafeStaticCast(), owner);
 			}
 		}
 
 		completeStructureList.drop(structure->getObjectID());
 
-		if (structure->isDecoration()){
-			removeDecoration(structure);
-		} else if (structure->isCivicStructure()) {
+		if (structure->isCivicStructure()) {
 			removeStructure(structure);
 		} else if (structure->isCommercialStructure()) {
 			removeCommercialStructure(structure);
 		}
+	}
+
+	if (object->isDecoration() && object->getParent().get() == NULL) {
+		removeDecoration(object);
 	}
 }
 
@@ -358,14 +400,16 @@ void CityRegionImplementation::cleanupCitizens() {
 
 		if (!ownerIds.contains(id))
 			removeIds.put(id);
+		else if (isBanned(id))
+			removeBannedPlayer(id);
 	}
 
 	for (int i = 0; i < removeIds.size(); ++i) {
 		removeCitizen(removeIds.get(i));
 	}
 
-	if(!isCitizen(getMayorID()))
-		citizenList.put(getMayorID());
+	if(getMayorID() != 0 && !isCitizen(getMayorID()))
+		addCitizen(getMayorID());
 }
 
 void CityRegionImplementation::setRegionName(const StringId& name) {
@@ -385,11 +429,9 @@ void CityRegionImplementation::addZoningRights(uint64 objectid, uint32 duration)
 }
 
 bool CityRegionImplementation::hasZoningRights(uint64 objectid) {
-	//if (isMilitiaMember(objectid))
-	//	return true;
-
-	if(objectid == getMayorID())
+	if(getMayorID() != 0 && objectid == getMayorID())
 		return true;
+
 	uint32 timestamp = zoningRights.get(objectid);
 
 	if (timestamp == 0)
@@ -407,11 +449,24 @@ void CityRegionImplementation::setRadius(float rad) {
 	if (regions.size() <= 0)
 		return;
 
-	ManagedReference<ActiveArea*> aa = regions.get(0).get();
-	aa->setRadius(rad);
+	ManagedReference<Region*> oldRegion = regions.get(0).get();
 
-	zone->removeObject(aa, NULL, false);
-	zone->transferObject(aa, -1, false);
+	ManagedReference<Region*> newRegion = addRegion(oldRegion->getPositionX(), oldRegion->getPositionY(), rad, true);
+
+	Locker locker(oldRegion, _this.getReferenceUnsafeStaticCast());
+
+	zone->removeObject(oldRegion, NULL, false);
+	regions.drop(oldRegion);
+	oldRegion->destroyObjectFromDatabase(true);
+
+	locker.release();
+
+	if (registered) {
+		Reference<PlanetMapCategory*> cityCat = TemplateManager::instance()->getPlanetMapCategoryByName("city");
+
+		newRegion->setPlanetMapCategory(cityCat);
+		newRegion->getZone()->registerObjectWithPlanetaryMap(newRegion);
+	}
 }
 
 void CityRegionImplementation::destroyActiveAreas() {
@@ -419,11 +474,28 @@ void CityRegionImplementation::destroyActiveAreas() {
 		ManagedReference<Region*> aa = regions.get(i);
 
 		if (aa != NULL) {
+			Locker clocker(aa, _this.getReferenceUnsafeStaticCast());
 			aa->destroyObjectFromWorld(false);
 			aa->destroyObjectFromDatabase(true);
-
-			regions.drop(aa);
 		}
+	}
+
+	regions.removeAll();
+}
+
+void CityRegionImplementation::cancelTasks() {
+	if (cityUpdateEvent != NULL) {
+		if (cityUpdateEvent->isScheduled())
+			cityUpdateEvent->cancel();
+
+		cityUpdateEvent = NULL;
+	}
+
+	if (citizenAssessmentEvent != NULL) {
+		if (citizenAssessmentEvent->isScheduled())
+			citizenAssessmentEvent->cancel();
+
+		citizenAssessmentEvent = NULL;
 	}
 }
 
@@ -434,8 +506,15 @@ String CityRegionImplementation::getRegionName() {
 	return regionName.getFullPath();
 }
 
-bool CityRegionImplementation::hasUniqueStructure(uint32 crc){
-	Locker locker(_this.get());
+String CityRegionImplementation::getRegionDisplayedName() {
+	if(!customRegionName.isEmpty())
+		return customRegionName;
+
+	return StringIdManager::instance()->getStringId(regionName.getFullPath().hashCode()).toString();
+}
+
+bool CityRegionImplementation::hasUniqueStructure(uint32 crc) {
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	for (int i = 0; i < structures.size(); ++i) {
 		ManagedReference<StructureObject*> structure = structures.get(i);
@@ -447,8 +526,8 @@ bool CityRegionImplementation::hasUniqueStructure(uint32 crc){
 	return false;
 }
 
-void CityRegionImplementation::destroyAllStructuresForRank(uint8 rank){
-	Locker locker(_this.get());
+void CityRegionImplementation::destroyAllStructuresForRank(uint8 rank, bool sendMail) {
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	if (zone == NULL)
 		return;
@@ -464,71 +543,103 @@ void CityRegionImplementation::destroyAllStructuresForRank(uint8 rank){
 		if (ssot == NULL || ssot->getCityRankRequired() < rank || !ssot->isCivicStructure())
 			continue;
 
-		Locker _clocker(structure, _this.get());
+		sendDestroyObjectMail(structure);
+
+		Locker _clocker(structure, _this.getReferenceUnsafeStaticCast());
 
 		structureManager->destroyStructure(structure);
 
-		structures.drop(structure);
+		structures.removeElement(structure);
+	}
+
+	for (int i = cityDecorations.size() - 1; i >= 0; --i) {
+		ManagedReference<SceneObject*> decoration = cityDecorations.get(i);
+		StructureObject* structure = decoration.castTo<StructureObject*>();
+
+		if (structure == NULL)
+			continue;
+
+		SharedStructureObjectTemplate* ssot = dynamic_cast<SharedStructureObjectTemplate*>(structure->getObjectTemplate());
+
+		//We only want to destroy civic structures.
+		if (ssot == NULL || ssot->getCityRankRequired() < rank || !ssot->isCivicStructure())
+			continue;
+
+		sendDestroyObjectMail(structure);
+
+		Locker _clocker(structure, _this.getReferenceUnsafeStaticCast());
+
+		structureManager->destroyStructure(structure);
+
+		cityDecorations.removeElement(decoration);
 	}
 }
 
-void CityRegionImplementation::updateMilitia(){
+void CityRegionImplementation::removeAllTerminals() {
+	for (int i = cityMissionTerminals.size() - 1; i >= 0 ; --i) {
+		Reference<SceneObject*> terminal = cityMissionTerminals.get(i);
 
-	Locker locker (_this.get());
+		Locker locker(terminal);
 
-	uint64 objectID;
-
-	for (int i = militiaMembers.size() - 1;i >= 0; --i){
-
-		objectID = militiaMembers.get(i);
-
-		if (!isCitizen(objectID))
-			removeMilitiaMember(objectID);
-	}
-}
-
-void CityRegionImplementation::removeAllTerminals(){
-	for (int i = 0; i < cityMissionTerminals.size(); i++){
-		cityMissionTerminals.get(i)->destroyObjectFromWorld(false);
-		cityMissionTerminals.get(i)->destroyObjectFromDatabase(false);
+		terminal->destroyObjectFromWorld(false);
+		terminal->destroyObjectFromDatabase(true);
 	}
 
 	cityMissionTerminals.removeAll();
 }
 
-void CityRegionImplementation::removeAllSkillTrainers(){
+void CityRegionImplementation::removeAllSkillTrainers() {
+	for (int i = citySkillTrainers.size() - 1; i >= 0 ; --i) {
+		Reference<SceneObject*> trainer = citySkillTrainers.get(i);
 
-	for (int i = 0; i < citySkillTrainers.size(); i++){
-		citySkillTrainers.get(i)->destroyObjectFromWorld(false);
-		citySkillTrainers.get(i)->destroyObjectFromDatabase(false);
+		Locker locker(trainer);
+
+		trainer->destroyObjectFromWorld(false);
+		trainer->destroyObjectFromDatabase(true);
 	}
 
 	citySkillTrainers.removeAll();
 }
 
-void CityRegionImplementation::removeAllDecorations(){
-	for (int i = 0; i < cityDecorations.size(); i++){
+void CityRegionImplementation::removeAllDecorations() {
+	Locker slocker(&structureListMutex);
+
+	for (int i = cityDecorations.size() - 1; i >= 0 ; --i) {
 		ManagedReference<SceneObject*> dec = cityDecorations.get(i);
-		if(dec->isStructureObject()){
+
+		Locker locker(dec);
+
+		if(dec->isStructureObject()) {
 			StructureManager::instance()->destroyStructure(cast<StructureObject*>(dec.get()));
 		} else {
-			cityDecorations.get(i)->destroyObjectFromWorld(false);
-			cityDecorations.get(i)->destroyObjectFromDatabase(false);
+			dec->destroyObjectFromWorld(false);
+			dec->destroyObjectFromDatabase(true);
 		}
 	}
 
 	cityDecorations.removeAll();
 }
 
-bool CityRegionImplementation::isVotingLocked(){
+void CityRegionImplementation::removeCandidate(uint64 candidateoid) {
+	candidates.drop(candidateoid);
+
+	// Remove votes for the candidate
+	for (int i = mayoralVotes.size() - 1; i >= 0; --i) {
+		if (mayoralVotes.get(i) == candidateoid) {
+			mayoralVotes.drop(mayoralVotes.elementAt(i).getKey());
+		}
+	}
+}
+
+bool CityRegionImplementation::isVotingLocked() {
 	Time rightnow;
 	rightnow.updateToCurrentTime();
 
 	int lockedCycles = CityManagerImplementation::cityVotingCycles - CityManagerImplementation::cityVotingCyclesUntilLocked;
-	int64 minimumDifference = CityManagerImplementation::cityUpdateInterval * lockedCycles * 60000;
+	int64 minimumDifference = (int64)CityManagerImplementation::cityUpdateInterval * lockedCycles * 60000;
 
 	int64 dif = rightnow.miliDifference(nextInauguration);
-	//info("dif is " + String::valueOf(dif) + " minimum is " + String::valueOf(minimumdifference),true);
+
 	return ( dif < minimumDifference);
 
 }
@@ -548,23 +659,47 @@ void CityRegionImplementation::applySpecializationModifiers(CreatureObject* crea
 	if (cityspec == NULL)
 		return;
 
-	//Remove all current city skillmods
-	creature->removeAllSkillModsOfType(SkillModManager::CITY);
-
-	VectorMap<String, int>* mods = cityspec->getSkillMods();
-
-	for (int i = 0; i < mods->size(); ++i) {
-		VectorMapEntry<String, int> entry = mods->elementAt(i);
-
-		creature->addSkillMod(SkillModManager::CITY, entry.getKey(), entry.getValue());
+	if (isBanned(creature->getObjectID())) {
+		return;
 	}
+
+	Reference<CreatureObject*> creatureReference = creature;
+	Reference<CityRegion*> city = _this.getReferenceUnsafeStaticCast();
+
+	typedef VectorMap<String, int> SkillMods;
+	typedef VectorMapEntry<String, int> SkillModsEntry;
+
+	EXECUTE_ORDERED_TASK_3(creature, creatureReference, cityspec, city, {
+			Locker locker(creatureReference_p);
+
+			//Remove all current city skillmods
+			creatureReference_p->removeAllSkillModsOfType(SkillModManager::CITY);
+
+			SkillMods* mods = cityspec_p->getSkillMods();
+
+			for (int i = 0; i < mods->size(); ++i) {
+				SkillModsEntry& entry = mods->elementAt(i);
+
+				if (entry.getKey() == "private_defense" && !city_p->isMilitiaMember(creatureReference_p->getObjectID()))
+					continue;
+
+				creatureReference_p->addSkillMod(SkillModManager::CITY, entry.getKey(), entry.getValue());
+			}
+	});
 }
 
 void CityRegionImplementation::removeSpecializationModifiers(CreatureObject* creature) {
-	creature->removeAllSkillModsOfType(SkillModManager::CITY);
+	Reference<CreatureObject*> creatureReference = creature;
+
+	EXECUTE_ORDERED_TASK_1(creature, creatureReference, {
+			Locker locker(creatureReference_p);
+
+			creatureReference_p->removeAllSkillModsOfType(SkillModManager::CITY);
+	});
+
 }
 
-void CityRegionImplementation::transferCivicStructuresToMayor(){
+void CityRegionImplementation::transferCivicStructuresToMayor() {
 	Locker tlock(&structureListMutex);
 
 	if(zone == NULL)
@@ -582,7 +717,7 @@ void CityRegionImplementation::transferCivicStructuresToMayor(){
 
 	ManagedReference<SceneObject*> mayorObject = server->getObject(getMayorID());
 
-	if(mayorObject == NULL)
+	if(mayorObject == NULL || !mayorObject->isPlayerCreature())
 		return;
 
 	ManagedReference<CreatureObject*> newMayor = cast<CreatureObject*>(mayorObject.get());
@@ -591,22 +726,22 @@ void CityRegionImplementation::transferCivicStructuresToMayor(){
 		return;
 
 	// transfer civic structures
-	for(int i = 0; i < structures.size(); ++i){
+	for(int i = 0; i < structures.size(); ++i) {
 		ManagedReference<StructureObject*> structure = structures.get(i);
 
-		if(!structure->isCivicStructure()){
+		if(!structure->isCivicStructure()) {
 			continue;
 		}
 
 		ManagedReference<CreatureObject*> oldOwner = structure->getOwnerCreatureObject();
 
-		if(oldOwner != NULL && oldOwner != newMayor){
+		if(newMayor != oldOwner) {
 			TransferstructureCommand::doTransferStructure(oldOwner, newMayor, structure,true);
 		}
 	}
 
 	// transfer decorations
-	for(int i = 0; i < cityDecorations.size(); ++i){
+	for(int i = 0; i < cityDecorations.size(); ++i) {
 		ManagedReference<SceneObject*> str = cityDecorations.get(i);
 
 		if(str == NULL || !str->isStructureObject())
@@ -619,7 +754,7 @@ void CityRegionImplementation::transferCivicStructuresToMayor(){
 
 		ManagedReference<CreatureObject*> oldOwner = structure->getOwnerCreatureObject();
 
-		if(oldOwner != NULL && oldOwner != newMayor) {
+		if(newMayor != oldOwner) {
 			TransferstructureCommand::doTransferStructure(oldOwner, newMayor, structure,true);
 		}
 	}
@@ -627,26 +762,46 @@ void CityRegionImplementation::transferCivicStructuresToMayor(){
 	// declare new mayor at the city hall
 	ManagedReference<StructureObject* > cityhall = getCityHall();
 	PlayerObject* mayorPlayer = newMayor->getPlayerObject();
-	if(mayorPlayer != NULL && cityhall != NULL && mayorPlayer->getDeclaredResidence() != cityhall->getObjectID()){
+	uint64 oldResidenceID = mayorPlayer->getDeclaredResidence();
+
+	if(mayorPlayer != NULL && cityhall != NULL && oldResidenceID != cityhall->getObjectID()) {
 		ManagedReference<CreatureObject*> creature = cityhall->getOwnerCreatureObject();
-		if(creature != NULL){
+		if(creature != NULL) {
 			PlayerObject* oldMayor = creature->getPlayerObject();
 
-			if (oldMayor != NULL)
+			if (oldMayor != NULL) {
+				Locker clocker(creature, _this.getReferenceUnsafeStaticCast());
+
 				oldMayor->setDeclaredResidence(NULL);
+
+				clocker.release();
+			}
 		}
 
 		BuildingObject* cityBuilding = cast<BuildingObject*>(cityhall.get());
 
-		if(cityBuilding != NULL)
+		if(cityBuilding != NULL) {
+			ManagedReference<BuildingObject*> oldResidence = server->getObject(oldResidenceID).castTo<BuildingObject*>();
+
+			if (oldResidence != NULL) {
+				Locker olocker(oldResidence, _this.getReferenceUnsafeStaticCast());
+
+				oldResidence->setResidence(false);
+
+				olocker.release();
+			}
+
+			Locker clock(newMayor, _this.getReferenceUnsafeStaticCast());
+
 			mayorPlayer->setDeclaredResidence(cityBuilding);
+		}
 	}
-
-
 
 }
 
-void CityRegionImplementation::cleanupDuplicateCityStructures(){
+void CityRegionImplementation::cleanupDuplicateCityStructures() {
+	Locker tlock(&structureListMutex);
+
 	Vector<ManagedReference<StructureObject*> > singleStructures;
 
 	for(int i = 0; i < getStructuresCount(); i++){
@@ -672,7 +827,6 @@ void CityRegionImplementation::cleanupDuplicateCityStructures(){
 	commercialStructures.removeAll();
 	commercialStructures.addAll(singleStructures);
 
-
 	Vector<ManagedReference<SceneObject*> > singleDecorations;
 
 	for(int i = 0; i < getDecorationCount(); i++){
@@ -684,89 +838,91 @@ void CityRegionImplementation::cleanupDuplicateCityStructures(){
 
 	cityDecorations.removeAll();
 	cityDecorations.addAll(singleDecorations);
-
 }
 
-void CityRegionImplementation::removeDecorationsOutsideCity(int newRadius){
+void CityRegionImplementation::removeDecorationsOutsideCity(int newRadius) {
 	if(cityHall == NULL)
 		return;
 
-	for(int i = getDecorationCount() - 1; i >= 0; i--){
+	for(int i = getDecorationCount() - 1; i >= 0; i--) {
 		ManagedReference<SceneObject*> obj = getCityDecoration(i);
-		if(obj != NULL && !isInsideRadius(obj, newRadius)){
+		if(obj != NULL && !isInsideRadius(obj, newRadius)) {
 			//info("need to destroy the decoration" + obj->getObjectNameStringIdName(),true);
 
 			removeDecoration(obj);
+			sendDestroyOutsideObjectMail(obj);
 
-			if(obj->isStructureObject()){
+			if(obj->isStructureObject()) {
 				StructureManager* structureManager = StructureManager::instance();
 				structureManager->destroyStructure(obj.castTo<StructureObject*>());
 			} else {
 
-				Locker clock(obj, _this.get());
+				Locker clock(obj, _this.getReferenceUnsafeStaticCast());
 				obj->destroyObjectFromWorld(true);
-				obj->destroyObjectFromDatabase();
+				obj->destroyObjectFromDatabase(true);
 			}
 
 		}
 	}
 }
 
-void CityRegionImplementation::removeTrainersOutsideCity(int newRadius){
+void CityRegionImplementation::removeTrainersOutsideCity(int newRadius) {
 	if(cityHall == NULL)
 		return;
 
-	for(int i = getSkillTrainerCount() -1; i >=0; i--){
+	for(int i = getSkillTrainerCount() -1; i >=0; i--) {
 		ManagedReference<SceneObject*> obj = getCitySkillTrainer(i);
 
-		if(obj != NULL && !isInsideRadius(obj, newRadius)){
+		if(obj != NULL && !isInsideRadius(obj, newRadius)) {
 			//info("need to destroy the skill trainer" + obj->getObjectNameStringIdName(),true);
 
 			removeSkillTrainers(obj);
+			sendDestroyOutsideObjectMail(obj);
 
-			Locker clock(obj, _this.get());
+			Locker clock(obj, _this.getReferenceUnsafeStaticCast());
 			obj->destroyObjectFromWorld(true);
-			obj->destroyObjectFromDatabase();
+			obj->destroyObjectFromDatabase(true);
 		}
 	}
 }
 
-void CityRegionImplementation::removeTerminalsOutsideCity(int newRadius){
+void CityRegionImplementation::removeTerminalsOutsideCity(int newRadius) {
 	if(cityHall == NULL)
 		return;
 
-	for(int i = getMissionTerminalCount() - 1; i >= 0; i--){
+	for(int i = getMissionTerminalCount() - 1; i >= 0; i--) {
 		ManagedReference<SceneObject*> obj = getCityMissionTerminal(i);
-		if(obj != NULL && !isInsideRadius(obj, newRadius)){
+		if(obj != NULL && !isInsideRadius(obj, newRadius)) {
 			//info("need to destroy the mission terminal" + obj->getObjectNameStringIdName(),true);
 
 			removeMissionTerminal(obj);
+			sendDestroyOutsideObjectMail(obj);
 
-			Locker clock(obj, _this.get());
+			Locker clock(obj, _this.getReferenceUnsafeStaticCast());
 			obj->destroyObjectFromWorld(true);
-			obj->destroyObjectFromDatabase();
+			obj->destroyObjectFromDatabase(true);
 		}
 	}
 }
 
-void CityRegionImplementation::removeStructuresOutsideCity(int newRadius){
+void CityRegionImplementation::removeStructuresOutsideCity(int newRadius) {
 	if(cityHall == NULL)
 		return;
 
-	for(int i = getStructuresCount() - 1; i >= 0; i--){
+	for(int i = getStructuresCount() - 1; i >= 0; i--) {
 		ManagedReference<SceneObject*> obj = this->getCivicStructure(i);
-		if(obj != NULL && !isInsideRadius(obj, newRadius) ){
+		if(obj != NULL && !isInsideRadius(obj, newRadius) ) {
 			//info("need to destroy the civic structure " + obj->getObjectNameStringIdName() + " based on cityRegionCheck",true);
 			removeStructure(obj.castTo<StructureObject*>());
+			sendDestroyOutsideObjectMail(obj);
 			StructureManager* structureManager = StructureManager::instance();
 			structureManager->destroyStructure(obj.castTo<StructureObject*>());
 
 		}
 	}
-
 }
 
-bool CityRegionImplementation::isInsideRadius(SceneObject* obj, int radiusToUse){
+bool CityRegionImplementation::isInsideRadius(SceneObject* obj, int radiusToUse) {
 	Vector3 cityCenter(cityHall->getPositionX(), cityHall->getPositionY(), 0);
 	Vector3 loc(obj->getPositionX(), obj->getPositionY(),0);
 	//info("checking inside city for " + obj->getObjectNameStringIdName() + " " + String::valueOf(cityCenter.squaredDistanceTo(loc) <= (getRadius() * getRadius())),true);
@@ -774,34 +930,210 @@ bool CityRegionImplementation::isInsideRadius(SceneObject* obj, int radiusToUse)
 
 }
 
-void CityRegionImplementation::cleanupDecorations(int limit){
+void CityRegionImplementation::sendDestroyOutsideObjectMail(SceneObject* obj) {
+	if(cityHall == NULL)
+		return;
 
-	int decorationsToRemove = cityDecorations.size() -limit;
+	ManagedReference<CreatureObject*> mayor = cityHall->getZoneServer()->getObject(getMayorID()).castTo<CreatureObject*>();
+	ChatManager* chatManager = cityHall->getZoneServer()->getChatManager();
+
+	if (mayor != NULL && obj != NULL) {
+		StringIdChatParameter params("city/city", "structure_destroyed_radius_body");
+		params.setTO(mayor->getFirstName());
+		params.setTT(obj->getObjectName());
+		UnicodeString subject = "@city/city:structure_destroyed_subject"; // Structure Removed!
+
+		chatManager->sendMail("@city/city:new_city_from", subject, params, mayor->getFirstName(), NULL);
+	}
+}
+
+void CityRegionImplementation::sendDestroyObjectMail(SceneObject* obj) {
+	if(cityHall == NULL)
+		return;
+
+	ManagedReference<CreatureObject*> mayor = cityHall->getZoneServer()->getObject(getMayorID()).castTo<CreatureObject*>();
+	ChatManager* chatManager = cityHall->getZoneServer()->getChatManager();
+
+	if (mayor != NULL && obj != NULL) {
+		StringIdChatParameter params("city/city", "structure_destroyed_body");
+		params.setTO(mayor->getFirstName());
+		params.setTT(obj->getObjectName());
+		UnicodeString subject = "@city/city:structure_destroyed_subject"; // Structure Removed!
+
+		chatManager->sendMail("@city/city:new_city_from", subject, params, mayor->getFirstName(), NULL);
+	}
+}
+
+void CityRegionImplementation::sendStructureInvalidMails() {
+	if(cityHall == NULL)
+		return;
+
+	ManagedReference<CreatureObject*> mayor = cityHall->getZoneServer()->getObject(getMayorID()).castTo<CreatureObject*>();
+	ChatManager* chatManager = cityHall->getZoneServer()->getChatManager();
+
+	for (int i = structures.size() - 1; i >= 0; --i) {
+		ManagedReference<StructureObject*> structure = structures.get(i);
+
+		SharedStructureObjectTemplate* ssot = dynamic_cast<SharedStructureObjectTemplate*>(structure->getObjectTemplate());
+
+		if (ssot == NULL || ssot->getCityRankRequired() <= cityRank || !ssot->isCivicStructure())
+			continue;
+
+		if (mayor != NULL) {
+			StringIdChatParameter params("city/city", "structure_invalid_body");
+			params.setTO(mayor->getFirstName());
+			params.setTT(structure->getObjectName());
+			UnicodeString subject = "@city/city:structure_invalid_subject"; // City Can't Support Structure!
+
+			chatManager->sendMail("@city/city:new_city_from", subject, params, mayor->getFirstName(), NULL);
+		}
+	}
+
+	for (int i = cityDecorations.size() - 1; i >= 0; --i) {
+		ManagedReference<StructureObject*> structure = cityDecorations.get(i).castTo<StructureObject*>();
+
+		if (structure == NULL)
+			continue;
+
+		SharedStructureObjectTemplate* ssot = dynamic_cast<SharedStructureObjectTemplate*>(structure->getObjectTemplate());
+
+		if (ssot == NULL || ssot->getCityRankRequired() <= cityRank || !ssot->isCivicStructure())
+			continue;
+
+		if (mayor != NULL) {
+			StringIdChatParameter params("city/city", "structure_invalid_body");
+			params.setTO(mayor->getFirstName());
+			params.setTT(structure->getObjectName());
+			UnicodeString subject = "@city/city:structure_invalid_subject"; // City Can't Support Structure!
+
+			chatManager->sendMail("@city/city:new_city_from", subject, params, mayor->getFirstName(), NULL);
+		}
+	}
+}
+
+void CityRegionImplementation::sendStructureValidMails() {
+	if(cityHall == NULL)
+		return;
+
+	ManagedReference<CreatureObject*> mayor = cityHall->getZoneServer()->getObject(getMayorID()).castTo<CreatureObject*>();
+	ChatManager* chatManager = cityHall->getZoneServer()->getChatManager();
+
+	for (int i = structures.size() - 1; i >= 0; --i) {
+		ManagedReference<StructureObject*> structure = structures.get(i);
+
+		SharedStructureObjectTemplate* ssot = dynamic_cast<SharedStructureObjectTemplate*>(structure->getObjectTemplate());
+
+		if (ssot == NULL || ssot->getCityRankRequired() < cityRank || !ssot->isCivicStructure())
+			continue;
+
+		if (mayor != NULL) {
+			StringIdChatParameter params("city/city", "structure_valid_body");
+			params.setTO(mayor->getFirstName());
+			params.setTT(structure->getObjectName());
+			UnicodeString subject = "@city/city:structure_valid_subject"; // Structure Support Reestablished!
+
+			chatManager->sendMail("@city/city:new_city_from", subject, params, mayor->getFirstName(), NULL);
+		}
+	}
+
+	for (int i = cityDecorations.size() - 1; i >= 0; --i) {
+		ManagedReference<StructureObject*> structure = cityDecorations.get(i).castTo<StructureObject*>();
+
+		if (structure == NULL)
+			continue;
+
+		SharedStructureObjectTemplate* ssot = dynamic_cast<SharedStructureObjectTemplate*>(structure->getObjectTemplate());
+
+		if (ssot == NULL || ssot->getCityRankRequired() < cityRank || !ssot->isCivicStructure())
+			continue;
+
+		if (mayor != NULL) {
+			StringIdChatParameter params("city/city", "structure_valid_body");
+			params.setTO(mayor->getFirstName());
+			params.setTT(structure->getObjectName());
+			UnicodeString subject = "@city/city:structure_valid_subject"; // Structure Support Reestablished!
+
+			chatManager->sendMail("@city/city:new_city_from", subject, params, mayor->getFirstName(), NULL);
+		}
+	}
+}
+
+void CityRegionImplementation::cleanupDecorations(int limit) {
+
+	int decorationsToRemove = cityDecorations.size() - limit;
 
 	if(decorationsToRemove <= 0)
 		return;
 
-	for(int i =  0; i < decorationsToRemove; i++){
+	for(int i =  0; i < decorationsToRemove; i++) {
 
 		SceneObject* dec = getCityDecoration(0);
 		if(dec != NULL) {
+
+			sendDestroyObjectMail(dec);
 
 			if(dec->isStructureObject()){
 				StructureManager* structureManager = StructureManager::instance();
 				structureManager->destroyStructure(cast<StructureObject*>(dec));
 
 			} else {
-				Locker clock(dec, _this.get());
+				Locker clock(dec, _this.getReferenceUnsafeStaticCast());
 				dec->destroyObjectFromWorld(true);
-				dec->destroyObjectFromDatabase();
+				dec->destroyObjectFromDatabase(true);
 			}
 
 			cityDecorations.removeElementAt(0);
+		}
+	}
+}
 
+void CityRegionImplementation::cleanupTrainers(int limit) {
+
+	int trainersToRemove = citySkillTrainers.size() - limit;
+
+	if(trainersToRemove <= 0)
+		return;
+
+	for(int i =  0; i < trainersToRemove; i++) {
+
+		SceneObject* trainer = getCitySkillTrainer(0);
+		if(trainer != NULL) {
+
+			sendDestroyObjectMail(trainer);
+
+			Locker clock(trainer, _this.getReferenceUnsafeStaticCast());
+			trainer->destroyObjectFromWorld(true);
+			trainer->destroyObjectFromDatabase(true);
+
+			citySkillTrainers.removeElementAt(0);
+		}
+	}
+}
+
+void CityRegionImplementation::cleanupMissionTerminals(int limit) {
+
+	int terminalsToRemove = cityMissionTerminals.size() - limit;
+
+	if(terminalsToRemove <= 0)
+		return;
+
+	for(int i =  0; i < terminalsToRemove; i++) {
+
+		SceneObject* terminal = getCityMissionTerminal(0);
+		if(terminal != NULL) {
+
+			sendDestroyObjectMail(terminal);
+
+			Locker clock(terminal, _this.getReferenceUnsafeStaticCast());
+			terminal->destroyObjectFromWorld(true);
+			terminal->destroyObjectFromDatabase(true);
+
+			cityMissionTerminals.removeElementAt(0);
 		}
 	}
 }
 
 uint64 CityRegionImplementation::getObjectID() {
-	return _this.get()->_getObjectID();
+	return _this.getReferenceUnsafeStaticCast()->_getObjectID();
 }
+

@@ -1,7 +1,6 @@
 tattered_torton = Creature:new {
 	objectName = "@mob/creature_names:tattered_torton",
 	socialGroup = "torton",
-	pvpFaction = "",
 	faction = "",
 	level = 17,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ tattered_torton = Creature:new {
 	baseHAM = 1500,
 	baseHAMmax = 1900,
 	armor = 0,
-	resists = {5,5,5,-1,-1,-1,-1,45,-1},
+	resists = {5,5,5,-1,-1,-1,-1,145,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 1000,
 	hideType = "hide_wooly",
@@ -32,8 +31,8 @@ tattered_torton = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"stunattack","stunChance=50"}
+		{"dizzyattack",""},
+		{"stunattack",""}
 	}
 }
 

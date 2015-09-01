@@ -1,7 +1,6 @@
 greater_shaupaut = Creature:new {
 	objectName = "@mob/creature_names:greater_shaupaut",
 	socialGroup = "shaupaut",
-	pvpFaction = "",
 	faction = "",
 	level = 14,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ greater_shaupaut = Creature:new {
 	baseHAM = 2000,
 	baseHAMmax = 2400,
 	armor = 0,
-	resists = {15,15,15,0,0,0,0,-1,-1},
+	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 10,
 	hideType = "hide_bristley",
@@ -33,8 +32,8 @@ greater_shaupaut = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"stunattack","stunChance=50"}
+		{"blindattack",""},
+		{"stunattack",""}
 	}
 }
 

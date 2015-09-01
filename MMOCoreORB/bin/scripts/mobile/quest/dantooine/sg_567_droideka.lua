@@ -2,7 +2,6 @@ sg_567_droideka = Creature:new {
 	objectName = "",
 	customName = "(an old Droideka)",	
 	socialGroup = "droideka",
-	pvpFaction = "",
 	faction = "",
 	level = 45,
 	chanceHit = 0.47,
@@ -36,8 +35,7 @@ sg_567_droideka = Creature:new {
 				{group = "pistols", chance = 1000000},
 				{group = "carbines", chance = 1000000},
 				{group = "tailor_components", chance = 500000}
-			},
-			lootChance = 3500000
+			}
 		}
 	},
 	conversationTemplate = "",

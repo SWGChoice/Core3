@@ -1,46 +1,6 @@
 /*
-Copyright (C) 2007 <SWGEmu>
-
-This File is part of Core3.
-
-This program is free software; you can redistribute
-it and/or modify it under the terms of the GNU Lesser
-General Public License as published by the Free Software
-Foundation; either version 2 of the License,
-or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU Lesser General Public License for
-more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this program; if not, write to
-the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-
-Linking Engine3 statically or dynamically with other modules
-is making a combined work based on Engine3.
-Thus, the terms and conditions of the GNU Lesser General Public License
-cover the whole combination.
-
-In addition, as a special exception, the copyright holders of Engine3
-give you permission to combine Engine3 program with free software
-programs or libraries that are released under the GNU LGPL and with
-code included in the standard release of Core3 under the GNU LGPL
-license (or modified versions of such code, with unchanged license).
-You may copy and distribute such a system following the terms of the
-GNU LGPL for Engine3 and the licenses of the other code concerned,
-provided that you include the source code of that other code when
-and as the GNU LGPL requires distribution of source code.
-
-Note that people who make modified versions of Engine3 are not obligated
-to grant this special exception for their modified versions;
-it is their choice whether to do so. The GNU Lesser General Public License
-gives permission to release a modified version without this exception;
-this exception also makes it possible to release a modified version
-which carries forward this exception.
- */
+				Copyright <SWGEmu>
+		See file COPYING for copying conditions. */
 
 #include "CommandConfigManager.h"
 #include "server/zone/objects/creature/commands/commands.h"
@@ -53,13 +13,21 @@ which carries forward this exception.
 #include "server/zone/objects/creature/commands/pet/PetFeedCommand.h"
 #include "server/zone/objects/creature/commands/pet/PetFollowCommand.h"
 #include "server/zone/objects/creature/commands/pet/PetGroupCommand.h"
+#include "server/zone/objects/creature/commands/pet/PetGuardCommand.h"
 #include "server/zone/objects/creature/commands/pet/PetRechargeCommand.h"
 #include "server/zone/objects/creature/commands/pet/PetRechargeOtherCommand.h"
 #include "server/zone/objects/creature/commands/pet/PetRecoverCommand.h"
+#include "server/zone/objects/creature/commands/pet/PetSpecialAttackCommand.h"
 #include "server/zone/objects/creature/commands/pet/PetStayCommand.h"
 #include "server/zone/objects/creature/commands/pet/PetStoreCommand.h"
 #include "server/zone/objects/creature/commands/pet/PetTrickCommand.h"
 #include "server/zone/objects/creature/commands/pet/PetTransferCommand.h"
+#include "server/zone/objects/creature/commands/pet/PetRepairCommand.h"
+#include "server/zone/objects/creature/commands/pet/PetThrowCommand.h"
+#include "server/zone/objects/creature/commands/pet/PetHarvestCommand.h"
+#include "server/zone/objects/creature/commands/pet/PetPatrolCommand.h"
+#include "server/zone/objects/creature/commands/pet/PetClearPatrolPointsCommand.h"
+#include "server/zone/objects/creature/commands/pet/PetGetPatrolPointCommand.h"
 
 #include "server/zone/objects/creature/CreatureState.h"
 #include "server/zone/objects/creature/CreaturePosture.h"
@@ -324,7 +292,7 @@ QueueCommand* CommandConfigManager::createCommand(const String& name) {
 
 void CommandConfigManager::registerSpecialCommands(CommandList* sCommands) {
 	slashCommands = sCommands;
-	QueueCommand* admin = new QueueCommand("admin", server);
+	QueueCommand* admin = new AdminCommand("admin", server);
 	slashCommands->put(admin);
 	// Fri Oct  7 17:09:26 PDT 2011 - Karl Bunch <karlbunch@karlbunch.com>
 	// Turns out this isn't in the base datatables/command/command_tables_shared.iff file
@@ -355,13 +323,21 @@ void CommandConfigManager::registerSpecialCommands(CommandList* sCommands) {
 	createCommand(String("petFeed").toLowerCase())->setCommandGroup(0xe1c9a54a);
 	createCommand(String("petFollow").toLowerCase())->setCommandGroup(0xe1c9a54a);
 	createCommand(String("petGroup").toLowerCase())->setCommandGroup(0xe1c9a54a);
+	createCommand(String("petGuard").toLowerCase())->setCommandGroup(0xe1c9a54a);
 	createCommand(String("petRecharge").toLowerCase())->setCommandGroup(0xe1c9a54a);
 	createCommand(String("petRechargeOther").toLowerCase())->setCommandGroup(0xe1c9a54a);
 	createCommand(String("petRecover").toLowerCase())->setCommandGroup(0xe1c9a54a);
+	createCommand(String("petSpecialAttack").toLowerCase())->setCommandGroup(0xe1c9a54a);
 	createCommand(String("petStay").toLowerCase())->setCommandGroup(0xe1c9a54a);
 	createCommand(String("petStore").toLowerCase())->setCommandGroup(0xe1c9a54a);
 	createCommand(String("petTransfer").toLowerCase())->setCommandGroup(0xe1c9a54a);
 	createCommand(String("petTrick").toLowerCase())->setCommandGroup(0xe1c9a54a);
+	createCommand(String("petRepair").toLowerCase())->setCommandGroup(0xe1c9a54a);
+	createCommand(String("petThrow").toLowerCase())->setCommandGroup(0xe1c9a54a);
+	createCommand(String("petHarvest").toLowerCase())->setCommandGroup(0xe1c9a54a);
+	createCommand(String("petPatrol").toLowerCase())->setCommandGroup(0xe1c9a54a);
+	createCommand(String("petClearPatrolPoints").toLowerCase())->setCommandGroup(0xe1c9a54a);
+	createCommand(String("petGetPatrolPoint").toLowerCase())->setCommandGroup(0xe1c9a54a);
 }
 
 void CommandConfigManager::registerFunctions() {
@@ -445,21 +421,26 @@ void CommandConfigManager::registerGlobals() {
 	setGlobalInt("MIND", CreatureAttribute::MIND);
 
 	// weapons
-	// TODO: make valid weapons into a mask and check all combat commands
-	setGlobalInt("MELEEWEAPON_WEAPON", CombatManager::MELEEWEAPON);
-	setGlobalInt("RANGEDWEAPON_WEAPON", CombatManager::RANGEDWEAPON);
-	setGlobalInt("THROWNWEAPON_WEAPON", CombatManager::THROWNWEAPON);
-	setGlobalInt("HEAVYWEAPON_WEAPON", CombatManager::HEAVYWEAPON);
-	setGlobalInt("MINE_WEAPON", CombatManager::MINE);
-	setGlobalInt("SPECIALHEAVYWEAPON_WEAPON", CombatManager::SPECIALHEAVYWEAPON);
-	setGlobalInt("ONEHANDMELEEWEAPON_WEAPON", CombatManager::ONEHANDMELEEWEAPON);
-	setGlobalInt("TWOHANDMELEEWEAPON_WEAPON", CombatManager::TWOHANDMELEEWEAPON);
-	setGlobalInt("POLEARM_WEAPON", CombatManager::POLEARM);
-	setGlobalInt("PISTOL_WEAPON", CombatManager::PISTOL);
-	setGlobalInt("CARBINE_WEAPON", CombatManager::CARBINE);
-	setGlobalInt("RIFLE_WEAPON", CombatManager::RIFLE);
-	setGlobalInt("GRENADE_WEAPON", CombatManager::GRENADE);
-	setGlobalInt("LIGHTNINGRIFLE_WEAPON", CombatManager::LIGHTNINGRIFLE);
+	setGlobalInt("ANYWEAPON", CombatManager::ANYWEAPON);
+	setGlobalInt("THROWNWEAPON", CombatManager::THROWNWEAPON);
+	setGlobalInt("HEAVYWEAPON", CombatManager::HEAVYWEAPON);
+	setGlobalInt("MINEWEAPON", CombatManager::MINEWEAPON);
+	setGlobalInt("SPECIALHEAVYWEAPON", CombatManager::SPECIALHEAVYWEAPON);
+	setGlobalInt("UNARMEDWEAPON", CombatManager::UNARMEDWEAPON);
+	setGlobalInt("ONEHANDMELEEWEAPON", CombatManager::ONEHANDMELEEWEAPON);
+	setGlobalInt("TWOHANDMELEEWEAPON", CombatManager::TWOHANDMELEEWEAPON);
+	setGlobalInt("POLEARMWEAPON", CombatManager::POLEARMWEAPON);
+	setGlobalInt("PISTOLWEAPON", CombatManager::PISTOLWEAPON);
+	setGlobalInt("CARBINEWEAPON", CombatManager::CARBINEWEAPON);
+	setGlobalInt("RIFLEWEAPON", CombatManager::RIFLEWEAPON);
+	setGlobalInt("GRENADEWEAPON", CombatManager::GRENADEWEAPON);
+	setGlobalInt("LIGHTNINGRIFLEWEAPON", CombatManager::LIGHTNINGRIFLEWEAPON);
+	setGlobalInt("ONEHANDJEDIWEAPON", CombatManager::ONEHANDJEDIWEAPON);
+	setGlobalInt("TWOHANDJEDIWEAPON", CombatManager::TWOHANDJEDIWEAPON);
+	setGlobalInt("POLEARMJEDIWEAPON", CombatManager::POLEARMJEDIWEAPON);
+	setGlobalInt("MELEEWEAPON", CombatManager::MELEEWEAPON);
+	setGlobalInt("RANGEDWEAPON", CombatManager::RANGEDWEAPON);
+	setGlobalInt("JEDIWEAPON", CombatManager::JEDIWEAPON);
 
 	// effects
 	setGlobalInt("INVALID_EFFECT", CommandEffect::INVALID);
@@ -474,6 +455,7 @@ void CommandConfigManager::registerGlobals() {
 	setGlobalInt("HEALTHDEGRADE_EFFECT", CommandEffect::HEALTHDEGRADE);
 	setGlobalInt("ACTIONDEGRADE_EFFECT", CommandEffect::ACTIONDEGRADE);
 	setGlobalInt("MINDDEGRADE_EFFECT", CommandEffect::MINDDEGRADE);
+	setGlobalInt("REMOVE_COVER_EFFECT", CommandEffect::REMOVECOVER);
 
 	// trails
 	setGlobalInt("NOTRAIL", CombatManager::NOTRAIL);
@@ -571,6 +553,8 @@ void CommandConfigManager::parseVariableData(String varName, LuaObject &command,
 			combatCommand->setSpeed(Lua::getFloatParameter(L));
 		else if (varName == "poolsToDamage")
 			combatCommand->setPoolsToDamage(Lua::getIntParameter(L));
+		else if (varName == "weaponType")
+			combatCommand->setWeaponType(Lua::getIntParameter(L));
 		else if (varName == "healthCostMultiplier")
 			combatCommand->setHealthCostMultiplier(Lua::getFloatParameter(L));
 		else if (varName == "actionCostMultiplier")
@@ -634,18 +618,32 @@ void CommandConfigManager::parseVariableData(String varName, LuaObject &command,
 				Logger::console.error("unknown variable " + varName + " in squadleader command " + slashCommand->getQueueCommandName());
 				command.pop();
 			}
-
 		} else {
-			Logger::console.error("unknown variable " + varName + " in combat command " + slashCommand->getQueueCommandName());
+			Logger::console.error("unknown variable " + varName + " in combat queue command " + slashCommand->getQueueCommandName());
 			command.pop();
 		}
-
 	} else if (slashCommand->isForceHealCommand()) {
 		ForceHealQueueCommand* healCommand = cast<ForceHealQueueCommand*>(slashCommand);
 		if (varName == "forceCost")
 			healCommand->setForceCost(Lua::getIntParameter(L));
 		else {
 			Logger::console.error("unknown variable " + varName + " in force healing command " + slashCommand->getQueueCommandName());
+			command.pop();
+		}
+	} else if (slashCommand->isJediQueueCommand()) {
+		JediQueueCommand* jediCommand = cast<JediQueueCommand*>(slashCommand);
+		if (varName == "forceCost")
+			jediCommand->setForceCost(Lua::getIntParameter(L));
+		else if (varName == "duration")
+			jediCommand->setDuration(Lua::getIntParameter(L));
+		else if (varName == "animationCRC")
+			jediCommand->setAnimationCRC(Lua::getUnsignedIntParameter(L));
+		else if (varName == "clientEffect")
+			jediCommand->setClientEffect(Lua::getStringParameter(L));
+		else if (varName == "speedMod")
+			jediCommand->setSpeedMod(Lua::getFloatParameter(L));
+		else {
+			Logger::console.error("unknown variable " + varName + " in jedi queue command " + slashCommand->getQueueCommandName());
 			command.pop();
 		}
 	} else {
@@ -774,7 +772,6 @@ void CommandConfigManager::registerCommands() {
 	commandFactory.registerCommand<ConfusionShotCommand>(String("confusionShot").toLowerCase());
 	commandFactory.registerCommand<ConsentCommand>(String("consent").toLowerCase());
 	commandFactory.registerCommand<CorpseCommand>(String("corpse").toLowerCase());
-	commandFactory.registerCommand<CounterAttackCommand>(String("counterAttack").toLowerCase());
 	commandFactory.registerCommand<CoupDeGraceCommand>(String("coupDeGrace").toLowerCase());
 	commandFactory.registerCommand<CraftCommand>(String("craft").toLowerCase());
 	commandFactory.registerCommand<CreateCreatureCommand>(String("createCreature").toLowerCase());
@@ -1130,7 +1127,8 @@ void CommandConfigManager::registerCommands() {
 	commandFactory.registerCommand<MindBlast1Command>(String("mindBlast1").toLowerCase());
 	commandFactory.registerCommand<MindBlast2Command>(String("mindBlast2").toLowerCase());
 	commandFactory.registerCommand<MindShot1Command>(String("mindShot1").toLowerCase());
-	commandFactory.registerCommand<MindShot2Command>(String("mindShot2").toLowerCase());		commandFactory.registerCommand<MinefieldAttackCommand>(String("minefieldAttack").toLowerCase());
+	commandFactory.registerCommand<MindShot2Command>(String("mindShot2").toLowerCase());
+	commandFactory.registerCommand<MinefieldAttackCommand>(String("minefieldAttack").toLowerCase());
 	commandFactory.registerCommand<MoneyCommand>(String("money").toLowerCase());
 	commandFactory.registerCommand<MountCommand>(String("mount").toLowerCase());
 	commandFactory.registerCommand<MoveFurnitureCommand>(String("moveFurniture").toLowerCase());
@@ -1532,11 +1530,19 @@ void CommandConfigManager::registerCommands() {
 	commandFactory.registerCommand<PetFeedCommand>(String("petFeed").toLowerCase());
 	commandFactory.registerCommand<PetFollowCommand>(String("petFollow").toLowerCase());
 	commandFactory.registerCommand<PetGroupCommand>(String("petGroup").toLowerCase());
+	commandFactory.registerCommand<PetGuardCommand>(String("petGuard").toLowerCase());
 	commandFactory.registerCommand<PetRechargeCommand>(String("petRecharge").toLowerCase());
 	commandFactory.registerCommand<PetRechargeOtherCommand>(String("petRechargeOther").toLowerCase());
 	commandFactory.registerCommand<PetRecoverCommand>(String("petRecover").toLowerCase());
+	commandFactory.registerCommand<PetSpecialAttackCommand>(String("petSpecialAttack").toLowerCase());
 	commandFactory.registerCommand<PetStayCommand>(String("petStay").toLowerCase());
 	commandFactory.registerCommand<PetStoreCommand>(String("petStore").toLowerCase());
 	commandFactory.registerCommand<PetTransferCommand>(String("petTransfer").toLowerCase());
 	commandFactory.registerCommand<PetTrickCommand>(String("petTrick").toLowerCase());
+	commandFactory.registerCommand<PetRepairCommand>(String("petRepair").toLowerCase());
+	commandFactory.registerCommand<PetThrowCommand>(String("petThrow").toLowerCase());
+	commandFactory.registerCommand<PetHarvestCommand>(String("petHarvest").toLowerCase());
+	commandFactory.registerCommand<PetPatrolCommand>(String("petPatrol").toLowerCase());
+	commandFactory.registerCommand<PetClearPatrolPointsCommand>(String("petClearPatrolPoints").toLowerCase());
+	commandFactory.registerCommand<PetGetPatrolPointCommand>(String("petGetPatrolPoint").toLowerCase());
 }

@@ -1,7 +1,6 @@
 kinad_baz_nitch = Creature:new {
 	objectName = "@mob/creature_names:kinad_baz_nitch",
 	socialGroup = "baz_nitch",
-	pvpFaction = "",
 	faction = "",
 	level = 46,
 	chanceHit = 0.48,
@@ -11,7 +10,7 @@ kinad_baz_nitch = Creature:new {
 	baseHAM = 9500,
 	baseHAMmax = 11700,
 	armor = 1,
-	resists = {20,20,0,40,0,0,0,0,-1},
+	resists = {120,120,0,140,0,0,0,0,-1},
 	meatType = "meat_wild",
 	meatAmount = 15,
 	hideType = "hide_leathery",
@@ -33,7 +32,7 @@ kinad_baz_nitch = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

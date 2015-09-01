@@ -1,7 +1,7 @@
 naboo_dread_pirate = Creature:new {
 	objectName = "@mob/creature_names:naboo_dread_pirate",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "naboo_pirate",
-	pvpFaction = "naboo_pirate",
 	faction = "naboo_pirate",
 	level = 22,
 	chanceHit = 0.350000,
@@ -27,17 +27,17 @@ naboo_dread_pirate = Creature:new {
 
 	templates = { "object/mobile/dressed_criminal_pirate_human_male_01.iff" },
 	lootGroups = {
-	    {
+		{
 			groups = {
 				{group = "junk", chance = 4000000},
 				{group = "wearables_common", chance = 2000000},
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000}
-			},
-			lootChance = 3200000
-		}					
+			}
+		}
 	},
 	weapons = {"pirate_weapons_heavy"},
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 

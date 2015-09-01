@@ -1,7 +1,6 @@
 young_spined_snake = Creature:new {
 	objectName = "@mob/creature_names:young_spined_snake",
 	socialGroup = "spine_snake",
-	pvpFaction = "",
 	faction = "",
 	level = 11,
 	chanceHit = 0.29,
@@ -11,7 +10,7 @@ young_spined_snake = Creature:new {
 	baseHAM = 1000,
 	baseHAMmax = 1200,
 	armor = 0,
-	resists = {0,0,0,0,0,0,0,0,0},
+	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_reptilian",
 	meatAmount = 7,
 	hideType = "hide_leathery",

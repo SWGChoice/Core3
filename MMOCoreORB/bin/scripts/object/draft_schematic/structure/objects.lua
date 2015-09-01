@@ -2637,3 +2637,5 @@ object_draft_schematic_structure_shared_tatooine_house_guild_hall_style_02 = Sha
 }
 
 ObjectTemplates:addClientTemplate(object_draft_schematic_structure_shared_tatooine_house_guild_hall_style_02, "object/draft_schematic/structure/shared_tatooine_house_guild_hall_style_02.iff")
+
+--includeFile("draft_schematic/structure/p14schem/objects.lua")

@@ -1,7 +1,6 @@
 giant_gackle_bat = Creature:new {
 	objectName = "@mob/creature_names:giant_gackle_bat",
 	socialGroup = "gacklebat",
-	pvpFaction = "",
 	faction = "",
 	level = 24,
 	chanceHit = 0.350000,
@@ -11,7 +10,7 @@ giant_gackle_bat = Creature:new {
 	baseHAM = 7550,
 	baseHAMmax = 7550,
 	armor = 0,
-	resists = {15,20,-1,25,-1,-1,-1,-1,-1},
+	resists = {115,120,-1,125,-1,-1,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 7,
 	hideType = "hide_bristley",
@@ -31,7 +30,7 @@ giant_gackle_bat = Creature:new {
 	lootGroups = {},
 	weapons = {},
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

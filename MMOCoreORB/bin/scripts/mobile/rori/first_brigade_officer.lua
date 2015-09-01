@@ -1,7 +1,7 @@
 first_brigade_officer = Creature:new {
 	objectName = "@mob/creature_names:brigade_officer",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "restuss",
-	pvpFaction = "restuss",
 	faction = "restuss",
 	level = 17,
 	chanceHit = 0.32,
@@ -30,7 +30,7 @@ first_brigade_officer = Creature:new {
 		"object/mobile/dressed_brigade_officer_rodian_male_01.iff",
 		"object/mobile/dressed_brigade_officer_rodian_female_01.iff"},
 	lootGroups = {
-	    {
+		{
 			groups = {
 				{group = "junk", chance = 5000000},
 				{group = "wearables_common", chance = 2000000},
@@ -38,12 +38,12 @@ first_brigade_officer = Creature:new {
 				{group = "rifles", chance = 1000000},
 				{group = "pistols", chance = 1000000},
 				{group = "loot_kit_parts", chance = 500000}
-			},
-			lootChance = 3200000
-		}					
+			}
+		}
 	},
 	weapons = {"rebel_weapons_medium"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/townperson",
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 

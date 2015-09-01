@@ -1,7 +1,6 @@
 lowland_salt_mynock = Creature:new {
 	objectName = "@mob/creature_names:lowland_salt_mynock",
 	socialGroup = "mynock",
-	pvpFaction = "",
 	faction = "",
 	level = 26,
 	chanceHit = 0.35,
@@ -10,8 +9,8 @@ lowland_salt_mynock = Creature:new {
 	baseXp = 2730,
 	baseHAM = 6800,
 	baseHAMmax = 8300,
-	armor = 1,
-	resists = {20,35,10,60,60,-1,-1,-1,-1},
+	armor = 0,
+	resists = {120,135,10,150,150,-1,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 55,
 	hideType = "hide_leathery",
@@ -32,6 +31,9 @@ lowland_salt_mynock = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
+		{"dizzyattack",""},
+		{"mediumdisease",""}
+
 	}
 }
 

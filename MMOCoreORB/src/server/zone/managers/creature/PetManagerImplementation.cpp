@@ -7,12 +7,15 @@
 #include "server/zone/managers/player/PlayerManager.h"
 #include "server/zone/managers/templates/TemplateManager.h"
 #include "server/zone/objects/creature/AiAgent.h"
+#include "server/zone/objects/creature/DroidObject.h"
 #include "server/zone/objects/creature/events/PetIncapacitationRecoverTask.h"
+#include "server/zone/objects/intangible/tasks/PetControlDeviceStoreObjectTask.h"
 #include "server/zone/objects/intangible/PetControlDevice.h"
 #include "server/zone/objects/intangible/tasks/EnqueuePetCommand.h"
 #include "server/zone/templates/datatables/DataTableIff.h"
 #include "server/zone/templates/datatables/DataTableRow.h"
 #include "server/zone/templates/params/primitives/StringParam.h"
+#include "server/chat/ChatManager.h"
 
 void PetManagerImplementation::loadLuaConfig() {
 	info("Loading configuration file.", true);
@@ -171,8 +174,10 @@ void PetManagerImplementation::handleChat(CreatureObject* speaker, AiAgent* pet,
 	// Handle command training
 	if( pcd->getTrainingCommand() > 0 ){
 		bool ownerChat = handleCommandTraining( speaker, pet, message );
-		if (ownerChat)
+		if (ownerChat) {
+			Locker locker(pcd);
 			pcd->setTrainingCommand(0); // no longer training
+		}
 
 		return;
 	}
@@ -211,7 +216,7 @@ void PetManagerImplementation::handleChat(CreatureObject* speaker, AiAgent* pet,
 		enqueuePetCommand(speaker, pet, String("petAttack").toLowerCase().hashCode(), "");
 	}
 	else if( isTrainedCommand( pcd, GUARD, message ) ){
-		speaker->sendSystemMessage("GUARD pet command is not yet implemented.");
+		enqueuePetCommand(speaker, pet, String("petGuard").toLowerCase().hashCode(), "", true);
 	}
 	else if( isTrainedCommand( pcd, FRIEND, message ) ){
 		speaker->sendSystemMessage("FRIEND pet command is not yet implemented.");
@@ -226,7 +231,13 @@ void PetManagerImplementation::handleChat(CreatureObject* speaker, AiAgent* pet,
 		enqueuePetCommand(speaker, pet, String("petTrick").toLowerCase().hashCode(), "2", true);
 	}
 	else if( isTrainedCommand( pcd, PATROL, message ) ){
-		speaker->sendSystemMessage("PATROL pet command is not yet implemented.");
+		enqueuePetCommand(speaker, pet, String("petPatrol").toLowerCase().hashCode(), "");
+	}
+	else if( isTrainedCommand( pcd, GETPATROLPOINT, message ) ){
+		enqueuePetCommand(speaker, pet, String("petGetPatrolPoint").toLowerCase().hashCode(), "", true);
+	}
+	else if( isTrainedCommand( pcd, CLEARPATROLPOINTS, message ) ){
+		enqueuePetCommand(speaker, pet, String("petClearPatrolPoints").toLowerCase().hashCode(), "", true);
 	}
 	else if( isTrainedCommand( pcd, FORMATION1, message ) ){
 		speaker->sendSystemMessage("FORMATION2 pet command is not yet implemented.");
@@ -235,10 +246,10 @@ void PetManagerImplementation::handleChat(CreatureObject* speaker, AiAgent* pet,
 		speaker->sendSystemMessage("FORMATION2 pet command is not yet implemented.");
 	}
 	else if( isTrainedCommand( pcd, SPECIAL_ATTACK1, message ) ){
-		speaker->sendSystemMessage("SPECIAL_ATTACK1 pet command is not yet implemented.");
+		enqueuePetCommand(speaker, pet, String("petSpecialAttack").toLowerCase().hashCode(), "1");
 	}
 	else if( isTrainedCommand( pcd, SPECIAL_ATTACK2, message ) ){
-		speaker->sendSystemMessage("SPECIAL_ATTACK2 pet command is not yet implemented.");
+		enqueuePetCommand(speaker, pet, String("petSpecialAttack").toLowerCase().hashCode(), "2");
 	}
 	else if( isTrainedCommand( pcd, RANGED_ATTACK, message ) ){
 		speaker->sendSystemMessage("RANGED_ATTACK pet command is not yet implemented.");
@@ -251,6 +262,16 @@ void PetManagerImplementation::handleChat(CreatureObject* speaker, AiAgent* pet,
 	}
 	else if( isTrainedCommand( pcd, TRANSFER, message ) ){
 		enqueueOwnerOnlyPetCommand(speaker, pet, String("petTransfer").toLowerCase().hashCode(), "");
+	}
+
+	// Hand off to droid modules for handling
+	if( pcd->getPetType() == PetManager::DROIDPET ){
+
+		DroidObject* droidObject = cast<DroidObject*>(pet);
+		if( droidObject != NULL ){
+			droidObject->handleChat(speaker, message);
+		}
+
 	}
 
 }
@@ -307,9 +328,20 @@ bool PetManagerImplementation::handleCommandTraining(CreatureObject* speaker, Ai
 		return false;
 
 	if( pcd->hasTrainedCommandString(message) ){
-		pet->showFlyText("npc_reaction/flytext","confused", 204, 0, 0);  // "?!!?!?!"
+		if (pet->getOptionsBitmask() & OptionBitmask::CONVERSE) {
+			String stf = pet->getPersonalityStf();
+			StringBuffer message;
+			message << stf << ":confused";
+			StringIdChatParameter chat;
+			chat.setStringId(message.toString());
+			pet->getZoneServer()->getChatManager()->broadcastMessage(pet,chat,0,0,0);
+		} else {
+			pet->showFlyText("npc_reaction/flytext","confused", 204, 0, 0);  // "?"
+		}
 		return true;
 	}
+
+	Locker locker(pcd);
 
 	unsigned int trainingCommand = pcd->getTrainingCommand();
 	int petType = pcd->getPetType();
@@ -328,7 +360,7 @@ bool PetManagerImplementation::handleCommandTraining(CreatureObject* speaker, Ai
 				success = true;
 
 			if (!success) {
-				pet->showFlyText("npc_reaction/flytext","confused", 204, 0, 0);  // "?!!?!?!"
+				pet->showFlyText("npc_reaction/flytext","confused", 204, 0, 0);  // "?"
 				speaker->sendSystemMessage("@pet/pet_menu:pet_nolearn"); // Your pet doesn't seem to understand you.
 				return true;
 			}
@@ -336,7 +368,7 @@ bool PetManagerImplementation::handleCommandTraining(CreatureObject* speaker, Ai
 
 		// Success
 		pcd->addTrainedCommand( trainingCommand, message );
-		pet->showFlyText("npc_reaction/flytext","threaten", 204, 0, 0);  // "!"
+		pet->showFlyText("npc_reaction/flytext","threaten", 204, 0, 0);  // "?"
 		speaker->sendSystemMessage("@pet/pet_menu:pet_learn"); // You teach your pet a new command.
 
 		if (!alreadyTrained) {
@@ -356,14 +388,25 @@ bool PetManagerImplementation::handleCommandTraining(CreatureObject* speaker, Ai
 	}
 	else{
 		pcd->addTrainedCommand( trainingCommand, message );
-		pet->showFlyText("npc_reaction/flytext","threaten", 204, 0, 0);  // "!"
-		speaker->sendSystemMessage("@pet/pet_menu:pet_learn"); // You teach your pet a new command.
+		if (pet->getOptionsBitmask() & OptionBitmask::CONVERSE) {
+			String stf = pet->getPersonalityStf();
+			StringBuffer message;
+			message << stf << ":end_convo";
+			StringIdChatParameter chat;
+			chat.setStringId(message.toString());
+			pet->getZoneServer()->getChatManager()->broadcastMessage(pet,chat,0,0,0);
+		} else {
+			pet->showFlyText("npc_reaction/flytext","threaten", 204, 0, 0);  // "?"
+			speaker->sendSystemMessage("@pet/pet_menu:pet_learn"); // You teach your pet a new command.
+		}
 	}
 
 	// No renaming of faction pets
 	if (petType == FACTIONPET)
 		return true;
-
+	// no renaming of converse style droids with personalities installed.
+	if ( (pet->getOptionsBitmask() & OptionBitmask::CONVERSE) && petType == DROIDPET )
+		return true;
 	// Check for naming string
 	StringTokenizer tokenizer(message);
 	tokenizer.setDelimeter(" ");
@@ -423,7 +466,6 @@ void PetManagerImplementation::enqueuePetCommand(CreatureObject* player, AiAgent
 		targetID = player->getObjectID();
 	else
 		targetID = player->getTargetID();
-
 	//CreatureObject* pet, uint32 command, const String& args, uint64 target, int priority = -1
 	EnqueuePetCommand* enqueueCommand = new EnqueuePetCommand(pet, command, args, targetID, 1);
 	enqueueCommand->execute();
@@ -452,14 +494,13 @@ int PetManagerImplementation::notifyDestruction(TangibleObject* destructor, AiAg
 		Reference<CreatureObject*> rider = destructedObject->getSlottedObject("rider").castTo<CreatureObject*>();
 
 		if (rider != NULL) {
+			Locker locker(rider);
 			rider->updateCooldownTimer("mount_dismount", 0);
-			rider->executeObjectControllerAction(String("dismount").hashCode());
+			rider->executeObjectControllerAction(STRING_HASHCODE("dismount"));
 		}
 	}
 
 	destructor->removeDefender(destructedObject);
-
-	destructedObject->clearDots();
 
 	ManagedReference<PetControlDevice*> petControlDevice = destructedObject->getControlDevice().get().castTo<PetControlDevice*>();
 
@@ -510,49 +551,54 @@ uint32 PetManagerImplementation::calculateIncapacitationTimer(AiAgent* pet, int 
 }
 
 void PetManagerImplementation::killPet(TangibleObject* attacker, AiAgent* pet) {
-
-	// TODO REMOVE AFTER TESTING
-	bool attackerIsAdmin = false;
-	// END REMOVE
-
 	StringIdChatParameter stringId;
 
 	if (attacker->isPlayerCreature()) {
 		stringId.setStringId("base_player", "prose_target_dead");
 		stringId.setTT(pet->getObjectID());
 		(cast<CreatureObject*>(attacker))->sendSystemMessage(stringId);
-
-		// TODO REMOVE AFTER TESTING
-		//ManagedReference<PlayerObject*> ghost = (cast<CreatureObject*>(attacker))->getPlayerObject();
-		//if (ghost != NULL && ghost->isPrivileged())
-		//	attackerIsAdmin = true;
-		// END REMOVE
 	}
+
+	pet->clearDots();
 
 	pet->setCurrentSpeed(0);
 	pet->clearCombatState(true);
 	pet->setPosture(CreaturePosture::DEAD, true);
 	pet->updateLocomotion();
+	pet->setOblivious();
+	pet->storeFollowObject();
 
 	pet->updateTimeOfDeath();
-	pet->clearBuffs(false);
 
+	Reference<AiAgent*> petAgent = pet;
+
+	EXECUTE_TASK_1(petAgent, {
+			Locker locker(petAgent_p);
+
+			petAgent_p->clearBuffs(false);
+	});
 
 
 	ManagedReference<PetControlDevice*> petControlDevice = pet->getControlDevice().get().castTo<PetControlDevice*>();
 
 	if (petControlDevice != NULL) {
+		Locker locker(petControlDevice);
+
+		petControlDevice->setLastCommandTarget(NULL);
+		petControlDevice->setLastCommand(PetManager::FOLLOW);
 
 		if (petControlDevice->getPetType() == FACTIONPET) {
 			ManagedReference<CreatureObject*> owner = zoneServer->getObject(pet->getCreatureLinkID()).castTo<CreatureObject*>();
 
-			if (owner != NULL)
-				petControlDevice->storeObject(owner, true);
+			if (owner != NULL) {
+				Reference<PetControlDeviceStoreObjectTask*> task = new PetControlDeviceStoreObjectTask(petControlDevice, owner, true);
+				task->execute();
+			}
 
 			petControlDevice->destroyObjectFromWorld(true);
 			petControlDevice->destroyObjectFromDatabase(true);
 
-		} else if ( (!attacker->isPlayerCreature() && !attacker->isPet()) || attackerIsAdmin) { // TODO REMOVE attackerIsAdmin AFTER TESTING
+		} else if (!attacker->isPlayerCreature() && !attacker->isPet()) {
 
 			if (pet->getCooldownTimerMap() != NULL && pet->getCooldownTimerMap()->isPast("vitalityLossCooldown")) {
 

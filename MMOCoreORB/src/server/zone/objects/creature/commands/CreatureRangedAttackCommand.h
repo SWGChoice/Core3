@@ -15,7 +15,7 @@ public:
 		: CombatQueueCommand(name, server) {
 	}
 
-	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) {
+	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) const {
 
 		if (!checkStateMask(creature))
 			return INVALIDSTATE;
@@ -25,9 +25,10 @@ public:
 
 		ManagedReference<WeaponObject*> weapon = creature->getWeapon();
 
-			if (!weapon->isRangedWeapon()) {
-				return INVALIDWEAPON;
-			}
+		if (!weapon->isRangedWeapon()) {
+			return INVALIDWEAPON;
+		}
+
 		return doCombatAction(creature, target);
 	}
 };

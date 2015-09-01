@@ -1,7 +1,7 @@
 bewitching_korga_dark_shaman = Creature:new {
 	objectName = "@mob/creature_names:bewitching_korga_dark_shaman",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "korga_tribe",
-	pvpFaction = "korga_tribe",
 	faction = "korga_tribe",
 	level = 38,
 	chanceHit = 0.43,
@@ -27,9 +27,16 @@ bewitching_korga_dark_shaman = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {
-			"object/mobile/dulok_male.iff",
-			"object/mobile/dulok_female.iff"},
-	lootGroups = {},
+		"object/mobile/dulok_male.iff",
+		"object/mobile/dulok_female.iff"},
+	lootGroups = {
+		{
+			groups = {
+				{group = "ewok", chance = 10000000}
+			},
+			lootChance = 1760000
+		}
+	},
 	weapons = {},
 	conversationTemplate = "",
 	attacks = brawlermaster

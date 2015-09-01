@@ -1,7 +1,6 @@
 vesp_scavenger = Creature:new {
 	objectName = "@mob/creature_names:vesp_scavanger",
 	socialGroup = "vesp",
-	pvpFaction = "",
 	faction = "",
 	level = 29,
 	chanceHit = 0.37,
@@ -11,7 +10,7 @@ vesp_scavenger = Creature:new {
 	baseHAM = 8100,
 	baseHAMmax = 9900,
 	armor = 0,
-	resists = {30,30,15,-1,-1,80,-1,80,0},
+	resists = {130,130,15,-1,-1,180,180,-1,-1},
 	meatType = "meat_reptilian",
 	meatAmount = 9,
 	hideType = "hide_leathery",
@@ -30,11 +29,11 @@ vesp_scavenger = Creature:new {
 	controlDeviceTemplate = "object/intangible/pet/vesp_hue.iff",
 	scale = 1.15,
 	lootGroups = {},
-	weapons = {},
+	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""},
+		{"dizzyattack",""}
 	}
 }
 

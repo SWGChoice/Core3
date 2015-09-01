@@ -1,7 +1,6 @@
 bark_mite_burrower_collector = Creature:new {
 	objectName = "@mob/creature_names:bark_mite_burrower_collector",
 	socialGroup = "mite",
-	pvpFaction = "",
 	faction = "",
 	level = 36,
 	chanceHit = 0.4,
@@ -11,7 +10,7 @@ bark_mite_burrower_collector = Creature:new {
 	baseHAM = 8600,
 	baseHAMmax = 10600,
 	armor = 0,
-	resists = {20,40,-1,70,-1,65,70,20,-1},
+	resists = {20,140,-1,170,-1,165,170,20,-1},
 	meatType = "meat_insect",
 	meatAmount = 50,
 	hideType = "",
@@ -32,8 +31,8 @@ bark_mite_burrower_collector = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"stunattack","stunChance=50"}
+		{"blindattack",""},
+		{"stunattack",""}
 	}
 }
 

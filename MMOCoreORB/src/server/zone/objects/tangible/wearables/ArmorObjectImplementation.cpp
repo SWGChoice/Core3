@@ -242,6 +242,11 @@ void ArmorObjectImplementation::fillAttributeList(AttributeListMessage* alm, Cre
 
 	alm->insertAttribute("cat_armor_encumbrance.mind", getMindEncumbrance());
 
+	//Anti Decay Kit
+	if(hasAntiDecayKit()){
+		alm->insertAttribute("@veteran_new:antidecay_examine_title", "@veteran_new:antidecay_examine_text");
+	}
+
 	if (sliced)
 		alm->insertAttribute("arm_attr", "@obj_attr_n:hacked");
 
@@ -295,7 +300,7 @@ int ArmorObjectImplementation::handleObjectMenuSelect(CreatureObject* player, by
 
 		//Create Session
 		session = new SlicingSession(player);
-		session->initalizeSlicingMenu(player, _this.get());
+		session->initalizeSlicingMenu(player, _this.getReferenceUnsafeStaticCast());
 
 		return 0;
 

@@ -1,7 +1,6 @@
 mature_hanadak = Creature:new {
 	objectName = "@mob/creature_names:mature_hanadak",
 	socialGroup = "hanadak",
-	pvpFaction = "",
 	faction = "",
 	level = 31,
 	chanceHit = 0.39,
@@ -11,7 +10,7 @@ mature_hanadak = Creature:new {
 	baseHAM = 8400,
 	baseHAMmax = 10200,
 	armor = 0,
-	resists = {25,20,-1,80,80,80,-1,-1,-1},
+	resists = {125,20,-1,180,180,180,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 35,
 	hideType = "hide_bristley",
@@ -32,8 +31,8 @@ mature_hanadak = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""},
+		{"dizzyattack",""}
 	}
 }
 

@@ -1,7 +1,6 @@
 veermok_scout = Creature:new {
 	objectName = "@mob/creature_names:veermok_scout",
 	socialGroup = "veermok",
-	pvpFaction = "",
 	faction = "",
 	level = 14,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ veermok_scout = Creature:new {
 	baseHAM = 1500,
 	baseHAMmax = 1900,
 	armor = 0,
-	resists = {10,5,0,0,0,0,0,0,0},
+	resists = {110,105,0,0,0,0,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 150,
 	hideType = "hide_bristley",
@@ -33,7 +32,7 @@ veermok_scout = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

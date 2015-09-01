@@ -1,7 +1,6 @@
 dune_bantha = Creature:new {
 	objectName = "@mob/creature_names:dune_bantha",
 	socialGroup = "bantha",
-	pvpFaction = "",
 	faction = "",
 	level = 17,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ dune_bantha = Creature:new {
 	baseHAM = 3500,
 	baseHAMmax = 4300,
 	armor = 0,
-	resists = {15,15,15,40,-1,-1,-1,-1,-1},
+	resists = {5,5,5,140,-1,-1,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 375,
 	hideType = "hide_wooly",
@@ -34,7 +33,8 @@ dune_bantha = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"",""},
+		{"stunattack",""}
 	}
 }
 

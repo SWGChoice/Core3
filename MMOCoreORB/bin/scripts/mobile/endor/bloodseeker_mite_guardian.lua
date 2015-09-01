@@ -1,7 +1,6 @@
 bloodseeker_mite_guardian = Creature:new {
 	objectName = "@mob/creature_names:bloodseeker_mite_guardian",
 	socialGroup = "bloodseeker",
-	pvpFaction = "",
 	faction = "",
 	level = 38,
 	chanceHit = 0.4,
@@ -11,7 +10,7 @@ bloodseeker_mite_guardian = Creature:new {
 	baseHAM = 8400,
 	baseHAMmax = 10200,
 	armor = 0,
-	resists = {60,40,-1,70,-1,70,70,20,-1},
+	resists = {160,140,-1,170,-1,170,170,20,-1},
 	meatType = "meat_insect",
 	meatAmount = 15,
 	hideType = "",
@@ -32,8 +31,8 @@ bloodseeker_mite_guardian = Creature:new {
 	weapons = {"creature_spit_small_red"},
 	conversationTemplate = "",
 	attacks = {
-		{"strongdisease",""},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"strongdisease",""}
 	}
 }
 

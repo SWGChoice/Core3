@@ -1,7 +1,7 @@
 naboo_pirate_cutthroat = Creature:new {
 	objectName = "@mob/creature_names:naboo_pirate_cutthroat",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "naboo_pirate",
-	pvpFaction = "naboo_pirate",
 	faction = "naboo_pirate",
 	level = 11,
 	chanceHit = 0.29,
@@ -36,18 +36,18 @@ naboo_pirate_cutthroat = Creature:new {
 		"object/mobile/dressed_robber_twk_female_01.iff"
 	},
 	lootGroups = {
-	    {
+		{
 			groups = {
 				{group = "junk", chance = 4000000},
 				{group = "wearables_common", chance = 2000000},
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000}
-			},
-			lootChance = 3200000
-		}				
+			}
+		}
 	},
 	weapons = {"pirate_weapons_heavy"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlermid,marksmanmid)
 }
 

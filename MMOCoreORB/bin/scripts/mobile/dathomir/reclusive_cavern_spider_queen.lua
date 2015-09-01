@@ -1,7 +1,6 @@
 reclusive_cavern_spider_queen = Creature:new {
 	objectName = "@mob/creature_names:cave_gaping_spider_recluse_queen",
 	socialGroup = "spider",
-	pvpFaction = "",
 	faction = "",
 	level = 70,
 	chanceHit = 0.65,
@@ -11,7 +10,7 @@ reclusive_cavern_spider_queen = Creature:new {
 	baseHAM = 11000,
 	baseHAMmax = 14000,
 	armor = 1,
-	resists = {60,60,60,50,30,30,30,30,-1},
+	resists = {160,160,160,150,20,20,20,20,-1},
 	meatType = "meat_insect",
 	meatAmount = 45,
 	hideType = "",

@@ -1,7 +1,6 @@
 female_swamp_tusk_cat = Creature:new {
 	objectName = "@mob/creature_names:female_swamp_tusk_cat",
 	socialGroup = "tusk_cat",
-	pvpFaction = "",
 	faction = "",
 	level = 16,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ female_swamp_tusk_cat = Creature:new {
 	baseHAM = 3500,
 	baseHAMmax = 4300,
 	armor = 0,
-	resists = {5,5,5,-1,30,-1,35,-1,-1},
+	resists = {5,5,5,-1,130,-1,135,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 65,
 	hideType = "hide_bristley",
@@ -33,7 +32,7 @@ female_swamp_tusk_cat = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

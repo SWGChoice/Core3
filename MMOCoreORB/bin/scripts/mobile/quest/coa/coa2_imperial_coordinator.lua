@@ -1,7 +1,7 @@
 coa2_imperial_coordinator = Creature:new {
 	objectName = "@mob/creature_names:coa2_imperial_coordinator",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "imperial",
-	pvpFaction = "imperial",
 	faction = "imperial",
 	level = 25,
 	chanceHit = 0.36,
@@ -27,23 +27,10 @@ coa2_imperial_coordinator = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_imperial_officer_m_3.iff"},
-	lootGroups = {
-		{
-			groups = {
-				{group = "color_crystals", chance = 200000},
-				{group = "junk", chance = 3600000},
-				{group = "rifles", chance = 2000000},
-				{group = "pistols", chance = 2000000},
-				{group = "clothing_attachments", chance = 1100000},
-				{group = "armor_attachments", chance = 1100000}
-			},
-			lootChance = 4000000
-		}			
-	},
+	lootGroups = {},
 	weapons = {"imperial_weapons_heavy"},
 	conversationTemplate = "",
-	attacks = {
-	}
+	attacks = {}
 }
 
 CreatureTemplates:addCreatureTemplate(coa2_imperial_coordinator, "coa2_imperial_coordinator")

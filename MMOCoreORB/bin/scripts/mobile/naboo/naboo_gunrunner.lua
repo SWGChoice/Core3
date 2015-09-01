@@ -1,7 +1,7 @@
 naboo_gunrunner = Creature:new {
 	objectName = "@mob/creature_names:naboo_gunrunner",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "naboo_pirate",
-	pvpFaction = "naboo_pirate",
 	faction = "naboo_pirate",
 	level = 11,
 	chanceHit = 0.290000,
@@ -27,17 +27,17 @@ naboo_gunrunner = Creature:new {
 
 	templates = {"object/mobile/dressed_naboo_gunrunner.iff"},
 	lootGroups = {
-	    {
+		{
 			groups = {
 				{group = "junk", chance = 4000000},
 				{group = "wearables_common", chance = 2000000},
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000}
-			},
-			lootChance = 3200000
-		}				
+			}
+		}
 	},
 	weapons = {"ranged_weapons"},
+	reactionStf = "@npc_reaction/townperson",
 	attacks = merge(brawlermid,marksmanmid)
 }
 

@@ -1,7 +1,6 @@
 bark_mite_burrower_worker = Creature:new {
 	objectName = "@mob/creature_names:bark_mite_burrower_worker",
 	socialGroup = "mite",
-	pvpFaction = "",
 	faction = "",
 	level = 45,
 	chanceHit = 0.44,
@@ -11,7 +10,7 @@ bark_mite_burrower_worker = Creature:new {
 	baseHAM = 9300,
 	baseHAMmax = 11300,
 	armor = 0,
-	resists = {45,60,-1,80,-1,80,80,30,-1},
+	resists = {145,160,-1,180,-1,180,180,30,-1},
 	meatType = "meat_insect",
 	meatAmount = 50,
 	hideType = "",
@@ -32,8 +31,8 @@ bark_mite_burrower_worker = Creature:new {
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"mediumdisease",""},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"mediumdisease",""}
 	}
 }
 

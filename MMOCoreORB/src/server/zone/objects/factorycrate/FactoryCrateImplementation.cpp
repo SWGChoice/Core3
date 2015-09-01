@@ -36,10 +36,10 @@ void FactoryCrateImplementation::sendBaselinesTo(SceneObject* player) {
 	msg << "sending cell number " << cellNumber << " baselines";
 	info(msg.toString(), true);*/
 
-	BaseMessage* fctyMsg3 = new FactoryCrateObjectMessage3(_this.get());
+	BaseMessage* fctyMsg3 = new FactoryCrateObjectMessage3(_this.getReferenceUnsafeStaticCast());
 	player->sendMessage(fctyMsg3);
 
-	BaseMessage* fctyMsg6 = new FactoryCrateObjectMessage6(_this.get());
+	BaseMessage* fctyMsg6 = new FactoryCrateObjectMessage6(_this.getReferenceUnsafeStaticCast());
 	player->sendMessage(fctyMsg6);
 
 }
@@ -132,7 +132,7 @@ String FactoryCrateImplementation::getSerialNumber() {
 
 bool FactoryCrateImplementation::extractObjectToParent() {
 
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	if(getUseCount() < 1) {
 		this->setUseCount(0, true);
@@ -140,8 +140,9 @@ bool FactoryCrateImplementation::extractObjectToParent() {
 	}
 
 	Reference<TangibleObject*> prototype = getPrototype();
+	ManagedReference<SceneObject*> strongParent = getParent().get();
 
-	if (prototype == NULL || !prototype->isTangibleObject() || parent.get() == NULL) {
+	if (prototype == NULL || !prototype->isTangibleObject() || strongParent == NULL) {
 		error("FactoryCrateImplementation::extractObject has a NULL or non-tangible item");
 		return false;
 	}
@@ -151,28 +152,32 @@ bool FactoryCrateImplementation::extractObjectToParent() {
 	ManagedReference<TangibleObject*> protoclone = cast<TangibleObject*>( objectManager->cloneObject(prototype));
 
 	if (protoclone != NULL) {
+
+		if(protoclone->hasAntiDecayKit()){
+			protoclone->removeAntiDecayKit();
+		}
+
 		protoclone->setParent(NULL);
 
 		String errorDescription;
 		int errorNumber = 0;
 
-		if ((errorNumber = getParent().get()->canAddObject(protoclone, -1, errorDescription)) != 0) {
+		if ((errorNumber = strongParent->canAddObject(protoclone, -1, errorDescription)) != 0) {
 			if (errorDescription.length() > 1) {
-				ManagedReference<SceneObject*> player = getParent().get()->getParentRecursively(SceneObjectType::PLAYERCREATURE);
+				ManagedReference<SceneObject*> player = strongParent->getParentRecursively(SceneObjectType::PLAYERCREATURE);
 
 				if (player != NULL)
 					player->sendMessage(new ChatSystemMessage(errorDescription));
 			} else
-				getParent().get()->error("cannot extratObjectToParent " + String::valueOf(errorNumber));
+				strongParent->error("cannot extratObjectToParent " + String::valueOf(errorNumber));
+
+			protoclone->destroyObjectFromDatabase(true);
 
 			return false;
 		}
 
-		ManagedReference<SceneObject*> strongParent = getParent().get();
-		if (strongParent != NULL) {
-			strongParent->transferObject(protoclone, -1, true);
-			strongParent->broadcastObject(protoclone, true);
-		}
+		strongParent->transferObject(protoclone, -1, true);
+		strongParent->broadcastObject(protoclone, true);
 
 		setUseCount(getUseCount() - 1);
 
@@ -182,9 +187,9 @@ bool FactoryCrateImplementation::extractObjectToParent() {
 	return false;
 }
 
-TangibleObject* FactoryCrateImplementation::extractObject(int count) {
+Reference<TangibleObject*> FactoryCrateImplementation::extractObject(int count) {
 
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	if(count > getUseCount())
 		return NULL;
@@ -198,9 +203,15 @@ TangibleObject* FactoryCrateImplementation::extractObject(int count) {
 
 	ObjectManager* objectManager = ObjectManager::instance();
 
-	ManagedReference<TangibleObject*> protoclone = cast<TangibleObject*>( objectManager->cloneObject(prototype));
+	Reference<TangibleObject*> protoclone = cast<TangibleObject*>( objectManager->cloneObject(prototype));
 
 	if(protoclone != NULL) {
+		Locker protoLocker(protoclone);
+
+		if(protoclone->hasAntiDecayKit()){
+			protoclone->removeAntiDecayKit();
+		}
+
 		protoclone->setParent(NULL);
 		protoclone->setUseCount(count, false);
 
@@ -232,19 +243,35 @@ void FactoryCrateImplementation::split(int newStackSize) {
 		return;
 	}
 
+	if(parent.get() == NULL)
+		return;
+
 	ObjectManager* objectManager = ObjectManager::instance();
 
 	ManagedReference<TangibleObject*> protoclone = cast<TangibleObject*>( objectManager->cloneObject(prototype));
 
+	if(protoclone == NULL)
+		return;
+
+	Locker plocker(protoclone);
+
 	ManagedReference<FactoryCrate*> newCrate =
 			(server->getZoneServer()->createObject(getServerObjectCRC(), 2)).castTo<FactoryCrate*>();
 
-	if(parent.get() == NULL || newCrate == NULL || protoclone == NULL)
+	if(newCrate == NULL) {
+		protoclone->destroyObjectFromDatabase(true);
 		return;
+	}
 
 	protoclone->setParent(NULL);
 
-	newCrate->transferObject(protoclone, -1, false);
+	Locker nlocker(newCrate);
+
+	if (!newCrate->transferObject(protoclone, -1, false)) {
+		protoclone->destroyObjectFromDatabase(true);
+		newCrate->destroyObjectFromDatabase(true);
+		return;
+	}
 
 	newCrate->setUseCount(newStackSize, false);
 	newCrate->setCustomObjectName(getCustomObjectName(), false);
@@ -254,6 +281,8 @@ void FactoryCrateImplementation::split(int newStackSize) {
 		if(	strongParent->transferObject(newCrate, -1, false)) {
 			strongParent->broadcastObject(newCrate, true);
 			setUseCount(getUseCount() - newStackSize, true);
+		} else {
+			newCrate->destroyObjectFromDatabase(true);
 		}
 	}
 }
@@ -275,7 +304,7 @@ void FactoryCrateImplementation::setUseCount(uint32 newUseCount, bool notifyClie
 	if (!notifyClient)
 		return;
 
-	FactoryCrateObjectDeltaMessage3* dfcty3 = new FactoryCrateObjectDeltaMessage3(_this.get());
+	FactoryCrateObjectDeltaMessage3* dfcty3 = new FactoryCrateObjectDeltaMessage3(_this.getReferenceUnsafeStaticCast());
 	dfcty3->setQuantity(newUseCount);
 	dfcty3->close();
 

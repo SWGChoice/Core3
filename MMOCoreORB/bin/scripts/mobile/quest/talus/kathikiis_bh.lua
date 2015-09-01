@@ -1,7 +1,6 @@
 kathikiis_bh = Creature:new {
 	objectName = "",
 	socialGroup = "lok_mercenaries",
-	pvpFaction = "lok_mercenaries",
 	faction = "lok_mercenaries",
 	level = 44,
 	chanceHit = 0.47,
@@ -46,8 +45,7 @@ kathikiis_bh = Creature:new {
 				{group = "clothing_attachments", chance = 300000},
 				{group = "armor_attachments", chance = 300000},
 				{group = "wearables_common", chance = 500000}
-			},
-			lootChance = 3500000
+			}
 		}
 	},
 	weapons = {"rebel_weapons_heavy"},

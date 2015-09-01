@@ -1,7 +1,6 @@
 diseased_blurrg = Creature:new {
 	objectName = "@mob/creature_names:diseased_blurrg",
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 37,
 	chanceHit = 0.41,
@@ -11,7 +10,7 @@ diseased_blurrg = Creature:new {
 	baseHAM = 8800,
 	baseHAMmax = 10800,
 	armor = 0,
-	resists = {40,40,-1,50,50,25,50,-1,-1},
+	resists = {140,140,-1,150,150,25,150,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 100,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ diseased_blurrg = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"creatureareableeding",""},
-		{"mediumdisease",""}
+		{"mediumdisease",""},
+		{"creatureareableeding",""}
 	}
 }
 

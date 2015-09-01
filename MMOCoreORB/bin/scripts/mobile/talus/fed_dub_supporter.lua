@@ -1,7 +1,7 @@
 fed_dub_supporter = Creature:new {
 	objectName = "@mob/creature_names:fed_dub_supporter",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "fed_dub",
-	pvpFaction = "fed_dub",
 	faction = "fed_dub",
 	level = 8,
 	chanceHit = 0.27,
@@ -37,12 +37,12 @@ fed_dub_supporter = Creature:new {
 				{group = "rifles", chance = 2000000},
 				{group = "tailor_components", chance = 1500000},
 				{group = "loot_kit_parts", chance = 1500000}
-			},
-			lootChance = 2200000
+			}
 		}
 	},
 	weapons = {"rebel_weapons_medium"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/townperson",
 	attacks = merge(marksmannovice,brawlernovice)
 }
 

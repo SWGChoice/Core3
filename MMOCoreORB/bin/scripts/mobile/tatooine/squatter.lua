@@ -1,7 +1,7 @@
 squatter = Creature:new {
 	objectName = "@mob/creature_names:squatter",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "townsperson",
-	pvpFaction = "townsperson",
 	faction = "townsperson",
 	level = 4,
 	chanceHit = 0.240000,
@@ -27,17 +27,17 @@ squatter = Creature:new {
 
 	templates = {"object/mobile/dressed_tatooine_squatter.iff"},
 	lootGroups = {
-      	{
+		{
 			groups = {
 				{group = "junk", chance = 4000000},
 				{group = "wearables_common", chance = 3000000},
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "tailor_components", chance = 1000000},
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {},
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(marksmannovice,brawlernovice)
 }
 

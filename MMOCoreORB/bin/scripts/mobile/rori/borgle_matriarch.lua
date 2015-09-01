@@ -1,7 +1,6 @@
 borgle_matriarch = Creature:new {
 	objectName = "@mob/creature_names:borgle_matriarch",
 	socialGroup = "borgle",
-	pvpFaction = "",
 	faction = "",
 	level = 15,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ borgle_matriarch = Creature:new {
 	baseHAM = 2000,
 	baseHAMmax = 2400,
 	armor = 0,
-	resists = {10,10,0,0,0,0,0,-1,-1},
+	resists = {110,110,0,0,0,0,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 5,
 	hideType = "hide_leathery",
@@ -32,7 +31,8 @@ borgle_matriarch = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"",""},
+		{"posturedownattack",""}
 	}
 }
 

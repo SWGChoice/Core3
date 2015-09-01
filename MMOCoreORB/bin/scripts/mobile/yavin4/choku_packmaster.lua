@@ -1,7 +1,6 @@
 choku_packmaster = Creature:new {
 	objectName = "@mob/creature_names:choku_packmaster",
 	socialGroup = "choku",
-	pvpFaction = "",
 	faction = "",
 	level = 21,
 	chanceHit = 0.34,
@@ -11,7 +10,7 @@ choku_packmaster = Creature:new {
 	baseHAM = 5900,
 	baseHAMmax = 7200,
 	armor = 0,
-	resists = {10,10,10,10,10,10,10,-1,-1},
+	resists = {110,10,10,10,10,10,10,-1,-1},
 	meatType = "meat_avian",
 	meatAmount = 10,
 	hideType = "",
@@ -33,7 +32,7 @@ choku_packmaster = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

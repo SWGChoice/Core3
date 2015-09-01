@@ -14,7 +14,7 @@ public:
 	}
 
 
-	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) {
+	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) const {
 
 		ManagedReference<PetControlDevice*> controlDevice = creature->getControlDevice().castTo<PetControlDevice*>();
 		if (controlDevice == NULL)
@@ -32,6 +32,7 @@ public:
 		pet->setOblivious();
 		pet->storeFollowObject();
 
+		Locker clocker(controlDevice, creature);
 		controlDevice->setLastCommand(PetManager::STAY);
 
 		pet->activateInterrupt(pet->getLinkedCreature().get(), ObserverEventType::STARTCOMBAT);

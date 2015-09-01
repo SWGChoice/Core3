@@ -93,34 +93,43 @@ int VehicleDeedImplementation::handleObjectMenuSelect(CreatureObject* player, by
 		}
 
 		Reference<VehicleControlDevice*> vehicleControlDevice = (server->getZoneServer()->createObject(controlDeviceObjectTemplate.hashCode(), 1)).castTo<VehicleControlDevice*>();
+
+		if (vehicleControlDevice == NULL) {
+			player->sendSystemMessage("wrong vehicle control device object template " + controlDeviceObjectTemplate);
+			return 1;
+		}
+
+		Locker locker(vehicleControlDevice);
+
 		Reference<VehicleObject*> vehicle = (server->getZoneServer()->createObject(generatedObjectTemplate.hashCode(), 1)).castTo<VehicleObject*>();
 
 		if (vehicle == NULL) {
+			vehicleControlDevice->destroyObjectFromDatabase(true);
 			player->sendSystemMessage("wrong vehicle object template " + generatedObjectTemplate);
 			return 1;
 		}
+
+		Locker vlocker(vehicle, player);
 
 		vehicle->createChildObjects();
 		vehicle->setMaxCondition(hitPoints);
 		vehicle->setConditionDamage(0);
 		vehicleControlDevice->setControlledObject(vehicle);
-		datapad->transferObject(vehicleControlDevice, -1);
 
-		datapad->broadcastObject(vehicleControlDevice, true);
-		vehicleControlDevice->generateObject(player);
+		if (datapad->transferObject(vehicleControlDevice, -1)) {
+			datapad->broadcastObject(vehicleControlDevice, true);
+			vehicleControlDevice->generateObject(player);
 
-		//Remove the deed from it's container.
-		ManagedReference<SceneObject*> deedContainer = getParent();
+			generated = true;
 
-		if (deedContainer != NULL) {
-			/*deedContainer->removeObject(_this, true);
-			broadcastDestroy(_this, false);*/
 			destroyObjectFromWorld(true);
+			destroyObjectFromDatabase(true);
+
+			return 0;
+		} else {
+			vehicleControlDevice->destroyObjectFromDatabase(true);
+			return 1;
 		}
-
-		generated = true;
-
-		return 0;
 	}
 
 	return DeedImplementation::handleObjectMenuSelect(player, selectedID);

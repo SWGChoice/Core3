@@ -1,7 +1,6 @@
 giant_dune_kimogila = Creature:new {
 	objectName = "@mob/creature_names:giant_dune_kimogila",
 	socialGroup = "kimogila",
-	pvpFaction = "",
 	faction = "",
 	level = 153,
 	chanceHit = 8.5,
@@ -11,7 +10,7 @@ giant_dune_kimogila = Creature:new {
 	baseHAM = 81000,
 	baseHAMmax = 99000,
 	armor = 2,
-	resists = {65,80,65,100,65,65,100,65,-1},
+	resists = {165,180,165,200,165,165,200,165,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 1000,
 	hideType = "hide_leathery",
@@ -31,10 +30,10 @@ giant_dune_kimogila = Creature:new {
 	lootGroups = {
 	 {
 	        groups = {
-				{group = "giant_dune_kimo_common", chance = 2000000},
-				{group = "kimogila_common", chance = 8000000},
+				{group = "giant_dune_kimo_common", chance = 3500000},
+				{group = "kimogila_common", chance = 6500000},
 			},
-			lootChance = 6500000
+			lootChance = 4060000
 		}
 	},
 	weapons = {},

@@ -1,46 +1,6 @@
 /*
-Copyright (C) 2007 <SWGEmu>
-
-This File is part of Core3.
-
-This program is free software; you can redistribute
-it and/or modify it under the terms of the GNU Lesser
-General Public License as published by the Free Software
-Foundation; either version 2 of the License,
-or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU Lesser General Public License for
-more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this program; if not, write to
-the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-
-Linking Engine3 statically or dynamically with other modules
-is making a combined work based on Engine3.
-Thus, the terms and conditions of the GNU Lesser General Public License
-cover the whole combination.
-
-In addition, as a special exception, the copyright holders of Engine3
-give you permission to combine Engine3 program with free software
-programs or libraries that are released under the GNU LGPL and with
-code included in the standard release of Core3 under the GNU LGPL
-license (or modified versions of such code, with unchanged license).
-You may copy and distribute such a system following the terms of the
-GNU LGPL for Engine3 and the licenses of the other code concerned,
-provided that you include the source code of that other code when
-and as the GNU LGPL requires distribution of source code.
-
-Note that people who make modified versions of Engine3 are not obligated
-to grant this special exception for their modified versions;
-it is their choice whether to do so. The GNU Lesser General Public License
-gives permission to release a modified version without this exception;
-this exception also makes it possible to release a modified version
-which carries forward this exception.
-*/
+				Copyright <SWGEmu>
+		See file COPYING for copying conditions.*/
 
 #ifndef QUEUECOMMAND_H_
 #define QUEUECOMMAND_H_
@@ -114,6 +74,7 @@ public:
 	const static int INSUFFICIENTPERMISSION = 11;
 	const static int NOJEDIARMOR = 12;
 	const static int INVALIDSYNTAX = 13;
+	const static int TOOCLOSE = 14;
 
 
 	virtual ~QueueCommand() {
@@ -122,10 +83,10 @@ public:
 	/*
 	 * Checks each invalid locomotion with the player's current locomotion
 	 */
-	bool checkInvalidLocomotions(CreatureObject* creature);
+	bool checkInvalidLocomotions(CreatureObject* creature) const;
 
-	void onStateFail(CreatureObject* creature, uint32 actioncntr);
-	void onLocomotionFail(CreatureObject* creature, uint32 actioncntr);
+	void onStateFail(CreatureObject* creature, uint32 actioncntr) const;
+	void onLocomotionFail(CreatureObject* creature, uint32 actioncntr) const;
 
 	/**
 	 * Gets a string describing this commands syntax usage.
@@ -137,12 +98,12 @@ public:
 	/*
 	 * Unsuccessful command completion alerts the player of the invalid state, must clear the queue action from client queue
 	 */
-	virtual void onFail(uint32 actioncntr, CreatureObject* creature, uint32 errorNumber);
+	virtual void onFail(uint32 actioncntr, CreatureObject* creature, uint32 errorNumber) const;
 
 	/*
 	 * Successful command completion, must clear the queue action from client queue
 	 */
-	virtual void onComplete(uint32 actioncntr, CreatureObject* creature, float commandDuration);
+	virtual void onComplete(uint32 actioncntr, CreatureObject* creature, float commandDuration) const;
 
 	/*
 	 * Sets the invalid locomotions for this command.
@@ -160,14 +121,12 @@ public:
 	/*
 	 * Override me
 	 */
-	virtual int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) {
-		return SUCCESS;
-	}
+	virtual int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) const = 0;
 
 	/*
 	 * Checks all states at once with a bitwise operation
 	 */
-	bool checkStateMask(CreatureObject* creature) {
+	bool checkStateMask(CreatureObject* creature) const {
 		return (creature->getStateBitmask() & stateMask) == 0;
 	}
 
@@ -175,7 +134,7 @@ public:
 	 * Returns duration of the command
 	 */
 
-	virtual float getCommandDuration(CreatureObject* object, const UnicodeString& arguments) {
+	virtual float getCommandDuration(CreatureObject* object, const UnicodeString& arguments) const {
 		// TODO: modify this value by skill, probably need to specify which skill affects what in luas
 		return defaultTime;
 	}
@@ -188,8 +147,6 @@ public:
 	inline void setStateMask(uint64 mask) {
 		stateMask = mask;
 	}
-
-
 
 	/*inline void setTarget(int num) {
 		target = num;
@@ -259,11 +216,11 @@ public:
 	}
 
 	//getters
-	inline uint64 getStateMask() {
+	inline uint64 getStateMask() const {
 		return stateMask;
 	}
 
-	inline bool requiresAdmin() {
+	inline bool requiresAdmin() const {
 		return admin == true;
 	}
 
@@ -271,45 +228,45 @@ public:
 		return target;
 	}*/
 
-	inline int getTargetType() {
+	inline int getTargetType() const {
 		return targetType;
 	}
 
-	inline uint32 getNameCRC() {
+	inline uint32 getNameCRC() const {
 		return nameCRC;
 	}
 
-	inline float getMaxRange() {
+	inline float getMaxRange() const {
 		return maxRangeToTarget;
 	}
 
-	inline String& getQueueCommandName() {
+	inline String getQueueCommandName() const {
 		return name;
 	}
 
-	inline String& getCharacterAbility() {
+	inline String getCharacterAbility() const {
 		return characterAbility;
 	}
 
-	inline float getDefaultTime() {
+	inline float getDefaultTime() const {
 		return defaultTime;
 	}
 
-	inline int getDefaultPriority() {
+	inline int getDefaultPriority() const {
 		return defaultPriority;
 	}
 
 	/*
 	 * @return True if the command has been disabled by the admins
 	 */
-	bool isDisabled() {
+	bool isDisabled() const {
 		return disabled;
 	}
 
 	/*
 	 * @return True if the command is supposed to be added to the combat queue.
 	 */
-	bool addToCombatQueue() {
+	bool addToCombatQueue() const {
 		return addToQueue;
 	}
 
@@ -321,7 +278,11 @@ public:
 		return false;
 	}
 
-	inline int getSkillModSize() {
+	virtual bool isJediQueueCommand() {
+		return false;
+	}
+
+	inline int getSkillModSize() const {
 		return skillMods.size();
 	}
 
@@ -330,7 +291,7 @@ public:
 		return skillMods.get(skillMod);
 	}
 
-	inline int getCommandGroup() {
+	inline int getCommandGroup() const {
 		return commandGroup;
 	}
 
@@ -338,7 +299,7 @@ public:
 		skillMods.put(skillMod, value);
 	}
 	
-	bool isWearingArmor(CreatureObject* creo) {
+	bool isWearingArmor(CreatureObject* creo) const {
 		for (int i = 0; i < creo->getSlottedObjectsSize(); ++i) {
 			SceneObject* item = creo->getSlottedObject(i);
 			if (item != NULL && item->isArmorObject())
@@ -350,6 +311,10 @@ public:
 
 	virtual void handleBuff(SceneObject* creature, ManagedObject* object, int64 param) {
 	}
+
+	int doCommonMedicalCommandChecks(CreatureObject* creature) const;
+
+	void checkForTef(CreatureObject* creature, CreatureObject* target) const;
 };
 
 

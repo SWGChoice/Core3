@@ -1,7 +1,7 @@
 jabba_scout = Creature:new {
 	objectName = "@mob/creature_names:jabba_scout",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "jabba",
-	pvpFaction = "jabba",
 	faction = "jabba",
 	level = 8,
 	chanceHit = 0.27,
@@ -31,23 +31,23 @@ jabba_scout = Creature:new {
 		"object/mobile/dressed_hoodlum_zabrak_male_01.iff",
 		"object/mobile/dressed_criminal_thug_human_female_01.iff",
 		"object/mobile/dressed_mugger.iff"
-		
+
 	},
 	lootGroups = {
-	    {
+		{
 			groups = {
 				{group = "junk", chance = 1500000},
 				{group = "wearables_common", chance = 2000000},
-				{group = "pistols", chance = 2000000},				
+				{group = "pistols", chance = 2000000},
 				{group = "tailor_components", chance = 1500000},
 				{group = "loot_kit_parts", chance = 1500000},
 				{group = "jabba_common", chance = 1500000}
-			},
-			lootChance = 2200000
-		}				
+			}
+		}
 	},
 	weapons = {"pirate_weapons_light"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(marksmannovice,brawlernovice)
 }
 

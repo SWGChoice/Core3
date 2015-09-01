@@ -1,7 +1,6 @@
 carnivorous_nuna = Creature:new {
 	objectName = "@mob/creature_names:carnivorous_nuna",
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 13,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ carnivorous_nuna = Creature:new {
 	baseHAM = 1500,
 	baseHAMmax = 1900,
 	armor = 0,
-	resists = {15,15,15,0,0,0,0,-1,-1},
+	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_avian",
 	meatAmount = 5,
 	hideType = "hide_leathery",
@@ -33,7 +32,7 @@ carnivorous_nuna = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""}
 	}
 }
 

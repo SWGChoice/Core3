@@ -1,7 +1,6 @@
 sandreaver = Creature:new {
 	objectName = "@mob/creature_names:dewback_sandreaver",
 	socialGroup = "dewback",
-	pvpFaction = "",
 	faction = "",
 	level = 26,
 	chanceHit = 0.36,
@@ -11,7 +10,7 @@ sandreaver = Creature:new {
 	baseHAM = 8200,
 	baseHAMmax = 10000,
 	armor = 0,
-	resists = {0,0,0,-1,0,-1,0,-1,-1},
+	resists = {10,10,10,-1,10,-1,10,-1,-1},
 	meatType = "meat_reptilian",
 	meatAmount = 340,
 	hideType = "hide_leathery",
@@ -33,7 +32,7 @@ sandreaver = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"}
+		{"dizzyattack",""}
 	}
 }
 

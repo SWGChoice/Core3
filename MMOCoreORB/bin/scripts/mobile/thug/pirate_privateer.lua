@@ -1,8 +1,8 @@
 pirate_privateer = Creature:new {
 	objectName = "",
+	randomNameType = NAME_GENERIC_TAG,
 	customName = "a Privateer Pirate",
 	socialGroup = "pirate",
-	pvpFaction = "",
 	faction = "",
 	level = 10,
 	chanceHit = 0.28,
@@ -49,19 +49,19 @@ pirate_privateer = Creature:new {
 	},
 	lootGroups = {
 		{
-	        groups = {
-			{group = "junk", chance = 4000000},
-			{group = "wearables_common", chance = 2000000},			
-			{group = "rifles", chance = 1000000},
-			{group = "pistols", chance = 1000000},
-			{group = "melee_weapons", chance = 1000000},
-			{group = "carbines", chance = 1000000},
-		},
-			lootChance = 2600000
+			groups = {
+				{group = "junk", chance = 4000000},
+				{group = "wearables_common", chance = 2000000},
+				{group = "rifles", chance = 1000000},
+				{group = "pistols", chance = 1000000},
+				{group = "melee_weapons", chance = 1000000},
+				{group = "carbines", chance = 1000000},
+			}
 		}
 	},
 	weapons = {"ranged_weapons"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(marksmannovice,brawlernovice)
 }
 

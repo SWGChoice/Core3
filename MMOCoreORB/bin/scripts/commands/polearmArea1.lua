@@ -51,7 +51,7 @@ PolearmArea1Command = {
 	mindCostMultiplier = 1.0,
 	accuracyBonus = 10,
 
-	areaRange = 7,
+	areaRange = 16,
 	areaAction = true,
 
 	animationCRC = hashCode("combo_2c_medium"),
@@ -59,6 +59,8 @@ PolearmArea1Command = {
 	combatSpam = "whirlwind",
 
 	poolsToDamage = RANDOM_ATTRIBUTE,
+	
+	weaponType = POLEARMWEAPON,
 
 	range = -1
 }

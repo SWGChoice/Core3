@@ -1,7 +1,7 @@
 mercenary_sentry = Creature:new {
 	objectName = "@mob/creature_names:geonosian_human_security_force",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "geonosian",
-	pvpFaction = "",
 	faction = "",
 	level = 66,
 	chanceHit = 0.65,
@@ -34,8 +34,7 @@ mercenary_sentry = Creature:new {
 				{group = "geonosian_hard", chance = 1000000},
 				{group = "geonosian_common", chance = 4500000},
 				{group = "geonosian_relic", chance = 4500000}
-			},
-			lootChance = 3300000
+			}
 		}
 	},
 	weapons = {"geonosian_mercenary_weapons"},

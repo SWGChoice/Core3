@@ -1,7 +1,7 @@
 novatrooper_captain = Creature:new {
 	objectName = "@mob/creature_names:stormtrooper_novatrooper_captain",
+	randomNameType = NAME_STORMTROOPER_TAG,
 	socialGroup = "imperial",
-	pvpFaction = "imperial",
 	faction = "imperial",
 	level = 142,
 	chanceHit = 7,
@@ -40,12 +40,12 @@ novatrooper_captain = Creature:new {
 				{group = "armor_attachments", chance = 25000},
 				{group = "imperial_officer_common", chance = 450000},
 				{group = "wearables_rare", chance = 1000000}
-			},
-			lootChance = 2800000
-		}						
+			}
+		}
 	},
 	weapons = {"stormtrooper_weapons"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/stormtrooper",
 	attacks = merge(riflemanmaster,carbineermaster,marksmanmaster,brawlermaster)
 }
 

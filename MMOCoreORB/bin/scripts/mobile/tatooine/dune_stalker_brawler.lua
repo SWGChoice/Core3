@@ -1,7 +1,6 @@
 dune_stalker_brawler = Creature:new {
 	objectName = "@mob/creature_names:dune_stalker_brawler",
 	socialGroup = "dune_stalker",
-	pvpFaction = "",
 	faction = "",
 	level = 17,
 	chanceHit = 0.32,
@@ -28,7 +27,7 @@ dune_stalker_brawler = Creature:new {
 
 	templates = {"object/mobile/dressed_tatooine_dune_stalker_brawler.iff"},
 	lootGroups = {
-	    {
+		{
 			groups = {
 				{group = "junk", chance = 2000000},
 				{group = "wearables_common", chance = 2000000},
@@ -36,12 +35,12 @@ dune_stalker_brawler = Creature:new {
 				{group = "tailor_components", chance = 1500000},
 				{group = "loot_kit_parts", chance = 1500000},
 				{group = "printer_parts", chance = 1000000},
-			},
-			lootChance = 2200000
+			}
 		}
 	},
 	weapons = {"tusken_weapons"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 

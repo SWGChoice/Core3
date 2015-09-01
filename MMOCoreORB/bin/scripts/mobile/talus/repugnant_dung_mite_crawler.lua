@@ -1,7 +1,6 @@
 repugnant_dung_mite_crawler = Creature:new {
 	objectName = "@mob/creature_names:dung_mite_repugnant_crawler",
 	socialGroup = "mite",
-	pvpFaction = "",
 	faction = "",
 	level = 7,
 	chanceHit = 0.26,
@@ -11,7 +10,7 @@ repugnant_dung_mite_crawler = Creature:new {
 	baseHAM = 35,
 	baseHAMmax = 165,
 	armor = 0,
-	resists = {0,0,0,0,0,0,0,-1,-1},
+	resists = {0,0,0,180,0,0,-1,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 9,
 	hideType = "hide_scaley",
@@ -33,7 +32,7 @@ repugnant_dung_mite_crawler = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"}
+		{"dizzyattack",""}
 	}
 }
 

@@ -1,7 +1,6 @@
 radiant_lantern_bird = Creature:new {
 	objectName = "@mob/creature_names:radiant_lantern_bird",
 	socialGroup = "lantern",
-	pvpFaction = "",
 	faction = "",
 	level = 40,
 	chanceHit = 0.43,
@@ -11,7 +10,7 @@ radiant_lantern_bird = Creature:new {
 	baseHAM = 9100,
 	baseHAMmax = 11100,
 	armor = 0,
-	resists = {25,60,25,-1,25,25,-1,25,-1},
+	resists = {25,160,25,-1,25,25,-1,25,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 65,
 	hideType = "hide_leathery",
@@ -32,7 +31,7 @@ radiant_lantern_bird = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"}
+		{"blindattack",""}
 	}
 }
 

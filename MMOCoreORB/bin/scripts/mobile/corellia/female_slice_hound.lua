@@ -1,7 +1,6 @@
 female_slice_hound = Creature:new {
 	objectName = "@mob/creature_names:female_slice_hound",
 	socialGroup = "slice_hound",
-	pvpFaction = "",
 	faction = "",
 	level = 8,
 	chanceHit = 0.27,
@@ -11,7 +10,7 @@ female_slice_hound = Creature:new {
 	baseHAM = 270,
 	baseHAMmax = 330,
 	armor = 0,
-	resists = {20,5,5,0,0,0,0,-1,-1},
+	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 65,
 	hideType = "hide_bristley",
@@ -33,7 +32,7 @@ female_slice_hound = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

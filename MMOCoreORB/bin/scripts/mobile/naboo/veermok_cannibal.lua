@@ -1,7 +1,6 @@
 veermok_cannibal = Creature:new {
 	objectName = "@mob/creature_names:veermok_cannibal",
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 19,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ veermok_cannibal = Creature:new {
 	baseHAM = 4100,
 	baseHAMmax = 5000,
 	armor = 0,
-	resists = {5,5,5,5,5,5,5,-1,-1},
+	resists = {115,-1,5,5,5,5,5,5,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 150,
 	hideType = "hide_bristley",
@@ -33,8 +32,8 @@ veermok_cannibal = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"intimidationattack","intimidationChance=50"}
+		{"blindattack",""},
+		{"intimidationattack",""}
 	}
 }
 

@@ -1,7 +1,6 @@
 carrion_spat_corpsereaver = Creature:new {
 	objectName = "@mob/creature_names:carrion_spat_corpsereaver",
 	socialGroup = "carrion_spat",
-	pvpFaction = "",
 	faction = "",
 	level = 13,
 	chanceHit = 0.29,
@@ -11,7 +10,7 @@ carrion_spat_corpsereaver = Creature:new {
 	baseHAM = 1500,
 	baseHAMmax = 1900,
 	armor = 0,
-	resists = {0,0,0,10,10,0,0,0,-1},
+	resists = {0,0,0,110,110,0,0,0,-1},
 	meatType = "meat_avian",
 	meatAmount = 260,
 	hideType = "",
@@ -33,8 +32,8 @@ carrion_spat_corpsereaver = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"stunattack","stunChance=50"}
+		{"blindattack",""},
+		{"stunattack",""}
 	}
 }
 

@@ -1,7 +1,7 @@
 dim_u_bantha = Creature:new {
 	objectName = "@mob/creature_names:dim_u_bantha",
 	socialGroup = "dim_u",
-	pvpFaction = "",
+
 	faction = "",
 	level = 15,
 	chanceHit = 0.3,
@@ -11,7 +11,7 @@ dim_u_bantha = Creature:new {
 	baseHAM = 2000,
 	baseHAMmax = 2400,
 	armor = 0,
-	resists = {0,5,0,20,0,0,0,-1,-1},
+	resists = {0,105,0,120,0,0,0,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 450,
 	hideType = "hide_wooly",
@@ -33,7 +33,8 @@ dim_u_bantha = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"}
+		{"",""},
+		{"dizzyattack",""}
 	}
 }
 

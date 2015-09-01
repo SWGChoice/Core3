@@ -1,7 +1,6 @@
 choku_pup = Creature:new {
 	objectName = "@mob/creature_names:choku_pup",
 	socialGroup = "choku",
-	pvpFaction = "",
 	faction = "",
 	level = 8,
 	chanceHit = 0.27,
@@ -11,7 +10,7 @@ choku_pup = Creature:new {
 	baseHAM = 405,
 	baseHAMmax = 495,
 	armor = 0,
-	resists = {10,10,10,0,0,0,0,-1,-1},
+	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_avian",
 	meatAmount = 7,
 	hideType = "",

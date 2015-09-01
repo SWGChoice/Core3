@@ -1,7 +1,6 @@
 technician = Creature:new {
 	objectName = "@mob/creature_names:technician",
 	socialGroup = "death_watch",
-	pvpFaction = "",
 	faction = "",
 	level = 34,
 	chanceHit = 0.41,
@@ -27,7 +26,16 @@ technician = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_mand_bunker_technician.iff"},
-	lootGroups = {},
+	lootGroups = {
+		{
+			groups = {
+				{group = "junk", chance = 4000000},
+				{group = "wearables_common", chance = 3000000},
+				{group = "loot_kit_parts", chance = 2000000},
+				{group = "tailor_components", chance = 1000000},
+			}
+		}
+	},
 	weapons = {"rebel_weapons_light"},
 	conversationTemplate = "",
 	attacks = merge(riflemanmaster,pistoleermaster,carbineermaster,brawlermaster)

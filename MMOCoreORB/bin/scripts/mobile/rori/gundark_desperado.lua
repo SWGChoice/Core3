@@ -1,7 +1,7 @@
 gundark_desperado = Creature:new {
 	objectName = "@mob/creature_names:gundark_desperado",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "gundark_gang",
-	pvpFaction = "thug",
 	faction = "thug",
 	level = 8,
 	chanceHit = 0.270000,
@@ -29,18 +29,18 @@ gundark_desperado = Creature:new {
 		"object/mobile/dressed_desperado_bith_female_01.iff",
 		"object/mobile/dressed_desperado_bith_male_01.iff"},
 	lootGroups = {
-	    {
+		{
 			groups = {
 				{group = "junk", chance = 2000000},
 				{group = "wearables_common", chance = 2000000},
 				{group = "pistols", chance = 2000000},
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000}
-			},
-			lootChance = 3200000
-		}					
+			}
+		}
 	},
 	weapons = {"pirate_weapons_light"},
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlernovice,marksmannovice)
 }
 

@@ -1,7 +1,7 @@
 minion_of_lord_nyax = Creature:new {
 	objectName = "@mob/creature_names:lord_nyax_minion",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "followers_of_lord_nyax",
-	pvpFaction = "followers_of_lord_nyax",
 	faction = "followers_of_lord_nyax",
 	level = 12,
 	chanceHit = 0.29,
@@ -33,13 +33,13 @@ minion_of_lord_nyax = Creature:new {
 				{group = "junk", chance = 7000000},
 				{group = "pistols", chance = 1000000},
 				{group = "rifles", chance = 1000000},
-                		{group = "carbines", chance = 1000000}
-			},
-			lootChance = 3500000
+				{group = "carbines", chance = 1000000}
+			}
 		}
 	},
 	weapons = {"pirate_weapons_medium"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/fancy",
 	attacks = merge(brawlermid,marksmanmid)
 }
 

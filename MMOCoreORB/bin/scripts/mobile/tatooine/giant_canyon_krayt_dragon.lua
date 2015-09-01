@@ -1,7 +1,6 @@
 giant_canyon_krayt_dragon = Creature:new {
 	objectName = "@mob/creature_names:giant_canyon_krayt_dragon",
 	socialGroup = "krayt",
-	pvpFaction = "",
 	faction = "",
 	level = 300,
 	chanceHit = 30.0,
@@ -11,7 +10,7 @@ giant_canyon_krayt_dragon = Creature:new {
 	baseHAM = 385000,
 	baseHAMmax = 471000,
 	armor = 3,
-	resists = {70,70,70,70,30,70,70,70,-1},
+	resists = {170,170,170,170,130,170,170,170,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 1000,
 	hideType = "hide_bristley",
@@ -32,28 +31,21 @@ giant_canyon_krayt_dragon = Creature:new {
 	lootGroups = {
 		{
 	        groups = {
-				{group = "krayt_dragon_common", chance = 3400000},
-				{group = "krayt_tissue_uncommon", chance = 3300000},
-				{group = "pearls_premium", chance = 3300000}					
+				{group = "krayt_dragon_common", chance = 2000000},
+				{group = "krayt_tissue_uncommon", chance = 2000000},
+				{group = "pearls_premium", chance = 1500000},
+				{group = "armor_all", chance = 1500000},
+				{group = "weapons_all", chance = 1500000},
+				{group = "wearables_all", chance = 1500000},
 			},
-			lootChance = 6500000
-		},
-		{
-	        groups = {
-				{group = "composite_armor", chance = 2500000},
-				{group = "ubese_armor", chance = 2500000},
-				{group = "melee_two_handed", chance = 2500000},
-				{group = "rifles", chance = 2500000}				
-			},
-			lootChance = 2500000
+			lootChance = 7000000
 		}
 	},
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"creatureareaattack",""},
-		{"dizzyattack","dizzyChance=50"},
-		{"creatureareaknockdown","knockdownChance=50"}
+		{"creatureareaattack","stateAccuracyBonus=50"},
+		{"creatureareaknockdown","stateAccuracyBonus=50"}
 	}
 }
 

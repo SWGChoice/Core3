@@ -1,8 +1,7 @@
 spacer = Creature:new {
 	objectName = "@mob/creature_names:spacer",
-	generateRandomName = true,
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "townsperson",
-	pvpFaction = "townsperson",
 	faction = "townsperson",
 	level = 10,
 	chanceHit = 1,
@@ -32,9 +31,21 @@ spacer = Creature:new {
 		"object/mobile/dressed_criminal_pirate_human_female_01.iff",
 		"object/mobile/dressed_criminal_slicer_human_male_01.iff",
 		"object/mobile/dressed_criminal_slicer_human_female_01.iff"},
-	lootGroups = {},
+	lootGroups = {
+		{
+			groups = {
+				{group = "junk", chance = 4000000},
+				{group = "wearables_common", chance = 2000000},
+				{group = "rifles", chance = 1000000},
+				{group = "pistols", chance = 1000000},
+				{group = "melee_weapons", chance = 1000000},
+				{group = "carbines", chance = 1000000},
+			}
+		}
+	},
 	weapons = {"pirate_weapons_light"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/townperson",
 	attacks = merge(marksmannovice,brawlernovice)
 }
 

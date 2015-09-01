@@ -1,7 +1,7 @@
 naive_jinda_workling = Creature:new {
 	objectName = "@mob/creature_names:naive_jinda_workling",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "jinda_tribe",
-	pvpFaction = "",
 	faction = "",
 	level = 10,
 	chanceHit = 0.28,
@@ -27,18 +27,18 @@ naive_jinda_workling = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {
-			"object/mobile/jinda_male.iff",
-			"object/mobile/jinda_female.iff",
-			"object/mobile/jinda_male_01.iff",
-			"object/mobile/jinda_female_01.iff"},
+		"object/mobile/jinda_male.iff",
+		"object/mobile/jinda_female.iff",
+		"object/mobile/jinda_male_01.iff",
+		"object/mobile/jinda_female_01.iff"},
 	lootGroups = {
-		 {
-	        groups = {
+		{
+			groups = {
 				{group = "ewok", chance = 9100000},
 				{group = "armor_attachments", chance = 450000},
 				{group = "clothing_attachments", chance = 450000}
 			},
-			lootChance = 1400000
+			lootChance = 1200000
 		}
 	},
 	weapons = {"ewok_weapons"},

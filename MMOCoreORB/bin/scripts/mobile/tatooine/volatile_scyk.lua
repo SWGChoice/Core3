@@ -1,7 +1,6 @@
 volatile_scyk = Creature:new {
 	objectName = "@mob/creature_names:scyk_volatile",
 	socialGroup = "scyk",
-	pvpFaction = "",
 	faction = "",
 	level = 15,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ volatile_scyk = Creature:new {
 	baseHAM = 2400,
 	baseHAMmax = 3000,
 	armor = 0,
-	resists = {5,5,5,5,5,5,5,5,5},
+	resists = {5,5,5,5,5,5,5,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 40,
 	hideType = "hide_bristley",
@@ -33,7 +32,7 @@ volatile_scyk = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"mediumpoison",""}
 	}
 }
 

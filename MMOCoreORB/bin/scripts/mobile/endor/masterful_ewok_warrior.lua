@@ -1,7 +1,7 @@
 masterful_ewok_warrior = Creature:new {
 	objectName = "@mob/creature_names:masterful_ewok_warrior",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "gondula_tribe",
-	pvpFaction = "gondula_tribe",
 	faction = "gondula_tribe",
 	level = 11,
 	chanceHit = 0.28,
@@ -29,11 +29,11 @@ masterful_ewok_warrior = Creature:new {
 		"object/mobile/dressed_ewok_m_06.iff",
 		"object/mobile/dressed_ewok_m_08.iff"},
 	lootGroups = {
-		 {
-	        groups = {
+		{
+			groups = {
 				{group = "ewok", chance = 10000000}
 			},
-			lootChance = 1000000
+			lootChance = 1220000
 		}
 	},
 	weapons = {"ewok_weapons"},

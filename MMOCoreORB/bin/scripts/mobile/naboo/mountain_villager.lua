@@ -1,7 +1,7 @@
 mountain_villager = Creature:new {
 	objectName = "@mob/creature_names:mountain_villager",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "villager",
-	pvpFaction = "",
 	faction = "",
 	level = 4,
 	chanceHit = 0.240000,
@@ -27,18 +27,18 @@ mountain_villager = Creature:new {
 
 	templates = {"object/mobile/dressed_mountain_villager.iff"},
 	lootGroups = {
-      	{
+		{
 			groups = {
 				{group = "junk", chance = 3000000},
 				{group = "wearables_common", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "tailor_components", chance = 1000000},
 				{group = "pistols", chance = 2000000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"rebel_weapons_light"},
+	reactionStf = "@npc_reaction/townperson",
 	attacks = merge(brawlernovice,marksmannovice)
 }
 

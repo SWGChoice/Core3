@@ -60,12 +60,71 @@ ChatManagerImplementation::ChatManagerImplementation(ZoneServer* serv, int inits
 
 	setLoggingName("ChatManager");
 
+	loadSocialTypes();
+
 	//gameRooms = new VectorMap<String, ManagedReference<ChatRoom*> >();
 
 	//gameCommandHandler = new GameCommandHandler();
+
+	loadSpatialChatTypes();
 }
 
 void ChatManagerImplementation::finalize() {
+}
+
+void ChatManagerImplementation::loadSpatialChatTypes() {
+	TemplateManager* templateManager = TemplateManager::instance();
+	IffStream* iffStream = templateManager->openIffFile("chat/spatial_chat_types.iff");
+
+	if (iffStream == NULL) {
+		error("Could not open chat/spatial_chat_types.iff");
+		return;
+	}
+
+	iffStream->openForm('SPCT');
+
+	Chunk* version = iffStream->openForm('0000');
+
+	Chunk* data = iffStream->openChunk('TYPS');
+	int i = 0;
+
+	while (data->hasData()) {
+		String key;
+		data->readString(key);
+		i++;
+
+		spatialChatTypes.put(key, i);
+	}
+
+	iffStream->closeChunk('TYPS');
+
+	Chunk* version2 = iffStream->openForm('VOLS');
+
+	for (int j = 0; j < version2->getChunksSize(); j++) {
+		Chunk* data2 = version2->getNextChunk();
+
+		String name;
+		data2->readString(name);
+
+		uint16 distance = 0;
+
+		distance = data2->readShort();
+
+		if (name.isEmpty()) {
+			defaultSpatialChatDistance = distance;
+		} else {
+			uint32 chatType = spatialChatTypes.get(name);
+
+			spatialChatDistances.put(chatType, distance);
+		}
+	}
+
+	iffStream->closeForm('VOLS');
+
+	iffStream->closeForm('0000');
+	iffStream->closeForm('SPCT');
+
+	delete iffStream;
 }
 
 ChatRoom* ChatManagerImplementation::createRoom(const String& roomName, ChatRoom* parent) {
@@ -205,7 +264,7 @@ ChatRoom* ChatManagerImplementation::getChatRoomByFullPath(const String& path) {
 
 
 void ChatManagerImplementation::destroyRooms() {
-	Locker _locker(_this.get());
+	Locker _locker(_this.getReferenceUnsafeStaticCast());
 
 	HashTableIterator<unsigned int, ManagedReference<ChatRoom* > > iter = roomMap->iterator();
 
@@ -231,6 +290,9 @@ void ChatManagerImplementation::populateRoomListMessage(ChatRoom* channel, ChatR
 }
 
 void ChatManagerImplementation::handleChatRoomMessage(CreatureObject* sender, const UnicodeString& message, unsigned int roomID, unsigned int counter) {
+	String name = sender->getFirstName();
+	String fullName = "";
+
 	if (sender->isPlayerCreature()) {
 		ManagedReference<PlayerObject*> senderGhost = sender->getPlayerObject();
 
@@ -247,13 +309,11 @@ void ChatManagerImplementation::handleChatRoomMessage(CreatureObject* sender, co
 
 			return;
 		}
-	}
 
-	String name = sender->getFirstName();
-	String fullName = "";
-	if( sender->getPlayerObject()->isPrivileged() ){
-		String tag = PermissionLevelList::instance()->getPermissionTag(sender->getPlayerObject()->getAdminLevel()).toString();
-		fullName = name + " [" + tag + "]";
+		if( senderGhost->isPrivileged() ){
+			String tag = PermissionLevelList::instance()->getPermissionTag(sender->getPlayerObject()->getAdminLevel()).toString();
+			fullName = name + " [" + tag + "]";
+		}
 	}
 
 	ChatRoom* channel = getChatRoom(roomID);
@@ -269,9 +329,7 @@ void ChatManagerImplementation::handleChatRoomMessage(CreatureObject* sender, co
 		return;
 	}
 
-	String text = formatMessage(message.toString());
-
-	UnicodeString formattedMessage(text);
+	UnicodeString formattedMessage(formatMessage(message));
 
 	ManagedReference<ChatRoom*> planetRoom = zone->getChatRoom();
 
@@ -369,8 +427,10 @@ void ChatManagerImplementation::handleSocialInternalMessage(CreatureObject* send
 		vec->safeCopyTo(closeEntryObjects);
 	} else {
 		sender->info("Null closeobjects vector in ChatManager::handleSocialInternalMessage", true);
-		zone->getInRangeObjects(sender->getWorldPositionX(), sender->getWorldPositionX(), 192, &closeEntryObjects, true);
+		zone->getInRangeObjects(sender->getWorldPositionX(), sender->getWorldPositionX(), 128, &closeEntryObjects, true);
 	}
+
+	float range = defaultSpatialChatDistance;
 
 	for (int i = 0; i < closeEntryObjects.size(); ++i) {
 		SceneObject* object = cast<SceneObject*>(closeEntryObjects.get(i).get());
@@ -383,9 +443,8 @@ void ChatManagerImplementation::handleSocialInternalMessage(CreatureObject* send
 			if (ghost == NULL)
 				continue;
 
-			if (!ghost->isIgnoring(firstName) && creature->isInRange(sender, 128)) {
-				Emote* emsg = new Emote(creature, sender, targetid,
-						emoteid, showtext);
+			if (!ghost->isIgnoring(firstName) && creature->isInRange(sender, range)) {
+				Emote* emsg = new Emote(creature, sender, targetid, emoteid, showtext);
 				creature->sendMessage(emsg);
 
 			}
@@ -405,14 +464,14 @@ void ChatManagerImplementation::sendRoomList(CreatureObject* player) {
 }
 
 void ChatManagerImplementation::addPlayer(CreatureObject* player) {
-	Locker _locker(_this.get());
+	Locker _locker(_this.getReferenceUnsafeStaticCast());
 
 	String name = player->getFirstName().toLowerCase();
 	playerMap->put(name, player, false);
 }
 
 CreatureObject* ChatManagerImplementation::getPlayer(const String& name) {
-	Locker _locker(_this.get());
+	Locker _locker(_this.getReferenceUnsafeStaticCast());
 
 	CreatureObject* player = NULL;
 
@@ -429,7 +488,7 @@ CreatureObject* ChatManagerImplementation::getPlayer(const String& name) {
 }
 
 CreatureObject* ChatManagerImplementation::removePlayer(const String& name) {
-	Locker _locker(_this.get());
+	Locker _locker(_this.getReferenceUnsafeStaticCast());
 
 	String lName = name.toLowerCase();
 
@@ -439,7 +498,7 @@ CreatureObject* ChatManagerImplementation::removePlayer(const String& name) {
 }
 
 void ChatManagerImplementation::broadcastGalaxy(const String& message, const String& faction) {
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 
 	playerMap->resetIterator(false);
 
@@ -462,7 +521,7 @@ void ChatManagerImplementation::broadcastGalaxy(CreatureObject* player, const St
 	StringBuffer fullMessage;
 	fullMessage << "[" << firstName << "] " << message;
 
-	Locker locker(_this.get());
+	Locker locker(_this.getReferenceUnsafeStaticCast());
 	//playerMap->lock();
 
 	playerMap->resetIterator(false);
@@ -475,7 +534,7 @@ void ChatManagerImplementation::broadcastGalaxy(CreatureObject* player, const St
 }
 
 void ChatManagerImplementation::broadcastMessage(BaseMessage* message) {
-	Locker _lock(_this.get());
+	Locker _lock(_this.getReferenceUnsafeStaticCast());
 
 	playerMap->resetIterator(false);
 
@@ -535,21 +594,41 @@ void ChatManagerImplementation::broadcastMessage(CreatureObject* player, const U
 		closeObjects->safeCopyTo(closeEntryObjects);
 	} else {
 		player->info("Null closeobjects vector in ChatManager::broadcastMessage", true);
-		zone->getInRangeObjects(player->getWorldPositionX(), player->getWorldPositionY(), 192, &closeEntryObjects, true);
+		zone->getInRangeObjects(player->getWorldPositionX(), player->getWorldPositionY(), 128, &closeEntryObjects, true);
+	}
+
+	float range = defaultSpatialChatDistance;
+
+	float specialRange = spatialChatDistances.get(mood2);
+	if (specialRange != -1) {
+		range = specialRange;
 	}
 
 	try {
 		for (int i = 0; i < closeEntryObjects.size(); ++i) {
 			SceneObject* object = cast<SceneObject*>(closeEntryObjects.get(i).get());
 
-			if (player->isInRange(object, 128)) {
+			if (player->isInRange(object, range)) {
 
 				//Notify observers that are expecting spatial chat.
 				if (object->getObserverCount(ObserverEventType::SPATIALCHATRECEIVED)) {
 					ManagedReference<ChatMessage*> chatMessage = new ChatMessage();
 					chatMessage->setString(message.toString());
 
-					object->notifyObservers(ObserverEventType::SPATIALCHATRECEIVED, chatMessage);
+					EXECUTE_TASK_3(object, chatMessage, player, {
+						if (player_p == NULL || object_p == NULL)
+							return;
+
+						Locker locker(object_p);
+
+						SortedVector<ManagedReference<Observer*> > observers = object_p->getObservers(ObserverEventType::SPATIALCHATRECEIVED);
+						for (int oc = 0; oc < observers.size(); oc++) {
+							Observer* observer = observers.get(oc);
+							Locker clocker(observer, object_p);
+							if (observer->notifyObserverEvent(ObserverEventType::SPATIALCHATRECEIVED, object_p, chatMessage_p, player_p->getObjectID()) == 1)
+								object_p->dropObserver(ObserverEventType::SPATIALCHATRECEIVED, observer);
+						}
+					});
 				}
 
 				if (object->isPlayerCreature()) {
@@ -661,7 +740,7 @@ void ChatManagerImplementation::broadcastMessage(CreatureObject* player, StringI
 					ManagedReference<ChatMessage*> chatMessage = new ChatMessage();
 					chatMessage->setString(message.toString());
 
-					object->notifyObservers(ObserverEventType::SPATIALCHATRECEIVED, chatMessage);
+					object->notifyObservers(ObserverEventType::SPATIALCHATRECEIVED, chatMessage, player->getObjectID());
 				}
 
 				if (object->isPlayerCreature()) {
@@ -716,9 +795,7 @@ void ChatManagerImplementation::handleSpatialChatInternalMessage(CreatureObject*
 
 		tokenizer.finalToken(msg);
 
-		String text = formatMessage(msg.toString());
-
-		UnicodeString formattedMessage(text);
+		UnicodeString formattedMessage(formatMessage(msg));
 		/*if (msg[0] == '@') {
 			handleGameCommand(player, msg.toString());
 		} else {
@@ -810,12 +887,10 @@ void ChatManagerImplementation::handleChatInstantMessageToCharacter(ChatInstantM
 		return;
 	}
 
-	String textString = formatMessage(text.toString());
-
-	text = textString;
+	text = formatMessage(text);
 
 	String name = sender->getFirstName();
-	if( sender->getPlayerObject()->isPrivileged() ){
+	if( privileged ){
 		String tag = PermissionLevelList::instance()->getPermissionTag(sender->getPlayerObject()->getAdminLevel()).toString();
 		name = name + " [" + tag + "]";
 	}
@@ -854,7 +929,7 @@ ChatRoom* ChatManagerImplementation::createGroupRoom(uint64 groupID, CreatureObj
 }
 
 void ChatManagerImplementation::destroyRoom(ChatRoom* room) {
-	Locker _locker(_this.get());
+	Locker _locker(_this.getReferenceUnsafeStaticCast());
 
 	ChatOnDestroyRoom* msg = new ChatOnDestroyRoom("SWG", server->getGalaxyName(), room->getRoomID());
 	room->broadcastMessage(msg);
@@ -870,6 +945,8 @@ void ChatManagerImplementation::destroyRoom(ChatRoom* room) {
 
 
 void ChatManagerImplementation::handleGroupChat(CreatureObject* sender, const UnicodeString& message) {
+	String name = sender->getFirstName();
+
 	if (sender->isPlayerCreature()) {
 		ManagedReference<PlayerObject*> senderGhost = sender->getPlayerObject();
 
@@ -886,12 +963,11 @@ void ChatManagerImplementation::handleGroupChat(CreatureObject* sender, const Un
 
 			return;
 		}
-	}
 
-	String name = sender->getFirstName();
-	if( sender->getPlayerObject()->isPrivileged() ){
-		String tag = PermissionLevelList::instance()->getPermissionTag(sender->getPlayerObject()->getAdminLevel()).toString();
-		name = name + " [" + tag + "]";
+		if( senderGhost->isPrivileged() ){
+			String tag = PermissionLevelList::instance()->getPermissionTag(sender->getPlayerObject()->getAdminLevel()).toString();
+			name = name + " [" + tag + "]";
+		}
 	}
 
 	ManagedReference<GroupObject*> group = sender->getGroup();
@@ -906,9 +982,7 @@ void ChatManagerImplementation::handleGroupChat(CreatureObject* sender, const Un
 		return;
 	}
 
-	String text = formatMessage(message.toString());
-
-	UnicodeString formattedMessage(text);
+	UnicodeString formattedMessage(formatMessage(message));
 
 	sender->unlock();
 
@@ -933,6 +1007,8 @@ void ChatManagerImplementation::handleGroupChat(CreatureObject* sender, const Un
 }
 
 void ChatManagerImplementation::handleGuildChat(CreatureObject* sender, const UnicodeString& message) {
+	String name = sender->getFirstName();
+
 	if (sender->isPlayerCreature()) {
 		ManagedReference<PlayerObject*> senderGhost = sender->getPlayerObject();
 
@@ -949,12 +1025,11 @@ void ChatManagerImplementation::handleGuildChat(CreatureObject* sender, const Un
 
 			return;
 		}
-	}
 
-	String name = sender->getFirstName();
-	if( sender->getPlayerObject()->isPrivileged() ){
-		String tag = PermissionLevelList::instance()->getPermissionTag(sender->getPlayerObject()->getAdminLevel()).toString();
-		name = name + " [" + tag + "]";
+		if( senderGhost->isPrivileged() ){
+			String tag = PermissionLevelList::instance()->getPermissionTag(sender->getPlayerObject()->getAdminLevel()).toString();
+			name = name + " [" + tag + "]";
+		}
 	}
 
 	ManagedReference<GuildObject*> guild = sender->getGuildObject();
@@ -969,9 +1044,7 @@ void ChatManagerImplementation::handleGuildChat(CreatureObject* sender, const Un
 		return;
 	}
 
-	String text = formatMessage(message.toString());
-
-	UnicodeString formattedMessage(text);
+	UnicodeString formattedMessage(formatMessage(message));
 
 	ManagedReference<ChatRoom*> room = guild->getChatRoom();
 	if (room != NULL) {
@@ -982,6 +1055,9 @@ void ChatManagerImplementation::handleGuildChat(CreatureObject* sender, const Un
 }
 
 void ChatManagerImplementation::handlePlanetChat(CreatureObject* sender, const UnicodeString& message) {
+	String name = sender->getFirstName();
+	String fullName = "";
+
 	if (sender->isPlayerCreature()) {
 		ManagedReference<PlayerObject*> senderGhost = sender->getPlayerObject();
 
@@ -998,13 +1074,11 @@ void ChatManagerImplementation::handlePlanetChat(CreatureObject* sender, const U
 
 			return;
 		}
-	}
 
-	String name = sender->getFirstName();
-	String fullName = "";
-	if( sender->getPlayerObject()->isPrivileged() ){
-		String tag = PermissionLevelList::instance()->getPermissionTag(sender->getPlayerObject()->getAdminLevel()).toString();
-		fullName = name + " [" + tag + "]";
+		if( senderGhost->isPrivileged() ){
+			String tag = PermissionLevelList::instance()->getPermissionTag(sender->getPlayerObject()->getAdminLevel()).toString();
+			fullName = name + " [" + tag + "]";
+		}
 	}
 
 	Zone* zone = sender->getZone();
@@ -1018,9 +1092,7 @@ void ChatManagerImplementation::handlePlanetChat(CreatureObject* sender, const U
 		return;
 	}
 
-	String text = formatMessage(message.toString());
-
-	UnicodeString formattedMessage(text);
+	UnicodeString formattedMessage(formatMessage(message));
 
 	ManagedReference<ChatRoom*> room = zone->getChatRoom();
 	BaseMessage* msg = NULL;
@@ -1037,6 +1109,9 @@ void ChatManagerImplementation::handlePlanetChat(CreatureObject* sender, const U
 }
 
 void ChatManagerImplementation::handleAuctionChat(CreatureObject* sender, const UnicodeString& message) {
+	String name = sender->getFirstName();
+	String fullName = "";
+
 	if (sender->isPlayerCreature()) {
 		ManagedReference<PlayerObject*> senderGhost = sender->getPlayerObject();
 
@@ -1053,13 +1128,11 @@ void ChatManagerImplementation::handleAuctionChat(CreatureObject* sender, const 
 
 			return;
 		}
-	}
 
-	String name = sender->getFirstName();
-	String fullName = "";
-	if( sender->getPlayerObject()->isPrivileged() ){
-		String tag = PermissionLevelList::instance()->getPermissionTag(sender->getPlayerObject()->getAdminLevel()).toString();
-		fullName = name + " [" + tag + "]";
+		if( senderGhost->isPrivileged() ){
+			String tag = PermissionLevelList::instance()->getPermissionTag(sender->getPlayerObject()->getAdminLevel()).toString();
+			fullName = name + " [" + tag + "]";
+		}
 	}
 
 	StringTokenizer args(message.toString());
@@ -1068,9 +1141,7 @@ void ChatManagerImplementation::handleAuctionChat(CreatureObject* sender, const 
 		return;
 	}
 
-	String text = formatMessage(message.toString());
-
-	UnicodeString formattedMessage(text);
+	UnicodeString formattedMessage(formatMessage(message));
 
 	BaseMessage* msg = NULL;
 
@@ -1353,14 +1424,38 @@ void ChatManagerImplementation::deletePersistentMessage(CreatureObject* player, 
 	ObjectManager::instance()->destroyObjectFromDatabase(messageObjectID);
 }
 
-String ChatManagerImplementation::formatMessage(const String& message) {
-	String text = message;
+UnicodeString ChatManagerImplementation::formatMessage(const UnicodeString& message) {
+	UnicodeString text = message;
 
-	while (text.contains("\\>")) {
+	while (text.indexOf("\\>") >= 0) {
 		int index = text.indexOf("\\>");
-		String sub = "\\" + text.subString(index, index + 2);
+		UnicodeString sub = "\\" + text.subString(index, index + 2);
 		text = text.replaceFirst(sub,"");
 	}
 
 	return text;
+}
+
+void ChatManagerImplementation::loadSocialTypes() {
+	IffStream* iffStream = TemplateManager::instance()->openIffFile("datatables/chat/social_types.iff");
+
+	if (iffStream == NULL) {
+		error("Could not load social types.");
+		return;
+	}
+
+	DataTableIff dtiff;
+	dtiff.readObject(iffStream);
+
+	delete iffStream;
+
+	for (int i = 0; i < dtiff.getTotalRows(); ++i) {
+		DataTableRow* row = dtiff.getRow(i);
+
+		String key;
+		row->getCell(0)->getValue(key);
+		socialTypes.put(i + 1, key);
+	}
+
+	info("Loaded " + String::valueOf(socialTypes.size()) + " social types.", true);
 }

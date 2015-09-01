@@ -1,7 +1,6 @@
 enraged_wood_mite_king = Creature:new {
 	objectName = "@mob/creature_names:enraged_wood_mite_king",
 	socialGroup = "mite",
-	pvpFaction = "",
 	faction = "",
 	level = 20,
 	chanceHit = 0.33,
@@ -11,7 +10,7 @@ enraged_wood_mite_king = Creature:new {
 	baseHAM = 4100,
 	baseHAMmax = 5000,
 	armor = 0,
-	resists = {15,25,-1,5,-1,-1,-1,-1,-1},
+	resists = {115,125,-1,5,-1,-1,-1,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 15,
 	hideType = "",
@@ -32,8 +31,8 @@ enraged_wood_mite_king = Creature:new {
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"knockdownattack","knockdownChance=50"},
-		{"posturedownattack","postureDownChance=50"}
+		{"knockdownattack",""},
+		{"posturedownattack",""}
 	}
 }
 

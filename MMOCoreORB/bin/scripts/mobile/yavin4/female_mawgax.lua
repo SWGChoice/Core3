@@ -1,7 +1,6 @@
 female_mawgax = Creature:new {
 	objectName = "@mob/creature_names:mawgax_female",
 	socialGroup = "mawgax",
-	pvpFaction = "",
 	faction = "",
 	level = 23,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ female_mawgax = Creature:new {
 	baseHAM = 5900,
 	baseHAMmax = 7200,
 	armor = 0,
-	resists = {15,15,15,-1,10,10,-1,-1,-1},
+	resists = {115,115,10,-1,10,10,-1,-1,-1},
 	meatType = "meat_domesticated",
 	meatAmount = 115,
 	hideType = "hide_leathery",
@@ -31,7 +30,8 @@ female_mawgax = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"",""},
+		{"stunattack",""}
 	}
 }
 

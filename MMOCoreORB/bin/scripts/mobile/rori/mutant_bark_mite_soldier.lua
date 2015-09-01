@@ -1,7 +1,6 @@
 mutant_bark_mite_soldier = Creature:new {
 	objectName = "@mob/creature_names:mutant_bark_mite_soldier",
 	socialGroup = "mite",
-	pvpFaction = "",
 	faction = "",
 	level = 24,
 	chanceHit = 0.33,
@@ -11,7 +10,7 @@ mutant_bark_mite_soldier = Creature:new {
 	baseHAM = 5900,
 	baseHAMmax = 7200,
 	armor = 0,
-	resists = {30,30,-1,20,20,-1,-1,-1,-1},
+	resists = {130,130,-1,120,120,-1,-1,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 25,
 	hideType = "hide_scaley",

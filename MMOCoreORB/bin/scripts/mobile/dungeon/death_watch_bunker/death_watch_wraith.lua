@@ -1,7 +1,7 @@
 death_watch_wraith = Creature:new {
 	objectName = "@mob/creature_names:mand_bunker_dthwatch_silver",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "death_watch",
-	pvpFaction = "",
 	faction = "",
 	level = 178,
 	chanceHit = 12.25,

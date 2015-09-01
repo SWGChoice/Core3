@@ -1,7 +1,6 @@
 furious_devastator = Creature:new {
 	objectName = "@mob/creature_names:fambaa_furious_devastator",
 	socialGroup = "fambaa",
-	pvpFaction = "",
 	faction = "",
 	level = 38,
 	chanceHit = 0.4,
@@ -11,7 +10,7 @@ furious_devastator = Creature:new {
 	baseHAM = 8600,
 	baseHAMmax = 10600,
 	armor = 0,
-	resists = {25,45,-1,-1,60,60,-1,0,-1},
+	resists = {125,145,-1,-1,160,160,-1,0,-1},
 	meatType = "meat_reptilian",
 	meatAmount = 1000,
 	hideType = "hide_leathery",
@@ -34,14 +33,14 @@ furious_devastator = Creature:new {
 	        groups = {
 				{group = "fambaa_common", chance = 10000000}
 			},
-			lootChance = 2700000
+			lootChance = 1760000
 		}
 	},
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
-		{"posturedownattack","postureDownChance=50"}
+		{"intimidationattack",""},
+		{"posturedownattack",""}
 	}
 }
 

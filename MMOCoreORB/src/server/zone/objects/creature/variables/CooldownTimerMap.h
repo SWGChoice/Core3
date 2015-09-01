@@ -99,12 +99,13 @@ public:
 
 class CooldownTimerMap : public Object {
 	HashTable<String, CooldownTimer> timers;
+	Mutex cooldownMutex;
 
 public:
 	CooldownTimerMap() : timers(1, 1) {
 	}
 
-	CooldownTimerMap(const CooldownTimerMap& map) : Object() {
+	CooldownTimerMap(const CooldownTimerMap& map) : Object(), cooldownMutex() {
 		timers = map.timers;
 	}
 
@@ -116,11 +117,14 @@ public:
 			return *this;
 
 		timers = map.timers;
+		cooldownMutex = map.cooldownMutex;
 
 		return *this;
 	}
 
 	bool isPast(const String& cooldownName) {
+		Locker locker(&cooldownMutex);
+
 		if (!timers.containsKey(cooldownName))
 			return true;
 
@@ -128,12 +132,16 @@ public:
 	}
 
 	void updateToCurrentAndAddMili(const String& cooldownName, uint64 mili) {
+		Locker locker(&cooldownMutex);
+
 		Time* cooldown = updateToCurrentTime(cooldownName);
 
 		cooldown->addMiliTime(mili);
 	}
 
 	Time* updateToCurrentTime(const String& cooldownName) {
+		Locker locker(&cooldownMutex);
+
 		if (!timers.containsKey(cooldownName)) {
 			timers.put(cooldownName, Time());
 		}
@@ -145,19 +153,23 @@ public:
 	}
 
 	void addMiliTime(const String& cooldownName, uint64 mili) {
+		Locker locker(&cooldownMutex);
+
 		if (!timers.containsKey(cooldownName)) {
 			timers.put(cooldownName, Time());
 		}
 
-		Time* cooldown = timers.get(cooldownName).getTime();;
+		Time* cooldown = timers.get(cooldownName).getTime();
 		cooldown->addMiliTime(mili);
 	}
 
 	Time* getTime(const String& cooldownName) {
+		Locker locker(&cooldownMutex);
+
 		if (!timers.containsKey(cooldownName))
 			return NULL;
 
-		Time* cooldown = timers.get(cooldownName).getTime();;
+		Time* cooldown = timers.get(cooldownName).getTime();
 
 		return cooldown;
 	}

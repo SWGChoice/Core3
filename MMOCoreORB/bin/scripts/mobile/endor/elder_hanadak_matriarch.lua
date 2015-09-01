@@ -1,7 +1,6 @@
 elder_hanadak_matriarch = Creature:new {
 	objectName = "@mob/creature_names:elder_hanadak_matriarch",
 	socialGroup = "hanadak",
-	pvpFaction = "",
 	faction = "",
 	level = 35,
 	chanceHit = 0.41,
@@ -11,7 +10,7 @@ elder_hanadak_matriarch = Creature:new {
 	baseHAM = 8800,
 	baseHAMmax = 10800,
 	armor = 0,
-	resists = {25,25,-1,80,80,80,-1,-1,-1},
+	resists = {25,25,-1,180,180,180,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 35,
 	hideType = "hide_bristley",
@@ -32,8 +31,8 @@ elder_hanadak_matriarch = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""},
+		{"intimidationattack",""}
 	}
 }
 

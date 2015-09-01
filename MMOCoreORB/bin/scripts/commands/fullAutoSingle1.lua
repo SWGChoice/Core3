@@ -62,7 +62,7 @@ FullAutoSingle1Command = {
 		{ "dizzy_defense", "resistance_states" }, 
 		{ "jedi_state_defense" }, 
 		30, 
-		100, 
+		0, 
 		30 
 	  ),
 	  StateEffect( 
@@ -71,7 +71,7 @@ FullAutoSingle1Command = {
 		{ "blind_defense", "resistance_states" }, 
 		{ "jedi_state_defense" }, 
 		30, 
-		100, 
+		0, 
 		40 
 	  ),
 	  StateEffect( 
@@ -80,12 +80,14 @@ FullAutoSingle1Command = {
 		{ "stun_defense", "resistance_states" }, 
 		{ "jedi_state_defense" }, 
 		30, 
-		100, 
+		0, 
 		30 
 	  )
 	},
 
 	poolsToDamage = RANDOM_ATTRIBUTE,
+	
+	weaponType = CARBINEWEAPON,
 
 	range = -1
 }

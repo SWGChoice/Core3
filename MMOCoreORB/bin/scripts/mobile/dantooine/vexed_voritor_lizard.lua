@@ -1,7 +1,6 @@
 vexed_voritor_lizard = Creature:new {
 	objectName = "@mob/creature_names:vexed_voritor_lizard",
 	socialGroup = "voritor",
-	pvpFaction = "",
 	faction = "",
 	level = 52,
 	chanceHit = 0.5,
@@ -11,7 +10,7 @@ vexed_voritor_lizard = Creature:new {
 	baseHAM = 11000,
 	baseHAMmax = 14000,
 	armor = 1,
-	resists = {35,-1,5,5,-1,-1,5,5,-1},
+	resists = {135,-1,5,5,-1,-1,5,5,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 50,
 	hideType = "hide_leathery",
@@ -33,14 +32,14 @@ vexed_voritor_lizard = Creature:new {
 			groups = {
 				{group = "voritor_lizard_common", chance = 10000000}
 			},
-			lootChance = 2500000
+			lootChance = 2040000
 		}
 	},
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"knockdownattack","knockdownChance=50"}
+		{"knockdownattack",""},
+		{"dizzyattack",""}
 	}
 }
 

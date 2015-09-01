@@ -1,46 +1,6 @@
 /*
-Copyright (C) 2007 <SWGEmu>
- 
-This File is part of Core3.
- 
-This program is free software; you can redistribute 
-it and/or modify it under the terms of the GNU Lesser 
-General Public License as published by the Free Software
-Foundation; either version 2 of the License, 
-or (at your option) any later version.
- 
-This program is distributed in the hope that it will be useful, 
-but WITHOUT ANY WARRANTY; without even the implied warranty of 
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
-See the GNU Lesser General Public License for
-more details.
- 
-You should have received a copy of the GNU Lesser General 
-Public License along with this program; if not, write to
-the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
- 
-Linking Engine3 statically or dynamically with other modules 
-is making a combined work based on Engine3. 
-Thus, the terms and conditions of the GNU Lesser General Public License 
-cover the whole combination.
- 
-In addition, as a special exception, the copyright holders of Engine3 
-give you permission to combine Engine3 program with free software 
-programs or libraries that are released under the GNU LGPL and with 
-code included in the standard release of Core3 under the GNU LGPL 
-license (or modified versions of such code, with unchanged license). 
-You may copy and distribute such a system following the terms of the 
-GNU LGPL for Engine3 and the licenses of the other code concerned, 
-provided that you include the source code of that other code when 
-and as the GNU LGPL requires distribution of source code.
- 
-Note that people who make modified versions of Engine3 are not obligated 
-to grant this special exception for their modified versions; 
-it is their choice whether to do so. The GNU Lesser General Public License 
-gives permission to release a modified version without this exception; 
-this exception also makes it possible to release a modified version 
-which carries forward this exception.
-*/
+				Copyright <SWGEmu>
+		See file COPYING for copying conditions.*/
 
 package server.zone.objects.tangible.deed.pet;
 
@@ -82,6 +42,7 @@ class PetDeed extends Deed {
 	protected int health;
 	protected int action;
 	protected int mind;
+	protected int regen;
 	// specials
 	protected string special1;
 	protected string special2;
@@ -90,18 +51,19 @@ class PetDeed extends Deed {
 	protected string controlDeviceObjectTemplate;
 	protected string mobileTemplate;
 
-	protected unsigned int cleverness;
-	protected unsigned int endurance;
-	protected unsigned int fierceness;
-	protected unsigned int power;
-	protected unsigned int intelligence;
-	protected unsigned int courage;
-	protected unsigned int dependency;
-	protected unsigned int dexterity;
-	protected unsigned int fortitude;
-	protected unsigned int hardiness;
+	protected int cleverness;
+	protected int endurance;
+	protected int fierceness;
+	protected int power;
+	protected int intelligence;
+	protected int courage;
+	protected int dependency;
+	protected int dexterity;
+	protected int fortitude;
+	protected int hardiness;
 	// sampling
 	protected int sampleCount;
+	protected int specialResists;
 	
 	@dereferenced
 	protected CreatureAttackMap attacks;
@@ -141,7 +103,14 @@ class PetDeed extends Deed {
 		hardiness = 0;	
 		quality = 7;
 		sampleCount = 0;	
+		specialResists = 0;
+		regen = 1;
 	}
+	@dirty
+	public native void setSpecialResist(int type);
+	
+	@dirty
+	public native boolean isSpecialResist(int type);
 	
 	@dirty
 	public int getSampleCount() {
@@ -279,6 +248,8 @@ class PetDeed extends Deed {
 	 * @post { this object is locked, player is locked }
 	 * @returns 0 if successfull
 	 */
+	@preLocked
+	@arg1preLocked
 	public native int handleObjectMenuSelect(CreatureObject player, byte selectedID);
 	
 	@local
@@ -299,52 +270,52 @@ class PetDeed extends Deed {
 	}
 	
 	@dirty
-	public unsigned int getCleverness() { 
+	public int getCleverness() { 
 		return cleverness; 
 	}
 	
 	@dirty
-	public unsigned int getEndurance() { 
+	public int getEndurance() { 
 		return endurance; 
 	}
 	
 	@dirty
-	public unsigned int getFierceness() { 
+	public int getFierceness() { 
 		return fierceness; 
 	}
 	
 	@dirty
-	public unsigned int getPower() { 
+	public int getPower() { 
 		return power; 
 	}
 	
 	@dirty
-	public unsigned int getIntelligence() { 
+	public int getIntelligence() { 
 		return intelligence; 
 	}
 	
 	@dirty
-	public unsigned int getCourage() { 
+	public int getCourage() { 
 		return courage; 
 	}
 	
 	@dirty
-	public unsigned int getDependency() { 
+	public int getDependency() { 
 		return dependency; 
 	}
 	
 	@dirty
-	public unsigned int getDexterity() { 
+	public int getDexterity() { 
 		return dexterity; 
 	}
 	
 	@dirty
-	public unsigned int getFortitude() { 
+	public int getFortitude() { 
 		return fortitude; 
 	}
 	
 	@dirty
-	public unsigned int getHardiness() { 
+	public int getHardiness() { 
 		return hardiness; 
 	}
 	
@@ -357,4 +328,12 @@ class PetDeed extends Deed {
 	 */
 	@local	
 	public native void setupAttacks();
+	
+	@local
+	public native int calculatePetLevel();
+	
+	@local
+	public native void adjustPetLevel(CreatureObject player, CreatureObject pet);
+	@local
+	public native void adjustPetStats(CreatureObject player, CreatureObject pet);
 }

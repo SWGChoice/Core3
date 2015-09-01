@@ -1,7 +1,6 @@
 skreeg_hunter = Creature:new {
 	objectName = "@mob/creature_names:skreeg_hunter",
 	socialGroup = "skreeg",
-	pvpFaction = "",
 	faction = "",
 	level = 21,
 	chanceHit = 0.33,
@@ -11,7 +10,7 @@ skreeg_hunter = Creature:new {
 	baseHAM = 5000,
 	baseHAMmax = 5500,
 	armor = 0,
-	resists = {20,20,10,10,-1,10,10,-1,-1},
+	resists = {120,120,10,10,-1,10,10,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 5,
 	hideType = "hide_bristley",
@@ -33,7 +32,7 @@ skreeg_hunter = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

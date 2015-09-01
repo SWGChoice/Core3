@@ -1,7 +1,7 @@
 canyon_corsair_destroyer = Creature:new {
 	objectName = "@mob/creature_names:canyon_corsair_destroyer",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "canyon_corsair",
-	pvpFaction = "canyon_corsair",
 	faction = "canyon_corsair",
 	level = 40,
 	chanceHit = 0.43,
@@ -31,8 +31,8 @@ canyon_corsair_destroyer = Creature:new {
 		"object/mobile/dressed_corsair_destroyer_hum_m.iff",
 		"object/mobile/dressed_corsair_destroyer_wee_m.iff",
 		"object/mobile/dressed_corsair_destroyer_zab_m.iff"
-		},
-	
+	},
+
 	lootGroups = {
 		{
 			groups = {
@@ -46,12 +46,12 @@ canyon_corsair_destroyer = Creature:new {
 				{group = "clothing_attachments", chance = 450000},
 				{group = "armor_attachments", chance = 450000},
 				{group = "canyon_corsair_common", chance = 1500000}
-			},
-			lootChance = 4000000
+			}
 		}
 	},
 	weapons = {"canyon_corsair_weapons"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(swordsmanmaster,carbineermaster,tkamaster,brawlermaster,marksmanmaster)
 }
 

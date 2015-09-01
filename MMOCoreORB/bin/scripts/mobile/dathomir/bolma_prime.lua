@@ -1,7 +1,6 @@
 bolma_prime = Creature:new {
 	objectName = "@mob/creature_names:bolma_prime",
 	socialGroup = "bolma",
-	pvpFaction = "",
 	faction = "",
 	level = 37,
 	chanceHit = 0.41,
@@ -11,7 +10,7 @@ bolma_prime = Creature:new {
 	baseHAM = 8900,
 	baseHAMmax = 10900,
 	armor = 0,
-	resists = {45,45,25,25,25,25,-1,-1,-1},
+	resists = {145,145,25,25,25,25,-1,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 500,
 	hideType = "hide_leathery",
@@ -33,8 +32,8 @@ bolma_prime = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
-		{"posturedownattack","postureDownChance=50"}
+		{"intimidationattack",""},
+		{"posturedownattack",""}
 	}
 }
 

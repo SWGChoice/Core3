@@ -1,7 +1,6 @@
 gnarled_bark_mite_queen = Creature:new {
 	objectName = "@mob/creature_names:gnarled_bark_mite_queen",
 	socialGroup = "mite",
-	pvpFaction = "",
 	faction = "",
 	level = 18,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ gnarled_bark_mite_queen = Creature:new {
 	baseHAM = 4500,
 	baseHAMmax = 5500,
 	armor = 0,
-	resists = {0,15,-1,0,-1,-1,-1,-1,-1},
+	resists = {0,115,-1,0,-1,-1,-1,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 13,
 	hideType = "",
@@ -32,8 +31,8 @@ gnarled_bark_mite_queen = Creature:new {
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"milddisease",""},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"milddisease",""}
 	}
 }
 

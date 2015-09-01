@@ -1,7 +1,6 @@
 peko_peko = Creature:new {
 	objectName = "@mob/creature_names:peko_peko",
 	socialGroup = "peko",
-	pvpFaction = "",
 	faction = "",
 	level = 14,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ peko_peko = Creature:new {
 	baseHAM = 2000,
 	baseHAMmax = 2400,
 	armor = 0,
-	resists = {0,0,25,0,0,0,0,-1,-1},
+	resists = {0,0,125,0,0,0,0,-1,-1},
 	meatType = "meat_avian",
 	meatAmount = 105,
 	hideType = "hide_wooly",
@@ -32,7 +31,8 @@ peko_peko = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"",""},
+		{"intimidationattack",""}
 	}
 }
 

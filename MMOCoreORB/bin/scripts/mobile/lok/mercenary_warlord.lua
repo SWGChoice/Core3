@@ -1,7 +1,7 @@
 mercenary_warlord = Creature:new {
 	objectName = "@mob/creature_names:mercenary_warlord",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "lok_mercenaries",
-	pvpFaction = "lok_mercenaries",
 	faction = "lok_mercenaries",
 	level = 44,
 	chanceHit = 0.47,
@@ -30,7 +30,7 @@ mercenary_warlord = Creature:new {
 		"object/mobile/dressed_mercenary_warlord_hum_m.iff",
 		"object/mobile/dressed_mercenary_warlord_nikto_m.iff",
 		"object/mobile/dressed_mercenary_warlord_wee_m.iff"
-		},
+	},
 	lootGroups = {
 		{
 			groups = {
@@ -47,12 +47,12 @@ mercenary_warlord = Creature:new {
 				{group = "rifles", chance = 600000},
 				{group = "clothing_attachments", chance = 300000},
 				{group = "armor_attachments", chance = 300000}
-			},
-			lootChance = 3500000
+			}
 		}
 	},
 	weapons = {"rebel_weapons_heavy"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(commandomaster,marksmanmaster,brawlermaster)
 }
 

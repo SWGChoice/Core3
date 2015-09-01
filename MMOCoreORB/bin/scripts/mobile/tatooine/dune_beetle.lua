@@ -1,7 +1,6 @@
 dune_beetle = Creature:new {
 	objectName = "@mob/creature_names:dune_beetle",
 	socialGroup = "beetle",
-	pvpFaction = "",
 	faction = "",
 	level = 13,
 	chanceHit = 0.29,
@@ -11,7 +10,7 @@ dune_beetle = Creature:new {
 	baseHAM = 1200,
 	baseHAMmax = 1400,
 	armor = 0,
-	resists = {15,15,0,0,0,0,0,-1,-1},
+	resists = {115,115,0,0,0,0,0,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 6,
 	hideType = "hide_scaley",

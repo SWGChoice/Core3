@@ -16,7 +16,7 @@ public:
 	}
 
 
-	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) {
+	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) const {
 
 		ManagedReference<PetControlDevice*> controlDevice = creature->getControlDevice().castTo<PetControlDevice*>();
 		if (controlDevice == NULL)
@@ -30,7 +30,7 @@ public:
 			return GENERALERROR;
 
 		ManagedReference<SceneObject*> targetObject = server->getZoneServer()->getObject(target, true);
-		if (targetObject == NULL || !targetObject->isPlayerCreature() ) {
+		if (targetObject == NULL || !targetObject->isCreatureObject() ) { // pets should be able to follow other mobiles as a command. i found multiple references to this. -- washu
 			pet->showFlyText("npc_reaction/flytext","confused", 204, 0, 0);  // "?!!?!?!"
 			return GENERALERROR;
 		}
@@ -46,12 +46,14 @@ public:
 				return GENERALERROR;
 			}
 		}
-
-		CombatManager::instance()->attemptPeace(pet);
+		// attempt peace if the pet is in combat
+		if (pet->isInCombat())
+			CombatManager::instance()->attemptPeace(pet);
 
 		pet->setFollowObject(targetObject);
 		pet->storeFollowObject();
 
+		Locker clocker(controlDevice, creature);
 		controlDevice->setLastCommand(PetManager::FOLLOW);
 
 		pet->activateInterrupt(pet->getLinkedCreature().get(), ObserverEventType::STARTCOMBAT);

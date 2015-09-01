@@ -1,7 +1,6 @@
 overkreetle = Creature:new {
 	objectName = "@mob/creature_names:kreetle_over",
 	socialGroup = "kreetle",
-	pvpFaction = "",
 	faction = "",
 	level = 13,
 	chanceHit = 0.29,
@@ -11,7 +10,7 @@ overkreetle = Creature:new {
 	baseHAM = 1500,
 	baseHAMmax = 1900,
 	armor = 0,
-	resists = {0,0,0,0,0,0,0,-1,-1},
+	resists = {0,0,0,0,0,0,0,0,-1},
 	meatType = "meat_insect",
 	meatAmount = 8,
 	hideType = "hide_scaley",
@@ -32,7 +31,8 @@ overkreetle = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"",""},
+		{"intimidationattack",""}
 	}
 }
 

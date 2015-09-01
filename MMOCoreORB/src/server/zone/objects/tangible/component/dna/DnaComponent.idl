@@ -1,46 +1,6 @@
 /*
-Copyright (C) 2009 <SWGEmu>
- 
-This File is part of Core3.
- 
-This program is free software; you can redistribute 
-it and/or modify it under the terms of the GNU Lesser 
-General Public License as published by the Free Software
-Foundation; either version 2 of the License, 
-or (at your option) any later version.
- 
-This program is distributed in the hope that it will be useful, 
-but WITHOUT ANY WARRANTY; without even the implied warranty of 
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
-See the GNU Lesser General Public License for
-more details.
- 
-You should have received a copy of the GNU Lesser General 
-Public License along with this program; if not, write to
-the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
- 
-Linking Engine3 statically or dynamically with other modules 
-is making a combined work based on Engine3. 
-Thus, the terms and conditions of the GNU Lesser General Public License 
-cover the whole combination.
- 
-In addition, as a special exception, the copyright holders of Engine3 
-give you permission to combine Engine3 program with free software 
-programs or libraries that are released under the GNU LGPL and with 
-code included in the standard release of Core3 under the GNU LGPL 
-license (or modified versions of such code, with unchanged license). 
-You may copy and distribute such a system following the terms of the 
-GNU LGPL for Engine3 and the licenses of the other code concerned, 
-provided that you include the source code of that other code when 
-and as the GNU LGPL requires distribution of source code.
- 
-Note that people who make modified versions of Engine3 are not obligated 
-to grant this special exception for their modified versions; 
-it is their choice whether to do so. The GNU Lesser General Public License 
-gives permission to release a modified version without this exception; 
-this exception also makes it possible to release a modified version 
-which carries forward this exception.
-*/
+				Copyright <SWGEmu>
+		See file COPYING for copying conditions.*/
 
 package server.zone.objects.tangible.component.dna;
 
@@ -53,16 +13,16 @@ include server.zone.objects.manufactureschematic.craftingvalues.CraftingValues;
  
 class DnaComponent extends Component {
 
-	protected unsigned int cleverness;
-	protected unsigned int endurance;
-	protected unsigned int fierceness;
-	protected unsigned int power;
-	protected unsigned int intelligence;
-	protected unsigned int courage;
-	protected unsigned int dependency;
-	protected unsigned int dexterity;
-	protected unsigned int fortitude;
-	protected unsigned int hardiness;
+	protected int cleverness;
+	protected int endurance;
+	protected int fierceness;
+	protected int power;
+	protected int intelligence;
+	protected int courage;
+	protected int dependency;
+	protected int dexterity;
+	protected int fortitude;
+	protected int hardiness;
 	protected string source;
 	protected string special1;
 	protected string special2;
@@ -79,7 +39,9 @@ class DnaComponent extends Component {
 	protected float stunResist;
 	protected float saberResist;
 	protected int sourceLevel;
-	
+	// we need to account for special protections in samples
+	protected int specialResists;
+		
 	public DnaComponent() {
 		Logger.setLoggingName("DnaComponent");
 		cleverness = 0;
@@ -108,10 +70,11 @@ class DnaComponent extends Component {
 		stunResist = 0;	
 		saberResist = -1;
 		sourceLevel = 1;
+		specialResists = 0;
 	}
-	public void setStats(unsigned int cle, unsigned int end, unsigned int fie, unsigned int pow, 
-						    unsigned int ite, unsigned int cou, unsigned int dep, unsigned int dex, 
-						    unsigned int frt, unsigned int har){
+	public void setStats(int cle, int end, int fie, int pow, 
+						    int ite, int cou, int dep, int dex, 
+						    int frt, int har){
 		cleverness = cle;
 		endurance = end;
 		fierceness = fie;
@@ -124,101 +87,107 @@ class DnaComponent extends Component {
 		dexterity = dex;
 	}
 	
-	public void setCleverness(unsigned int value) {
+	@dirty
+	public native void setSpecialResist(int type);
+	
+	@dirty
+	public native boolean isSpecialResist(int type);
+	
+	public void setCleverness(int value) {
 		cleverness = value;
 	}
 	
 	@dirty
-	public unsigned int getCleverness() { 
+	public int getCleverness() { 
 		return cleverness;
 	}
 
-	public void setLevel(unsigned int value) {
+	public void setLevel(int value) {
 		sourceLevel = value;
 	}
 	
 	@dirty
-	public unsigned int getLevel() { 
+	public int getLevel() { 
 		return sourceLevel;
 	}
 
 	
-	public void setEndurance(unsigned int value) {
+	public void setEndurance(int value) {
 		endurance = value;
 	}
 	
 	@dirty
-	public unsigned int getEndurance() { 
+	public int getEndurance() { 
 		return endurance;
 	}
 	
-	public void setFierceness(unsigned int value) {
+	public void setFierceness(int value) {
 		fierceness = value;
 	}
 	
 	@dirty
-	public unsigned int getFierceness() { 
+	public int getFierceness() { 
 		return fierceness;
 	}
 	
-	public void setPower(unsigned int value) {
+	public void setPower(int value) {
 		power = value;
 	}
 	
 	@dirty
-	public unsigned int getPower() { 
+	public int getPower() { 
 		return power;
 	}
 
-	public void setIntellect(unsigned int value) {
+	public void setIntellect(int value) {
 		intelligence = value;
 	}
 	
 	@dirty
-	public unsigned int getIntellect() { 
+	public int getIntellect() { 
 		return intelligence;
 	}
 	
-	public void setCourage(unsigned int value) {
+	public void setCourage(int value) {
 		courage = value;
 	}
 	
 	@dirty
-	public unsigned int getCourage() { 
+	public int getCourage() { 
 		return courage;
 	}
 	
-	public void setDependency(unsigned int value) {
+	public void setDependency(int value) {
 		dependency = value;
 	}
-	public unsigned int getDependency() { 
+	public int getDependency() { 
 		return dependency;
 	}
 	
-	public void setDexterity(unsigned int value) {
+	public void setDexterity(int value) {
 		dexterity = value;
 	}
 	
 	@dirty
-	public unsigned int getDexterity() { 
+	public int getDexterity() { 
 		return dexterity;
 	}
 	
-	public void setFortitude(unsigned int value) {
+	public void setFortitude(int value) {
 		fortitude = value;
 	}
 	
 	@dirty
-	public unsigned int getForititude() { 
+	public int getForititude() { 
 		return fortitude;
 	}
 	
-	public void setHardiness(unsigned int value) {
+	public void setHardiness(int value) {
 		hardiness = value;
 	}
 	
 	@dirty
-	public unsigned int getHardiness() { 
+	public int getHardiness() { 
 		return hardiness;
 	}
 	

@@ -47,7 +47,7 @@ UnarmedSpinAttack2Command = {
 	damageMultiplier = 3.0,
 	speedMultiplier = 3.0,
 	areaAction = true,
-	areaRange = 7,
+	areaRange = 16,
 	healthCostMultiplier = 2,
 	actionCostMultiplier = 2,
 	mindCostMultiplier = 2,
@@ -56,6 +56,8 @@ UnarmedSpinAttack2Command = {
 	animationCRC = hashCode("combo_3d_medium"),
 
 	combatSpam = "unarmed_knockdown",
+	
+	weaponType = UNARMEDWEAPON,
 
 	range = -1
 }

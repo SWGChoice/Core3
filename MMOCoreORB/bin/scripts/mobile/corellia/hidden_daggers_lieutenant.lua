@@ -1,7 +1,7 @@
 hidden_daggers_lieutenant = Creature:new {
 	objectName = "@mob/creature_names:hidden_daggers_lieutenant",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "hidden_daggers",
-	pvpFaction = "hidden_daggers",
 	faction = "hidden_daggers",
 	level = 15,
 	chanceHit = 0.31,
@@ -42,12 +42,12 @@ hidden_daggers_lieutenant = Creature:new {
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "tailor_components", chance = 1000000},
 				{group = "hidden_dagger_common", chance = 2700000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"ranged_weapons"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlermid,marksmanmid)
 }
 

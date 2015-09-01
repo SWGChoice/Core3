@@ -1,7 +1,6 @@
 mire_marauder = Creature:new {
 	objectName = "@mob/creature_names:mire_marauder",
 	socialGroup = "panther",
-	pvpFaction = "",
 	faction = "",
 	level = 56,
 	chanceHit = 0.55,
@@ -11,7 +10,7 @@ mire_marauder = Creature:new {
 	baseHAM = 9700,
 	baseHAMmax = 11900,
 	armor = 1,
-	resists = {55,55,10,80,-1,-1,10,-1,-1},
+	resists = {155,155,10,180,-1,-1,10,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 150,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ mire_marauder = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"},
-		{"stunattack","stunChance=50"}
+		{"posturedownattack",""},
+		{"stunattack",""}
 	}
 }
 

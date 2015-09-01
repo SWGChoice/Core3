@@ -1,7 +1,6 @@
 savage_quenker = Creature:new {
 	objectName = "@mob/creature_names:savage_quenker",
 	socialGroup = "quenker",
-	pvpFaction = "",
 	faction = "",
 	level = 28,
 	chanceHit = 0.36,
@@ -11,7 +10,7 @@ savage_quenker = Creature:new {
 	baseHAM = 6800,
 	baseHAMmax = 8300,
 	armor = 0,
-	resists = {35,35,15,15,-1,15,15,-1,-1},
+	resists = {135,135,15,15,-1,15,15,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 35,
 	hideType = "hide_scaley",
@@ -33,8 +32,8 @@ savage_quenker = Creature:new {
 	weapons = {"creature_spit_small_green"},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
-		{"stunattack","stunChance=50"}
+		{"intimidationattack",""},
+		{"stunattack",""}
 	}
 }
 

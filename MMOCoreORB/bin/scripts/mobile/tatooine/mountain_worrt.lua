@@ -1,7 +1,6 @@
 mountain_worrt = Creature:new {
 	objectName = "@mob/creature_names:mountain_worrt",
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 22,
 	chanceHit = 0.34,
@@ -11,7 +10,7 @@ mountain_worrt = Creature:new {
 	baseHAM = 4500,
 	baseHAMmax = 5500,
 	armor = 0,
-	resists = {10,30,10,35,35,-1,-1,-1,-1},
+	resists = {10,130,10,135,135,-1,-1,-1,-1},
 	meatType = "meat_reptilian",
 	meatAmount = 4,
 	hideType = "hide_leathery",
@@ -33,8 +32,8 @@ mountain_worrt = Creature:new {
 	weapons = {"creature_spit_small_red"},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"knockdownattack","knockdownChance=50"}
+		{"knockdownattack",""},
+		{"dizzyattack",""}
 	}
 }
 

@@ -9,10 +9,19 @@
 #include "server/zone/managers/templates/TemplateManager.h"
 
 DraftSchematicObjectTemplate::DraftSchematicObjectTemplate() {
+	craftingToolTab = 0;
+
+	complexity = 0;
+	size = 0;
+
+	xp = 0;
+
+	tanoCRC = 0;
 
 	ingredientTemplateNames = new Vector<String> ();
 	ingredientTitleNames = new Vector<String> ();
 	ingredientSlotType = new Vector<short> ();
+	ingredientAppearance = new Vector<String>();
 	resourceTypes = new Vector<String> ();
 	resourceQuantities = new Vector<int> ();
 	contribution = new Vector<short> ();
@@ -89,6 +98,16 @@ void DraftSchematicObjectTemplate::readObject(LuaObject* templateData) {
 		ingredientSlotType->add(ingredientSlotTypeList.getIntAt(i));
 	}
 	ingredientSlotTypeList.pop();
+
+	LuaObject ingredientAppearanceList = templateData->getObjectField("ingredientAppearance");
+	if (ingredientAppearanceList.isValidTable()) {
+		for (int i = 1; i <= ingredientAppearanceList.getTableSize(); i++)
+			ingredientAppearance->add(ingredientAppearanceList.getStringAt(i));
+	} else {
+		for (int i = 0; i < ingredientTitleNames->size(); i++)
+			ingredientAppearance->add("");
+	}
+	ingredientAppearanceList.pop();
 
 	LuaObject resourceTypesList = templateData->getObjectField("resourceTypes");
 	for (int i = 1; i <= resourceTypesList.getTableSize(); ++i) {

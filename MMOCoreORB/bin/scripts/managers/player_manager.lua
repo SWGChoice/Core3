@@ -69,6 +69,8 @@ baseStoredShips = 10
 -----------------------------------
 veteranRewardMilestones = {90, 180, 270, 360, 450, 540, 630, 720, 810, 900, 990, 1080} --days, must be sorted low to high
 
+veteranRewardAdditionalMilestones = 360 --frequency, in days, of additional milestones (beyond the established ones)
+
 veteranRewards = {
 
 	-- 90 Day Rewards
@@ -81,7 +83,7 @@ veteranRewards = {
 	{templateFile = "object/tangible/veteran_reward/frn_vet_r2_toy.iff", milestone=90, oneTime=false, description="@veteran_new:mini_r2"},
 
 	-- 180 Day Rewards
-	{templateFile = "object/tangible/veteran_reward/resource.iff", milestone=180, oneTime=false, description="100k Resource Deed"},
+	{templateFile = "object/tangible/veteran_reward/resource.iff", milestone=180, oneTime=true, description="@veteran_new:resourcecrate"},
 	{templateFile = "object/tangible/veteran_reward/frn_couch_falcon_corner_s01.iff", milestone=180, oneTime=false, description="@veteran_new:falconcouch"},
 	{templateFile = "object/tangible/veteran_reward/frn_couch_falcon_section_s01.iff", milestone=180, oneTime=false, description="@veteran_new:falconchair"},
 	{templateFile = "object/tangible/veteran_reward/frn_vet_tie_fighter_toy.iff", milestone=180, oneTime=false, description="@veteran_new:mini_tiefighter"},
@@ -104,7 +106,7 @@ veteranRewards = {
 	{templateFile = "object/tangible/veteran_reward/frn_tech_console_sectional_d.iff", milestone=360, oneTime=false, description="@veteran_new:techconsole_d"},
 	{templateFile = "object/tangible/veteran_reward/frn_vet_jabba_toy.iff", milestone=360, oneTime=false, description="@veteran_new:mini_jabba"},
 	{templateFile = "object/tangible/veteran_reward/frn_vet_stormtrooper_toy.iff", milestone=360, oneTime=false, description="@veteran_new:mini_stormtrooper"},
-	--Disabled until kits are functional {templateFile = "object/tangible/veteran_reward/antidecay.iff", milestone=360, oneTime=false, description="@veteran_new:antidecay"},
+	{templateFile = "object/tangible/veteran_reward/antidecay.iff", milestone=360, oneTime=true, description="@veteran_new:antidecay"},
 	
 	-- 450 Day Rewards
 	{templateFile = "object/tangible/camp/camp_spit_s2.iff", milestone=450, oneTime=false, description="Camp Center (Small)"},

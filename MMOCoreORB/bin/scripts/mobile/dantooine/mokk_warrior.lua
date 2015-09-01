@@ -1,7 +1,7 @@
 mokk_warrior = Creature:new {
 	objectName = "@mob/creature_names:mokk_warrior",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "mokk_tribe",
-	pvpFaction = "mokk_tribe",
 	faction = "mokk_tribe",
 	level = 70,
 	chanceHit = 0.7,
@@ -38,8 +38,7 @@ mokk_warrior = Creature:new {
 				{group = "clothing_attachments", chance = 500000},
 				{group = "wearables_common", chance = 1000000},
 				{group = "wearables_uncommon", chance = 1000000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"primitive_weapons"},

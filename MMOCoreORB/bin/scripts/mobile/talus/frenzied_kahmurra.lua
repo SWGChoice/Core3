@@ -1,7 +1,6 @@
 frenzied_kahmurra = Creature:new {
 	objectName = "@mob/creature_names:frenzied_kahmurra",
 	socialGroup = "kahmurra",
-	pvpFaction = "",
 	faction = "",
 	level = 33,
 	chanceHit = 0.4,
@@ -11,7 +10,7 @@ frenzied_kahmurra = Creature:new {
 	baseHAM = 8600,
 	baseHAMmax = 10600,
 	armor = 0,
-	resists = {30,30,20,-1,20,20,-1,-1,-1},
+	resists = {130,130,20,-1,20,20,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 50,
 	hideType = "hide_bristley",
@@ -33,7 +32,8 @@ frenzied_kahmurra = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"",""},
+		{"stunattack",""}
 	}
 }
  

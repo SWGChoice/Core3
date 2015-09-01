@@ -1,7 +1,6 @@
 woolamander_harrower = Creature:new {
 	objectName = "@mob/creature_names:woolamander_harrower",
 	socialGroup = "woolamander",
-	pvpFaction = "",
 	faction = "",
 	level = 51,
 	chanceHit = 0.51,
@@ -11,7 +10,7 @@ woolamander_harrower = Creature:new {
 	baseHAM = 10000,
 	baseHAMmax = 13000,
 	armor = 1,
-	resists = {55,55,-1,80,80,80,-1,-1,-1},
+	resists = {135,135,-1,160,160,160,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 20,
 	hideType = "hide_wooly",
@@ -29,18 +28,18 @@ woolamander_harrower = Creature:new {
 	templates = {"object/mobile/woolamander_hue.iff"},
 	scale = 1.25,
 	lootGroups = {
-	 {
-	        groups = {
+		{
+			groups = {
 				{group = "harrower_bone", chance = 10000000}
 			},
-			lootChance = 4650000
+			lootChance = 2020000
 		}
 	},
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"creatureareapoison",""},
-		{"knockdownattack","knockdownChance=50"}
+		{"knockdownattack",""},
+		{"creatureareapoison",""}
 	}
 }
 

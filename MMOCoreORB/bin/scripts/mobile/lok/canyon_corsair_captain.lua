@@ -1,7 +1,7 @@
 canyon_corsair_captain = Creature:new {
 	objectName = "@mob/creature_names:canyon_corsair_captain",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "canyon_corsair",
-	pvpFaction = "canyon_corsair",
 	faction = "canyon_corsair",
 	level = 50,
 	chanceHit = 0.5,
@@ -31,7 +31,7 @@ canyon_corsair_captain = Creature:new {
 		"object/mobile/dressed_corsair_captain_nikto_m.iff",
 		"object/mobile/dressed_corsair_captain_wee_m.iff",
 		"object/mobile/dressed_corsair_captain_zab_m.iff"
-		},
+	},
 
 	lootGroups = {
 		{
@@ -47,12 +47,12 @@ canyon_corsair_captain = Creature:new {
 				{group = "armor_attachments", chance = 450000},
 				{group = "canyon_corsair_common", chance = 1350000},
 				{group = "wearables_uncommon", chance = 500000},
-			},
-			lootChance = 4500000
+			}
 		}
 	},
 	weapons = {"canyon_corsair_weapons"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(swordsmanmaster,carbineermaster,tkamaster,brawlermaster,marksmanmaster)
 }
 

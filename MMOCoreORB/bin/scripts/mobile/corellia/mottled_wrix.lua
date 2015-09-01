@@ -1,7 +1,6 @@
 mottled_wrix = Creature:new {
 	objectName = "@mob/creature_names:mottled_wrix",
 	socialGroup = "wrix",
-	pvpFaction = "",
 	faction = "",
 	level = 18,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ mottled_wrix = Creature:new {
 	baseHAM = 4100,
 	baseHAMmax = 5000,
 	armor = 0,
-	resists = {20,20,20,20,0,0,-1,-1,-1},
+	resists = {110,110,-1,-1,5,5,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 65,
 	hideType = "hide_bristley",
@@ -33,8 +32,8 @@ mottled_wrix = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"mediumdisease",""},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"mediumdisease",""}
 	}
 }
 

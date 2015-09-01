@@ -1,7 +1,7 @@
 corsec_chief = Creature:new {
 	objectName = "@mob/creature_names:corsec_chief",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "corsec",
-	pvpFaction = "corsec",
 	faction = "corsec",
 	level = 27,
 	chanceHit = 0.37,
@@ -34,12 +34,12 @@ corsec_chief = Creature:new {
 				{group = "wearables_all", chance = 1500000},
 				{group = "corsec_weapons", chance = 2500000},
 				{group = "tailor_components", chance = 1500000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"corsec_police_weapons"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/military",
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 

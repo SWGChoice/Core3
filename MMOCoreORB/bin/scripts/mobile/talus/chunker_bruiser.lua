@@ -1,7 +1,7 @@
 chunker_bruiser = Creature:new {
 	objectName = "@mob/creature_names:chunker_bruiser",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "chunker",
-	pvpFaction = "thug",
 	faction = "thug",
 	level = 11,
 	chanceHit = 0.29,
@@ -25,33 +25,33 @@ chunker_bruiser = Creature:new {
 	creatureBitmask = PACK + KILLER,
 	diet = HERBIVORE,
 
-	templates = {"object/mobile/dressed_mugger.iff", 
-					"object/mobile/dressed_robber_human_male_01.iff", 
-					"object/mobile/dressed_criminal_thug_zabrak_female_01.iff", 
-					"object/mobile/dressed_criminal_thug_aqualish_female_02.iff",
-					"object/mobile/dressed_criminal_thug_aqualish_male_02.iff",
-					"object/mobile/dressed_desperado_bith_female_01.iff",
-					"object/mobile/dressed_criminal_thug_human_female_01.iff",
-					"object/mobile/dressed_goon_twk_female_01.iff",
-					"object/mobile/dressed_criminal_thug_human_male_01.iff",
-					"object/mobile/dressed_robber_twk_female_01.iff",
-					"object/mobile/dressed_villain_trandoshan_male_01.iff",
-					"object/mobile/dressed_desperado_bith_male_01.iff",
-					"object/mobile/dressed_mugger.iff"},
+	templates = {"object/mobile/dressed_mugger.iff",
+		"object/mobile/dressed_robber_human_male_01.iff",
+		"object/mobile/dressed_criminal_thug_zabrak_female_01.iff",
+		"object/mobile/dressed_criminal_thug_aqualish_female_02.iff",
+		"object/mobile/dressed_criminal_thug_aqualish_male_02.iff",
+		"object/mobile/dressed_desperado_bith_female_01.iff",
+		"object/mobile/dressed_criminal_thug_human_female_01.iff",
+		"object/mobile/dressed_goon_twk_female_01.iff",
+		"object/mobile/dressed_criminal_thug_human_male_01.iff",
+		"object/mobile/dressed_robber_twk_female_01.iff",
+		"object/mobile/dressed_villain_trandoshan_male_01.iff",
+		"object/mobile/dressed_desperado_bith_male_01.iff",
+		"object/mobile/dressed_mugger.iff"},
 	lootGroups = {
-	    {
-	        groups = {
+		{
+			groups = {
 				{group = "junk", chance = 1200000},
 				{group = "rifles", chance = 700000},
 				{group = "melee_knife", chance = 700000},
 				{group = "pistols", chance = 700000},
 				{group = "carbines", chance = 700000},
 				{group = "chunker_common", chance = 6000000},
-	    	},
-			lootChance = 3500000
+			}
 		}
 	},
 	weapons = {"ranged_weapons"},
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlermid,marksmanmid)
 }
 

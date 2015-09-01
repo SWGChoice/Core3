@@ -1,7 +1,6 @@
 relentless_purbole = Creature:new {
 	objectName = "@mob/creature_names:purbole_relentless",
 	socialGroup = "purbole",
-	pvpFaction = "",
 	faction = "",
 	level = 21,
 	chanceHit = 0.33,
@@ -11,7 +10,7 @@ relentless_purbole = Creature:new {
 	baseHAM = 6300,
 	baseHAMmax = 7700,
 	armor = 0,
-	resists = {10,10,20,0,0,40,-1,-1,-1},
+	resists = {110,110,120,10,10,140,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 12,
 	hideType = "hide_bristley",
@@ -33,8 +32,8 @@ relentless_purbole = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"dizzyattack",""}
 	}
 }
 

@@ -51,15 +51,43 @@ protected:
 	Vector<String> creatureAccuracyModifiers;
 	Vector<String> creatureAimModifiers;
 	Vector<String> defenderDefenseModifiers;
-	Vector<String> certificationsRequired;
 	Vector<String> defenderSecondaryDefenseModifiers;
 	Vector<String> defenderToughnessModifiers;
 
 	String xpType;
 
+	uint32 weaponType;
+
 public:
 	SharedWeaponObjectTemplate() {
+		damageType = 0;
 
+		armorPiercing = 0;
+
+		healthAttackCost = 0;
+		actionAttackCost = 0;
+		mindAttackCost = 0;
+		forceCost = 0;
+
+		pointBlankAccuracy = 0;
+		pointBlankRange = 0;
+
+		idealRange = 0;
+		idealAccuracy = 0;
+
+		maxRange = 0;
+		maxRangeAccuracy = 0;
+
+		minDamage = 0;
+		maxDamage = 0;
+
+		woundsRatio = 0;
+
+		area = 0;
+
+		attackSpeed = 0;
+
+		weaponType = 0xFFFFFFFF;
 	}
 
 	~SharedWeaponObjectTemplate() {
@@ -310,6 +338,13 @@ public:
 		return animationType;
 	}
 
+	uint32 getWeaponType() const {
+		return weaponType;
+	}
+
+	void setWeaponType(uint32 weaponType) {
+		this->weaponType = weaponType;
+	}
 };
 
 #endif /* SHAREDWEAPONOBJECTTEMPLATE_H_ */

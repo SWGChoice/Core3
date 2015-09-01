@@ -56,23 +56,11 @@ HealthShot2Command = {
 	animationCRC = hashCode("fire_1_special_single_light"),
 
 	combatSpam = "sapblast",
-
-	stateEffects = {
-	  StateEffect( 
-		HEALTHDEGRADE_EFFECT, 
-		{}, 
-		{}, 
-		{}, 
-		100, 
-		100, 
-		30 
-	  )
-	},
 	
 	dotEffects = {
 	  DotEffect( 
 		BLEEDING, 
-		{ "resistance_bleeding", "bleed_resist", "combat_bleeding_defense" },
+		{ "resistance_bleeding", "bleed_resist" },
 		HEALTH,
 		true,
 		125,
@@ -80,7 +68,9 @@ HealthShot2Command = {
 		60, 
 		60
 	  )
-	},	
+	},
+	
+	weaponType = PISTOLWEAPON,	
 
 	range = -1
 }

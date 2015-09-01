@@ -60,12 +60,14 @@ Melee1hHit3Command = {
 		{ "blind_defense", "resistance_states" }, 
 		{ "jedi_state_defense" }, 
 		40, 
-		100, 
+		0, 
 		30 
 	  )
 	},
 
 	combatSpam = "chomok",
+	
+	weaponType = ONEHANDMELEEWEAPON,
 
 	range = -1
 }

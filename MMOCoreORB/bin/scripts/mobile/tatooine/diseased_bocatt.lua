@@ -1,7 +1,6 @@
 diseased_bocatt = Creature:new {
 	objectName = "@mob/creature_names:bocatt_diseased",
 	socialGroup = "bocatt",
-	pvpFaction = "",
 	faction = "",
 	level = 8,
 	chanceHit = 0.27,
@@ -11,7 +10,7 @@ diseased_bocatt = Creature:new {
 	baseHAM = 405,
 	baseHAMmax = 495,
 	armor = 0,
-	resists = {0,0,0,0,0,0,10,-1,-1},
+	resists = {0,0,0,0,0,0,110,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 6,
 	hideType = "hide_leathery",
@@ -32,7 +31,7 @@ diseased_bocatt = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
+		{"intimidationattack",""},
 		{"milddisease",""}
 	}
 }

@@ -1,7 +1,7 @@
 tatooine_militiaman = Creature:new {
 	objectName = "@mob/creature_names:tatooine_militiaman",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "townsperson",
-	pvpFaction = "townsperson",
 	faction = "townsperson",
 	level = 5,
 	chanceHit = 0.25,
@@ -30,9 +30,21 @@ tatooine_militiaman = Creature:new {
 		"object/mobile/dressed_tatooine_militiaman.iff",
 		"object/mobile/dressed_eisley_officer_trandoshan_female_01.iff",
 		"object/mobile/dressed_eisley_officer_aqualish_male_01.iff"},
-	lootGroups = {},
+	lootGroups = {
+		{
+			groups = {
+				{group = "junk", chance = 4000000},
+				{group = "wearables_common", chance = 2000000},
+				{group = "rifles", chance = 1000000},
+				{group = "pistols", chance = 1000000},
+				{group = "melee_weapons", chance = 1000000},
+				{group = "carbines", chance = 1000000},
+			}
+		}
+	},
 	weapons = {"rebel_weapons_light"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/townperson",
 	attacks = merge(brawlernovice,marksmannovice)
 }
 

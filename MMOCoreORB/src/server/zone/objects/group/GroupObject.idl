@@ -1,46 +1,6 @@
 /*
-Copyright (C) 2007 <SWGEmu>
-
-This File is part of Core3.
-
-This program is free software; you can redistribute
-it and/or modify it under the terms of the GNU Lesser
-General Public License as published by the Free Software
-Foundation; either version 2 of the License,
-or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU Lesser General Public License for
-more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this program; if not, write to
-the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-
-Linking Engine3 statically or dynamically with other modules
-is making a combined work based on Engine3.
-Thus, the terms and conditions of the GNU Lesser General Public License
-cover the whole combination.
-
-In addition, as a special exception, the copyright holders of Engine3
-give you permission to combine Engine3 program with free software
-programs or libraries that are released under the GNU LGPL and with
-code included in the standard release of Core3 under the GNU LGPL
-license (or modified versions of such code, with unchanged license).
-You may copy and distribute such a system following the terms of the
-GNU LGPL for Engine3 and the licenses of the other code concerned,
-provided that you include the source code of that other code when
-and as the GNU LGPL requires distribution of source code.
-
-Note that people who make modified versions of Engine3 are not obligated
-to grant this special exception for their modified versions;
-it is their choice whether to do so. The GNU Lesser General Public License
-gives permission to release a modified version without this exception;
-this exception also makes it possible to release a modified version
-which carries forward this exception.
-*/
+				Copyright <SWGEmu>
+		See file COPYING for copying conditions.*/
 
 package server.zone.objects.group;
 
@@ -48,48 +8,53 @@ import server.zone.objects.scene.SceneObject;
 import server.zone.objects.creature.CreatureObject;
 import system.util.Vector;
 import server.chat.room.ChatRoom;
-//import server.zone.packets.object.StfParameter;
 import engine.lua.LuaObject;
 import engine.service.proto.BaseMessage;
 include server.zone.objects.group.GroupList;
 include server.zone.managers.mission.MissionManager;
+include server.zone.managers.group.GroupManager;
 import server.zone.objects.group.tasks.UpdateNearestMissionForGroupTask;
-//import server.zone.objects.group.tasks.UpdateNearestMissionForGroupTaskList;
 import server.zone.Zone;
 include server.chat.StringIdChatParameter;
 
-class GroupObject extends SceneObject {	
+class GroupObject extends SceneObject {
 	@dereferenced
 	GroupList groupMembers;
-	
-	@dereferenced	
+
+	@dereferenced
 	VectorMap<unsigned int, Reference<UpdateNearestMissionForGroupTask> > updateNearestMissionForGroupTasks;
 
 	ChatRoom chatRoom;
-	
+
 	int groupLevel;
 
 	protected string bandSong;
-	
-	public GroupObject() {		
+
+	int lootRule;
+
+	unsigned long masterLooterID;
+
+	public GroupObject() {
 		groupLevel = 0;
-		
+
 		Logger.setLoggingName("GroupObject");
-		
+
 		chatRoom = null;
 
 		bandSong = "";
+
+		lootRule = GroupManager.FREEFORALL;
+		masterLooterID = 0;
 	}
-	
+
 	@dirty
 	public native void sendBaselinesTo(SceneObject player);
-	
+
 	@dirty
 	public native void broadcastMessage(BaseMessage msg);
-	
+
 	@dirty
 	public native void broadcastMessage(CreatureObject player, BaseMessage msg, boolean sendSelf = false);
-
 
 	/*public native void sendSystemMessage(SceneObject player, final string message, boolean sendToSelf = false);
 	public native void sendSystemMessage(SceneObject player, final string file, final string str, unsigned long targetid = 0, boolean sendToSelf = false);
@@ -97,13 +62,15 @@ class GroupObject extends SceneObject {
 */
 	@local
 	@dirty
-	public native void sendSystemMessage(@dereferenced StringIdChatParameter param);
+	public native void sendSystemMessage(@dereferenced StringIdChatParameter param, boolean sendLeader = true);
 	@dirty
-	public native void sendSystemMessage(final string fullPath);
-	
+	public native void sendSystemMessage(final string fullPath, boolean sendLeader = true);
+
 	public native void addMember(SceneObject newMember);
+	@preLocked
 	public native void removeMember(SceneObject member);
 
+	@preLocked
 	public native void disband();
 	public native void makeLeader(SceneObject player);
 
@@ -112,16 +79,16 @@ class GroupObject extends SceneObject {
 	@dirty
 	public native boolean hasMember(unsigned long member);
 
+	@preLocked
 	public native void startChatRoom();
+	@preLocked
 	public native void destroyChatRoom();
 
 	@dirty
 	public native float getGroupHarvestModifier(CreatureObject player);
 
-	/*public native void addSquadLeaderBonuses(CreatureObject groupMember);
-	public native void removeSquadLeaderBonuses(CreatureObject groupMember);*/
-
 	@dirty
+	@preLocked
 	public native void calcGroupLevel();
 
 	@read
@@ -158,27 +125,31 @@ class GroupObject extends SceneObject {
 			return groupMembers.getSafe(0);
 		}
 	}
-	
+
 	@local
 	@dirty
 	public GroupList getGroupList() {
 		return groupMembers;
 	}
-	
+
 	@dirty
 	public boolean isGroupObject() {
 		return true;
 	}
-	
+
 	@dirty
 	public native boolean hasSquadLeader();
-	
+
 	public native void addGroupModifiers();
-	
+
+	@preLocked
 	public native void removeGroupModifiers();
-	
+
+	@preLocked
+	@arg1preLocked
 	public native void addGroupModifiers(CreatureObject player);
-	
+
+	@preLocked
 	public native void removeGroupModifiers(CreatureObject player);
 
 	@dirty
@@ -189,9 +160,37 @@ class GroupObject extends SceneObject {
 		return bandSong;
 	}
 
+	@preLocked
 	public void setBandSong(final string song) {
 		bandSong = song;
 	}
 
+	@read
+	public int getLootRule() {
+		return lootRule;
+	}
+
+	@preLocked
+	public void setLootRule(int newRule) {
+		lootRule = newRule;
+	}
+
+	@read
+	public unsigned long getMasterLooterID() {
+		return masterLooterID;
+	}
+
+	@preLocked
+	public void setMasterLooterID(unsigned long newID) {
+		masterLooterID = newID;
+	}
+
+	public boolean checkMasterLooter(SceneObject object) {
+		return object.getObjectID() == masterLooterID;
+	}
+
+	@preLocked
 	public native void scheduleUpdateNearestMissionForGroup(unsigned int planetCRC);
+
+	public native void updateLootRules();
 }

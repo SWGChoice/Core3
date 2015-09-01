@@ -1,7 +1,7 @@
 governor = Creature:new {
 	objectName = "@mob/creature_names:governor",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "naboo",
-	pvpFaction = "naboo",
 	faction = "naboo",
 	level = 9,
 	chanceHit = 0.27,

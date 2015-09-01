@@ -1,7 +1,6 @@
 male_mawgax = Creature:new {
 	objectName = "@mob/creature_names:mawgax_male",
 	socialGroup = "mawgax",
-	pvpFaction = "",
 	faction = "",
 	level = 25,
 	chanceHit = 0.36,
@@ -11,7 +10,7 @@ male_mawgax = Creature:new {
 	baseHAM = 7200,
 	baseHAMmax = 8800,
 	armor = 0,
-	resists = {20,20,15,-1,15,15,30,-1,-1},
+	resists = {120,120,15,-1,15,15,130,-1,-1},
 	meatType = "meat_domesticated",
 	meatAmount = 100,
 	hideType = "hide_leathery",
@@ -32,7 +31,8 @@ male_mawgax = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"",""},
+		{"intimidationattack",""}
 	}
 }
 

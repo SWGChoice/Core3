@@ -1,7 +1,6 @@
 giant_dalyrake = Creature:new {
 	objectName = "@mob/creature_names:giant_dalyrake",
 	socialGroup = "dalyrake",
-	pvpFaction = "",
 	faction = "",
 	level = 18,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ giant_dalyrake = Creature:new {
 	baseHAM = 2400,
 	baseHAMmax = 3000,
 	armor = 0,
-	resists = {5,5,5,-1,35,35,-1,-1,-1},
+	resists = {5,5,5,-1,135,135,-1,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 60,
 	hideType = "hide_scaley",
@@ -33,8 +32,8 @@ giant_dalyrake = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"mildpoison",""}
+		{"mildpoison",""},
+		{"dizzyattack",""}
 	}
 }
 

@@ -1,7 +1,7 @@
 stormtrooper_commando = Creature:new {
 	objectName = "@mob/creature_names:storm_commando",
+	randomNameType = NAME_STORMTROOPER_TAG,
 	socialGroup = "imperial",
-	pvpFaction = "imperial",
 	faction = "imperial",
 	level = 29,
 	chanceHit = 0.38,
@@ -40,12 +40,13 @@ stormtrooper_commando = Creature:new {
 				{group = "armor_attachments", chance = 250000},
 				{group = "stormtrooper_common", chance = 700000},
 				{group = "wearables_common", chance = 1000000}
-			},
-			lootChance = 2800000
+			}
 		}
 	},
 	weapons = {"stormtrooper_weapons"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/stormtrooper",
+	personalityStf = "@hireling/hireling_stormtrooper",		
 	attacks = merge(riflemanmaster,carbineermaster,brawlermaster)
 }
 

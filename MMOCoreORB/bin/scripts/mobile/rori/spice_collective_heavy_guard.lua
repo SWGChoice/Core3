@@ -1,7 +1,7 @@
 spice_collective_heavy_guard = Creature:new {
 	objectName = "@mob/creature_names:spice_collective_heavyguard",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "spice_collective",
-	pvpFaction = "spice_collective",
 	faction = "spice_collective",
 	level = 22,
 	chanceHit = 0.34,
@@ -37,12 +37,12 @@ spice_collective_heavy_guard = Creature:new {
 				{group = "carbines", chance = 2000000},
 				{group = "tailor_components", chance = 2000000},
 				{group = "loot_kit_parts", chance = 2000000}
-			},
-			lootChance = 3200000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_heavy"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 

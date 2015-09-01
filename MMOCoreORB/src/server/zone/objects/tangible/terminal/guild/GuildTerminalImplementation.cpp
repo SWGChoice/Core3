@@ -18,18 +18,26 @@
 
 
 void GuildTerminalImplementation::fillObjectMenuResponse(ObjectMenuResponse* menuResponse, CreatureObject* player) {
-	if (guildObject == NULL) {
-		ManagedReference<BuildingObject*> building = cast<BuildingObject*>( getParentRecursively(SceneObjectType::BUILDING).get().get());
+	ManagedReference<BuildingObject*> building = cast<BuildingObject*>( getParentRecursively(SceneObjectType::BUILDING).get().get());
+	if (building == NULL) {
+		return;
+	}
 
-		if (building != NULL && building->isOwnerOf(player)) {
+	ManagedReference<CreatureObject*> owner = building->getOwnerCreatureObject();
+	if (owner == NULL || !owner->isPlayerCreature()) {
+		return;
+	}
+
+	ManagedReference<GuildObject*> guildObject = owner->getGuildObject().get();
+
+	if (guildObject == NULL) {
+
+		if (player == owner) {
 			if (!player->isInGuild()) {
 				menuResponse->addRadialMenuItem(185, 3, "@guild:menu_create"); //Create Guild
 				return;
 			}
 
-			//If the owner is already in a guild, and this guild terminal doesn't have a guild assigned yet,
-			//then use the owner's guild.
-			guildObject = player->getGuildObject();
 		} else {
 			//They don't have permission to create a guild.
 			return;
@@ -46,8 +54,9 @@ void GuildTerminalImplementation::fillObjectMenuResponse(ObjectMenuResponse* men
 	menuResponse->addRadialMenuItem(193, 3, "@guild:menu_guild_management"); //Guild Management
 	menuResponse->addRadialMenuItemToRadialID(193, 186, 3, "@guild:menu_info"); //Guild Information
 	menuResponse->addRadialMenuItemToRadialID(193, 189, 3, "@guild:menu_enemies"); //Guild Enemies
+
 	if ( guildObject->getGuildLeaderID() == playerID )
-	menuResponse->addRadialMenuItemToRadialID(193, 195, 3, "@guild:accept_hall"); // Accept
+		menuResponse->addRadialMenuItemToRadialID(193, 195, 3, "@guild:accept_hall"); // Accept
 
 	if (guildObject->hasDisbandPermission(playerID))
 		menuResponse->addRadialMenuItemToRadialID(193, 191, 3, "@guild:menu_disband"); //Disband Guild
@@ -72,62 +81,88 @@ void GuildTerminalImplementation::fillObjectMenuResponse(ObjectMenuResponse* men
 }
 
 int GuildTerminalImplementation::handleObjectMenuSelect(CreatureObject* player, byte selectedID) {
-	Locker _lock(_this.get());
+	Locker _lock(_this.getReferenceUnsafeStaticCast());
 
 	ManagedReference<GuildManager*> guildManager = server->getZoneServer()->getGuildManager();
 
 	if (guildManager == NULL)
 		return TerminalImplementation::handleObjectMenuSelect(player, selectedID);
 
+	ManagedReference<BuildingObject*> building = cast<BuildingObject*>( getParentRecursively(SceneObjectType::BUILDING).get().get());
+	if (building == NULL) {
+		return 1;
+	}
+
+	ManagedReference<CreatureObject*> owner = building->getOwnerCreatureObject();
+	if (owner == NULL || !owner->isPlayerCreature()) {
+		return 1;
+	}
+
+	ManagedReference<GuildObject*> guildObject = owner->getGuildObject().get();
+
 	uint64 playerID = player->getObjectID();
+	bool isMember = false;
+
+	if (guildObject != NULL && guildObject->hasMember(playerID))
+		isMember = true;
 
 	switch (selectedID) {
 	case 69:
 		if (guildObject != NULL && (guildObject->getGuildLeaderID() == playerID || player->getPlayerObject()->isPrivileged())) {
-			guildManager->sendGuildTransferTo(player, _this.get());
+			guildManager->sendGuildTransferTo(player, _this.getReferenceUnsafeStaticCast());
 		}
 		break;
 	case 185:
-		guildManager->sendGuildCreateNameTo(player, _this.get());
+		if (guildObject == NULL && player == owner) {
+			guildManager->sendGuildCreateNameTo(player, _this.getReferenceUnsafeStaticCast());
+		}
 		break;
 	case 189:
-		if (guildObject != NULL)
-			guildManager->sendGuildWarStatusTo(player, guildObject, _this.get());
+		if (guildObject != NULL && (isMember || player->getPlayerObject()->isPrivileged())) {
+			guildManager->sendGuildWarStatusTo(player, guildObject, _this.getReferenceUnsafeStaticCast());
+		}
 		break;
 	case 193:
 	case 186:
-		if (guildObject != NULL)
-			guildManager->sendGuildInformationTo(player, guildObject, _this.get());
+		if (guildObject != NULL && (isMember || player->getPlayerObject()->isPrivileged())) {
+			guildManager->sendGuildInformationTo(player, guildObject, _this.getReferenceUnsafeStaticCast());
+		}
 		break;
 	case 191:
-		if (guildObject != NULL)
-			guildManager->sendGuildDisbandConfirmTo(player, guildObject, _this.get());
+		if (guildObject != NULL) {
+			guildManager->sendGuildDisbandConfirmTo(player, guildObject, _this.getReferenceUnsafeStaticCast());
+		}
 		break;
 	case 194:
 	case 187:
-		if (guildObject != NULL)
-			guildManager->sendGuildMemberListTo(player, guildObject, _this.get());
+		if (guildObject != NULL && (isMember || player->getPlayerObject()->isPrivileged())) {
+			guildManager->sendGuildMemberListTo(player, guildObject, _this.getReferenceUnsafeStaticCast());
+		}
 		break;
 	case 188:
-		if (guildObject != NULL)
-			guildManager->sendGuildSponsoredListTo(player, guildObject, _this.get());
+		if (guildObject != NULL && (isMember || player->getPlayerObject()->isPrivileged())) {
+			guildManager->sendGuildSponsoredListTo(player, guildObject, _this.getReferenceUnsafeStaticCast());
+		}
 		break;
 	case 190:
-		if (guildObject != NULL)
-			guildManager->sendGuildSponsorTo(player, guildObject, _this.get());
+		if (guildObject != NULL && (isMember || player->getPlayerObject()->isPrivileged())) {
+			guildManager->sendGuildSponsorTo(player, guildObject, _this.getReferenceUnsafeStaticCast());
+		}
 		break;
 	case 192:
-		if (guildObject != NULL)
-			guildManager->sendGuildChangeNameTo(player, guildObject, _this.get());
+		if (guildObject != NULL) {
+			guildManager->sendGuildChangeNameTo(player, guildObject, _this.getReferenceUnsafeStaticCast());
+		}
 		break;
 	case 195:
 		if (guildObject != NULL && (guildObject->getGuildLeaderID() == playerID) ) {
-			guildManager->sendAcceptLotsTo(player, _this.get());
+			guildManager->sendAcceptLotsTo(player, _this.getReferenceUnsafeStaticCast());
 		}
 		break;
 	default:
-		TerminalImplementation::handleObjectMenuSelect(player, selectedID);
+		return TerminalImplementation::handleObjectMenuSelect(player, selectedID);
 	}
+
 	return 0;
 }
 

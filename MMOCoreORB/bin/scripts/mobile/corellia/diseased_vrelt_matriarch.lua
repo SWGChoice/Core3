@@ -1,7 +1,6 @@
 diseased_vrelt_matriarch = Creature:new {
 	objectName = "@mob/creature_names:diseased_vrelt_matriarch",
 	socialGroup = "vrelt",
-	pvpFaction = "",
 	faction = "",
 	level = 11,
 	chanceHit = 0.28,
@@ -11,7 +10,7 @@ diseased_vrelt_matriarch = Creature:new {
 	baseHAM = 810,
 	baseHAMmax = 990,
 	armor = 0,
-	resists = {5,5,0,0,15,0,15,-1,-1},
+	resists = {105,105,0,0,115,0,115,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 10,
 	hideType = "hide_bristley",
@@ -34,7 +33,7 @@ diseased_vrelt_matriarch = Creature:new {
 	conversationTemplate = "",
 	attacks = {
 		{"milddisease",""},
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""}
 	}
 }
 

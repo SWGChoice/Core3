@@ -1,7 +1,7 @@
 corsec_major = Creature:new {
 	objectName = "@mob/creature_names:corsec_major",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "corsec",
-	pvpFaction = "corsec",
 	faction = "corsec",
 	level = 24,
 	chanceHit = 0.35,
@@ -30,7 +30,7 @@ corsec_major = Creature:new {
 		"object/mobile/dressed_corsec_captain_human_female_01.iff",
 		"object/mobile/dressed_corsec_captain_human_male_01.iff",
 		"object/mobile/dressed_corsec_pilot_human_male_01.iff"
-		},
+	},
 	lootGroups = {
 		{
 			groups = {
@@ -38,12 +38,12 @@ corsec_major = Creature:new {
 				{group = "corsec_weapons", chance = 2500000},
 				{group = "wearables_common", chance = 2000000},
 				{group = "tailor_components", chance = 1500000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"corsec_police_weapons"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/military",
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 

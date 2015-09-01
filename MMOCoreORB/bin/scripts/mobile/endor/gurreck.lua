@@ -1,7 +1,6 @@
 gurreck = Creature:new {
 	objectName = "@mob/creature_names:gurreck",
 	socialGroup = "gurreck",
-	pvpFaction = "",
 	faction = "",
 	level = 50,
 	chanceHit = 0.5,
@@ -11,7 +10,7 @@ gurreck = Creature:new {
 	baseHAM = 11000,
 	baseHAMmax = 13000,
 	armor = 1,
-	resists = {30,30,-1,50,50,-1,50,-1,-1},
+	resists = {130,130,-1,150,150,-1,150,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 75,
 	hideType = "hide_wooly",
@@ -33,8 +32,8 @@ gurreck = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""},
+		{"intimidationattack",""}
 	}
 }
 

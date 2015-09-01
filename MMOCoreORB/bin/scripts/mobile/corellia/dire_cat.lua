@@ -1,7 +1,6 @@
 dire_cat = Creature:new {
 	objectName = "@mob/creature_names:dire_cat",
 	socialGroup = "dire_cat",
-	pvpFaction = "",
 	faction = "",
 	level = 14,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ dire_cat = Creature:new {
 	baseHAM = 1100,
 	baseHAMmax = 1100,
 	armor = 0,
-	resists = {15,15,0,0,0,0,0,-1,-1},
+	resists = {115,115,0,0,0,0,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 65,
 	hideType = "hide_bristley",
@@ -32,7 +31,8 @@ dire_cat = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"",""},
+		{"stunattack",""}
 	}
 }
 

@@ -1,7 +1,7 @@
 thug = Creature:new {
 	objectName = "@mob/creature_names:thug",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "thug",
-	pvpFaction = "thug",
 	faction = "thug",
 	level = 7,
 	chanceHit = 0.26,
@@ -45,19 +45,19 @@ thug = Creature:new {
 		"object/mobile/dressed_criminal_thug_zabrak_female_01.iff"},
 	lootGroups = {
 		{
-	        	groups = {
+			groups = {
 				{group = "junk", chance = 4000000},
-				{group = "wearables_common", chance = 2000000},			
+				{group = "wearables_common", chance = 2000000},
 				{group = "rifles", chance = 1000000},
 				{group = "pistols", chance = 1000000},
 				{group = "melee_weapons", chance = 1000000},
 				{group = "carbines", chance = 1000000},
-			},
-			lootChance = 2600000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_light"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(marksmannovice,brawlernovice)
 }
 

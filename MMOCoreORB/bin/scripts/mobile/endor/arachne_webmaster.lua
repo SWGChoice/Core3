@@ -1,7 +1,6 @@
 arachne_webmaster = Creature:new {
 	objectName = "@mob/creature_names:arachne_webmaster",
 	socialGroup = "arachne",
-	pvpFaction = "",
 	faction = "",
 	level = 50,
 	chanceHit = 0.5,
@@ -11,7 +10,7 @@ arachne_webmaster = Creature:new {
 	baseHAM = 9900,
 	baseHAMmax = 12100,
 	armor = 1,
-	resists = {35,35,-1,60,60,-1,60,-1,-1},
+	resists = {135,135,-1,160,160,-1,160,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 30,
 	hideType = "",
@@ -33,8 +32,8 @@ arachne_webmaster = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"strongpoison",""},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"strongpoison",""}
 	}
 }
 

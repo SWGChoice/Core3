@@ -1,7 +1,7 @@
 kunga_warrior = Creature:new {
 	objectName = "@mob/creature_names:kunga_warrior",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "kunga_tribe",
-	pvpFaction = "kunga_tribe",
 	faction = "kunga_tribe",
 	level = 70,
 	chanceHit = 0.7,
@@ -38,8 +38,7 @@ kunga_warrior = Creature:new {
 				{group = "clothing_attachments", chance = 500000},
 				{group = "wearables_common", chance = 1000000},
 				{group = "wearables_uncommon", chance = 1000000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"primitive_weapons"},

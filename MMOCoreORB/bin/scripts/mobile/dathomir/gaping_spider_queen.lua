@@ -1,7 +1,6 @@
 gaping_spider_queen = Creature:new {
 	objectName = "@mob/creature_names:gaping_spider_queen",
 	socialGroup = "spider",
-	pvpFaction = "",
 	faction = "",
 	level = 47,
 	chanceHit = 0.44,
@@ -11,7 +10,7 @@ gaping_spider_queen = Creature:new {
 	baseHAM = 10000,
 	baseHAMmax = 12000,
 	armor = 0,
-	resists = {65,65,40,25,30,-1,30,30,-1},
+	resists = {165,165,140,125,30,-1,30,30,-1},
 	meatType = "meat_insect",
 	meatAmount = 12,
 	hideType = "",
@@ -33,7 +32,7 @@ gaping_spider_queen = Creature:new {
 	weapons = {"creature_spit_small_toxicgreen"},
 	conversationTemplate = "",
 	attacks = {
-		{"knockdownattack","knockdownChance=50"},
+		{"knockdownattack",""},
 		{"mediumpoison",""}
 	}
 }

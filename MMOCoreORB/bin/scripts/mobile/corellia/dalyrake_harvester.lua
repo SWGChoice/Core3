@@ -1,7 +1,6 @@
 dalyrake_harvester = Creature:new {
 	objectName = "@mob/creature_names:dalyrake_harvester",
 	socialGroup = "dalyrake",
-	pvpFaction = "",
 	faction = "",
 	level = 15,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ dalyrake_harvester = Creature:new {
 	baseHAM = 2400,
 	baseHAMmax = 3000,
 	armor = 0,
-	resists = {10,10,5,-1,-1,-1,5,-1,-1},
+	resists = {110,110,5,-1,-1,-1,5,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 25,
 	hideType = "hide_scaley",
@@ -33,7 +32,8 @@ dalyrake_harvester = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"",""},
+		{"intimidationattack",""}
 	}
 }
 

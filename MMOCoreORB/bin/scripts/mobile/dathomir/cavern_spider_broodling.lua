@@ -1,7 +1,6 @@
 cavern_spider_broodling = Creature:new {
 	objectName = "@mob/creature_names:cave_gaping_spider_broodling",
 	socialGroup = "spider",
-	pvpFaction = "",
 	faction = "",
 	level = 8,
 	chanceHit = 0.27,
@@ -11,7 +10,7 @@ cavern_spider_broodling = Creature:new {
 	baseHAM = 405,
 	baseHAMmax = 495,
 	armor = 0,
-	resists = {0,0,10,0,0,0,0,-1,-1},
+	resists = {0,0,110,0,0,0,0,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 15,
 	hideType = "",

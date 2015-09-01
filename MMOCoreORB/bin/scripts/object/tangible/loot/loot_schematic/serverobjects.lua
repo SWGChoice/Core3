@@ -43,6 +43,7 @@
 
 
 --Children folder includes
+includeFile("tangible/loot/loot_schematic/new_house_loot_schem/serverobjects.lua")
 
 -- Server Objects
 includeFile("tangible/loot/loot_schematic/agitator_motor_schematic.lua")

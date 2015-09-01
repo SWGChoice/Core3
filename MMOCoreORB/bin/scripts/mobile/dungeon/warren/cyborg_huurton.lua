@@ -1,7 +1,6 @@
 cyborg_huurton = Creature:new {
 	objectName = "@mob/creature_names:warren_cyborg_huurton",
 	socialGroup = "warren_cyborg",
-	pvpFaction = "",
 	faction = "",
 	level = 32,
 	chanceHit = 0.4,
@@ -11,7 +10,7 @@ cyborg_huurton = Creature:new {
 	baseHAM = 8600,
 	baseHAMmax = 10500,
 	armor = 0,
-	resists = {30,45,0,-1,-1,-1,-1,-1,-1},
+	resists = {130,145,0,-1,-1,-1,-1,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 70,
 	hideType = "hide_leathery",
@@ -31,8 +30,8 @@ cyborg_huurton = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"intimidationattack",""}
 	}
 }
 

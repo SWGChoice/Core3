@@ -1,7 +1,6 @@
 domesticated_brackaset = Creature:new {
 	objectName = "@mob/creature_names:domesticated_brackaset",
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 23,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ domesticated_brackaset = Creature:new {
 	baseHAM = 8550,
 	baseHAMmax = 8550,
 	armor = 0,
-	resists = {15,15,0,0,-1,0,0,-1,-1},
+	resists = {115,115,0,0,-1,0,0,-1,-1},
 	meatType = "meat_domesticated",
 	meatAmount = 100,
 	hideType = "hide_leathery",
@@ -28,11 +27,18 @@ domesticated_brackaset = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/brackaset_hue.iff"},
-	lootGroups = {},
+	lootGroups = {
+		{
+			groups = {
+				{group = "brackaset_common", chance = 10000000}
+			},
+			lootChance = 1460000
+		}
+	},
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

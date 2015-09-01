@@ -1,7 +1,6 @@
 dwarf_gronda = Creature:new {
 	objectName = "@mob/creature_names:dwarf_gronda",
 	socialGroup = "gronda",
-	pvpFaction = "",
 	faction = "",
 	level = 13,
 	chanceHit = 0.29,
@@ -11,7 +10,7 @@ dwarf_gronda = Creature:new {
 	baseHAM = 1200,
 	baseHAMmax = 1400,
 	armor = 0,
-	resists = {20,20,0,0,0,0,0,-1,-1},
+	resists = {120,120,0,0,0,0,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 280,
 	hideType = "hide_leathery",
@@ -32,7 +31,7 @@ dwarf_gronda = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

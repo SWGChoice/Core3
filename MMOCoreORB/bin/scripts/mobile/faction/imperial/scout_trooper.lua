@@ -1,7 +1,7 @@
 scout_trooper = Creature:new {
 	objectName = "@mob/creature_names:scout_trooper",
+	randomNameType = NAME_SCOUTTROOPER_TAG,
 	socialGroup = "imperial",
-	pvpFaction = "imperial",
 	faction = "imperial",
 	level = 23,
 	chanceHit = 0.35,
@@ -40,12 +40,13 @@ scout_trooper = Creature:new {
 				{group = "armor_attachments", chance = 25000},
 				{group = "stormtrooper_common", chance = 100000},
 				{group = "wearables_common", chance = 1000000}
-			},
-			lootChance = 2800000
+			}
 		}
 	},
 	weapons = {"imperial_weapons_heavy"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/stormtrooper",
+	personalityStf = "@hireling/hireling_stormtrooper",	
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 

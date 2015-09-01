@@ -1,7 +1,6 @@
 archaic_gondula_ritualist = Creature:new {
 	objectName = "@mob/creature_names:archaic_gondula_ritualist",
 	socialGroup = "gondula_tribe",
-	pvpFaction = "gondula_tribe",
 	faction = "gondula_tribe",
 	level = 30,
 	chanceHit = 0.39,
@@ -36,7 +35,7 @@ archaic_gondula_ritualist = Creature:new {
 	        groups = {
 				{group = "ewok", chance = 10000000}
 			},
-			lootChance = 3000000
+			lootChance = 1600000
 		}
 	},
 	weapons = {"ewok_weapons"},

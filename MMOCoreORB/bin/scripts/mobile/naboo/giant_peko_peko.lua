@@ -1,7 +1,6 @@
 giant_peko_peko = Creature:new {
 	objectName = "@mob/creature_names:giant_peko_peko",
 	socialGroup = "peko",
-	pvpFaction = "",
 	faction = "",
 	level = 23,
 	chanceHit = 0.35,
@@ -11,7 +10,7 @@ giant_peko_peko = Creature:new {
 	baseHAM = 5900,
 	baseHAMmax = 7200,
 	armor = 0,
-	resists = {10,25,50,-1,-1,50,-1,-1,-1},
+	resists = {10,125,150,-1,-1,150,-1,-1,-1},
 	meatType = "meat_avian",
 	meatAmount = 155,
 	hideType = "hide_wooly",
@@ -32,8 +31,8 @@ giant_peko_peko = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"stunattack","stunChance=50"}
+		{"dizzyattack",""},
+		{"stunattack",""}
 	}
 }
 

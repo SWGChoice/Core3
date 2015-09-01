@@ -1,7 +1,7 @@
 bewitching_pubam_dark_shaman = Creature:new {
 	objectName = "@mob/creature_names:bewitching_pubam_dark_shaman",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "pubam",
-	pvpFaction = "pubam",
 	faction = "pubam",
 	level = 30,
 	chanceHit = 0.39,
@@ -27,8 +27,15 @@ bewitching_pubam_dark_shaman = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {
-			"object/mobile/dulok_male.iff"},
-	lootGroups = {},
+		"object/mobile/dulok_male.iff"},
+	lootGroups = {
+		 {
+	        groups = {
+				{group = "ewok", chance = 10000000}
+			},
+			lootChance = 1600000
+		}
+	},
 	weapons = {},
 	conversationTemplate = "",
 	attacks = brawlermaster

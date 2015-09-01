@@ -1,7 +1,6 @@
 deadly_vesp = Creature:new {
 	objectName = "@mob/creature_names:deadly_vesp",
 	socialGroup = "vesp",
-	pvpFaction = "",
 	faction = "",
 	level = 93,
 	chanceHit = 0.9,
@@ -11,7 +10,7 @@ deadly_vesp = Creature:new {
 	baseHAM = 13000,
 	baseHAMmax = 16000,
 	armor = 0,
-	resists = {40,40,0,0,0,0,0,0,-1},
+	resists = {140,140,0,0,0,0,0,0,-1},
 	meatType = "meat_reptilian",
 	meatAmount = 15,
 	hideType = "hide_leathery",
@@ -33,7 +32,7 @@ deadly_vesp = Creature:new {
 	conversationTemplate = "",
 	attacks = {
 		{"strongpoison",""},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

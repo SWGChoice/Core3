@@ -1,7 +1,6 @@
 bol = Creature:new {
 	objectName = "@mob/creature_names:bol",
 	socialGroup = "bol",
-	pvpFaction = "",
 	faction = "",
 	level = 29,
 	chanceHit = 0.39,
@@ -11,7 +10,7 @@ bol = Creature:new {
 	baseHAM = 8400,
 	baseHAMmax = 10200,
 	armor = 0,
-	resists = {35,20,0,20,20,0,20,0,-1},
+	resists = {135,20,-1,20,20,-1,20,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 180,
 	hideType = "hide_leathery",
@@ -31,8 +30,8 @@ bol = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
-		{"knockdownattack","knockdownChance=50"}
+		{"knockdownattack",""},
+		{"intimidationattack",""}
 	}
 }
 

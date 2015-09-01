@@ -1,7 +1,6 @@
 cyborg_dune_lizard = Creature:new {
 	objectName = "@mob/creature_names:warren_cyborg_dunelizard",
 	socialGroup = "warren_cyborg",
-	pvpFaction = "",
 	faction = "",
 	level = 30,
 	chanceHit = 0.37,
@@ -11,7 +10,7 @@ cyborg_dune_lizard = Creature:new {
 	baseHAM = 8200,
 	baseHAMmax = 10000,
 	armor = 0,
-	resists = {40,30,0,75,-1,-1,-1,-1,-1},
+	resists = {40,130,0,175,-1,-1,-1,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 95,
 	hideType = "hide_leathery",
@@ -31,8 +30,8 @@ cyborg_dune_lizard = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"intimidationattack",""}
 	}
 }
 

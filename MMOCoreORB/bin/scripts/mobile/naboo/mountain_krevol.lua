@@ -1,7 +1,6 @@
 mountain_krevol = Creature:new {
 	objectName = "@mob/creature_names:mountain_krevol",
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 15,
 	chanceHit = 0.39,
@@ -11,7 +10,7 @@ mountain_krevol = Creature:new {
 	baseHAM = 2000,
 	baseHAMmax = 2400,
 	armor = 0,
-	resists = {30,30,0,0,0,0,0,-1,-1},
+	resists = {115,105,0,135,0,0,0,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 3,
 	hideType = "hide_scaley",
@@ -33,7 +32,7 @@ mountain_krevol = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""}
 	}
 }
 

@@ -1,7 +1,7 @@
 chunker_mooch = Creature:new {
 	objectName = "@mob/creature_names:chunker_mooch",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "chunker",
-	pvpFaction = "thug",
 	faction = "thug",
 	level = 7,
 	chanceHit = 0.26,
@@ -26,8 +26,8 @@ chunker_mooch = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_criminal_thug_zabrak_male_01.iff",
-				"object/mobile/dressed_goon_twk_male_01.iff",
-				"object/mobile/dressed_criminal_thug_human_male_01.iff"},
+		"object/mobile/dressed_goon_twk_male_01.iff",
+		"object/mobile/dressed_criminal_thug_human_male_01.iff"},
 	lootGroups = {
 		{
 			groups = {
@@ -37,11 +37,11 @@ chunker_mooch = Creature:new {
 				{group = "pistols", chance = 700000},
 				{group = "carbines", chance = 700000},
 				{group = "chunker_common", chance = 6000000},
-			},
-			lootChance = 3500000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_light"},
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(marksmannovice,brawlernovice)
 }
 

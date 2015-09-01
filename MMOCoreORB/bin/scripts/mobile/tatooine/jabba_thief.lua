@@ -1,7 +1,7 @@
 jabba_thief = Creature:new {
 	objectName = "@mob/creature_names:jabba_thief",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "jabba",
-	pvpFaction = "jabba",
 	faction = "jabba",
 	level = 9,
 	chanceHit = 0.27,
@@ -28,20 +28,20 @@ jabba_thief = Creature:new {
 
 	templates = {"object/mobile/dressed_tatooine_jabba_thief.iff"},
 	lootGroups = {
-	    {
+		{
 			groups = {
 				{group = "junk", chance = 1500000},
 				{group = "wearables_common", chance = 2000000},
-				{group = "pistols", chance = 2000000},				
+				{group = "pistols", chance = 2000000},
 				{group = "tailor_components", chance = 1500000},
 				{group = "loot_kit_parts", chance = 1500000},
 				{group = "jabba_common", chance = 1500000}
-			},
-			lootChance = 2200000
-		}				
+			}
+		}
 	},
 	weapons = {"pirate_weapons_light"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(marksmannovice,brawlernovice)
 }
 

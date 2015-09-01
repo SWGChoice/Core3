@@ -1,7 +1,6 @@
 woolamander_harvester = Creature:new {
 	objectName = "@mob/creature_names:woolamander_harvester",
 	socialGroup = "woolamander",
-	pvpFaction = "",
 	faction = "",
 	level = 38,
 	chanceHit = 0.43,
@@ -10,8 +9,8 @@ woolamander_harvester = Creature:new {
 	baseXp = 3733,
 	baseHAM = 9100,
 	baseHAMmax = 11100,
-	armor = 1,
-	resists = {30,30,-1,80,80,80,-1,-1,-1},
+	armor = 0,
+	resists = {25,25,-1,180,180,180,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 20,
 	hideType = "hide_wooly",
@@ -33,7 +32,7 @@ woolamander_harvester = Creature:new {
 	conversationTemplate = "",
 	attacks = {
 		{"creatureareaattack",""},
-		{"dizzyattack","dizzyChance=50"}
+		{"dizzyattack",""}
 	}
 }
 

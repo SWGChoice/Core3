@@ -1,7 +1,6 @@
 kelvus_criminal = Creature:new {
 	objectName = "@mob/creature_names:criminal",
 	socialGroup = "thug",
-	pvpFaction = "thug",
 	faction = "thug",
 	level = 7,
 	chanceHit = 0.26,
@@ -42,8 +41,7 @@ kelvus_criminal = Creature:new {
 				{group = "tailor_components", chance = 1500000},
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "wearables_common", chance = 2000000}
-			},
-			lootChance = 2000000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_light"},

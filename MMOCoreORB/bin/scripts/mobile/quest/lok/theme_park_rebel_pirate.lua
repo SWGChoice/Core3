@@ -1,7 +1,6 @@
 theme_park_rebel_pirate = Creature:new {
 	objectName = "@mob/creature_names:marooned_pirate",
 	socialGroup = "pirate",
-	pvpFaction = "pirate",
 	faction = "pirate",
 	level = 19,
 	chanceHit = 0.32,
@@ -35,7 +34,17 @@ theme_park_rebel_pirate = Creature:new {
 		"object/mobile/dressed_marooned_pirate_rod_m.iff",
 		"object/mobile/dressed_marooned_pirate_tran_m.iff"
 		},
-	lootGroups = {},
+	lootGroups = {
+		{
+			groups = {
+				{group = "junk", chance = 3000000},
+				{group = "wearables_common", chance = 2000000},
+				{group = "loot_kit_parts", chance = 2000000},
+				{group = "tailor_components", chance = 1000000},
+				{group = "melee_weapons", chance = 2000000}
+			}
+		}
+	},
 	weapons = {"pirate_weapons_medium"},
 	conversationTemplate = "",
 	attacks = merge(brawlermaster,marksmanmaster)

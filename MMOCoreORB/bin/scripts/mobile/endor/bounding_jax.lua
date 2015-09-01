@@ -1,7 +1,6 @@
 bounding_jax = Creature:new {
 	objectName = "@mob/creature_names:bounding_jax",
 	socialGroup = "jax",
-	pvpFaction = "",
 	faction = "",
 	level = 16,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ bounding_jax = Creature:new {
 	baseHAM = 2400,
 	baseHAMmax = 3000,
 	armor = 0,
-	resists = {10,15,10,5,5,-1,-1,-1,-1},
+	resists = {110,115,110,5,5,-1,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 25,
 	hideType = "hide_bristley",
@@ -32,7 +31,7 @@ bounding_jax = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"}
+		{"dizzyattack",""}
 	}
 }
 

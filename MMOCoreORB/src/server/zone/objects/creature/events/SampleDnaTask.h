@@ -40,8 +40,8 @@ public:
 		creature->setPvpStatusBitmask(CreatureFlag::NONE,true);
 	}
 	void run() {
-		Locker locker(player);
-		Locker crosslocker(creature,player);
+		Locker locker(creature);
+		Locker crosslocker(player,creature);
 		player->removePendingTask("sampledna");
 		if (!creature->isInRange(player, 16.f) ) {
 			player->sendSystemMessage("@bio_engineer:harvest_dna_out_of_range");
@@ -121,14 +121,13 @@ public:
 				rollMod /= 2;
 				// We have the players roll. NOW to determine if success of failure;
 				if (sampleRoll > 75) { // adjust great success ot 75% and above
-					int maxSamples = ceil(skillMod/25);
+					int maxSamples = (int) ceil((float) skillMod / 25.f);
 					if (creature->getDnaSampleCount() > maxSamples ){
 						creature->setDnaState(CreatureManager::DNASAMPLED);
 						// We took the max samples the shock it too much and kils the creature.
 						result = 4;
 					} else {
 						// did we aggro?
-						creature->activateAwarenessEvent(player);
 						result = 5;
 					}
 				}
@@ -138,7 +137,7 @@ public:
 				} else if ( (35 + rollMod) < sampleRoll) { // failure your roll < 50%
 					result = 2;
 				} else { // success
-					int maxSamples = ceil(skillMod/25);
+					int maxSamples = (int)(ceil((double)skillMod / (double)25));
 					if (creature->getDnaSampleCount() > maxSamples ){
 						creature->setDnaState(CreatureManager::DNASAMPLED);
 						// We took the max samples the shock it too much and kils the creature.
@@ -150,7 +149,6 @@ public:
 						if ( (aggroChance+aggroMod) > (sampleRoll+rollMod) || aggroChance <= 5)  // aggro
 							result = 3;
 						else { // it didnt care and we didnt kill it
-							creature->activateAwarenessEvent(player);
 							result = 5;
 						}
 					}
@@ -180,21 +178,18 @@ public:
 				if (success && cl <= 75) {
 					player->sendSystemMessage("@bio_engineer:harvest_dna_succeed");
 					creature->incDnaSampleCount();
-					award(cl,rollMod);
+					award(cl,rollMod,skillMod);
 					if (creature->getDnaSampleCount() > 5) {
 						creature->setDnaState(CreatureManager::DNASAMPLED);
 					}
-					if (aggro) {
-						crosslocker.release();
-						CombatManager::instance()->startCombat(creature,player,true);
-					}
 					if (death) {
 						killCreature();
+					} else if (aggro) {
+						CombatManager::instance()->startCombat(creature,player,true);
 					}
 				} else {
 					player->sendSystemMessage("@bio_engineer:harvest_dna_failed");
 					if (aggro) {
-						crosslocker.release();
 						CombatManager::instance()->startCombat(creature,player,true);
 					}
 				}
@@ -213,7 +208,7 @@ public:
 		creature->setDnaState(CreatureManager::DNADEATH);
 		player->sendSystemMessage(str);
 	}
-	void award(int cl, float rollMod) {
+	void award(int cl, float rollMod, int skillMod) {
 		int xp = DnaManager::instance()->generateXp(cl);
 		ManagedReference<PlayerManager*> playerManager = player->getZoneServer()->getPlayerManager();
 		if(playerManager != NULL)
@@ -223,21 +218,40 @@ public:
 		int luckRoll = System::random(100);
 		luckRoll += System::random(player->getSkillMod("luck") + player->getSkillMod("force_luck"));
 		int qualityRoll = luckRoll + rollMod;
-		// quality is related to your skill vs the creature level
-		if (qualityRoll > 80)
-			quality = 1;
-		else if (qualityRoll > 70)
-			quality = 2;
-		else if (qualityRoll > 60)
-			quality = 3;
-		else if (qualityRoll > 50)
-			quality = 4;
-		else if (qualityRoll > 40)
-			quality = 5;
-		else if (qualityRoll > 30)
-			quality = 6;
+
+		int low = 7;
+		int mid = 6;
+		int high = 5;
+		if (skillMod <= 15) {
+			low = 7;mid=6;high=5;
+		}
+		else if (skillMod <= 30 ) {
+			low = 7; mid = 6; high = 5;
+		}
+		else if (skillMod <= 45) {
+			low = 6; mid = 5; high = 4;
+		}
+		else if (skillMod <= 60) {
+			low = 5; mid = 4; high = 3;
+		}
+		else if (skillMod <= 75) {
+			low = 4; mid = 3; high = 2;
+		}
+		else {
+			low = 3; mid = 2; high = 1;
+		}
+		//15 	VLQ, LQ, BAQ
+		//30 	VLQ, LQ, BAQ
+		//45 	LQ, BAQ, AQ
+		//60 	BAQ, AQ,AAQ
+		//75 	AQ,AAQ,HQ
+		//100 	AAQ,HQ, VHQ
+		if (qualityRoll < 33)
+			quality = low;
+		else if (qualityRoll < 66)
+			quality = mid;
 		else
-			quality = 7;
+			quality = high;
 		DnaManager::instance()->generateSample(creature,player,quality);
 	}
 };

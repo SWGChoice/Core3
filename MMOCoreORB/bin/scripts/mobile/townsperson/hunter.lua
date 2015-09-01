@@ -1,8 +1,7 @@
 hunter = Creature:new {
 	objectName = "@mob/creature_names:hunter",
-	generateRandomName =true,
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "poacher",
-	pvpFaction = "",
 	faction = "",
 	level = 16,
 	chanceHit = 0.310000,
@@ -38,11 +37,11 @@ hunter = Creature:new {
 				{group = "junk", chance = 7000000},
 				{group = "tailor_components", chance = 1500000},
 				{group = "loot_kit_parts", chance = 1500000}
-			},
-			lootChance = 2200000
+			}
 		}
 	},
 	weapons = {"rebel_weapons_light"},
+	reactionStf = "@npc_reaction/townperson",
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 

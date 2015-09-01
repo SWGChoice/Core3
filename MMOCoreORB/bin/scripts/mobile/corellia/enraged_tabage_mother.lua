@@ -1,7 +1,6 @@
 enraged_tabage_mother = Creature:new {
 	objectName = "@mob/creature_names:enraged_tabage_mother",
 	socialGroup = "tabage",
-	pvpFaction = "",
 	faction = "",
 	level = 17,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ enraged_tabage_mother = Creature:new {
 	baseHAM = 2900,
 	baseHAMmax = 3500,
 	armor = 0,
-	resists = {0,15,0,0,0,-1,-1,-1,-1},
+	resists = {0,115,0,0,0,-1,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 16,
 	hideType = "hide_bristley",
@@ -33,7 +32,7 @@ enraged_tabage_mother = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

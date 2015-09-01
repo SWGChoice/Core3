@@ -1,7 +1,6 @@
 purbole_scout = Creature:new {
 	objectName = "@mob/creature_names:purbole_scout",
 	socialGroup = "purbole",
-	pvpFaction = "",
 	faction = "",
 	level = 16,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ purbole_scout = Creature:new {
 	baseHAM = 2400,
 	baseHAMmax = 3000,
 	armor = 0,
-	resists = {5,15,10,15,15,-1,-1,-1,-1},
+	resists = {5,115,110,115,115,-1,-1,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 15,
 	hideType = "hide_bristley",
@@ -33,7 +32,7 @@ purbole_scout = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

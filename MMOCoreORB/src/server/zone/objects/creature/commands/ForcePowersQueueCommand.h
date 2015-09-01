@@ -28,7 +28,7 @@ public:
 
 	ForcePowersQueueCommand(const String& name, ZoneProcessServer* server) : CombatQueueCommand(name, server) {}
 
-	int doCombatAction(CreatureObject* creature, const uint64& target, const UnicodeString& arguments = "") {
+	int doCombatAction(CreatureObject* creature, const uint64& target, const UnicodeString& arguments = "") const {
 			ManagedReference<SceneObject*> targetObject = server->getZoneServer()->getObject(target);
 			PlayerManager* playerManager = server->getPlayerManager();
 
@@ -40,7 +40,7 @@ public:
 			if (creature->isProne())
 				return NOPRONE;
 
-			if (!targetObject->isInRange(creature, checkRange))
+			if (!targetObject->isInRange(creature, checkRange + targetObject->getTemplateRadius() + creature->getTemplateRadius()))
 				return TOOFAR;
 
 			if (!CollisionManager::checkLineOfSight(creature, targetObject)) {
@@ -81,7 +81,7 @@ public:
 			return SUCCESS;
 		}
 
-	float getCommandDuration(CreatureObject *object, const UnicodeString& arguments) {
+	float getCommandDuration(CreatureObject *object, const UnicodeString& arguments) const {
 		return defaultTime * speed;
 	}
 

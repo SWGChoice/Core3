@@ -8,9 +8,10 @@ if _TEST then
 
 	ITEMHOLOCRON = 0
 	ITEMWAYPOINTDATAPAD = 1
+	ITEMTHEATERDATAPAD = 2
 end
 
-jediProgressionType = NOJEDIPROGRESSION
+jediProgressionType = VILLAGEJEDIPROGRESSION
 
 jediManagerName = "JediManager"
 

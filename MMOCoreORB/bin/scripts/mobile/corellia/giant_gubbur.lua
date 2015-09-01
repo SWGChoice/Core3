@@ -1,7 +1,6 @@
 giant_gubbur = Creature:new {
 	objectName = "@mob/creature_names:giant_gubbur",
 	socialGroup = "gubbur",
-	pvpFaction = "",
 	faction = "",
 	level = 9,
 	chanceHit = 0.27,
@@ -11,7 +10,7 @@ giant_gubbur = Creature:new {
 	baseHAM = 675,
 	baseHAMmax = 825,
 	armor = 0,
-	resists = {0,0,0,0,0,10,0,-1,-1},
+	resists = {0,0,0,0,0,110,0,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 10,
 	hideType = "hide_leathery",

@@ -1,7 +1,7 @@
 afarathu_brute = Creature:new {
 	objectName = "@mob/creature_names:afarathu_cult_brute",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "afarathu",
-	pvpFaction = "afarathu",
 	faction = "afarathu",
 	level = 11,
 	chanceHit = 0.28,
@@ -44,12 +44,12 @@ afarathu_brute = Creature:new {
 				{group = "junk", chance = 7000000},
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "tailor_components", chance = 1000000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_medium"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlermid,marksmanmid)
 }
 

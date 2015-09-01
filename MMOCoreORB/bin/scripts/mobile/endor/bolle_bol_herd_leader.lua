@@ -1,7 +1,6 @@
 bolle_bol_herd_leader = Creature:new {
 	objectName = "@mob/creature_names:bolle_bol_herd_leader",
 	socialGroup = "bol",
-	pvpFaction = "",
 	faction = "",
 	level = 35,
 	chanceHit = 0.41,
@@ -11,7 +10,7 @@ bolle_bol_herd_leader = Creature:new {
 	baseHAM = 8800,
 	baseHAMmax = 10800,
 	armor = 0,
-	resists = {35,25,25,-1,50,25,50,-1,-1},
+	resists = {135,25,25,-1,150,25,150,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 450,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ bolle_bol_herd_leader = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
-		{"knockdownattack","knockdownChance=50"}
+		{"knockdownattack",""},
+		{"intimidationattack",""}
 	}
 }
 

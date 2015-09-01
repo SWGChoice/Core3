@@ -1,7 +1,7 @@
 singing_mountain_clan_rancor_tamer = Creature:new {
 	objectName = "@mob/creature_names:singing_mtn_clan_rancor_tamer",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "mtn_clan",
-	pvpFaction = "mtn_clan",
 	faction = "mtn_clan",
 	level = 75,
 	chanceHit = 0.75,
@@ -41,9 +41,8 @@ singing_mountain_clan_rancor_tamer = Creature:new {
 				{group = "carbines", chance = 1000000},
 				{group = "wearables_common", chance = 500000},
 				{group = "wearables_uncommon", chance = 500000}
-			},
-			lootChance = 2500000
-		}			
+			}
+		}
 	},
 	weapons = {"mixed_force_weapons"},
 	conversationTemplate = "",

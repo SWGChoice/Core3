@@ -1,7 +1,6 @@
 giant_angler = Creature:new {
 	objectName = "@mob/creature_names:giant_angler",
 	socialGroup = "angler",
-	pvpFaction = "",
 	faction = "",
 	level = 35,
 	chanceHit = 0.41,
@@ -11,7 +10,7 @@ giant_angler = Creature:new {
 	baseHAM = 8800,
 	baseHAMmax = 10800,
 	armor = 0,
-	resists = {35,25,25,25,25,-1,25,-1,-1},
+	resists = {135,25,25,25,25,-1,25,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 3,
 	hideType = "hide_scaley",
@@ -33,8 +32,8 @@ giant_angler = Creature:new {
 	weapons = {"creature_spit_small_toxicgreen"},
 	conversationTemplate = "",
 	attacks = {
-		{"blindattack","blindChance=50"},
-		{"strongpoison",""}
+		{"strongpoison",""},
+		{"blindattack",""}
 	}
 }
 

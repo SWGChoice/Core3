@@ -1,7 +1,7 @@
 novatrooper_medic = Creature:new {
 	objectName = "@mob/creature_names:stormtrooper_novatrooper_medic",
+	randomNameType = NAME_STORMTROOPER_TAG,
 	socialGroup = "imperial",
-	pvpFaction = "imperial",
 	faction = "imperial",
 	level = 107,
 	chanceHit = 1.75,
@@ -39,12 +39,12 @@ novatrooper_medic = Creature:new {
 				{group = "clothing_attachments", chance = 25000},
 				{group = "armor_attachments", chance = 25000},
 				{group = "wearables_all", chance = 1000000}
-			},
-			lootChance = 2800000
-		}						
+			}
+		}
 	},
 	weapons = {"stormtrooper_weapons"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/stormtrooper",
 	attacks = merge(riflemanmaster,carbineermaster,marksmanmaster,brawlermaster)
 }
 

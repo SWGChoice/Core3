@@ -10,7 +10,6 @@ registerScreenPlay("NabooDeejaPeakScreenPlay", true)
 function NabooDeejaPeakScreenPlay:start()
 	if (isZoneEnabled("naboo")) then
 		self:spawnMobiles()
-
 	end
 end
 

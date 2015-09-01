@@ -1,7 +1,6 @@
 charred_krevol = Creature:new {
 	objectName = "@mob/creature_names:charred_krevol",
 	socialGroup = "krevol",
-	pvpFaction = "",
 	faction = "",
 	level = 15,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ charred_krevol = Creature:new {
 	baseHAM = 2400,
 	baseHAMmax = 3000,
 	armor = 0,
-	resists = {5,5,30,30,-1,-1,-1,-1,-1},
+	resists = {5,5,130,130,-1,-1,-1,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 10,
 	hideType = "hide_scaley",
@@ -33,7 +32,7 @@ charred_krevol = Creature:new {
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"}
+		{"posturedownattack",""}
 	}
 }
 

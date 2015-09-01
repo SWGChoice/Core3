@@ -57,15 +57,17 @@ UnarmedDizzy1Command = {
 		{}, 
 		{ "dizzy_defense", "resistance_states" }, 
 		{ "jedi_state_defense" }, 
-		30, 
 		100, 
-		20 
+		0, 
+		30 
 	  )
 	},
 
 	animationCRC = hashCode("attack_special_wookiee_slap_light"),
 
 	combatSpam = "gundarkslap",
+	
+	weaponType = UNARMEDWEAPON,
 
 	range = -1
 }

@@ -1,7 +1,7 @@
 gifted_gondula_shaman = Creature:new {
 	objectName = "@mob/creature_names:gifted_gondula_shaman",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "gondula_tribe",
-	pvpFaction = "gondula_tribe",
 	faction = "gondula_tribe",
 	level = 46,
 	chanceHit = 0.46,
@@ -30,12 +30,12 @@ gifted_gondula_shaman = Creature:new {
 		"object/mobile/dressed_ewok_m_07.iff",
 		"object/mobile/dressed_ewok_m_11.iff"},
 	lootGroups = {
-		 {
-	        groups = {
+		{
+			groups = {
 				{group = "ewok", chance = 9000000},
 				{group = "wearables_uncommon", chance = 1000000},
 			},
-			lootChance = 3000000
+			lootChance = 1920000
 		}
 	},
 	weapons = {"ewok_weapons"},

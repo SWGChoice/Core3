@@ -1,7 +1,7 @@
 beldonnas_league_enforcer = Creature:new {
 	objectName = "@mob/creature_names:beldonnas_enforcer",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "beldonnas_league",
-	pvpFaction = "beldonnas_league",
 	faction = "beldonnas_league",
 	level = 23,
 	chanceHit = 0.35,
@@ -48,12 +48,12 @@ beldonnas_league_enforcer = Creature:new {
 				{group = "loot_kit_parts", chance = 2000000},
 				{group = "tailor_components", chance = 1000000},
 				{group = "beldonnas_common", chance = 2000000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_medium"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(brawlermaster,marksmanmaster)
 }
 

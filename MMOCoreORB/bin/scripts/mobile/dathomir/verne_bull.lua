@@ -1,7 +1,6 @@
 verne_bull = Creature:new {
 	objectName = "@mob/creature_names:verne_bull",
 	socialGroup = "verne",
-	pvpFaction = "",
 	faction = "",
 	level = 19,
 	chanceHit = 0.32,
@@ -11,7 +10,7 @@ verne_bull = Creature:new {
 	baseHAM = 4500,
 	baseHAMmax = 5500,
 	armor = 0,
-	resists = {5,5,5,-1,-1,25,25,-1,-1},
+	resists = {5,5,5,-1,-1,125,125,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 110,
 	hideType = "hide_leathery",
@@ -34,7 +33,7 @@ verne_bull = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

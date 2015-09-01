@@ -1,6 +1,11 @@
 naboo_destroy_missions = {
-
 	lairSpawns = {
+		{
+			lairTemplateName = "naboo_plasma_thief_camp_neutral_large_theater",
+			minDifficulty = 2,
+			maxDifficulty = 10,
+			size = 30,
+		},
 		{
 			lairTemplateName = "naboo_gnort_lair_neutral_small",
 			minDifficulty = 3,
@@ -21,6 +26,12 @@ naboo_destroy_missions = {
 		},
 		{
 			lairTemplateName = "naboo_diseased_nuna_lair_neutral_small",
+			minDifficulty = 5,
+			maxDifficulty = 7,
+			size = 20,
+		},
+		{
+			lairTemplateName = "naboo_flesh_eating_chuba_lair_neutral_small",
 			minDifficulty = 5,
 			maxDifficulty = 7,
 			size = 20,
@@ -50,6 +61,12 @@ naboo_destroy_missions = {
 			size = 25,
 		},
 		{
+			lairTemplateName = "naboo_ankura_gungan_camp_neutral_large_theater",
+			minDifficulty = 7,
+			maxDifficulty = 9,
+			size = 25,
+		},
+		{
 			lairTemplateName = "naboo_mott_lair_neutral_medium",
 			minDifficulty = 7,
 			maxDifficulty = 9,
@@ -62,9 +79,15 @@ naboo_destroy_missions = {
 			size = 25,
 		},
 		{
-			lairTemplateName = "borvos_camp",
+			lairTemplateName = "naboo_rsf_camp_neutral_medium_theater",
 			minDifficulty = 7,
 			maxDifficulty = 16,
+			size = 25,
+		},
+		{
+			lairTemplateName = "naboo_rsf_outpost_neutral_large_theater",
+			minDifficulty = 7,
+			maxDifficulty = 17,
 			size = 25,
 		},
 		{
@@ -80,15 +103,39 @@ naboo_destroy_missions = {
 			size = 25,
 		},
 		{
-			lairTemplateName = "mauler_gang",
-			minDifficulty = 10,
+			lairTemplateName = "naboo_nuna_lair_neutral_medium",
+			minDifficulty = 9,
+			maxDifficulty = 11,
+			size = 25,
+		},
+		{
+			lairTemplateName = "naboo_veermok_camp_neutral_medium",
+			minDifficulty = 9,
+			maxDifficulty = 11,
+			size = 25,
+		},
+		{
+			lairTemplateName = "naboo_otolla_gungan_camp_neutral_large_theater",
+			minDifficulty = 9,
+			maxDifficulty = 11,
+			size = 25,
+		},
+		{
+			lairTemplateName = "naboo_trade_federation_camp_neutral_large_theater",
+			minDifficulty = 9,
 			maxDifficulty = 18,
 			size = 25,
 		},
 		{
-			lairTemplateName = "veermok_forest",
-			minDifficulty = 11,
-			maxDifficulty = 15,
+			lairTemplateName = "naboo_borvos_fort_neutral_large_theater",
+			minDifficulty = 9,
+			maxDifficulty = 22,
+			size = 25,
+		},
+		{
+			lairTemplateName = "naboo_mauler_sect_neutral_medium_theater",
+			minDifficulty = 10,
+			maxDifficulty = 18,
 			size = 25,
 		},
 		{
@@ -104,21 +151,33 @@ naboo_destroy_missions = {
 			size = 25,
 		},
 		{
+			lairTemplateName = "naboo_borvos_camp_neutral_small_theater",
+			minDifficulty = 12,
+			maxDifficulty = 19,
+			size = 25,
+		},
+		{
 			lairTemplateName = "naboo_gualama_large_lair_neutral_medium",
 			minDifficulty = 12,
 			maxDifficulty = 16,
 			size = 25,
 		},
 		{
-			lairTemplateName = "naboo_plains_tusk_cat_pride_neutral_medium",
-			minDifficulty = 14,
-			maxDifficulty = 18,
+			lairTemplateName = "naboo_gungan_mercenary_camp_neutral_large_theater",
+			minDifficulty = 12,
+			maxDifficulty = 16,
 			size = 25,
 		},
 		{
-			lairTemplateName = "borvos_gang",
+			lairTemplateName = "naboo_gungan_war_base_neutral_large_theater",
+			minDifficulty = 13,
+			maxDifficulty = 26,
+			size = 25,
+		},
+		{
+			lairTemplateName = "naboo_plains_tusk_cat_pride_neutral_medium",
 			minDifficulty = 14,
-			maxDifficulty = 24,
+			maxDifficulty = 18,
 			size = 25,
 		},
 		{
@@ -152,7 +211,7 @@ naboo_destroy_missions = {
 			size = 30,
 		},
 		{
-			lairTemplateName = "fambaa",
+			lairTemplateName = "naboo_fambaa_lair_neutral_large_boss_01",
 			minDifficulty = 30,
 			maxDifficulty = 38,
 			size = 35,

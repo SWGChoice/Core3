@@ -47,7 +47,17 @@ object_building_poi_scout_camp_s5 = object_building_poi_shared_scout_camp_s5:new
 	baseMaintenanceRate = 0,
 	basePowerRate = 0,
 	
-	skillMods = {{"private_medical_rating", 100}, {"private_med_wound_health", 100}, {"private_med_wound_action", 100}, {"private_aggro_mod", 100}, {"private_buff_mind", 100}},
+	skillMods = {
+	{"private_medical_rating", 100},
+	{"private_med_wound_health", 100},
+	{"private_med_wound_action", 100},
+	{"private_aggro_mod", 100},
+	{"private_buff_mind", 100},
+	{"private_med_battle_fatigue", 5},
+	{"private_spec_samplesize", 10},
+	{"private_spec_samplerate", 10},
+	{"private_spec_assembly", 10},
+	{"private_spec_experimentation", 10}},
 
 	aggroMod = 100,	
 	duration = 3600,
@@ -131,6 +141,12 @@ object_building_poi_scout_camp_s5 = object_building_poi_shared_scout_camp_s5:new
 		{templateFile = "object/tangible/camp/camp_chair_s3.iff", 
 			x = -7.7, z = 0, y = 3.8, 
 			ox = 0, oy = 1, oz = 0, ow = 0, 
+			cellid = -1, 
+			containmentType = -1},
+
+		{templateFile = "object/tangible/terminal/terminal_mission.iff",  
+			x = 8.74256, z = 0, y = 0.836432,
+			ox = 0, oy = .5465, oz = 0, ow = -.8929, 
 			cellid = -1, 
 			containmentType = -1},
 	}

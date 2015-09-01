@@ -1,7 +1,6 @@
 diminutive_bounding_jax = Creature:new {
 	objectName = "@mob/creature_names:jax_bounding_dwarf",
 	socialGroup = "jax",
-	pvpFaction = "",
 	faction = "",
 	level = 7,
 	chanceHit = 0.27,
@@ -11,7 +10,7 @@ diminutive_bounding_jax = Creature:new {
 	baseHAM = 68,
 	baseHAMmax = 83,
 	armor = 0,
-	resists = {10,10,-1,0,0,0,0,-1,-1},
+	resists = {110,110,-1,0,0,0,0,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 25,
 	hideType = "hide_bristley",

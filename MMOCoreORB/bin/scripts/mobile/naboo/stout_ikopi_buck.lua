@@ -1,7 +1,6 @@
 stout_ikopi_buck = Creature:new {
 	objectName = "@mob/creature_names:ikopi_stout_stallion",
 	socialGroup = "ikopi",
-	pvpFaction = "",
 	faction = "",
 	level = 9,
 	chanceHit = 0.27,
@@ -11,7 +10,7 @@ stout_ikopi_buck = Creature:new {
 	baseHAM = 675,
 	baseHAMmax = 825,
 	armor = 0,
-	resists = {10,0,-1,0,0,0,0,0,-1},
+	resists = {110,0,-1,0,0,0,0,0,-1},
 	meatType = "meat_wild",
 	meatAmount = 70,
 	hideType = "hide_bristley",
@@ -33,8 +32,8 @@ stout_ikopi_buck = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"posturedownattack",""}
 	}
 }
 

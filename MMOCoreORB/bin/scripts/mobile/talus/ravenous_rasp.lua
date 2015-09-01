@@ -1,7 +1,6 @@
 ravenous_rasp = Creature:new {
 	objectName = "@mob/creature_names:ravenous_rasp",
 	socialGroup = "rasp",
-	pvpFaction = "",
 	faction = "",
 	level = 31,
 	chanceHit = 0.41,
@@ -11,7 +10,7 @@ ravenous_rasp = Creature:new {
 	baseHAM = 2400,
 	baseHAMmax = 4300,
 	armor = 0,
-	resists = {0,0,-1,-1,0,0,0,0,-1},
+	resists = {25,25,-1,-1,25,25,25,25,-1},
 	meatType = "meat_avian",
 	meatAmount = 45,
 	hideType = "",
@@ -32,8 +31,8 @@ ravenous_rasp = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"strongpoison",""}
+		{"strongpoison",""},
+		{"dizzyattack",""}
 	}
 }
 

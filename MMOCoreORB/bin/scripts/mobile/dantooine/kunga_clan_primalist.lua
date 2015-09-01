@@ -1,7 +1,7 @@
 kunga_clan_primalist = Creature:new {
 	objectName = "@mob/creature_names:kunga_clan_primalist",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "kunga_tribe",
-	pvpFaction = "kunga_tribe",
 	faction = "kunga_tribe",
 	level = 40,
 	chanceHit = 0.42,
@@ -38,8 +38,7 @@ kunga_clan_primalist = Creature:new {
 				{group = "clothing_attachments", chance = 500000},
 				{group = "wearables_common", chance = 1000000},
 				{group = "wearables_uncommon", chance = 1000000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"primitive_weapons"},

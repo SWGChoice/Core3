@@ -1,7 +1,7 @@
 mercenary = Creature:new {
 	objectName = "@mob/creature_names:mercenary",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "mercenary",
-	pvpFaction = "",
 	faction = "",
 	level = 12,
 	chanceHit = 0.29,
@@ -27,7 +27,7 @@ mercenary = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_mercenary_weak_hum_m.iff",
-			"object/mobile/dressed_mercenary_messanger_sullustan_m.iff" },
+		"object/mobile/dressed_mercenary_messanger_sullustan_m.iff" },
 	lootGroups = {},
 	weapons = {"rebel_weapons_medium"},
 	conversationTemplate = "",

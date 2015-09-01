@@ -1,7 +1,7 @@
 singing_mountain_clan_councilwoman = Creature:new {
 	objectName = "@mob/creature_names:singing_mtn_clan_councilwoman",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "mtn_clan",
-	pvpFaction = "mtn_clan",
 	faction = "mtn_clan",
 	level = 253,
 	chanceHit = 23.5,
@@ -40,8 +40,7 @@ singing_mountain_clan_councilwoman = Creature:new {
 				{group = "pistols", chance = 1000000},
 				{group = "carbines", chance = 1000000},
 				{group = "wearables_scarce", chance = 500000}
-			},
-			lootChance = 6000000
+			}
 		}
 	},
 	weapons = {"mixed_force_weapons"},

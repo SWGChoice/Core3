@@ -1,7 +1,7 @@
 rodian_thug = Creature:new {
 	objectName = "@mob/creature_names:rodian_thug",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "thug",
-	pvpFaction = "thug",
 	faction = "thug",
 	level = 3,
 	chanceHit = 0.23,
@@ -29,20 +29,20 @@ rodian_thug = Creature:new {
 	templates = {"object/mobile/dressed_criminal_thug_rodian_female_01.iff"},
 	lootGroups = {
 		{
-	        	groups = {
+			groups = {
 				{group = "junk", chance = 3500000},
-				{group = "wearables_common", chance = 2000000},			
+				{group = "wearables_common", chance = 2000000},
 				{group = "armor_all", chance = 500000},
 				{group = "rifles", chance = 1000000},
 				{group = "pistols", chance = 1000000},
 				{group = "melee_weapons", chance = 1000000},
 				{group = "carbines", chance = 1000000},
-			},
-			lootChance = 2600000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_light"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(marksmannovice,brawlernovice)
 }
 

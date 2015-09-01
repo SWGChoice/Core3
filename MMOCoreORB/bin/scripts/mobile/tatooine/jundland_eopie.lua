@@ -1,7 +1,6 @@
 jundland_eopie = Creature:new {
 	objectName = "@mob/creature_names:jundland_eopie",
 	socialGroup = "self",
-	pvpFaction = "",
 	faction = "",
 	level = 10,
 	chanceHit = 0.27,
@@ -11,7 +10,7 @@ jundland_eopie = Creature:new {
 	baseHAM = 675,
 	baseHAMmax = 825,
 	armor = 0,
-	resists = {0,0,0,10,10,0,10,-1,-1},
+	resists = {0,0,0,110,110,0,110,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 300,
 	hideType = "hide_leathery",
@@ -34,7 +33,8 @@ jundland_eopie = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"",""},
+		{"stunattack",""}
 	}
 }
 

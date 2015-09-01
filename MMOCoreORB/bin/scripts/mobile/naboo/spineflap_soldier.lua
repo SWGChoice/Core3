@@ -1,7 +1,6 @@
 spineflap_soldier = Creature:new {
 	objectName = "@mob/creature_names:spineflap_soldier",
 	socialGroup = "spineflap",
-	pvpFaction = "",
 	faction = "",
 	level = 14,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ spineflap_soldier = Creature:new {
 	baseHAM = 2000,
 	baseHAMmax = 2400,
 	armor = 0,
-	resists = {15,15,15,0,0,0,0,-1,-1},
+	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 10,
 	hideType = "hide_scaley",
@@ -33,7 +32,7 @@ spineflap_soldier = Creature:new {
 	weapons = {"creature_spit_small_yellow"},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

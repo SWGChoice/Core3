@@ -1,7 +1,6 @@
 whisper_bird_hatchling = Creature:new {
 	objectName = "@mob/creature_names:whisper_bird_hatchling",
 	socialGroup = "whisperbird",
-	pvpFaction = "",
 	faction = "",
 	level = 7,
 	chanceHit = 0.26,
@@ -11,7 +10,7 @@ whisper_bird_hatchling = Creature:new {
 	baseHAM = 270,
 	baseHAMmax = 330,
 	armor = 0,
-	resists = {0,0,0,0,0,0,0,0,0},
+	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "meat_avian",
 	meatAmount = 55,
 	hideType = "",

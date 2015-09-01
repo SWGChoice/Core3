@@ -1,7 +1,6 @@
 wild_dune_boar = Creature:new {
 	objectName = "@mob/creature_names:wild_dune_boar",
 	socialGroup = "boar",
-	pvpFaction = "",
 	faction = "",
 	level = 50,
 	chanceHit = 0.5,
@@ -11,7 +10,7 @@ wild_dune_boar = Creature:new {
 	baseHAM = 10000,
 	baseHAMmax = 12000,
 	armor = 1,
-	resists = {10,40,10,0,0,0,0,-1,-1},
+	resists = {110,140,110,5,5,5,5,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 90,
 	hideType = "hide_leathery",
@@ -27,14 +26,14 @@ wild_dune_boar = Creature:new {
 	diet = CARNIVORE,
 
 	templates = {"object/mobile/zucca_boar.iff"},
-	controlDeviceTemplate = "object/intangible/pet/zucca_boar_hue.iff",
+	controlDeviceTemplate = "object/intangible/pet/pet_control.iff", -- zucca_boar_hue.iff bugged in client
 	scale = 1.3,
 	lootGroups = {},
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
-		{"stunattack","stunChance=50"}
+		{"intimidationattack",""},
+		{"stunattack",""}
 	}
 }
 

@@ -101,6 +101,11 @@ public:
 			return;
 		}
 
+		Locker pOneLocker(partOne);
+		Locker pTwoLocker(partTwo);
+		Locker pThreeLocker(partThree);
+		Locker pFourLocker(partFour);
+
 		String fullTemplate = "object/tangible/encoded_disk/message_assembled_base.iff";
 		ManagedReference<TangibleObject*> assembledMessage = server->createObject(fullTemplate.hashCode(), 1).castTo<TangibleObject*>();
 
@@ -108,9 +113,12 @@ public:
 			return;
 		}
 
+		Locker assembledMessageLocker(assembledMessage);
+
 		CoaMessageDataComponent* data = assembledMessage->getDataObjectComponent()->castTo<CoaMessageDataComponent*>();
 
 		if (data == NULL) {
+			assembledMessage->destroyObjectFromDatabase(true);
 			return;
 		}
 

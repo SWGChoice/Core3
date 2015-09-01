@@ -1,7 +1,6 @@
 bordok_foal = Creature:new {
 	objectName = "@mob/creature_names:bordok_foal",
 	socialGroup = "bordok",
-	pvpFaction = "",
 	faction = "",
 	level = 25,
 	chanceHit = 0.36,
@@ -11,7 +10,7 @@ bordok_foal = Creature:new {
 	baseHAM = 8100,
 	baseHAMmax = 9900,
 	armor = 0,
-	resists = {20,20,20,70,70,-1,-1,-1,-1},
+	resists = {20,20,20,170,170,-1,-1,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 250,
 	hideType = "hide_leathery",
@@ -33,8 +32,8 @@ bordok_foal = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"dizzyattack","dizzyChance=50"},
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""},
+		{"dizzyattack",""}
 	}
 }
 

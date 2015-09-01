@@ -1,8 +1,8 @@
 binayre_hooligan = Creature:new {
 	objectName = "@mob/creature_names:binayre_hooligan",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "binayre",
-	pvpFaction = "binayre",
-	faction = "pirate",
+	faction = "binayre",
 	level = 9,
 	chanceHit = 0.27,
 	damageMin = 80,
@@ -30,18 +30,18 @@ binayre_hooligan = Creature:new {
 		"object/mobile/dressed_binayre_hooligan_zabrak_female_01.iff",
 		"object/mobile/dressed_binayre_hooligan_zabrak_male_01.iff"},
 	lootGroups = {
-	    {
+		{
 			groups = {
 				{group = "junk", chance = 2450000},
 				{group = "tailor_components", chance = 1500000},
 				{group = "loot_kit_parts", chance = 1500000},
 				{group = "binayre_common", chance = 4550000}
-			},
-			lootChance = 2200000
+			}
 		}
 	},
 	weapons = {"pirate_weapons_light"},
 	conversationTemplate = "",
+	reactionStf = "@npc_reaction/slang",
 	attacks = merge(marksmannovice,brawlernovice)
 }
 

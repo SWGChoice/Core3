@@ -1,44 +1,6 @@
 /*
-Copyright (C) 2007 <SWGEmu>
-This File is part of Core3.
-This program is free software; you can redistribute
-it and/or modify it under the terms of the GNU Lesser
-General Public License as published by the Free Software
-Foundation; either version 2 of the License,
-or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU Lesser General Public License for
-more details.
-
-You should have received a copy of the GNU Lesser General
-Public License along with this program; if not, write to
-the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-
-Linking Engine3 statically or dynamically with other modules
-is making a combined work based on Engine3.
-Thus, the terms and conditions of the GNU Lesser General Public License
-cover the whole combination.
-
-In addition, as a special exception, the copyright holders of Engine3
-give you permission to combine Engine3 program with free software
-programs or libraries that are released under the GNU LGPL and with
-code included in the standard release of Core3 under the GNU LGPL
-license (or modified versions of such code, with unchanged license).
-You may copy and distribute such a system following the terms of the
-GNU LGPL for Engine3 and the licenses of the other code concerned,
-provided that you include the source code of that other code when
-and as the GNU LGPL requires distribution of source code.
-
-Note that people who make modified versions of Engine3 are not obligated
-to grant this special exception for their modified versions;
-it is their choice whether to do so. The GNU Lesser General Public License
-gives permission to release a modified version without this exception;
-this exception also makes it possible to release a modified version
-which carries forward this exception.
-
+				Copyright <SWGEmu>
+		See file COPYING for copying conditions.
  */
 
 #include "ZoneComponent.h"
@@ -82,8 +44,10 @@ void ZoneComponent::insertChildObjectsToZone(SceneObject* sceneObject, Zone* zon
 		if (outdoorChild == NULL)
 			continue;
 
-		if (outdoorChild->getContainmentType() != 4 && outdoorChild->getParent() == NULL)
+		if (outdoorChild->getContainmentType() != 4 && outdoorChild->getParent() == NULL) {
+			Locker clocker(outdoorChild, sceneObject);
 			zone->transferObject(outdoorChild, -1, true);
+		}
 	}
 }
 
@@ -125,61 +89,66 @@ void ZoneComponent::teleport(SceneObject* sceneObject, float newPositionX, float
 }
 
 void ZoneComponent::updateInRangeObjectsOnMount(SceneObject* sceneObject) {
-	CloseObjectsVector* closeObjectsVector = (CloseObjectsVector*) sceneObject->getCloseObjects();
-	CloseObjectsVector* parentCloseObjectsVector = (CloseObjectsVector*) sceneObject->getRootParent().get()->getCloseObjects();
+	try {
+		CloseObjectsVector* closeObjectsVector = (CloseObjectsVector*) sceneObject->getCloseObjects();
+		CloseObjectsVector* parentCloseObjectsVector = (CloseObjectsVector*) sceneObject->getRootParent().get()->getCloseObjects();
 
-	SortedVector<ManagedReference<QuadTreeEntry*> > closeObjects(closeObjectsVector->size(), 10);
-	closeObjectsVector->safeCopyTo(closeObjects);
+		SortedVector<ManagedReference<QuadTreeEntry*> > closeObjects(closeObjectsVector->size(), 10);
+		closeObjectsVector->safeCopyTo(closeObjects);
 
-	SortedVector<ManagedReference<QuadTreeEntry*> > parentCloseObjects(parentCloseObjectsVector->size(), 10);
-	parentCloseObjectsVector->safeCopyTo(parentCloseObjects);
+		SortedVector<ManagedReference<QuadTreeEntry*> > parentCloseObjects(parentCloseObjectsVector->size(), 10);
+		parentCloseObjectsVector->safeCopyTo(parentCloseObjects);
 
-	//remove old ones
-	float rangesq = 192.f * 192.f;
+		//remove old ones
+		float rangesq = 192.f * 192.f;
 
-	float x = sceneObject->getPositionX();
-	float y = sceneObject->getPositionY();
+		float x = sceneObject->getPositionX();
+		float y = sceneObject->getPositionY();
 
-	float oldx = sceneObject->getPreviousPositionX();
-	float oldy = sceneObject->getPreviousPositionY();
+		float oldx = sceneObject->getPreviousPositionX();
+		float oldy = sceneObject->getPreviousPositionY();
 
-	for (int i = 0; i < closeObjects.size(); ++i) {
-		ManagedReference<QuadTreeEntry*> o = closeObjects.get(i);
-		ManagedReference<QuadTreeEntry*> objectToRemove = o;
-		ManagedReference<QuadTreeEntry*> rootParent = o->getRootParent();
+		for (int i = 0; i < closeObjects.size(); ++i) {
+			ManagedReference<QuadTreeEntry*> o = closeObjects.get(i);
+			ManagedReference<QuadTreeEntry*> objectToRemove = o;
+			ManagedReference<QuadTreeEntry*> rootParent = o->getRootParent();
 
-		if (rootParent != NULL)
-			o = rootParent;
+			if (rootParent != NULL)
+				o = rootParent;
 
-		if (o != sceneObject) {
-			float deltaX = x - o->getPositionX();
-			float deltaY = y - o->getPositionY();
+			if (o != sceneObject) {
+				float deltaX = x - o->getPositionX();
+				float deltaY = y - o->getPositionY();
 
-			if (deltaX * deltaX + deltaY * deltaY > rangesq) {
-				float oldDeltaX = oldx - o->getPositionX();
-				float oldDeltaY = oldy - o->getPositionY();
+				if (deltaX * deltaX + deltaY * deltaY > rangesq) {
+					float oldDeltaX = oldx - o->getPositionX();
+					float oldDeltaY = oldy - o->getPositionY();
 
-				if (oldDeltaX * oldDeltaX + oldDeltaY * oldDeltaY <= rangesq) {
+					if (oldDeltaX * oldDeltaX + oldDeltaY * oldDeltaY <= rangesq) {
 
-					if (sceneObject->getCloseObjects() != NULL)
-						sceneObject->removeInRangeObject(objectToRemove);
+						if (sceneObject->getCloseObjects() != NULL)
+							sceneObject->removeInRangeObject(objectToRemove);
 
-					if (objectToRemove->getCloseObjects() != NULL)
-						objectToRemove->removeInRangeObject(sceneObject);
+						if (objectToRemove->getCloseObjects() != NULL)
+							objectToRemove->removeInRangeObject(sceneObject);
+					}
 				}
 			}
 		}
-	}
 
-	//insert new ones
-	for (int i = 0; i < parentCloseObjects.size(); ++i) {
-		QuadTreeEntry* o = parentCloseObjects.get(i);
+		//insert new ones
+		for (int i = 0; i < parentCloseObjects.size(); ++i) {
+			QuadTreeEntry* o = parentCloseObjects.get(i);
 
-		if (sceneObject->getCloseObjects() != NULL)
-			sceneObject->addInRangeObject(o, false);
+			if (sceneObject->getCloseObjects() != NULL)
+				sceneObject->addInRangeObject(o, false);
 
-		if (o->getCloseObjects() != NULL)
-			o->addInRangeObject(sceneObject, true);
+			if (o->getCloseObjects() != NULL)
+				o->addInRangeObject(sceneObject, true);
+		}
+	} catch (Exception& e) {
+		sceneObject->error(e.getMessage());
+		e.printStackTrace();
 	}
 }
 
@@ -216,54 +185,68 @@ void ZoneComponent::updateZone(SceneObject* sceneObject, bool lightUpdate, bool 
 		zone->transferObject(sceneObject, -1, false);
 
 		zone->unlock();
+		zoneUnlocked = true;
 	} else {
 		if (sceneObject->getLocalZone() != NULL) {
 			zone->update(sceneObject);
 
 			zone->unlock();
+			zoneUnlocked = true;
 
-			zone->inRange(sceneObject, 192);
+			try {
+				zone->inRange(sceneObject, 192);
+			} catch (Exception& e) {
+				sceneObject->error(e.getMessage());
+				e.printStackTrace();
+			}
 		} else if (parent != NULL) {
 			zone->unlock();
+			zoneUnlocked = true;
 
 			updateInRangeObjectsOnMount(sceneObject);
 		}
 	}
 
-	if (sceneObject->isTangibleObject()) {
-		TangibleObject* tano = cast<TangibleObject*>(sceneObject);
-
-		zone->updateActiveAreas(tano);
-	}
-
-	bool isInvis = false;
-
-	if (sceneObject->isCreatureObject()) {
-		CreatureObject* creo = cast<CreatureObject*>(sceneObject);
-
-		if(creo->isInvisible())
-			isInvis = true;
-	}
-
-
-	if (!isInvis && sendPackets && (parent == NULL || (!parent->isVehicleObject() && !parent->isMount()))) {
-		if (lightUpdate) {
-			LightUpdateTransformMessage* message = new LightUpdateTransformMessage(sceneObject);
-			sceneObject->broadcastMessage(message, false, true);
-		} else {
-			UpdateTransformMessage* message = new UpdateTransformMessage(sceneObject);
-			sceneObject->broadcastMessage(message, false, true);
-		}
-	}
-
 	try {
-		notifySelfPositionUpdate(sceneObject);
+		if (sceneObject->isTangibleObject()) {
+			TangibleObject* tano = sceneObject->asTangibleObject();
+
+			zone->updateActiveAreas(tano);
+		}
+
+		bool isInvis = false;
+
+		if (sceneObject->isCreatureObject()) {
+			CreatureObject* creo = sceneObject->asCreatureObject();
+
+			if(creo->isInvisible())
+				isInvis = true;
+		}
+
+
+		if (!isInvis && sendPackets && (parent == NULL || (!parent->isVehicleObject() && !parent->isMount()))) {
+			if (lightUpdate) {
+				LightUpdateTransformMessage* message = new LightUpdateTransformMessage(sceneObject);
+				sceneObject->broadcastMessage(message, false, true);
+			} else {
+				UpdateTransformMessage* message = new UpdateTransformMessage(sceneObject);
+				sceneObject->broadcastMessage(message, false, true);
+			}
+		}
+
+		try {
+			notifySelfPositionUpdate(sceneObject);
+		} catch (Exception& e) {
+			sceneObject->error("Exception caught while calling notifySelfPositionUpdate(sceneObject) in ZoneComponent::updateZone");
+			sceneObject->error(e.getMessage());
+		}
 	} catch (Exception& e) {
-		sceneObject->error("Exception caught while calling notifySelfPositionUpdate(sceneObject) in ZoneComponent::updateZone");
 		sceneObject->error(e.getMessage());
+		e.printStackTrace();
 	}
 
-	zone->wlock();
+	if (zoneUnlocked)
+		zone->wlock();
 }
 
 void ZoneComponent::updateZoneWithParent(SceneObject* sceneObject, SceneObject* newParent, bool lightUpdate, bool sendPackets) {
@@ -294,64 +277,74 @@ void ZoneComponent::updateZoneWithParent(SceneObject* sceneObject, SceneObject* 
 		} else {
 			zone->unlock();
 
-			if (sceneObject->isTangibleObject()) {
-				TangibleObject* tano = cast<TangibleObject*>(sceneObject);
-				zone->updateActiveAreas(tano);
+			try {
+				if (sceneObject->isTangibleObject()) {
+					TangibleObject* tano = sceneObject->asTangibleObject();
+					zone->updateActiveAreas(tano);
+				}
+			} catch (Exception& e) {
+				sceneObject->error(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 
 		//notify in range objects that i moved
 	}
 
-	CloseObjectsVector* closeObjects = (CloseObjectsVector*) sceneObject->getCloseObjects();
+	try {
+		CloseObjectsVector* closeObjects = (CloseObjectsVector*) sceneObject->getCloseObjects();
 
-	if (closeObjects != NULL) {
-		SortedVector<ManagedReference<QuadTreeEntry*> > objects(closeObjects->size(), 10);
-		closeObjects->safeCopyTo(objects);
+		if (closeObjects != NULL) {
+			SortedVector<ManagedReference<QuadTreeEntry*> > objects(closeObjects->size(), 10);
+			closeObjects->safeCopyTo(objects);
 
-		for (int i = 0; i < objects.size(); ++i) {
-			QuadTreeEntry* object = objects.get(i);
-			try {
-				object->notifyPositionUpdate(sceneObject);
-			} catch (Exception& e) {
+			for (int i = 0; i < objects.size(); ++i) {
+				QuadTreeEntry* object = objects.get(i);
+				try {
+					object->notifyPositionUpdate(sceneObject);
+				} catch (Exception& e) {
 
+				}
 			}
 		}
-	}
 
-	//zoneLocker.release();
+		//zoneLocker.release();
 
-	//zone->unlock();
+		//zone->unlock();
 
-	bool isInvis = false;
+		bool isInvis = false;
 
-	if (sceneObject->isCreatureObject()) {
-		CreatureObject* creo = cast<CreatureObject*>(sceneObject);
-		if(creo->isInvisible())
-			isInvis = true;
-	}
-
-	if (sendPackets && !isInvis) {
-		if (lightUpdate) {
-			LightUpdateTransformWithParentMessage* message = new LightUpdateTransformWithParentMessage(sceneObject);
-			sceneObject->broadcastMessage(message, false, true);
-		} else {
-			UpdateTransformWithParentMessage* message = new UpdateTransformWithParentMessage(sceneObject);
-			sceneObject->broadcastMessage(message, false, true);
+		if (sceneObject->isCreatureObject()) {
+			CreatureObject* creo = sceneObject->asCreatureObject();
+			if(creo->isInvisible())
+				isInvis = true;
 		}
-	}
 
-	try {
-		notifySelfPositionUpdate(sceneObject);
+		if (sendPackets && !isInvis) {
+			if (lightUpdate) {
+				LightUpdateTransformWithParentMessage* message = new LightUpdateTransformWithParentMessage(sceneObject);
+				sceneObject->broadcastMessage(message, false, true);
+			} else {
+				UpdateTransformWithParentMessage* message = new UpdateTransformWithParentMessage(sceneObject);
+				sceneObject->broadcastMessage(message, false, true);
+			}
+		}
+
+		try {
+			notifySelfPositionUpdate(sceneObject);
+		} catch (Exception& e) {
+			sceneObject->error("Exception caught while calling notifySelfPositionUpdate(sceneObject) in ZoneComponent::updateZoneWithParent");
+			sceneObject->error(e.getMessage());
+		}
 	} catch (Exception& e) {
-		sceneObject->error("Exception caught while calling notifySelfPositionUpdate(sceneObject) in ZoneComponent::updateZoneWithParent");
 		sceneObject->error(e.getMessage());
+		e.printStackTrace();
 	}
 
 	zone->wlock();
 }
 
-void ZoneComponent::switchZone(SceneObject* sceneObject, const String& newTerrainName, float newPostionX, float newPositionZ, float newPositionY, uint64 parentID) {
+void ZoneComponent::switchZone(SceneObject* sceneObject, const String& newTerrainName, float newPostionX, float newPositionZ, float newPositionY, uint64 parentID, bool toggleInvisibility) {
 	Zone* zone = sceneObject->getZone();
 	ManagedReference<SceneObject*> thisLocker = sceneObject;
 
@@ -381,6 +374,14 @@ void ZoneComponent::switchZone(SceneObject* sceneObject, const String& newTerrai
 	}
 
 	sceneObject->destroyObjectFromWorld(false);
+
+	if (toggleInvisibility) {
+		CreatureObject* creo = sceneObject->asCreatureObject();
+
+		if (creo != NULL) {
+			creo->setInvisible(!creo->isInvisible());
+		}
+	}
 
 	Locker locker(newZone);
 
@@ -417,10 +418,10 @@ void ZoneComponent::destroyObjectFromWorld(SceneObject* sceneObject, bool sendSe
 		par->removeObject(sceneObject, NULL, false);
 
 		if (par->isCellObject()) {
-			ManagedReference<BuildingObject*> build = cast<BuildingObject*>(par->getParent().get().get());
+			ManagedReference<BuildingObject*> build = par->getParent().get().castTo<BuildingObject*>();
 
 			if (build != NULL) {
-				CreatureObject* creature = cast<CreatureObject*>(sceneObject);
+				CreatureObject* creature = sceneObject->asCreatureObject();
 
 				if (creature != NULL)
 					build->onExit(creature, parentID);
@@ -517,7 +518,7 @@ void ZoneComponent::destroyObjectFromWorld(SceneObject* sceneObject, bool sendSe
 //		locker.release();
 
 		if (sceneObject->isTangibleObject()) {
-			TangibleObject* tano = cast<TangibleObject*>(sceneObject);
+			TangibleObject* tano = sceneObject->asTangibleObject();
 			Vector<ManagedReference<ActiveArea*> >* activeAreas =  tano->getActiveAreas();
 
 			while (activeAreas->size() > 0) {

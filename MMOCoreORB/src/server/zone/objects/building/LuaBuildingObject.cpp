@@ -17,6 +17,7 @@ Luna<LuaBuildingObject>::RegType LuaBuildingObject::Register[] = {
 		{ "_setObject", &LuaBuildingObject::_setObject },
 		{ "_getObject", &LuaSceneObject::_getObject },
 		{ "getCell", &LuaBuildingObject::getCell },
+		{ "getNamedCell", &LuaBuildingObject::getNamedCell },
 		{ "getOwnerID", &LuaBuildingObject::getOwnerID },
 		{ "getParent", &LuaSceneObject::getParent },
 		{ "getObjectID", &LuaSceneObject::getObjectID },
@@ -36,16 +37,28 @@ Luna<LuaBuildingObject>::RegType LuaBuildingObject::Register[] = {
 };
 
 LuaBuildingObject::LuaBuildingObject(lua_State *L) : LuaTangibleObject(L) {
-	realObject = (BuildingObject*)lua_touserdata(L, 1);
+#ifdef DYNAMIC_CAST_LUAOBJECTS
+	realObject = dynamic_cast<BuildingObject*>(_getRealSceneObject());
+
+	assert(!_getRealSceneObject() || realObject != NULL);
+#else
+	realObject = reinterpret_cast<BuildingObject*>(lua_touserdata(L, 1));
+#endif
 }
 
 LuaBuildingObject::~LuaBuildingObject(){
 }
 
 int LuaBuildingObject::_setObject(lua_State* L) {
-	realObject = (BuildingObject*)lua_touserdata(L, -1);
-
 	LuaTangibleObject::_setObject(L);
+
+#ifdef DYNAMIC_CAST_LUAOBJECTS
+	realObject = dynamic_cast<BuildingObject*>(_getRealSceneObject());
+
+	assert(!_getRealSceneObject() || realObject != NULL);
+#else
+	realObject = reinterpret_cast<BuildingObject*>(lua_touserdata(L, -1));
+#endif
 
 	return 0;
 }
@@ -58,6 +71,20 @@ int LuaBuildingObject::getCell(lua_State* L) {
 	return 1;
 }
 
+int LuaBuildingObject::getNamedCell(lua_State* L) {
+	String name = lua_tostring(L, -1);
+
+	CellObject* cell = realObject->getCell(name);
+
+	if (cell == NULL) {
+		lua_pushnil(L);
+	} else {
+		lua_pushlightuserdata(L, cell);
+	}
+
+	return 1;
+}
+
 int LuaBuildingObject::getOwnerID(lua_State* L) {
 	lua_pushinteger(L, realObject->getOwnerObjectID());
 
@@ -66,12 +93,12 @@ int LuaBuildingObject::getOwnerID(lua_State* L) {
 
 int LuaBuildingObject::grantPermission(lua_State* L) {
 	String list = lua_tostring(L, -2);
-	String name = lua_tostring(L, -1);
+	uint64 playerid = lua_tointeger(L, -1);
 
 	int i = 0;
 
 	if (list == "ADMIN" || list == "BAN" || list == "ENTRY") {
-		realObject->grantPermission(list, name);
+		realObject->grantPermission(list, playerid);
 		i = 1;
 	}
 
@@ -96,6 +123,8 @@ int LuaBuildingObject::spawnChildCreature(lua_State* L) {
 	float x = lua_tonumber(L, -5);
 	int respawnTimer = lua_tointeger(L, -6);
 	String mobile = lua_tostring(L, -7);
+
+	Locker locker(realObject);
 
 	realObject->spawnChildCreature(mobile, respawnTimer, x, z, y, heading, parentID);
 

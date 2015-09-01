@@ -1,7 +1,6 @@
 veermok_scavenger = Creature:new {
 	objectName = "@mob/creature_names:veermok_scavenger",
 	socialGroup = "veermok",
-	pvpFaction = "",
 	faction = "",
 	level = 15,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ veermok_scavenger = Creature:new {
 	baseHAM = 2400,
 	baseHAMmax = 3000,
 	armor = 0,
-	resists = {5,5,5,5,5,5,5,5,0},
+	resists = {5,5,5,5,5,5,5,-1,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 150,
 	hideType = "hide_bristley",
@@ -33,7 +32,8 @@ veermok_scavenger = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"stunattack","stunChance=50"}
+		{"",""},
+		{"stunattack",""}
 	}
 }
 

@@ -1,7 +1,6 @@
 skreeg_adolescent = Creature:new {
 	objectName = "@mob/creature_names:skreeg_adolescent",
 	socialGroup = "skreeg",
-	pvpFaction = "",
 	faction = "",
 	level = 15,
 	chanceHit = 0.3,
@@ -11,7 +10,7 @@ skreeg_adolescent = Creature:new {
 	baseHAM = 2400,
 	baseHAMmax = 3000,
 	armor = 0,
-	resists = {0,0,-1,0,10,0,0,-1,-1},
+	resists = {0,0,-1,0,110,0,0,-1,-1},
 	meatType = "meat_herbivore",
 	meatAmount = 17,
 	hideType = "hide_bristley",
@@ -32,7 +31,7 @@ skreeg_adolescent = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 

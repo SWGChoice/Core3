@@ -1,7 +1,6 @@
 aggrivated_kaadu_trampler = Creature:new {
 	objectName = "@mob/creature_names:kaadu_aggrivated_trampler",
 	socialGroup = "kaadu",
-	pvpFaction = "",
 	faction = "",
 	level = 17,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ aggrivated_kaadu_trampler = Creature:new {
 	baseHAM = 2900,
 	baseHAMmax = 3500,
 	armor = 0,
-	resists = {10,0,-1,0,0,0,0,-1,-1},
+	resists = {110,5,-1,5,5,5,5,-1,-1},
 	meatType = "meat_avian",
 	meatAmount = 120,
 	hideType = "hide_leathery",
@@ -33,8 +32,8 @@ aggrivated_kaadu_trampler = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"posturedownattack","postureDownChance=50"},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""},
+		{"posturedownattack",""}
 	}
 }
 

@@ -48,7 +48,15 @@ object_building_poi_scout_camp_s3 = object_building_poi_shared_scout_camp_s3:new
 	baseMaintenanceRate = 0,
 	basePowerRate = 0,
 	
-	skillMods = {{"private_medical_rating", 80}, {"private_med_wound_health", 60}, {"private_med_wound_action", 60}, {"private_aggro_mod", 50}, {"private_buff_mind", 100}},
+	skillMods = {
+	{"private_medical_rating", 80},
+	{"private_med_wound_health", 60},
+	{"private_med_wound_action", 60},
+	{"private_aggro_mod", 50},
+	{"private_buff_mind", 100},
+	{"private_med_battle_fatigue", 5},
+	{"private_spec_samplesize", 10},
+	{"private_spec_samplerate", 10}},
 
 	aggroMod = 50,
 	
@@ -82,7 +90,7 @@ object_building_poi_scout_camp_s3 = object_building_poi_shared_scout_camp_s3:new
 			cellid = -1, 
 			containmentType = -1},
 
-{templateFile = "object/tangible/camp/camp_chair_s2.iff", 
+		{templateFile = "object/tangible/camp/camp_chair_s2.iff", 
 			x = 2.2829, z = 0, y = -2.4205, 
 			ox = 0, oy = -0.2722, oz = 0, ow = 0.9627, 
 			cellid = -1, 
@@ -118,7 +126,11 @@ object_building_poi_scout_camp_s3 = object_building_poi_shared_scout_camp_s3:new
 			cellid = -1, 
 			containmentType = -1},
 
-
+		{templateFile = "object/tangible/terminal/terminal_mission.iff", 
+			x = -1.02575, z = 0, y = -3.82643, 
+			ox = 0, oy = 0, oz = 0, ow = 0, 
+			cellid = -1, 
+			containmentType = -1},
 	}
 }
 

@@ -1,7 +1,6 @@
 chadra_fan_thief = Creature:new {
 	objectName = "@mob/creature_names:chadra_fan_thief",
 	socialGroup = "chadra_fan",
-	pvpFaction = "",
 	faction = "",
 	level = 8,
 	chanceHit = 0.27,
@@ -35,7 +34,16 @@ chadra_fan_thief = Creature:new {
 		"object/mobile/dressed_chadra_fan_m_01.iff",
 		"object/mobile/dressed_chadra_fan_m_02.iff",
 		"object/mobile/dressed_chadra_fan_m_03.iff"},
-	lootGroups = {},
+	lootGroups = {
+		{
+			groups = {
+				{group = "junk", chance = 5000000},
+				{group = "tailor_components", chance = 1500000},
+				{group = "loot_kit_parts", chance = 2000000},
+				{group = "wearables_common", chance = 1500000}
+			}
+		}
+	},
 	weapons = {"pirate_weapons_medium"},
 	conversationTemplate = "",
 	attacks = merge(marksmannovice,brawlernovice)

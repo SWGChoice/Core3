@@ -18,12 +18,21 @@ ThreatMatrix::~ThreatMatrix() {
 
 }
 
-ThreatMatrix::ThreatMatrix(const ThreatMatrix& e) {
+ThreatMatrix::ThreatMatrix(const ThreatMatrix& e) : tauntThreat(e.tauntThreat),
+		focusedThreat(e.focusedThreat), damageMap(e.damageMap), aggroMap(e.aggroMap), healMap(e.healMap) {
 
 }
 
 ThreatMatrix& ThreatMatrix::operator=(const ThreatMatrix& e) {
-	//VectorMap<ManagedReference<WeaponObject*>, uint32>::operator=(e);
+	if (this == &e)
+		return *this;
+
+	tauntThreat = e.tauntThreat;
+	focusedThreat = e.focusedThreat;
+
+	damageMap = e.damageMap;
+	aggroMap = e.aggroMap;
+	healMap = e.healMap;
 
 	return *this;
 }
@@ -49,11 +58,7 @@ void ThreatMatrix::add(CreatureObject* creature, ThreatMapEntry* entry) {
 		return;
 
 	// Get Total Damage
-	uint32 totalDamage = 0;
-	for (int j = 0; j < entry->size(); ++j) {
-		uint32 damage = entry->elementAt(j).getValue();
-		totalDamage += damage;
-	}
+	uint32 totalDamage = entry->getTotalDamage() - entry->getNonAggroDamage();
 
 	/// We don't want to add someone who hasn't done
 	/// and damage to this
@@ -61,7 +66,8 @@ void ThreatMatrix::add(CreatureObject* creature, ThreatMapEntry* entry) {
 		damageMap.put(totalDamage, creature);
 
 	/// Anyone with an entry should be in this map
-	aggroMap.put(entry->getAggroMod(), creature);
+	if (entry->getAggroMod() > 0)
+		aggroMap.put(entry->getAggroMod(), creature);
 
 	/// Only healers should be in this map
 	if(entry->getHeal() > 0)

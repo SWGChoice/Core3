@@ -1,7 +1,7 @@
 imperial_observer = Creature:new {
 	objectName = "@mob/creature_names:geonosian_imperial_observer",
+	randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "imperial",
-	pvpFaction = "imperial",
 	faction = "imperial",
 	level = 53,
 	chanceHit = 0.54,
@@ -41,8 +41,7 @@ imperial_observer = Creature:new {
 				{group = "geonosian_hard", chance = 900000},
 				{group = "geonosian_common", chance = 4200000},
 				{group = "geonosian_relic", chance = 4200000}
-			},
-			lootChance = 3000000
+			}
 		}
 	},
 	weapons = {"imperial_weapons_heavy"},

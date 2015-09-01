@@ -1,7 +1,6 @@
 lumbering_bolma = Creature:new {
 	objectName = "@mob/creature_names:lumbering_bolma",
 	socialGroup = "bolma",
-	pvpFaction = "",
 	faction = "",
 	level = 25,
 	chanceHit = 0.36,
@@ -11,7 +10,7 @@ lumbering_bolma = Creature:new {
 	baseHAM = 7200,
 	baseHAMmax = 8800,
 	armor = 0,
-	resists = {10,60,10,-1,-1,-1,-1,-1,-1},
+	resists = {10,140,10,-1,-1,-1,-1,-1,-1},
 	meatType = "meat_wild",
 	meatAmount = 150,
 	hideType = "hide_leathery",
@@ -32,8 +31,8 @@ lumbering_bolma = Creature:new {
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"intimidationattack","intimidationChance=50"},
-		{"stunattack","stunChance=50"}
+		{"intimidationattack",""},
+		{"stunattack",""}
 	}
 }
 

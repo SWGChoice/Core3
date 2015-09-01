@@ -1,7 +1,6 @@
 malignant_squill = Creature:new {
 	objectName = "@mob/creature_names:malignant_squill",
 	socialGroup = "squill",
-	pvpFaction = "",
 	faction = "",
 	level = 50,
 	chanceHit = 0.5,
@@ -11,7 +10,7 @@ malignant_squill = Creature:new {
 	baseHAM = 9300,
 	baseHAMmax = 11300,
 	armor = 1,
-	resists = {5,5,5,5,100,5,5,5,-1},
+	resists = {5,5,110,5,200,5,5,5,-1},
 	meatType = "meat_carnivore",
 	meatAmount = 25,
 	hideType = "hide_leathery",
@@ -34,7 +33,7 @@ malignant_squill = Creature:new {
 	conversationTemplate = "",
 	attacks = {
 		{"strongdisease",""},
-		{"stunattack","stunChance=50"}
+		{"stunattack",""}
 	}
 }
 

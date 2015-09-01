@@ -1,7 +1,6 @@
 giant_mutant_bark_mite = Creature:new {
 	objectName = "@mob/creature_names:mutant_bark_mite_giant",
 	socialGroup = "mite",
-	pvpFaction = "",
 	faction = "",
 	level = 16,
 	chanceHit = 0.31,
@@ -11,7 +10,7 @@ giant_mutant_bark_mite = Creature:new {
 	baseHAM = 4100,
 	baseHAMmax = 5000,
 	armor = 0,
-	resists = {5,5,5,10,10,-1,-1,-1,-1},
+	resists = {5,5,5,110,110,-1,-1,-1,-1},
 	meatType = "meat_insect",
 	meatAmount = 30,
 	hideType = "hide_scaley",
@@ -34,7 +33,7 @@ giant_mutant_bark_mite = Creature:new {
 	conversationTemplate = "",
 	attacks = {
 		{"creatureareaattack",""},
-		{"intimidationattack","intimidationChance=50"}
+		{"intimidationattack",""}
 	}
 }
 
