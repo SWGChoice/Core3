@@ -44,32 +44,39 @@
 Intimidate2Command = {
 	name = "intimidate2",
 
-	damageMultiplier = 0,
-	speedMultiplier = 1,
-	healthCostMultiplier = 0,
-	actionCostMultiplier = 0,
-	mindCostMultiplier = 0,
-	
-	accuracySkillMod = "intimidate",
+        damageMultiplier = 0,
+        speedMultiplier = 1,
+        healthCostMultiplier = 0,
+        actionCostMultiplier = 0,
+        mindCostMultiplier = 0,
 
-	stateEffects = {
-	  StateEffect( 
-		INTIMIDATE_EFFECT, 
-		{}, 
-		{ "intimidate_defense", "resistance_states" }, 
-		{ "jedi_state_defense" }, 
-		100, 
-		0, 
-		120 
-	  )
-	},
+        accuracySkillMod = "intimidate",
 
+<<<<<<< HEAD
 	combatSpam = "intim",
 	animationCRC = hashCode("intimidate"),
 	effectString = "clienteffect/combat_special_attacker_intimidate.cef",
 	range = 24,
+=======
+        stateEffects = {
+          StateEffect(
+                INTIMIDATE_EFFECT,
+	     {},
+	     { "intimidate_defense", "resistance_states" },
+	     { "jedi_state_defense" },
+                100,
+                0,
+                120
+          )
+       },
+>>>>>>> 5a0fb0223d5e5486a2f93910f9decb15b0aedb00
 
-	poolsToDamage = 0
+        combatSpam = "intim",
+        animationCRC = hashCode("intimidate"),
+        effectString = "clienteffect/combat_special_attacker_intimidate.cef",
+        range = 24,
+
+        poolsToDamage = 0
 }
 
 AddCommand(Intimidate2Command)

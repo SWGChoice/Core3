@@ -1268,9 +1268,14 @@ void CraftingSessionImplementation::createPrototype(int clientCounter, bool crea
 		} else {
 
 			// This is for practicing
+<<<<<<< HEAD
 			startCreationTasks(manufactureSchematic->getComplexity() * 2, true); // setting manufactureSchematic->getComplexity() * 2 to a constant will force a consistent crafting time
 			xp = round(xp * 1.05f); // adjust the 1.05f for a 5% XP boost in practice mode to a larger value is desired
 			grantLootChance = 1;
+=======
+			startCreationTasks(manufactureSchematic->getComplexity() * 2, true);
+			xp = round(xp * 1.05f);
+>>>>>>> 5a0fb0223d5e5486a2f93910f9decb15b0aedb00
 		}
 
 		Reference<PlayerManager*> playerManager = crafter->getZoneServer()->getPlayerManager();

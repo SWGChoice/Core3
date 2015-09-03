@@ -1010,7 +1010,11 @@ int CreatureObjectImplementation::inflictDamage(TangibleObject* attacker, int da
 	if (damageType % 3 != 0 && newValue < 0) // secondaries never should go negative
 		newValue = 0;
 
+<<<<<<< HEAD
         // For Players damageType of 0 should be HEALTH never set Action and Mind <= 0
+=======
+        // For Players HEALTH should be 0 ACTION = 1 MIND = 2 never set ACTION or MIND < 1
+>>>>>>> 5a0fb0223d5e5486a2f93910f9decb15b0aedb00
 	if (damageType != 0 && newValue <= 0 && this->isPlayerCreature())
 		newValue = 1;
 

@@ -76,5 +76,8 @@ includeFile("building/player/construction/construction_player_sith_meditation_ro
 includeFile("building/player/construction/construction_player_tcg_emperors_spire.lua")
 includeFile("building/player/construction/construction_player_tcg_rebel_spire.lua")
 includeFile("building/player/construction/construction_player_tcg_relaxation_pool.lua")
+<<<<<<< HEAD
 includeFile("building/player/construction/construction_player_diner.lua")
 includeFile("building/player/construction/construction_player_barn.lua")
+=======
+>>>>>>> 5a0fb0223d5e5486a2f93910f9decb15b0aedb00
