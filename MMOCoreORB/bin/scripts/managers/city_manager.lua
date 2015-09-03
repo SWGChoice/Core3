@@ -235,13 +235,8 @@ CitySpecializations = {
 		name = "@city/city:city_spec_research",
 		cost = 1250,
 		skillMods = {
-<<<<<<< HEAD
 			{"private_spec_assembly", 10},
 			{"private_spec_experimentation", 15}
-=======
-			{"private_spec_assembly", 100},
-			{"private_spec_experimentation", 150}
->>>>>>> 5a0fb0223d5e5486a2f93910f9decb15b0aedb00
 		}
 	},
 	{--Improved Job Market

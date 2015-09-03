@@ -1454,7 +1454,6 @@ object_building_player_construction_shared_construction_player_tcg_relaxation_po
 }
 
 ObjectTemplates:addClientTemplate(object_building_player_construction_shared_construction_player_tcg_relaxation_pool, "object/building/player/construction/shared_construction_player_tcg_relaxation_pool.iff")
-<<<<<<< HEAD
 
 object_building_player_construction_shared_construction_player_diner = SharedInstallationObjectTemplate:new {
 	clientTemplateFileName = "object/building/player/construction/shared_construction_player_diner.iff"
@@ -1469,5 +1468,3 @@ object_building_player_construction_shared_construction_player_barn = SharedInst
 }
 
 ObjectTemplates:addClientTemplate(object_building_player_construction_shared_construction_player_barn, "object/building/player/construction/shared_construction_player_barn.iff")
-=======
->>>>>>> 5a0fb0223d5e5486a2f93910f9decb15b0aedb00

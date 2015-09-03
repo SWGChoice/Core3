@@ -166,11 +166,7 @@ naboo = {
 		--{templateFile = "object/tangible/terminal/terminal_character_builder.iff", ox = 0, oy = 0.309582, oz = 0, ow = 0.950873, x = -4876.99, z = 6, y = 4142.12, parentid = 0},
 		--{templateFile = "object/tangible/terminal/terminal_character_builder.iff", ox = 0, oy = -0.0116238, oz = 0, ow = 0.999932, x = 5193.14, z = -192, y = 6680.25, parentid = 0},
 		--{templateFile = "object/tangible/terminal/terminal_character_builder.iff", ox = 0, oy = -0.0116238, oz = 0, ow = -0.686427, x = 1445.8, z = 13, y = 2771.98, parentid = 0},
-<<<<<<< HEAD
 		--{templateFile = "object/tangible/terminal/terminal_character_builder.iff", ox = 0, oy = -0.0116238, oz = 0, ow = -0.686427, x = -2668.4, z = 22.52, y = -4732.6, parentid = 0}
-=======
-		--{templateFile = "object/tangible/terminal/terminal_character_builder.iff", ox = 0, oy = -0.0116238, oz = 0, ow = -0.686427, x = -2666.98, z = 22.52, y = -4704.83, parentid = 0} --Terminal in R'lyeh
->>>>>>> 5a0fb0223d5e5486a2f93910f9decb15b0aedb00
 	}
 }
 

@@ -1119,8 +1119,5 @@ includeFile("items/gm/crafting_ring_weaponsmith.lua")
 includeFile("items/gm/outdoor_ring_ch.lua")
 includeFile("items/gm/outdoor_ring_harvesting.lua")
 includeFile("items/gm/social_ring_entertainer.lua")
-<<<<<<< HEAD
 includeFile("items/gm/loot_item_diner01_deed.lua")
 includeFile("items/gm/loot_item_barn_deed.lua")
-=======
->>>>>>> 5a0fb0223d5e5486a2f93910f9decb15b0aedb00

@@ -353,8 +353,5 @@ includeFile("groups/gm/ring_crafting_weaponsmith.lua")
 includeFile("groups/gm/ring_outdoor_ch.lua")
 includeFile("groups/gm/ring_outdoor_harvesting.lua")
 includeFile("groups/gm/ring_social_entertainer.lua")
-<<<<<<< HEAD
 includeFile("groups/gm/barn_deed.lua")
 includeFile("groups/gm/diner01_deed.lua")
-=======
->>>>>>> 5a0fb0223d5e5486a2f93910f9decb15b0aedb00

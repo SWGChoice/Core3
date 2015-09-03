@@ -144,13 +144,8 @@ int AiAgentImplementation::calculateAttackMaxDamage(int level) {
 	return dmg;
 }
 float AiAgentImplementation::calculateAttackSpeed(int level) {
-<<<<<<< HEAD
         float speed = (3.5f - ((float)level / 100.f)) * 2.0f; //original
 //      float speed = (3.5f - ((float)level / 100.f)) * 2.0f; //adjusted
-=======
-        float speed = (3.5f - ((float)level / 100.f)); //original
-  //  float speed = (3.5f - ((float)level / 100.f)) * 2.0f; //reduced
->>>>>>> 5a0fb0223d5e5486a2f93910f9decb15b0aedb00
 	return speed;
 }
 
@@ -728,13 +723,8 @@ void AiAgentImplementation::selectSpecialAttack() {
 
 void AiAgentImplementation::selectSpecialAttack(int attackNum) {
 	CreatureAttackMap* attackMap = getAttackMap();
-<<<<<<< HEAD
 	if (attackMap == NULL || System::random(4) != 0) //Call specials 1/5th the time RJZ 
 	{
-=======
-	if (attackMap == NULL || System::random(4) != 0 ) //Call specials 1/5th the time RJZ
-        {
->>>>>>> 5a0fb0223d5e5486a2f93910f9decb15b0aedb00
 		selectDefaultAttack();
 		return;
 	}
