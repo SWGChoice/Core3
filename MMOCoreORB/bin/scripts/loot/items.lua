@@ -12,6 +12,7 @@ JUNKCORSEC = 256
 
 includeFile("items/attachment_armor.lua")
 includeFile("items/attachment_clothing.lua")
+includeFile("items/veteran_reward_resource.lua")
 includeFile("items/balanced_feed_mechanism.lua")
 includeFile("items/blacksun_razor_knuckler_schematic.lua")
 includeFile("items/blank_canvas.lua")
@@ -1118,3 +1119,5 @@ includeFile("items/gm/crafting_ring_weaponsmith.lua")
 includeFile("items/gm/outdoor_ring_ch.lua")
 includeFile("items/gm/outdoor_ring_harvesting.lua")
 includeFile("items/gm/social_ring_entertainer.lua")
+includeFile("items/gm/loot_item_diner01_deed.lua")
+includeFile("items/gm/loot_item_barn_deed.lua")

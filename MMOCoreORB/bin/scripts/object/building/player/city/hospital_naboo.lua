@@ -43,6 +43,8 @@
 
 object_building_player_city_hospital_naboo = object_building_player_city_shared_hospital_naboo:new {
 	skillMods = {
+		{"combat_medicine_experimentation", 5},
+		{"medicine_experimentation", 5},
 		{"private_medical_rating", 100}
 	},
 	lotSize = 3,

@@ -43,6 +43,8 @@
 
 object_building_player_city_hospital_tatooine = object_building_player_city_shared_hospital_tatooine:new {
 	skillMods = {
+		{"combat_medicine_experimentation", 5},
+		{"medicine_experimentation", 5},
 		{"private_medical_rating", 100}
 	},
 	lotSize = 3,

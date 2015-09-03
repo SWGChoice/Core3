@@ -76,3 +76,5 @@ includeFile("building/player/construction/construction_player_sith_meditation_ro
 includeFile("building/player/construction/construction_player_tcg_emperors_spire.lua")
 includeFile("building/player/construction/construction_player_tcg_rebel_spire.lua")
 includeFile("building/player/construction/construction_player_tcg_relaxation_pool.lua")
+includeFile("building/player/construction/construction_player_diner.lua")
+includeFile("building/player/construction/construction_player_barn.lua")

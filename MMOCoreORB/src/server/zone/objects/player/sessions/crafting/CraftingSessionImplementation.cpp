@@ -28,6 +28,14 @@
 #include "server/zone/templates/customization/AssetCustomizationManagerTemplate.h"
 #include "server/zone/templates/params/RangedIntCustomizationVariable.h"
 
+#include "server/zone/managers/loot/LootManager.h"
+
+#include "server/zone/objects/resource/ResourceContainer.h"
+#include "server/zone/managers/crafting/labratories/SharedLabratory.h"
+#include "server/zone/managers/crafting/labratories/ResourceLabratory.h"
+#include "server/zone/objects/manufactureschematic/ingredientslots/ResourceSlot.h"
+
+
 
 int CraftingSessionImplementation::initializeSession(CraftingTool* tool, CraftingStation* station) {
 
@@ -778,6 +786,23 @@ void CraftingSessionImplementation::initialAssembly(int clientCounter) {
 
 	prototype->setComplexity(manufactureSchematic->getComplexity());
 
+  /* Remove Hondo code to make craftable items sellable to Junk dealers
+  
+  // Hondo - Add Junk Dealer type to the item
+  prototype->setJunkDealerNeeded(1); // JUNKGENERIC
+  
+  // Add a value to the item, based on 1 Credit per unit, OQ, DR, and crafter skill
+  // CraftingManagerImplementation::calculateFinalJunkValue calculates final price and calls...
+  // SharedLabratory::getJunkValue which calculates quality/quantity of resources used
+  int junkPrice = craftingManager.get()->calculateFinalJunkValue(crafter, manufactureSchematic);
+   
+  if (junkPrice > 0) 
+    prototype->setJunkValue(junkPrice); // Max value for perfection capped at aprox 35,000 credits. 
+  else
+    prototype->setJunkValue(1); // Epic fail in the code somewhere! :)
+
+  */
+
 	// Start DMSCO3 ***********************************************************
 	// Sends the updated values to the crafting screen
 	ManufactureSchematicObjectDeltaMessage3* dMsco3 =
@@ -1204,6 +1229,8 @@ void CraftingSessionImplementation::createPrototype(int clientCounter, bool crea
 	ManagedReference<CreatureObject*> crafter = this->crafter.get();
 	ManagedReference<ManufactureSchematic*> manufactureSchematic = this->manufactureSchematic.get();
 
+	int grantLootChance = 0; // Legend of Hondo Customization
+
 	if (manufactureSchematic == NULL) {
 		sendSlotMessage(clientCounter, IngredientSlot::NOSCHEMATIC);
 		return;
@@ -1225,20 +1252,145 @@ void CraftingSessionImplementation::createPrototype(int clientCounter, bool crea
 		String xpType = manufactureSchematic->getDraftSchematic()->getXpType();
 		int xp = manufactureSchematic->getDraftSchematic()->getXpAmount();
 
+/*
+ * This is a simple piece of code to force a minimum XP amount while crafting
+ * while also adding some variability to these minimum amounts
+ *
+ *		if (xp < 250)
+ *		  xp = System::random(100) + 250; // Easy way to set min XP amount
+ *
+ */
+
 		if (createItem) {
 
-			startCreationTasks(manufactureSchematic->getComplexity() * 2, false);
+		        startCreationTasks(manufactureSchematic->getComplexity() * 2, false); // setting manufactureSchematic->getComplexity() * 2 to a constant will force a consistent crafting time
 
 		} else {
 
 			// This is for practicing
-			startCreationTasks(manufactureSchematic->getComplexity() * 2, true);
-			xp = round(xp * 1.05f);
+			startCreationTasks(manufactureSchematic->getComplexity() * 2, true); // setting manufactureSchematic->getComplexity() * 2 to a constant will force a consistent crafting time
+			xp = round(xp * 1.05f); // adjust the 1.05f for a 5% XP boost in practice mode to a larger value is desired
+			grantLootChance = 1;
 		}
 
 		Reference<PlayerManager*> playerManager = crafter->getZoneServer()->getPlayerManager();
 		playerManager->awardExperience(crafter, xpType, xp, true);
 
+// ===================
+// Legend of Hondo Customization
+// Roll for loot drop when in practice mode
+		if (grantLootChance == 1){
+		  ManagedReference<DraftSchematic*> draftSchematic = manufactureSchematic->getDraftSchematic();
+		  int itemComplexity = manufactureSchematic->getComplexity();
+		  int itemComplexity2 = itemComplexity;
+		  if (itemComplexity2 < 40) { itemComplexity = 40; } // Force a minimum complexity for the calculation
+		  int toolQuality = craftingTool->getEffectiveness();
+		  int assemblySkill = crafter->getSkillMod(draftSchematic->getAssemblySkill());
+		  //		  if (assemblySkill > 150)
+		  //		    assemblySkill = 150; // Cap Assembly Skill
+
+		  int playerRoll = (itemComplexity2 + toolQuality) + (assemblySkill / 2);
+		  int luckRoll = System::random(100); //default value is 30
+		  // Set the random goal to beat. Min is 60. Increase 300 to reduce likelihood of winning.
+		  int successTarget = System::random(180) + 60;
+
+		  // See if they won loot and take action if they did.
+		  if ((playerRoll + luckRoll) >= successTarget){
+//		    crafter->sendSystemMessage("You have a chance at loot");
+
+		    // Get the average quality of the crafted item, based up resources used and experimentation results, and times it by 1000.
+		    Reference<CraftingValues*> craftingValues = manufactureSchematic->getCraftingValues();
+		    int titleCount = craftingValues->getVisibleExperimentalPropertyTitleSize();
+		    if (titleCount <= 0)
+		      titleCount = 1; // Prevent divide by zero.
+		    float goodness = 0;
+		    float cvTemp = 0;
+		    for (int i = 0; i < titleCount; i++) {
+		      String title = craftingValues->getVisibleExperimentalPropertyTitle(i);
+		      cvTemp = craftingValues->getCurrentVisiblePercentage(title);
+		      if (cvTemp > goodness)
+			goodness = cvTemp; // Use the highest  % experimentation line avchieved
+		    }
+
+		    // Determine the winnings. Higher numbers are harder to achieve.
+		    int lootGroupAchieved = (itemComplexity2 + luckRoll) * goodness * assemblySkill * 10;
+		    String lootGroup;
+		    int level = 0;
+
+
+		    if (lootGroupAchieved <= 0){
+		      // The item being crafted didn't have any quality stats
+		      crafter->sendSystemMessage("Sorry, but in order to win loot, you must craft items that can be experimented upon.");
+		    }
+		    else if (lootGroupAchieved <= 7499){
+		      // Resource quality or Assembly skill too low to win an prize
+		      crafter->sendSystemMessage("You pause for a moment and wonder what you could do with higher quality resources and more refined skill...");
+		    }
+		    else if (lootGroupAchieved >= 130000){
+		      // Resource Deed
+//		      crafter->sendSystemMessage("Award resource Deed");
+		      lootGroup = "resource_reward_veteran";
+		      level = 100;
+		    }
+		    else if (lootGroupAchieved >= 120000){
+		      // Clothing SEA
+//		      crafter->sendSystemMessage("Award SEA");
+		      lootGroup = "clothing_attachments_crafting";
+		      level = luckRoll + 200;
+		    }
+		    else if (lootGroupAchieved >= 110000){
+		      // Clothing SEA
+//		      crafter->sendSystemMessage("Award SEA");
+		      lootGroup = "clothing_attachments";
+		      level = luckRoll + 100;
+		    }
+		    else if (lootGroupAchieved >= 100000){
+		      // Clothing SEA
+//		      crafter->sendSystemMessage("Award SEA");
+		      lootGroup = "clothing_attachments";
+		      level = luckRoll;
+		    }
+		    /* Original Hondo Loot System
+		    else if (lootGroupAchieved >= 120000){
+		      // Clothing SEA
+		      lootGroup = "clothing_attachments";
+		      level = luckRoll + 100;
+		    }
+		    else if (lootGroupAchieved >= 90000){
+		      // Armor SEA (which includes crafting ones in Legend of Hondo)
+		      lootGroup = "armor_attachments";
+		      level = luckRoll + 50;
+		    }
+		    else if (lootGroupAchieved >= 30000){
+		      // Junk Loot with a chance for a mid level SEA
+		      lootGroup = "junk";
+		      level = luckRoll + 10;
+		    }
+		    else if (lootGroupAchieved >= 7500){
+		      // Junk Loot with a chance for a low level SEA
+		      lootGroup = "junk";
+		      level = 10;
+		    }
+		    */
+
+		    // Send the winnings to the player
+		    ManagedReference<SceneObject*> inventory = crafter->getSlottedObject("inventory");
+		    if (level > 0 && inventory != NULL) {
+		      if (inventory->isContainerFull()) {
+			crafter->sendSystemMessage("Inventory Full! You won a loot item, but it could not be created.");
+		      }
+		      else{
+			Reference<LootManager*> lootManager = crafter->getZoneServer()->getLootManager();
+			lootManager->createLoot(inventory, lootGroup, level);
+//			crafter->sendSystemMessage( lootGroup );
+			crafter->sendSystemMessage( "You have received a loot item!");
+		      }
+		    }
+		  }
+		}
+// ===================
+
+ 
 		manufactureSchematic->setCompleted();
 
 	} else {

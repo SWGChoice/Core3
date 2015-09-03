@@ -52,6 +52,8 @@ object_building_player_city_cantina_corellia = object_building_player_city_share
 	limitToOnePerCity = 0,
 	abilityRequired = "place_cantina",
 	skillMods = {
+		{"general_experimentation", 5},
+		{"food_experimentation", 5},
 		{"private_buff_mind", 100},
 		{"private_medical_rating", 100},
 		{"private_med_battle_fatigue", 5}

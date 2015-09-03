@@ -1454,3 +1454,17 @@ object_building_player_construction_shared_construction_player_tcg_relaxation_po
 }
 
 ObjectTemplates:addClientTemplate(object_building_player_construction_shared_construction_player_tcg_relaxation_pool, "object/building/player/construction/shared_construction_player_tcg_relaxation_pool.iff")
+
+object_building_player_construction_shared_construction_player_diner = SharedInstallationObjectTemplate:new {
+	clientTemplateFileName = "object/building/player/construction/shared_construction_player_diner.iff"
+
+}
+
+ObjectTemplates:addClientTemplate(object_building_player_construction_shared_construction_player_diner, "object/building/player/construction/shared_construction_player_diner.iff")
+
+object_building_player_construction_shared_construction_player_barn = SharedInstallationObjectTemplate:new {
+	clientTemplateFileName = "object/building/player/construction/shared_construction_player_barn.iff"
+
+}
+
+ObjectTemplates:addClientTemplate(object_building_player_construction_shared_construction_player_barn, "object/building/player/construction/shared_construction_player_barn.iff")
