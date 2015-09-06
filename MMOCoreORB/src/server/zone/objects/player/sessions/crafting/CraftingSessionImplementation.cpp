@@ -1340,8 +1340,17 @@ void CraftingSessionImplementation::createPrototype(int clientCounter, bool crea
 		    else if (lootGroupAchieved >= 120000){
 		      // Clothing SEA
 //		      crafter->sendSystemMessage("Award SEA");
-		      lootGroup = "clothing_attachments_crafting";
-		      level = luckRoll + 300;
+		      if (grantLootChance == 1){
+			lootGroup = "clothing_attachments_crafting";
+			level = luckRoll + 300;
+		      }
+		    }
+		    else if (lootGroupAchieved >= 7500){
+		      // Junk Loot with a chance for a low level SEA
+		      if (grantLootChance == 1){
+			lootGroup = "junk";
+			level = luckRoll;
+		      }
 		    }
 		    /* Removing low level SEAs
 		    else if (lootGroupAchieved >= 80000){
