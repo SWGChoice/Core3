@@ -1343,6 +1343,7 @@ void CraftingSessionImplementation::createPrototype(int clientCounter, bool crea
 		      lootGroup = "clothing_attachments_crafting";
 		      level = luckRoll + 300;
 		    }
+		    /* Removing low level SEAs
 		    else if (lootGroupAchieved >= 80000){
 		      // Clothing SEA
 //		      crafter->sendSystemMessage("Award SEA");
@@ -1355,6 +1356,7 @@ void CraftingSessionImplementation::createPrototype(int clientCounter, bool crea
 		      lootGroup = "clothing_attachments";
 		      level = luckRoll;
 		    }
+		    */
 		    /* Original Hondo Loot System
 		    else if (lootGroupAchieved >= 120000){
 		      // Clothing SEA
