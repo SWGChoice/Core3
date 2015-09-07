@@ -1348,7 +1348,7 @@ void CraftingSessionImplementation::createPrototype(int clientCounter, bool crea
 		    else if (lootGroupAchieved >= 7500){
 		      // Junk Loot with a chance for a low level SEA
 		      if (grantLootChance == 1){
-			lootGroup = "junk";
+			lootGroup = "ring_junk";
 			level = luckRoll;
 		      }
 		    }

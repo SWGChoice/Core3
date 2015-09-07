@@ -17,6 +17,8 @@ includeFile("groups/sith_shadow_intro_theater_datapad.lua")
 includeFile("groups/skill_buffs.lua")
 includeFile("groups/tailor_components.lua")
 includeFile("groups/treasure_map_group.lua")
+includeFile("groups/ring.lua")
+includeFile("groups/ring_junk.lua")
 
 -- Named lightsaber crystals
 includeFile("groups/force_crystals/color_crystals.lua")
