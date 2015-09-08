@@ -1287,15 +1287,13 @@ void CraftingSessionImplementation::createPrototype(int clientCounter, bool crea
 		  int itemComplexity = manufactureSchematic->getComplexity();
 		  int itemComplexity2 = 20;
 //		  if (itemComplexity2 < 40) { itemComplexity = 40; } // Force a minimum complexity for the calculation
-		  if (grantLootChance == 0){
-		    itemComplexity2 = 1; // If in normal crafting mode reduce the chance by adjusting the complexity
-		  }
 		  int toolQuality = craftingTool->getEffectiveness();
 		  int assemblySkill = crafter->getSkillMod(draftSchematic->getAssemblySkill());
 		  //		  if (assemblySkill > 150)
 		  //		    assemblySkill = 150; // Cap Assembly Skill
 
 		  int playerRoll = (itemComplexity2 + toolQuality) + (assemblySkill / 2);
+		  int choicelootRoll = System::random(10000); //Percentage chance of certain groups
 		  int luckRoll = System::random(100); //default value is 30
 		  // Set the random goal to beat. Min is 60. Increase 300 to reduce likelihood of winning.
 		  int successTarget = System::random(140) + 60;
@@ -1331,18 +1329,44 @@ void CraftingSessionImplementation::createPrototype(int clientCounter, bool crea
 		      // Resource quality or Assembly skill too low to win an prize
 		      crafter->sendSystemMessage("You pause for a moment and wonder what you could do with higher quality resources and more refined skill...");
 		    }
-		    else if (lootGroupAchieved >= 140000){
+		    else if (lootGroupAchieved >= 120000){
 		      // Resource Deed
 //		      crafter->sendSystemMessage("Award resource Deed");
-		      lootGroup = "resource_reward_veteran";
-		      level = 100;
+		      if (choicelootRoll <= 500) // 500 = 5%
+			{
+			  lootGroup = "resource_reward_veteran";
+			  level = 100;
+			}
+		      else if (choicelootRoll <= 1000) // 500 = 5%
+			{
+			  lootGroup = "ring";
+			  level = 100;
+			}
+		      else
+			{
+			  lootGroup = "clothing_attachments";
+			  level = luckRoll + 400;
+			}
 		    }
-		    else if (lootGroupAchieved >= 120000){
+		    else if (lootGroupAchieved >= 80000){
 		      // Clothing SEA
 //		      crafter->sendSystemMessage("Award SEA");
 		      if (grantLootChance == 1){
-			lootGroup = "clothing_attachments_crafting";
-			level = luckRoll + 300;
+			if (choicelootRoll <= 5000) // 4500 = 50%
+			  {
+			    lootGroup = "clothing_attachments_crafting";
+			    level = luckRoll + 300;
+			  }
+		      else if (choicelootRoll <= 5000) // 500 = 5%
+			{
+			  lootGroup = "ring";
+			  level = 100;
+			}
+		      else
+			{
+			  lootGroup = "ring_junk";
+			  level = 100;
+			}
 		      }
 		    }
 		    else if (lootGroupAchieved >= 7500){
