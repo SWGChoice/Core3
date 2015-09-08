@@ -5,8 +5,8 @@ ring_junk = {
 	minimumLevel = 0,
 	maximumLevel = 0,
 	lootItems = {
-		{groupTemplate = "ring", weight = 10000},
-		{groupTemplate = "junk", weight = 9990000},
+		{groupTemplate = "ring", weight = 50000},
+		{groupTemplate = "junk", weight = 9950000},
 	}
 }
 
