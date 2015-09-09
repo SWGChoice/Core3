@@ -1332,12 +1332,12 @@ void CraftingSessionImplementation::createPrototype(int clientCounter, bool crea
 		    else if (lootGroupAchieved >= 120000){
 		      // Resource Deed
 //		      crafter->sendSystemMessage("Award resource Deed");
-		      if (choicelootRoll <= 500) // 500 = 5%
+		      if (choicelootRoll <= 10) // 10 = 0.1%
 			{
 			  lootGroup = "resource_reward_veteran";
 			  level = 100;
 			}
-		      else if (choicelootRoll <= 1000) // 500 = 5%
+		      else if (choicelootRoll <= 60) // 50 = 0.55%
 			{
 			  lootGroup = "ring";
 			  level = 100;
@@ -1352,12 +1352,12 @@ void CraftingSessionImplementation::createPrototype(int clientCounter, bool crea
 		      // Clothing SEA
 //		      crafter->sendSystemMessage("Award SEA");
 		      if (grantLootChance == 1){
-			if (choicelootRoll <= 5000) // 4500 = 50%
+			if (choicelootRoll <= 3900) // 3900 = 39%
 			  {
 			    lootGroup = "clothing_attachments_crafting";
 			    level = luckRoll + 300;
 			  }
-		      else if (choicelootRoll <= 5000) // 500 = 5%
+		      else if (choicelootRoll <= 100) // 100 = 1%
 			{
 			  lootGroup = "ring";
 			  level = 100;
