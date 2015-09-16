@@ -180,8 +180,10 @@ void PlayerManagerImplementation::loadLuaConfig() {
 	medicalDuration = lua->getGlobalInt("medicalDuration");
 
 	groupExpMultiplier = lua->getGlobalFloat("groupExpMultiplier");
-
-	globalExpMultiplier = lua->getGlobalFloat("globalExpMultiplier");
+/*
+ *      Hard code in the base XP multiplier
+ */
+	globalExpMultiplier = lua->getGlobalFloat("globalExpMultiplier") * 3.0f;
 
 	baseStoredCreaturePets = lua->getGlobalInt("baseStoredCreaturePets");
 	baseStoredFactionPets = lua->getGlobalInt("baseStoredFactionPets");
