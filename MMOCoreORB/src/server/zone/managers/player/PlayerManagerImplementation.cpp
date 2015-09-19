@@ -937,6 +937,7 @@ void PlayerManagerImplementation::sendPlayerToCloner(CreatureObject* player, uin
 
 	// Jedi experience loss.
 	// If player is a Jedi Initiate
+/* Remove Jedi XP loss
 	if(ghost->getJediState()  == 2) {
 		awardExperience(player, "jedi_general", -4500, true);
 		StringIdChatParameter message("base_player","prose_revoke_xp");
@@ -1004,6 +1005,7 @@ void PlayerManagerImplementation::sendPlayerToCloner(CreatureObject* player, uin
 		message.setTO("exp_n", "jedi_general");
 		player->sendSystemMessage(message);
 	}
+*/
 }
 
 void PlayerManagerImplementation::ejectPlayerFromBuilding(CreatureObject* player) {
