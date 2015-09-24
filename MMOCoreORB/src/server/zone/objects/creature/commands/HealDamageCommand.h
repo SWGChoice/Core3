@@ -259,8 +259,10 @@ public:
 			}
 
 			sendHealMessage(creature, targetCreature, healthHealed, actionHealed);
-
-			if (targetCreature != creature && !targetCreature->isPet())
+			/*Allow Medical XP for healing yourself*
+			 *NOTE: CODE IN 2 PLACES*
+			if (targetCreature != creature && !targetCreature->isPet())*/
+			if (!targetCreature->isPet())
 				awardXp(creature, "medical", (healthHealed + actionHealed)); //No experience for healing yourself or pets.
 
 			checkForTef(creature, targetCreature);
@@ -409,8 +411,11 @@ public:
 		Locker locker(stimPack);
 		stimPack->decreaseUseCount();
 
-		if (targetCreature != creature && !targetCreature->isPet())
-			awardXp(creature, "medical", (healthHealed + actionHealed)); //No experience for healing yourself.
+		/*Allow Medical XP for healing yourself*
+		 *NOTE: CODE IN 2 PLACES*
+		 if (targetCreature != creature && !targetCreature->isPet())*/
+		if (!targetCreature->isPet())
+			awardXp(creature, "medical", (healthHealed + actionHealed)); //No experience for healing yourself. **REMOVED Now XP for yoursrlf**
 
 		if (targetCreature != creature)
 			clocker.release();
