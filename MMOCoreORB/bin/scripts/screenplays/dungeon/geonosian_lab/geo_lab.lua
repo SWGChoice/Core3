@@ -339,7 +339,8 @@ function GeonosianLabScreenPlay:notifyEnteredLab(pBuilding, pPlayer)
 	end
 
 	for i = 1, #self.lockedCells, 1 do
-		self:removePermission(pPlayer, "GeoLabKeypad" .. i)
+--		self:removePermission(pPlayer, "GeoLabKeypad" .. i)
+		self:givePermission(pPlayer, "GeoLabKeypad" .. i)
 	end
 
 	local playerID = SceneObject(pPlayer):getObjectID()
