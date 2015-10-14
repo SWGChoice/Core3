@@ -133,7 +133,7 @@ void InstallationObjectImplementation::setOperating(bool value, bool notifyClien
 			return;
 		}
 
-		if (basePowerRate != 0 && surplusPower <= 0) {
+		if (getBasePowerRate() != 0 && surplusPower <= 0) {
 			StringIdChatParameter stringId("player_structure", "power_deposit_incomplete");
 			ChatSystemMessage* msg = new ChatSystemMessage(stringId);
 
@@ -342,12 +342,12 @@ bool InstallationObjectImplementation::updateMaintenance(Time& workingTime) {
 	addMaintenance(-1.0f * payAmount);
 
 	if (isOperating()) {
-		float energyAmount = (elapsedTime / 3600.0) * basePowerRate;
+		float energyAmount = (elapsedTime / 3600.0) * getBasePowerRate();
 
 		if (energyAmount > surplusPower) {
 			energyAmount = surplusPower;
 
-			float workPowerPermitted = (surplusPower / basePowerRate) * 3600;
+			float workPowerPermitted = (surplusPower / getBasePowerRate()) * 3600;
 
 			if (workPowerPermitted < elapsedTime) {
 				Time workTill(lastMaintenanceTime.getTime() + (int) workPowerPermitted);
@@ -395,7 +395,7 @@ void InstallationObjectImplementation::updateHopper(Time& workingTime, bool shut
 
 	Time currentTime = workingTime;
 
-	Time spawnExpireTimestamp(currentSpawn->getDespawned());
+	Time spawnExpireTimestamp((uint32)currentSpawn->getDespawned());
 	// if (t1 < t2) return 1 - if spawnTime is sooner currentTime, use spawnTime, else use spawn time
 	uint32 harvestUntil = (spawnExpireTimestamp.compareTo(currentTime) > 0) ? spawnExpireTimestamp.getTime() : currentTime.getTime();
 	uint32 lastHopperUpdate = resourceHopperTimestamp.getTime();
@@ -724,45 +724,41 @@ bool InstallationObjectImplementation::isAttackableBy(CreatureObject* object) {
 	return true;
 }
 
-void InstallationObjectImplementation::createChildObjects(){
-	if( isTurret()) {
-
+void InstallationObjectImplementation::createChildObjects() {
+	if (isTurret()) {
 		SharedInstallationObjectTemplate* inso = dynamic_cast<SharedInstallationObjectTemplate*>(getObjectTemplate());
 
-		if(inso != NULL){
-
+		if (inso != NULL) {
 			uint32 defaultWeaponCRC = inso->getWeapon().hashCode();
-			if(getZoneServer() != NULL) {
-					Reference<WeaponObject*> defaultWeapon = (getZoneServer()->createObject(defaultWeaponCRC, 1)).castTo<WeaponObject*>();
 
-					if (defaultWeapon == NULL) {
-							return;
-					} else {
+			if (getZoneServer() != NULL) {
+				Reference<WeaponObject*> defaultWeapon = (getZoneServer()->createObject(defaultWeaponCRC, getPersistenceLevel())).castTo<WeaponObject*>();
 
-						if (!transferObject(defaultWeapon, 4)) {
-							defaultWeapon->destroyObjectFromDatabase(true);
-							return;
-						}
+				if (defaultWeapon == NULL) {
+					return;
+				}
 
-						if(dataObjectComponent != NULL){
-							TurretDataComponent* turretData = cast<TurretDataComponent*>(dataObjectComponent.get());
+				if (!transferObject(defaultWeapon, 4)) {
+					defaultWeapon->destroyObjectFromDatabase(true);
+					return;
+				}
 
-							if(turretData != NULL) {
-								turretData->setWeapon(defaultWeapon);
-							}
-						}
+				if (dataObjectComponent != NULL) {
+					TurretDataComponent* turretData = cast<TurretDataComponent*>(dataObjectComponent.get());
+
+					if (turretData != NULL) {
+						turretData->setWeapon(defaultWeapon);
 					}
+				}
 			}
 		}
-	} else if (isMinefield()){
+	} else if (isMinefield()) {
 		this->setContainerDefaultAllowPermission(ContainerPermissions::MOVEIN);
 		this->setContainerDefaultDenyPermission(ContainerPermissions::MOVEOUT);
 		this->setContainerDefaultAllowPermission(ContainerPermissions::OPEN);
 
-
 	} else {
 		StructureObjectImplementation::createChildObjects();
-
 	}
 }
 
